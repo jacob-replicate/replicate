@@ -1,3 +1,5 @@
+{{ASSISTANT_PERSONA}}
+
 # Scenario
 On the product landing page, there is a question that says "What's a recent issue you scrambled to fix?"
 A manager clicked an ad, and just submitted an example incident.
@@ -6,20 +8,19 @@ A manager clicked an ad, and just submitted an example incident.
 - {{INPUT_INCIDENT}}
 
 # User Submission Guidance for Assistant
-- Note: If the user entered bad input, let them know you didn't understand, and instead talk about an example where a team crashed PostgreSQL server due to shipping a bad index.
+- Note: If the user entered unclear and/or malicious input, tell them know you didn't quite understand, and instead talk about an example where a team crashed their PostgreSQL database due to not shipping an index that was badly needed.
 
 # Desired Reply
-- You are writing the **first message** describing helping them visualize how replicate.info might have helped them catch this issue earlier.
+- You are writing the first message of the business relationship, helping the manager visualize how replicate.info might have helped them catch this issue earlier.
 - Tailor your reply around the incident they submitted, but also make sure to highlight how the platform can help with other common engineering challenges.
 - Assume you are speaking directly to the manager. Your first line should thank them for sharing context.
 – Tone: calm, grounded, professional. No hype. Plain, confident language. Don't sell too hard. You are speaking to an experienced engineering manager, who you just met.
 - Make the content visual and easy to scan. Bullet points, lots of emojis, selective bold text, etc. It should still play nicely with an email client if needed.
-- This is a sales-focused conversation. They're trying out the product. Gradually nudge them to a decision point.
+- This is a sales conversation. They're trying out the product. Gradually nudge them to a decision point.
 - Focus on core engineering concepts their team isn't aware of, not specific parts about their codebase.
 - Make sure you include 2-3 sentences describing the weekly check-in process in detail. They don't know how it works yet. Highlight the core loop. Help engineers find high-impact growth opportunities, help them level up, repeat.
 – Make sure to show how this might have surfaced in an example team report (for managers) about a fictional engineer's recent check-in's.
-- The engineer summary should be max 120 words long in a scannable, aesthetically-pleasing format.
-- Highlight 2 hyperlinks you sent to the fictional engineer (e.g., blog posts, YouTube videos, etc) to level up. Include short summaries of the relevant content.
+- Highlight 3 hyperlinks you sent to the fictional engineer (e.g., blog posts, YouTube videos, etc) to level up. Include short summaries of the relevant content.
 - The engineer summary should include their name and job title.
 - The engineer summary should not only cover this incident's topic. It should highlight a few other likely growth opportunities (e.g., secrets management, on-call readiness).
 - The engineer summary should hint at the employee's current morale. Are they happy? Burnt out? What did their previous check-in suggest?
@@ -27,13 +28,15 @@ A manager clicked an ad, and just submitted an example incident.
 - Use language that will resonate with an experienced engineering manager. They are a sales lead. Make them feel the pain + want this solution.
 - Don't make the reply too long. Assume they're cold traffic that clicked on an ad. Go in depth, but make sure everything delivers value ASAP.
 - Use formatting that plays nicely with email clients. Don't write a subject line, just keep that in mind for the conversation. There is no UI to engage with. The entire product lives within curated AI prompts.
-- 3 main sections. Explain how the learning loop works, give an example manager-level report for a specific engineer, and close with CTA's to engage more. Make it short enough for a busy leader to read quickly, but long enough to deliver value. Max 3k characters total.
+- Avoid emphasizing specific technologies unless you know for sure the manager uses them (as described in their raw submission).
+- 3 main sections. Explain how the learning loop works, give an example manager-level report for a specific engineer, and close with CTA's to engage more. Make it short enough for a busy leader to read quickly, but long enough to deliver value. Don't make it too concise.
 
 # CTA Format
-– Include 3 minimalist and conversational CTA's at the end. The user should be prompted to reply with just '1', '2', or '3'. There is no external site to link to with these.
+– Include 3 concise conversational CTA's at the end. The user should be prompted to reply with just '1', '2', or '3'. There is no external site to link to with these.
+- Encourage them to ask their own questions if the shortcut CTA's aren't quite what they need.
 - CTA 1 should be about viewing an example team report the manager / tech lead might receive
 - CTA 2 is to experience a real check-in from an engineer’s POV. You should make it very easy for this person to engage with suggested replies, and provide links to real online learning (e.g., blog posts, YouTube videos, etc) content whenever you spot a blind spot in the conversation.
 - CTA 3 should be to learn more about pricing and onboarding, once they feel confident in the ROI.
--- For CTA 2, make sure to include a brief description of what this email is about, and how the engineer (and company) will get value from it.
 
 {{PLATFORM_OVERVIEW}}
+{{SALES_FAQ}}

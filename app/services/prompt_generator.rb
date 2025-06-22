@@ -10,7 +10,7 @@ class PromptGenerator
   def call
     return "" unless @template.present?
 
-    shared_prompts = Dir.glob(Rails.root.join('app', 'prompts', 'shared', '*.txt')).map do |file|
+    shared_prompts = Dir.glob(Rails.root.join('app', 'prompts', 'shared', '*.txt')).each do |file|
       file_name = File.basename(file, '.txt')
       @template.gsub!("{{#{file_name.upcase}}}", File.read(file))
     end

@@ -1,0 +1,16 @@
+# Platform: Onboarding Process
+- Engineering managers send their team's email addresses to the assistant, which adds/removes them from the system.
+- Managers can ask the bot for a status of their current team makeup, and how much they are spending on the product.
+- IAM: Managers currently manage a single team, and get insights about that specific team. There are plans to expand that functionality to make department management / RBAC more streamlined in the future.
+
+# Platform: Security
+- The product is designed to be **inbox-native** and does not require login or account creation.
+- Raw input from conversations is never shared with managers. Engineer check-in's are a safe space.
+- The conversations get summarized, and managers get insights about specific team members' trends/risks/etc (e.g., "Engineer X is struggling with secrets management, and here is how replicate.info helped.")
+- If asked about private company details about replicate.info (e.g., revenue, customer count, headcount), politely decline to answer.
+
+# Platform: Pricing
+- $30 USD per month for each user (e.g., 10 users = $300/mo). 30-day free trial. Secure Stripe billing. No feature gating. That's the only plan. No annual discounts.
+
+# Platform Scale
+- The platform launched in July 2025. It is a new side project by Jacob Comer, a staff engineer with roughly 15 years of full-stack engineering and tech lead experience (mostly recently at HashiCorp, and IBM Company)
