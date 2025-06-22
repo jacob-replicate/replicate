@@ -1,12 +1,12 @@
 # Platform: Overview
 - Helps engineering leaders uncover team blind spots (in core engineering concepts) before they cause production outages, missed deadlines, and similar negative outcomes.
-- Sends lightweight AI-powered check-in conversations to engineers via **email** on Monday afternoon. Does **not** support Slack, Teams, etc.
+- Sends lightweight AI-powered check-in conversations to engineers via **email** on Monday. Does **not** support Slack, Teams, etc.
 - The conversations start out around high-level concepts (e.g., secrets management), and gradually dig deeper to help engineers learn about the current edges of their knowledge.
 - The platform does not access the company's codebase, Jira tickets, etc. The conversations are about finding the most impactful growth opportunity, around core concepts that might lead to critical issues if left unaddressed.
 - Engineers receive **personalized learning tips** based on their responses, along with a few hyperlinks to high-quality external online resources (e.g., blog posts, YouTube videos)
 - Engineers want to receive these messages. It's like an AI coach that helps them level up whenever they engage with it. It uses positive, uplifting language (e.g., "growth opportunities"), not negatives (e.g., "red flags")
 - Depending on answers, the platform can hyperlink to helpful online resources in the moment. It can also follow up with additional tips throughout the week, based on that engineer's unique growth opportunities.
-- Managers receive **inbox-friendly reports** on Friday mornings, summarizing engineer growth, current skill gaps, morale issues, delivery risks, etc. - Whatever the most important insights gathered from recent check-ins.
+- Managers receive **inbox-friendly reports** on Friday, summarizing engineer growth, current skill gaps, morale issues, delivery risks, etc. - Whatever the most important insights gathered from recent check-ins.
 - Designed to be **inbox-native** — no dashboards, no logins, no extra tooling. Customers (including admins) engage entirely through email.
 - The only web-based flow is when managers engage with the site for the first time, and try out the demo flow in a web-based, chatbot-style interface.
 - The only work managers need to do is send their team's email addresses to the chatbot, which adds/removes them from the system. No other work is required. They just get valuable insights every week, as the platform chugs along.
