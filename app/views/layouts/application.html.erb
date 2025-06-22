@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= @title || "replicate.info" %></title>
+
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta charset="utf-8">
+    <meta name="description" content="replicate.info helps engineering leaders uncover blind spots across their teams—before they derail the roadmap.">
+    <meta name="keywords" content="engineering team insights, developer check-ins, leadership reports, skill growth, blind spot detection">
+    <meta property="og:url" content="<%= request.original_url %>">
+    <!-- <meta property="og:image" content="/some-thumb.jpg"> -->
+    <meta property="og:description" content="replicate.info helps engineering leaders uncover blind spots across their teams—before they derail the roadmap.">
+    <meta property="og:title" content="<%= @title || 'replicate.info' %>">
+    <meta property="og:site_name" content="<%= @title || 'replicate.info' %>">
+    <meta property="og:see_also" content="https://replicate.info">
+    <!-- <meta property="twitter:image" content="/some-thumb.jpg"> -->
+    <meta property="twitter:description" content="replicate.info helps engineering leaders uncover blind spots across their teams—before they derail the roadmap.">
+    <meta property="twitter:title" content="<%= @title || 'replicate.info' %>">
+    <meta property="twitter:url" content="<%= request.original_url %>">
+    <meta name="msapplication-TileColor" content="#4d5562">
+    <meta name="theme-color" content="#4d5562">
+
+    <link rel="canonical" href="<%= request.original_url %>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+    <%= stylesheet_link_tag "application", as: "style" %>
+    <%= stylesheet_link_tag "tailwind", as: "style" %>
+    <%= javascript_include_tag "application", defer: true %>
+  </head>
+
+  <body>
+    <div class="container mx-auto">
+      <%= yield %>
+    </div>
+  </body>
+</html>

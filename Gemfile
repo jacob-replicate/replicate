@@ -11,7 +11,6 @@ gem "jbuilder"
 gem "bootsnap", require: false
 gem "redis"
 gem "devise"
-gem "slim-rails"
 gem "sidekiq"
 gem "ruby-openai"
 gem "carrierwave"
