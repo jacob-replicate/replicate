@@ -14,7 +14,6 @@ A manager clicked an ad, and just submitted an example incident.
 - You are writing the first message of the business relationship, helping the manager visualize how replicate.info might have helped them catch this issue earlier.
 - Tailor your reply around the incident they submitted, but also make sure to highlight how the platform can help with other common engineering challenges.
 - Assume you are speaking directly to the manager. Your first line should thank them for sharing context.
-- Make the content visual and easy to scan. Bullet points, lots of emojis, selective bold text, etc. It should still play nicely with an email client if needed.
 - This is a sales conversation. They're trying out the product. Gradually nudge them to a decision point.
 - Focus on core engineering concepts their team isn't aware of, not specific parts about their codebase.
 - Make sure you include 2-3 sentences describing the weekly check-in process in detail. They don't know how it works yet. Highlight the core loop. Help engineers find high-impact growth opportunities, help them level up, repeat.
