@@ -1,15 +1,16 @@
-
-<%= render partial: 'navbar' %>
-<div class="mt-4">
-  <div class="flex justify-center">
-    <div class="grid grid-cols-2 gap-4">
+<div class="pt-4 lg:pt-8 lg:pb-6">
+  <div class="flex items-center justify-center">
+    <div class="grid grid-cols-2 gap-10">
       <div class="order-1 col-span-2 lg:col-span-1">
-        <h1 class="text-xl lg:text-3xl font-bold">Uncover your team’s blind spots</h1>
-        <p class="mb-4 text-lg" >before they derail your sprint or take down production.</p>
+        <div class="px-32 lg:px-24 mb-6">
+          <img class="w-full" src="/hero-left.jpg" />
+        </div>
+        <div class="text-xl lg:text-2xl font-semibold">Uncover your team’s blind spots</div>
+        <div class="mb-4 text-md" >before sprints get derailed, or production goes down.</div>
         <div class="p-4 rounded-2xl bg-gray-100">
           <%= form_with url: '' do |f| %>
             <div class="block text-md font-medium text-gray-900 mb-2">What’s a recent issue you scrambled to fix?</div>
-              <%= f.text_area :description, class: 'block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 border border-gray-300 outline-1 -outline-offset-1 outline-indigo-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-1 focus:outline-indigo-600 sm:text-sm/6', rows: 3, placeholder: 'e.g., crashed postgres because we forgot to add an index', tabindex: 1  %>
+              <%= f.text_area :description, class: 'block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 border border-gray-300 outline-1 -outline-offset-1 outline-indigo-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-1 focus:outline-indigo-600 sm:text-sm/6', rows: 2, placeholder: 'e.g., crashed database because forgot index', tabindex: 1  %>
               <div class="flex items-center gap-2 mt-3">
                 <%= f.check_box :agree, class: 'h-4 w-4', tabindex: 2 %>
                 <label for="agree" class="text-sm">I accept the <a href="" class="text-blue-500 hover:underline">Terms</a> and <a href="" class="text-blue-500 hover:underline">Privacy Policy</a></label>
@@ -17,60 +18,59 @@
             </div>
 
             <div class="flex justify-center pt-4">
-              <%= f.submit 'View Example Report', class: 'rounded-md px-4 py-2 text-lg font-semibold text-white shadow-xs bg-slate-700', tabindex: 3 %>
+              <%= f.submit 'View Example Report', class: 'rounded-md px-4 py-2 text-md font-semibold text-white shadow-xs bg-slate-700', tabindex: 3 %>
             </div>
         <% end %>
       </div>
-      <div class="flex items-center justify-center order-4 col-span-2 lg:col-span-1 lg:order-2">
-        <img src="/email-screenshot.png" style="width: 400px" class="rounded-lg shadow-lg" />
+      <div class="order-4 col-span-2 lg:col-span-1 lg:order-2 lg:pt-7">
+        <img src="/email-screenshot.png" class="w-full rounded-lg shadow-lg" />
       </div>
-      <div class="col-span-2 order-3">
+      <div class="col-span-2 order-3 mt-4 lg:mt-2">
         <div class="flex items-center gap-3">
           <div style="padding-top: 4px">
-            <img src="/jacob.jpg" style="width: 75px" class="rounded-full mb-2" />
+            <img src="/jacob.jpg" style="width: 55px" class="rounded-full mb-2" />
           </div>
           <div>
-            <p class="text-lg mb-2">Jacob Comer</p>
-            <div class="flex gap-1">
+            <div class="text-md mb-1.5">Jacob Comer</div>
+            <div class="flex gap-1.5">
               <%= link_to 'https://twitter.com/jacob_comer', target: "_blank" do %>
-                <img src="/icons/instagram.png" style="width: 30px" />
+                <img src="/icons/instagram.png" style="width: 25px" />
               <% end %>
               <%= link_to 'https://linkedin.com/in/jacobcomer', target: "_blank" do %>
-                <img src="/icons/linkedin.png" style="width: 30px" />
+                <img src="/icons/linkedin.png" style="width: 25px" />
               <% end %>
               <%= link_to 'https://jacobcomer.medium.com/write-code-faster-in-vim-c564ff9b9f6c', target: "_blank" do %>
-                <img src="/icons/medium.png" style="width: 30px" />
+                <img src="/icons/medium.png" style="width: 25px" />
               <% end %>
               <%= link_to 'https://www.reddit.com/user/jacob_the_snacob', target: "_blank" do %>
-                <img src="/icons/reddit.png" style="width: 30px" />
+                <img src="/icons/reddit.png" style="width: 25px" />
               <% end %>
               <%= link_to 'mailto:jacob@jacobcomer.com', target: "_blank" do %>
-                <img src="/icons/email.png" style="width: 30px" />
+                <img src="/icons/email.png" style="width: 25px" />
               <% end %>
             </div>
           </div>
         </div>
-        <p class="mt-4 mb-4">
-          <%= link_to 'replicate.info', '', class: "text-blue-500", target: "_blank" %>
-          helps resolve knowledge gaps before they turn into production incidents.
-        </p>
-        <p class="mb-4">
-          <b>No logins, dashboards, or setup required</b> — just copy and paste your team’s email addresses.
-        </p>
-        <p>
-          Engineers periodically <b>check in with AI</b> about topics like secrets management, observability, and database optimization. When the platform spots a growth opportunity, it links to helpful online resources, and follows up with personalized tips throughout the week. This loop repeats every couple days with zero work required on your part.
-        </p>
+        <div>
+          <div class="mt-4 mb-4">
+            <%= link_to 'replicate.info', 'https://replicate.info', class: "text-blue-500", target: "_blank" %>
+            helps resolve knowledge gaps before they turn into production incidents.
+          </div>
+          <div class="mb-4">
+            Engineers <b>check in with AI</b> about topics like secrets management, observability, and database optimization. When the platform spots a growth opportunity, it links to helpful online resources, and follows up with personalized tips.
+          </div>
+          <div>
+            <b>No accounts to create. No dashboards to manage.</b> Conversations happen automatically over email.
+          </div>
+        </div>
       </div>
       <div class="col-span-2 order-5">
-        <p class="mb-4">
-          No accounts to create. No settings to manage. <b>Conversations happen automatically over email.</b>
-        </p>
-        <p class="mb-4">
+        <div class="mb-4">
           Your engineers click a few links, learn something impactful, and get back to their sprint work.
-        </p>
-        <p class="mb-4">
-          <b>Leadership receives weekly reports</b> on how the team is progressing, with clear visuals highlighting skill gaps, morale trends, and risks that may justify additional headcount. The price is <b>$30/mo</b> (USD) for every user you invite.
-        </p>
+        </div>
+        <div class="mb-4">
+          <b>Leadership gets weekly reports</b> on how the team is leveling up, along with morale trends, and risks that might justify more headcount.
+        </div>
       </div>
       <div class="flex lg:hidden items-center justify-center order-6 col-span-2 flex-col gap-4 mb-6">
         <%= link_to '', class: "bg-blue-700 text-white px-4 py-2 rounded hover:bg-blue-600" do %>
