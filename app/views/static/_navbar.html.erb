@@ -1,0 +1,28 @@
+<div class="z-50 w-full h-16 flex items-center bg-white gap-4 sticky top-0  md:px-16 px-6 justify-between">
+  <a href="<%= root_path %>" class="flex items-center overflow-hidden gap-1 text-rm-primary font-bold text-2xl shrink-0">
+    <img src="/logo.png" style="width: 50px" />
+    <span class="hidden lg:inline">replicate.info</span>
+  </a>
+  <div class="relative shrink-0 flex items-center gap-2 lg:gap-4">
+      <%= link_to '', class: " gap-4 rounded bg-white
+              hover:bg-gray-200 py-2 px-2 lg:px-4" do %>
+        Pricing
+      <% end %>
+      <%= link_to '', class: " gap-4 rounded bg-white
+              hover:bg-gray-200 py-2 px-2 lg:px-4" do %>
+        Security
+      <% end %>
+      <%= link_to '', class: " rounded bg-white hidden lg:flex
+              hover:bg-gray-200 py-2 px-4" do %>
+        Use Cases
+      <% end %>
+      <%= link_to '', class: "flex rounded bg-white
+              hover:bg-gray-200 py-2 px-2 lg:px-4" do %>
+        Support
+      <% end %>
+  </div>
+  <%= link_to '', class: "flex items-center gap-4 text-white bg-gray-900 rounded bg-white hidden lg:flex
+          hover:bg-gray-700 py-2 px-4" do %>
+    Request Demo
+  <% end %>
+</div>
