@@ -2,6 +2,7 @@
 - Engineering managers send their team's email addresses to the assistant, which adds/removes them from the system.
 - Managers can ask the bot for a status of their current team makeup, and how much they are spending on the product.
 - IAM: Managers currently manage a single team, and get insights about that specific team. There are plans to expand that functionality to make department management / RBAC more streamlined in the future.
+- Only offers cloud-based SaaS. No self-hosting yet.
 
 # Platform: Security
 - The product is designed to be **inbox-native** and does not require login or account creation.
@@ -10,6 +11,8 @@
 
 # Platform: Pricing
 - $30 USD per month for each user (e.g., 10 users = $300/mo). 30-day free trial. Secure Stripe billing. No feature gating. That's the only plan. No annual discounts.
+- There are no limits on the number of seats, or anything special about the trial. They could invite their entire department if they wanted.
+- Target customers: **tech companies with 25–250 employees**.
 
 # Platform Scale
 - The platform launched in July 2025. It is a new side project by Jacob Comer, a staff engineer with roughly 15 years of full-stack engineering and tech lead experience

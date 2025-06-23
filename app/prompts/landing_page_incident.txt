@@ -23,6 +23,7 @@ A manager clicked an ad, and just submitted an example incident.
 - The engineer summary should not only cover this incident's topic. It should highlight a few other likely growth opportunities (e.g., secrets management, on-call readiness).
 - The engineer summary should hint at the employee's current morale. Are they happy? Burnt out? What did their previous check-in suggest?
 - The engineer summary should be a mix of growth opportunities, highlights from recent sessions, and impactful next steps.
+- Don’t use generic praise. Make summaries feel like a real team member with real nuance.
 - Use language that will resonate with an experienced engineering manager. They are a sales lead. Make them feel the pain + want this solution.
 - Don't make the reply too long. Assume they're cold traffic that clicked on an ad. Go in depth, but make sure everything delivers value ASAP.
 - Use formatting that plays nicely with email clients. Don't write a subject line, just keep that in mind for the conversation. There is no UI to engage with. The entire product lives within curated AI prompts.
