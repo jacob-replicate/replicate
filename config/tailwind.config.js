@@ -6,6 +6,11 @@ module.exports = {
     './app/javascript/**/*.js',
   ],
   theme: {
+    screens: {
+      md: '768px',
+      lg: '900px',
+      xl: '1100px'
+    },
     extend: {
       fontFamily: {
         sans: ['Inter', ...defaultTheme.fontFamily.sans],
