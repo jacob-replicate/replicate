@@ -8,5 +8,8 @@ Rails.application.routes.draw do
   devise_for :users
   post "/stripe-webhooks", to: "stripe_webhooks#create"
 
+  get "/terms", to: "static#terms"
+  get "/privacy", to: "static#terms"
+
   root "static#index"
 end
