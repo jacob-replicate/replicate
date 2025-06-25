@@ -1,6 +1,6 @@
 class ConversationsController < ApplicationController
   def create
-    @conversation = Conversation.create!(user: current_user)
+    @conversation = Conversation.create!(user: current_user || create_guest_user)
     redirect_to conversation_path(@conversation)
   end
 

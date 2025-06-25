@@ -24,7 +24,6 @@ ActiveRecord::Schema[7.1].define(version: 2025_06_25_045130) do
     t.string "email", default: "", null: false
     t.string "name", default: "", null: false
     t.string "encrypted_password", default: "", null: false
-    t.string "url_code"
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.integer "sign_in_count", default: 0, null: false
