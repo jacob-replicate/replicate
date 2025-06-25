@@ -33,5 +33,9 @@ module Advance
       authentication: :plain,
       enable_starttls_auto: true
     }
+
+    config.generators do |g|
+      g.orm :active_record, primary_key_type: :uuid
+    end
   end
 end

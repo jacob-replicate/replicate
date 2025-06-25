@@ -11,5 +11,7 @@ Rails.application.routes.draw do
   get "/terms", to: "static#terms"
   get "/privacy", to: "static#terms"
 
+  resources :conversations, only: [:create, :show]
+
   root "static#index"
 end

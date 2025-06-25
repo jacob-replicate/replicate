@@ -8,12 +8,12 @@
       before a random PR takes down production.
     </div>
 
-    <%= form_with url: '' do |f| %>
+    <%= form_for Conversation.new do |f| %>
       <div class="p-3 rounded-xl bg-gray-100">
         <div class="block text-gray-900 mb-2">
           What issue blindsided you recently?
         </div>
-        <%= f.text_area :description, class: 'block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 border border-gray-300 outline-1 -outline-offset-1 outline-indigo-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-1 focus:outline-indigo-600 sm:text-sm', rows: 3, placeholder: 'e.g., crashed database because forgot index', tabindex: 1  %>
+        <%= text_area_tag :description, "", class: 'block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 border border-gray-300 outline-1 -outline-offset-1 outline-indigo-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-1 focus:outline-indigo-600 sm:text-sm', rows: 3, placeholder: 'e.g., crashed database because forgot index', tabindex: 1  %>
         <div class="mt-2">
           <a href="#" class="inline-block mr-1 rounded-md px-3 py-1 text-sm text-zinc-700 shadow-xs bg-slate-200 hover:bg-slate-300 active:bg-slate-300">Bad Rollout</a>
           <a href="#" class="mr-1 rounded-md px-3 py-1 text-sm text-zinc-700 shadow-xs bg-slate-200 hover:bg-slate-300 active:bg-slate-300 hidden lg:inline-block">Missed Deadline</a>
@@ -23,7 +23,7 @@
         </div>
 
         <div class="flex items-center gap-2 mt-4">
-          <%= f.check_box :agree, class: 'rounded-lg border border-gray-300', tabindex: 2 %>
+          <%= check_box_tag :agree, class: 'rounded-lg border border-gray-300', tabindex: 2 %>
           <label for="agree" class="text-sm cursor-pointer">I accept the <a href="/terms" class="text-blue-500 hover:underline hover:underline-offset-8">Terms</a> and <a href="/privacy" class="text-blue-500 hover:underline hover:underline-offset-8">Privacy Policy</a></label>
         </div>
       </div>
