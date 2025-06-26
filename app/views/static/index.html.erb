@@ -3,9 +3,13 @@
     <div class="px-28 md:px-16 lg:px-28 xl:px-24 2xl:px-24 mb-6">
       <img class="w-full" src="/hero-left.jpg" />
     </div>
-    <div class="text-xl lg:text-2xl font-medium tracking-tight">Uncover your team’s blind spots</div>
-    <div class="mb-4 text-md tracking-tight" >
-      before a random PR takes down production.
+    <div class="text-xl font-medium">
+      <span class="hidden lg:inline-block">Fix your engineering team's blind spots.</span>
+      <span class="hidden lg:hidden md:inline-block">Fix your engineers' blind spots.</span>
+      <span class="inline-block md:hidden">Uncover your engineers' blind spots.</span>
+    </div>
+    <div class="mb-4 text-md" >
+      (before a random PR takes down production)
     </div>
 
     <%= form_for Conversation.new do |f| %>
@@ -13,7 +17,7 @@
         <div class="block text-gray-900 mb-2">
           What issue blindsided you recently?
         </div>
-        <%= text_area_tag :description, "", class: 'block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 border border-gray-300 outline-1 -outline-offset-1 outline-indigo-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-1 focus:outline-indigo-600 sm:text-sm', rows: 3, placeholder: 'e.g., crashed database because forgot index', tabindex: 1  %>
+        <%= text_area_tag :description, "", class: 'block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 border border-gray-300 outline-1 -outline-offset-1 outline-indigo-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-1 focus:outline-indigo-600 sm:text-sm', rows: 3, placeholder: 'e.g., crashed DB because forgot index', tabindex: 1  %>
         <div class="mt-2">
           <a href="#" class="inline-block mr-1 rounded-md px-3 py-1 text-sm text-zinc-700 shadow-xs bg-slate-200 hover:bg-slate-300 active:bg-slate-300">Bad Rollout</a>
           <a href="#" class="mr-1 rounded-md px-3 py-1 text-sm text-zinc-700 shadow-xs bg-slate-200 hover:bg-slate-300 active:bg-slate-300 hidden lg:inline-block">Missed Deadline</a>
@@ -47,25 +51,27 @@
   <div class="text-md leading-relaxed">
     <div class="mt-4 mb-4">
       <%= link_to 'replicate.info', 'https://replicate.info', class: "text-sky-700 hover:underline hover:underline-offset-4 font-medium", target: "_blank" %>
-      helps engineering teams fix knowledge gaps
+      helps engineering teams bridge knowledge gaps
       <span class="font-semibold">before</span>
       they derail your roadmap.
     </div>
     <div class="mb-4">
-      As a tech lead, there's always more that I want to teach my team, but never enough time. This platform digs into everyone's most critical blind spots, and delivers bite-sized resources every week to help them grow.
+      As a tech lead, there's always more that I want to teach my team, but never enough time. This platform gradually digs into everyone's unique blind spots, and delivers personalized resources every week to help them grow.
     </div>
     <div class="mb-4 md:hidden">
       <img src="/email-screenshot.jpg" class="w-full rounded-lg shadow-lg" />
     </div>
     <div class="mb-4">
-      <span class="font-semibold">No accounts to create. No dashboards to manage.</span> Conversations happen automatically over email. Your engineers click a few personalized links, learn something impactful, and get back to their sprint work.
+      <span class="font-semibold">No accounts to create. No dashboards to manage.</span> Conversations happen automatically over email. Your engineers check-in with a curated LLM, click a few links, learn something impactful, and get back to their sprint work.
     </div>
     <div class="mb-4">
       <span class="font-semibold">Managers get weekly reports</span> on team growth, morale trends, and risks that might justify more headcount.
     </div>
     <div>
-      It's like a Staff Engineer coaching your team, consistently surfacing high-impact growth opportunities. I've been hoping somebody would build this tool for years. LLM's finally made it possible. 😉
+      <span class="font-semibold">$30</span>/mo (USD) per user. I've worked at B2B startups for 15 years. You're in good hands. 😉
     </div>
+
+    <img src="/video-thumb.jpg" class="w-full mt-4 hidden" />
   </div>
 
   <div class="flex items-center gap-5 justify-end mt-6">
