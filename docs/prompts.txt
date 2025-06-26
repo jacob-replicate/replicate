@@ -5,3 +5,78 @@ Actions
 Conversations
 - manager_report
 - initial_check_in
+
+
+- create conversation
+- send initial messages
+
+class MessagesController
+  def create
+    SendMessageWorker.perform_async(@conversation.id, params[:message], current_user.id)
+    head :no_content
+  end
+end
+
+class Message
+  after_create :summarize_content
+  after_create :deliver, unless -> { web_based && system? }
+
+    def summarize_content
+      SummarizeMessageWorker.perform_async(self.id)
+    end
+
+    def deliver
+      case conversation.medium
+        when :email
+            # TODO: Send email
+        when :web
+          if user_id.present? # as system messages for web flow are streamed from SendMessageWorker
+              ActionCable.server.broadcast "conversation_#{self.conversation_id}", {
+                message: self.content,
+                user_id: self.user_id,
+                summary: self.summary
+              }
+          end
+      end
+    end
+
+    def system?
+      user_id.blank?
+    end
+end
+
+class SendMessageWorker
+  def perform(conversation_id, message, user_id)
+    conversation = Conversation.find_by(id: conversation.id)
+    return if conversation.blank?
+
+    message = conversation.messages.create!(
+      content: message,
+      state: :sent,
+      user: User.find_by(id: user_id)
+    )
+
+    SummarizeMessageWorker.perform_async(message.id)
+
+    if message.user.present?
+      response_prompt_code = Prompt.new(:fetch_relevant_response_prompt, input: { conversation: conversation, message: message.content }).execute
+
+      if response_prompt_code.present?
+        response = Prompt.new(response_prompt_code, input: { message: message.content }).execute
+        SendMessageWorker.perform_async(conversation.id, response)
+      end
+    end
+  end
+end
+
+class SummarizeMessageWorker
+  include Sidekiq::Worker
+
+  def perform(message_id)
+    message = Message.find_by(id: message_id)
+    summary = Prompt.new(:summarize, input: { message: message.content }).execute
+
+    # TODO: Offload to S3 instead of storing giant blocks of text in Postgres
+    message.update(summary: summary, state: :summarized)
+  end
+end

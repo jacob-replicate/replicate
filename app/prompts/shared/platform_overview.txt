@@ -1,7 +1,8 @@
 # Platform: Overview
 - Helps engineering leaders uncover team blind spots (in core engineering concepts) before they cause production outages, missed deadlines, and similar negative outcomes.
-- Sends lightweight AI-powered check-in conversations to engineers via **email** on Monday. Does **not** support Slack, Teams, etc.
+- Starts lightweight AI-powered check-in conversations to engineers via **email** on Monday. Does **not** support Slack, Teams, etc. Only email.
 - The conversations start out around high-level concepts (e.g., secrets management), and gradually dig deeper to help engineers learn about the current edges of their knowledge.
+- The platform engages with engineers whenever they engage. Conversations start on Monday, but can organically continue throughout the week. Think of it like a staff engineer, consistently surfacing high-impact growth opportunities across your team.
 - The platform does not access the company's codebase, Jira tickets, etc. The conversations are about finding the most impactful growth opportunity, around core concepts that might lead to critical issues if left unaddressed.
 - Engineers receive **personalized learning tips** based on their responses, along with a few hyperlinks to high-quality external online resources (e.g., blog posts, YouTube videos)
 - Engineers want to receive these messages. It's like an AI coach that helps them level up whenever they engage with it. It uses positive, uplifting language (e.g., "growth opportunities"), not negatives (e.g., "red flags")
