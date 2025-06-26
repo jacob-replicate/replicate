@@ -80,3 +80,25 @@ class SummarizeMessageWorker
     message.update(summary: summary, state: :summarized)
   end
 end
+
+submissions = [
+  "we missed our sprint goal again and no one seems to care",
+  "the new hire is super sharp but struggling with our monolith",
+  "CI is randomly failing tests that pass locally",
+  "the team is shipping fast but morale feels low",
+  "standups have become status theater and nobody is listening",
+  "our cloud costs jumped 3x after a new deployment pipeline",
+  "half our senior devs are burned out and taking time off",
+  "prod broke again because someone bypassed the feature flag",
+  "handoffs between frontend and backend keep dropping context",
+  "our design system is slowing everyone down but no one owns it",
+  "product keeps changing priorities mid-sprint",
+  "infra team is fighting with app team over who owns what",
+  "we onboarded 10 engineers and now everything feels chaotic",
+  "retros are just venting sessions with no follow-through",
+  "not sure what the problem is but things just feel off lately"
+]
+
+submissions.each_with_index do |input, i|
+  puts "#{i + 1}. #{input}\n#{Prompt.new(:fetch_relevant_links, input: { incident: input }).execute}"
+end

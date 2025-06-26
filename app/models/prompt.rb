@@ -2,10 +2,11 @@
 
 class Prompt
   def initialize(prompt_code, input: nil)
-    @prompt_code = prompt_code
+    @prompt_code = prompt_code.to_s.gsub(BANNED_TERMS_REGEX, "")
     @input = input
   end
 
+  # TODO: Add retry logic
   def execute
     return nil unless @prompt_code.present?
 
@@ -36,6 +37,12 @@ class Prompt
   end
 
   private
+
+  def sanitize(prompt_code)
+    BANNED_TERMS.each do |term|
+      prompt_code.gsub!(term, "")
+    end
+  end
 
   def client
     OpenAI::Client.new(access_token: ENV["OPENAI_API_KEY"])
