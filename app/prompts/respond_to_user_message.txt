@@ -1,13 +1,10 @@
 [User Message]
 {{INPUT_MESSAGE}}
 
+{{ASSISTANT_PERSONA}}
+
+{{PLATFORM_OVERVIEW}}
+
 [Context]
 The following documentation may help answer the user's question:
-
 {{RETRIEVED_CONTEXT}}
-
-[Instructions]
-- Respond clearly and concisely.
-- If possible, reference specific details from the context above.
-- If the context is missing key info, answer based on your best general understanding of replicate.info.
-- If the user’s message is vague, ask a helpful clarifying question.

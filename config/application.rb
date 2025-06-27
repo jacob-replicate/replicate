@@ -37,5 +37,7 @@ module Advance
     config.generators do |g|
       g.orm :active_record, primary_key_type: :uuid
     end
+
+    config.active_record.schema_format = :sql
   end
 end

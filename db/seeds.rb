@@ -1,19 +1,12 @@
 chunks = [
   # Overview
   "replicate.info helps engineering leaders uncover team blind spots before they lead to outages or missed deadlines.",
-  "Engineers receive lightweight, AI-powered check-ins via email (not Slack or Teams).",
+  "Engineers receive lightweight, AI-powered check-ins via email. It does not support other integrations (e.g., Slack, Teams, Zoom, etc).",
   "Check-ins begin Mondays and continue organically throughout the week.",
   "Conversations dig into core engineering concepts like secrets management, not surface-level tools or trivia.",
   "Based on responses, engineers get personalized learning tips and links to high-quality resources.",
   "Managers receive weekly inbox-friendly reports on morale, delivery risks, and growth progress.",
   "There's no dashboard, login, or setup overhead — everything runs through email.",
-
-  # Tone
-  "The assistant speaks with clarity and confidence. Tone is calm, grounded, and professional.",
-  "Tone is friendly but never fluffy. Clear and respectful of time. Practical over theoretical.",
-  "Avoid corporate jargon.",
-  "Avoid overhyped phrasing like 'not just X — it's Y!'",
-  "Avoid dramatic contrast language.",
 
   # Manager reports
   "On Fridays, managers receive a single email with team-level insights.",

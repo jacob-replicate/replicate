@@ -19,6 +19,7 @@ gem "stripe", "9.1.0"
 gem 'pry', '~> 0.14.2'
 gem "rack-attack"
 gem 'awesome_print'
+gem 'pgvector'
 
 group :development, :test do
   gem "dotenv"

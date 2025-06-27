@@ -1,24 +1,22 @@
 class SendMessageWorker
   include Sidekiq::Worker
 
-  def perform(conversation_id, message, user_id)
-    conversation = Conversation.find_by(id: conversation.id)
+  def perform(conversation_id, message, user_id = nil)
+    conversation = Conversation.find_by(id: conversation_id)
     return if conversation.blank?
 
     message = conversation.messages.create!(
       content: message,
-      state: :sent,
       user: User.find_by(id: user_id)
     )
 
-    SummarizeMessageWorker.perform_async(message.id)
-
     if message.user.present?
-      response_prompt_code = Prompt.new(:fetch_relevant_response_prompt, input: { conversation: conversation, message: message.content }).execute
+      response = Prompt.new(:respond_to_user_message, input: { message: message.content }, history: conversation.message_history).execute
 
-      if response_prompt_code.present?
-        response = Prompt.new(response_prompt_code, input: { message: message.content }).execute
+      if response.present?
         SendMessageWorker.perform_async(conversation.id, response)
+      else
+        raise
       end
     end
   end
