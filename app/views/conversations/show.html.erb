@@ -1,42 +1,94 @@
+<script src="/marked.min.js"></script>
+
 <div class="flex-1 overflow-hidden px-4 pb-4 xl:px-40 2xl:px-80">
   <div class="flex flex-col h-full">
 
-    <div class="flex-1 overflow-y-auto border border-gray-200 mb-4 p-4 rounded" id="conversation">
+    <!-- Chat history -->
+    <div id="conversation"
+         class="flex-1 overflow-y-auto border border-gray-200 mb-4 p-4 rounded space-y-4">
       <% @conversation.messages.each do |m| %>
-        <div><%= m.user.present? ? "You" : "AI" %>: <%= m.content %></div>
+        <div class="flex <%= m.user.present? ? 'justify-end' : 'justify-start' %>">
+          <div class="<%= m.user.present? ? 'bg-slate-800 text-white'
+                            : 'bg-gray-100 text-gray-900' %>
+                      rounded-2xl px-4 py-3 max-w-xl w-fit shadow-md">
+            <div class="prose prose-sm break-words"><%= markdown(m.content) %></div>
+          </div>
+        </div>
       <% end %>
     </div>
 
+    <!-- Input area -->
     <div class="flex items-center gap-2">
-      <textarea
-        id="message-input"
-        placeholder="Type a message..."
-        class="w-full border border-gray-200 rounded-lg p-2 resize-none"
-        rows="1"
-        oninput="this.style.height = 'auto'; this.style.height = this.scrollHeight + 'px';"
-      ></textarea>
-      <button id="send-button" class="bg-slate-500 text-white px-4 py-2 rounded-lg hover:bg-slate-600 ml-auto h-full">
+      <textarea id="message-input"
+                placeholder="Type a message…"
+                class="w-full border border-gray-200 rounded-lg p-2 resize-none
+                       disabled:opacity-50 disabled:cursor-not-allowed"
+                rows="1"
+                oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px';"></textarea>
+      <button id="send-button"
+              class="bg-slate-500 text-white px-4 py-2 rounded-lg hover:bg-slate-600
+                     ml-auto h-full disabled:opacity-50 disabled:cursor-not-allowed">
         Send
       </button>
     </div>
+
   </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
 <script>
   document.addEventListener("DOMContentLoaded", () => {
-    const conversationId = "<%= @conversation.id %>";
-    const textarea = document.getElementById("message-input");
-    const sendButton = document.getElementById("send-button");
+    const conversationId   = "<%= @conversation.id %>";
+    const textarea         = document.getElementById("message-input");
+    const sendButton       = document.getElementById("send-button");
+    const conversationEl   = document.getElementById("conversation");
+
+    /* ========== autoscroll helpers ========== */
+    const SCROLL_THRESHOLD = 120; // px from bottom considered “at bottom”
+    let   userManuallyScrolled = false;
+
+    function atBottom() {
+      return (
+        conversationEl.scrollHeight -
+        conversationEl.scrollTop -
+        conversationEl.clientHeight
+      ) <= SCROLL_THRESHOLD;
+    }
+
+    function scrollToBottomIfWanted() {
+      if (atBottom()) {
+        conversationEl.scrollTop = conversationEl.scrollHeight;
+      }
+    }
+
+    conversationEl.addEventListener("scroll", () => {
+      userManuallyScrolled = !atBottom();
+    });
+
+    /* ========== input / send helpers ========== */
+    let aiIsTyping         = false;
+    let streamingMessageEl = null;
+
+    function setInputEnabled(enabled) {
+      textarea.disabled = !enabled;
+      sendButton.disabled = !enabled;
+      sendButton.classList.toggle("opacity-50", !enabled);
+      sendButton.classList.toggle("cursor-not-allowed", !enabled);
+    }
 
     function sendMessage() {
       const message = textarea.value.trim();
-      if (!message) return;
+      if (!message || aiIsTyping) return;
+
+      aiIsTyping = true;
+      setInputEnabled(false);
 
       fetch("/messages", {
-        method: "POST",
+        method:  "POST",
         headers: {
-          "Content-Type": "application/json",
-          "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').content
+          "Content-Type":  "application/json",
+          "X-CSRF-Token":  document.querySelector('meta[name="csrf-token"]').content
         },
         body: JSON.stringify({ conversation_id: conversationId, content: message })
       });
@@ -47,20 +99,78 @@
     }
 
     sendButton.addEventListener("click", sendMessage);
-
-    textarea.addEventListener("keydown", (e) => {
+    textarea.addEventListener("keydown", e => {
       if (e.key === "Enter" && !e.shiftKey) {
         e.preventDefault();
         sendMessage();
       }
     });
 
-    window.consumer.subscriptions.create({ channel: "ConversationChannel", id: conversationId }, {
-      received(data) {
-        const el = document.createElement("div");
-        el.textContent = `${data.user_submitted ? "You" : "AI"}: ${data.message}`;
-        document.getElementById("conversation")?.appendChild(el);
+    /* ========== ActionCable subscription ========== */
+    window.consumer.subscriptions.create(
+      { channel: "ConversationChannel", id: conversationId },
+      {
+        received(data) {
+          const isUser  = data.user_submitted;
+          const isStream = data.type === "stream";
+          const isDone   = data.type === "done";
+
+          if (isStream && !aiIsTyping) {
+            aiIsTyping = true;
+            setInputEnabled(false);
+          }
+
+          /* ---- stream chunk ---- */
+          if (isStream) {
+            if (!streamingMessageEl) {
+              const wrapper = document.createElement("div");
+              wrapper.className = "flex justify-start";
+
+              streamingMessageEl = document.createElement("div");
+              streamingMessageEl.className =
+                "bg-gray-100 text-gray-900 rounded-2xl px-4 py-3 max-w-xl w-fit " +
+                "shadow-md prose prose-sm break-words";
+              streamingMessageEl.markdownBuffer = "";
+
+              wrapper.appendChild(streamingMessageEl);
+              conversationEl.appendChild(wrapper);
+            }
+
+            streamingMessageEl.markdownBuffer += data.message;
+            streamingMessageEl.innerHTML =
+              marked.parse(streamingMessageEl.markdownBuffer);
+            if (!userManuallyScrolled) scrollToBottomIfWanted();
+            return;
+          }
+
+          /* ---- stream finished ---- */
+          if (isDone) {
+            streamingMessageEl   = null;
+            aiIsTyping           = false;
+            userManuallyScrolled = false; // re-enable autoscroll for next reply
+            setInputEnabled(true);
+            scrollToBottomIfWanted();
+            return;
+          }
+
+          /* ---- static (non-stream) message ---- */
+          if (data.message) {
+            const wrapper = document.createElement("div");
+            wrapper.className = `flex ${isUser ? "justify-end" : "justify-start"}`;
+
+            const bubble   = document.createElement("div");
+            bubble.className =
+              `${isUser ? "bg-slate-800 text-white"
+                : "bg-gray-100 text-gray-900"} ` +
+              "rounded-2xl px-4 py-3 max-w-xl w-fit shadow-md prose prose-sm break-words";
+            bubble.innerHTML = marked.parse(data.message);
+
+            wrapper.appendChild(bubble);
+            conversationEl.appendChild(wrapper);
+            if (!userManuallyScrolled) scrollToBottomIfWanted();
+          }
+        }
       }
-    });
+    );
   });
 </script>

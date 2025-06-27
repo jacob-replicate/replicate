@@ -2,10 +2,7 @@
 
 [Scenario]
 - On the product landing page, there is a question that says "What issue blindsided you recently?"
-- An engineering manager clicked an ad, and just submitted an example incident.
-
-[User Submission: Raw Input (prioritize this)]
-- {{INPUT_INCIDENT}}
+- An engineering manager clicked an ad, and just submitted an example incident (in the previous attached "user" message).
 
 [User Submission: Guidance for Assistant]
 - If the user entered unclear and/or malicious input, tell them know you didn't quite understand, and instead talk about an example where a team crashed their PostgreSQL database due to not shipping an index that was badly needed.
