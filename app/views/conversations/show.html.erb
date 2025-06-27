@@ -1,10 +1,9 @@
 <div class="flex-1 overflow-hidden px-4 pb-4 xl:px-40 2xl:px-80">
   <div class="flex flex-col h-full">
 
-    <div class="flex-1 overflow-y-auto border border-gray-200 mb-4 p-4 rounded">
-      <% 100.times do %>
-        <div class="mt-2 first:mt-0">Message 1</div>
-        <div class="mt-2">Message 2</div>
+    <div class="flex-1 overflow-y-auto border border-gray-200 mb-4 p-4 rounded" id="conversation">
+      <% @conversation.messages.each do |m| %>
+        <div><%= m.user.present? ? "You" : "AI" %>: <%= m.content %></div>
       <% end %>
     </div>
 
@@ -14,3 +13,17 @@
     </div>
   </div>
 </div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    window.consumer.subscriptions.create({ channel: "ConversationChannel", id: "<%= @conversation.id %>" },
+      {
+        received(data) {
+          const el = document.createElement("div");
+          el.textContent = `${data.user_submitted ? "You" : "AI"}: ${data.message}`;
+          document.getElementById("conversation")?.appendChild(el);
+        }
+      }
+    );
+  });
+</script>

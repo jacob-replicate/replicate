@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@rails/actioncable": "^8.0.200",
     "autoprefixer": "^10.4.16",
     "esbuild": "^0.19.5",
     "postcss": "^8.4.31",

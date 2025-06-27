@@ -10,6 +10,8 @@ class SendMessageWorker
       user: User.find_by(id: user_id)
     )
 
+    ConversationChannel.broadcast_to(conversation, { message: message.content, user_submitted: message.user.present? })
+
     if message.user.present?
       response = Prompt.new(:respond_to_user_message, input: { message: message.content }, history: conversation.message_history).execute
 
