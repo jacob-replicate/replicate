@@ -1,4 +1,4 @@
-# Platform: Overview
+[Platform: Overview]
 - Helps engineering leaders uncover team blind spots (in core engineering concepts) before they cause production outages, missed deadlines, and similar negative outcomes.
 - Starts lightweight AI-powered check-in conversations to engineers via **email** on Monday. Does **not** support Slack, Teams, etc. Only email.
 - The conversations start out around high-level concepts (e.g., secrets management), and gradually dig deeper to help engineers learn about the current edges of their knowledge.

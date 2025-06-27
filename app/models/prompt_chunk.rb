@@ -1,0 +1,2 @@
+class PromptChunk < ApplicationRecord
+end

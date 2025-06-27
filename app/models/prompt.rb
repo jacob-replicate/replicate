@@ -1,21 +1,20 @@
-# Usage: Prompt.new(:landing_page_incident, input: { incident: "We crashed PostgreSQL" }).call
-
 class Prompt
-  def initialize(prompt_code, input: nil)
+  def initialize(prompt_code, input: nil, history: [])
     @prompt_code = prompt_code.to_s.gsub(BANNED_TERMS_REGEX, "")
-    @input = input
+    @input = input || {}
+    @history = Array(history).map { |m| { role: m[:role], content: m[:content].to_s } }
   end
 
-  # TODO: Add retry logic
   def execute
     return nil unless @prompt_code.present?
 
     response = client.chat(
       parameters: {
         model: "gpt-4o",
-        messages: [{ role: "user", content: instructions}],
+        messages: messages,
         temperature: 0.7,
-      })
+      }
+    )
 
     response.dig("choices", 0, "message", "content")
   end
@@ -26,7 +25,7 @@ class Prompt
     client.chat(
       parameters: {
         model: "gpt-4o",
-        messages: [{ role: "user", content: instructions }],
+        messages: messages,
         temperature: 0.7,
         stream: proc do |chunk|
           message = chunk.dig("choices", 0, "delta", "content")
@@ -38,29 +37,36 @@ class Prompt
 
   private
 
-  def sanitize(prompt_code)
-    BANNED_TERMS.each do |term|
-      prompt_code.gsub!(term, "")
-    end
-  end
-
   def client
     OpenAI::Client.new(access_token: ENV["OPENAI_API_KEY"])
   end
 
+  def messages
+    filtered_history = @history.select { |m| m[:content].present? }
+    filtered_history + [{ role: "system", content: instructions }]
+  end
+
   def instructions
-    valid_instructions_names = Dir.glob(Rails.root.join('app', 'prompts', '*.txt')).map { |x| x.split("/").last.gsub(".txt", "") }
-    return nil unless valid_instructions_names.include?(@prompt_code.to_s)
+    valid_names = Dir.glob(Rails.root.join('app', 'prompts', '*.txt')).map { |x| File.basename(x, '.txt') }
+    return nil unless valid_names.include?(@prompt_code)
 
     instructions = File.read(Rails.root.join('app', 'prompts', "#{@prompt_code}.txt"))
 
-    shared_instructionss = Dir.glob(Rails.root.join('app', 'prompts', 'shared', '*.txt')).each do |file|
-      file_name = File.basename(file, '.txt')
-      instructions.gsub!("{{#{file_name.upcase}}}", File.read(file))
+    # Inject shared sections (e.g. PLATFORM_OVERVIEW)
+    Dir.glob(Rails.root.join('app', 'prompts', 'shared', '*.txt')).each do |file|
+      name = File.basename(file, '.txt').upcase
+      instructions.gsub!("{{#{name}}}", File.read(file))
     end
 
-    Hash(@input).each do |input_key, input_value|
-      instructions.gsub!("{{INPUT_#{input_key.upcase}}}", input_value)
+    # Inject user-provided variables
+    Hash(@input).each do |key, val|
+      instructions.gsub!("{{INPUT_#{key.upcase}}}", val.to_s)
+    end
+
+    # Inject relevant context only if {{RETRIEVED_CONTEXT}} exists
+    if instructions.include?("{{RETRIEVED_CONTEXT}}")
+      query_text = @input[:message] || @input[:incident] || ""
+      instructions.gsub!("{{RETRIEVED_CONTEXT}}", Retriever.find_relevant_chunks(query_text).join("\n\n"))
     end
 
     instructions
