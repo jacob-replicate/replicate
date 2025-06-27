@@ -8,22 +8,59 @@
     </div>
 
     <div class="flex items-center gap-2">
-      <textarea placeholder="Type a message..." class="w-full border border-gray-200 rounded-lg p-2 resize-none" rows="1" oninput="this.style.height = 'auto'; this.style.height = this.scrollHeight + 'px';"></textarea>
-      <button class="bg-slate-500 text-white px-4 py-2 rounded-lg hover:bg-slate-600 ml-auto h-full">Send</button>
+      <textarea
+        id="message-input"
+        placeholder="Type a message..."
+        class="w-full border border-gray-200 rounded-lg p-2 resize-none"
+        rows="1"
+        oninput="this.style.height = 'auto'; this.style.height = this.scrollHeight + 'px';"
+      ></textarea>
+      <button id="send-button" class="bg-slate-500 text-white px-4 py-2 rounded-lg hover:bg-slate-600 ml-auto h-full">
+        Send
+      </button>
     </div>
   </div>
 </div>
 
 <script>
   document.addEventListener("DOMContentLoaded", () => {
-    window.consumer.subscriptions.create({ channel: "ConversationChannel", id: "<%= @conversation.id %>" },
-      {
-        received(data) {
-          const el = document.createElement("div");
-          el.textContent = `${data.user_submitted ? "You" : "AI"}: ${data.message}`;
-          document.getElementById("conversation")?.appendChild(el);
-        }
+    const conversationId = "<%= @conversation.id %>";
+    const textarea = document.getElementById("message-input");
+    const sendButton = document.getElementById("send-button");
+
+    function sendMessage() {
+      const message = textarea.value.trim();
+      if (!message) return;
+
+      fetch("/messages", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').content
+        },
+        body: JSON.stringify({ conversation_id: conversationId, content: message })
+      });
+
+      textarea.value = "";
+      textarea.style.height = "auto";
+      textarea.focus();
+    }
+
+    sendButton.addEventListener("click", sendMessage);
+
+    textarea.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
       }
-    );
+    });
+
+    window.consumer.subscriptions.create({ channel: "ConversationChannel", id: conversationId }, {
+      received(data) {
+        const el = document.createElement("div");
+        el.textContent = `${data.user_submitted ? "You" : "AI"}: ${data.message}`;
+        document.getElementById("conversation")?.appendChild(el);
+      }
+    });
   });
 </script>

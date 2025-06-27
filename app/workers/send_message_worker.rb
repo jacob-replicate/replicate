@@ -10,16 +10,13 @@ class SendMessageWorker
       user: User.find_by(id: user_id)
     )
 
-    ConversationChannel.broadcast_to(conversation, { message: message.content, user_submitted: message.user.present? })
+    unless conversation.messages.count == 1
+      ConversationChannel.broadcast_to(conversation, { message: message.content, user_submitted: message.user.present? })
+    end
 
     if message.user.present?
-      response = Prompt.new(:respond_to_user_message, input: { message: message.content }, history: conversation.message_history).execute
-
-      if response.present?
-        SendMessageWorker.perform_async(conversation.id, response)
-      else
-        raise
-      end
+      response_prompt_code = conversation.messages.count == 1 ? "landing_page_incident" : "respond_to_user_message"
+      ReplyToMessageWorker.perform_async(message.id, response_prompt_code)
     end
   end
 end

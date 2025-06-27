@@ -11,23 +11,28 @@
       (before a random PR takes down production)
     </div>
 
-    <%= form_for Conversation.new do |f| %>
+    <%= form_for Conversation.new, url: conversations_path, html: { id: "demo-form" } do |f| %>
       <div class="p-3 rounded-xl bg-gray-100">
         <div class="block text-gray-900 mb-2">
           What issue blindsided you recently?
         </div>
-        <%= text_area_tag :initial_message, "", class: 'block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 border border-gray-300 outline-1 -outline-offset-1 outline-indigo-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-1 focus:outline-indigo-600 sm:text-sm', rows: 3, placeholder: 'e.g., crashed DB because forgot index', tabindex: 1  %>
-        <div class="mt-2">
-          <a href="#" class="inline-block mr-1 rounded-md px-3 py-1 text-sm text-zinc-700 shadow-xs bg-slate-200 hover:bg-slate-300 active:bg-slate-300">Bad Rollout</a>
-          <a href="#" class="mr-1 rounded-md px-3 py-1 text-sm text-zinc-700 shadow-xs bg-slate-200 hover:bg-slate-300 active:bg-slate-300 hidden lg:inline-block">Missed Deadline</a>
-          <a href="#" class="mr-1 rounded-md px-3 py-1 text-sm text-zinc-700 shadow-xs bg-slate-200 hover:bg-slate-300 active:bg-slate-300 hidden lg:inline-block">Key Employee Quit</a>
-          <a href="#" class="inline-block mr-1 rounded-md px-3 py-1 text-sm text-zinc-700 shadow-xs bg-slate-200 hover:bg-slate-300 active:bg-slate-300 lg:hidden">Broke SLA</a>
-          <a href="#" class="inline-block mr-1 rounded-md px-3 py-1 text-sm text-zinc-700 shadow-xs bg-slate-200 hover:bg-slate-300 active:bg-slate-300 lg:hidden">Key Hire Quit</a>
+
+        <%= text_area_tag :initial_message, "", class: 'block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 border border-gray-300 outline-1 -outline-offset-1 outline-indigo-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-1 focus:outline-indigo-600 sm:text-sm', rows: 3, placeholder: 'e.g., crashed DB because forgot index', tabindex: 1 %>
+
+        <div class="mt-2" id="example-buttons">
+          <a href="#" data-example="shipped without flag, took down prod" class="example-btn inline-block mr-1 rounded-md px-3 py-1 text-sm text-zinc-700 shadow-xs bg-slate-200 hover:bg-slate-300 active:bg-slate-300">Bad Rollout</a>
+          <a href="#" data-example="sprint overran, had to cut scope" class="example-btn mr-1 rounded-md px-3 py-1 text-sm text-zinc-700 shadow-xs bg-slate-200 hover:bg-slate-300 active:bg-slate-300 hidden lg:inline-block">Missed Deadline</a>
+          <a href="#" data-example="senior dev quit, no handoff" class="example-btn mr-1 rounded-md px-3 py-1 text-sm text-zinc-700 shadow-xs bg-slate-200 hover:bg-slate-300 active:bg-slate-300 hidden lg:inline-block">Key Employee Quit</a>
+          <a href="#" data-example="prod downtime broke SLA" class="example-btn inline-block mr-1 rounded-md px-3 py-1 text-sm text-zinc-700 shadow-xs bg-slate-200 hover:bg-slate-300 active:bg-slate-300 lg:hidden">Broke SLA</a>
+          <a href="#" data-example="key hire ghosted after signing" class="example-btn inline-block mr-1 rounded-md px-3 py-1 text-sm text-zinc-700 shadow-xs bg-slate-200 hover:bg-slate-300 active:bg-slate-300 lg:hidden">Key Hire Quit</a>
         </div>
 
         <div class="flex items-center gap-2 mt-4">
-          <%= check_box_tag :agree, class: 'rounded-lg border border-gray-300', tabindex: 2 %>
-          <label for="agree" class="text-sm cursor-pointer">I accept the <a href="/terms" class="text-blue-500 hover:underline hover:underline-offset-8">Terms</a> and <a href="/privacy" class="text-blue-500 hover:underline hover:underline-offset-8">Privacy Policy</a></label>
+          <%= check_box_tag :agree, "1", false, class: 'rounded-lg border border-gray-300', id: "agree", tabindex: 2 %>
+          <label for="agree" class="text-sm cursor-pointer">
+            I accept the <a href="/terms" class="text-blue-500 hover:underline hover:underline-offset-8">Terms</a> and
+            <a href="/privacy" class="text-blue-500 hover:underline hover:underline-offset-8">Privacy Policy</a>
+          </label>
         </div>
       </div>
 
@@ -49,9 +54,7 @@
   <div class="text-md leading-relaxed">
     <div class="mt-4 mb-4">
       <%= link_to 'replicate.info', 'https://replicate.info', class: "text-sky-700 hover:underline hover:underline-offset-4 font-medium", target: "_blank" %>
-      helps engineering teams bridge knowledge gaps
-      <span class="font-semibold">before</span>
-      they derail your roadmap.
+      helps engineering teams bridge knowledge gaps <span class="font-semibold">before</span> they derail your roadmap.
     </div>
     <div class="mb-4">
       As a tech lead, there's always more that I want to teach my team, but never enough time. This platform gradually digs into everyone's unique blind spots, and delivers personalized resources every week to help them grow.
@@ -101,3 +104,30 @@
     </div>
   </div>
 </div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const form = document.getElementById("demo-form");
+    const agree = document.getElementById("agree");
+
+    form.addEventListener("submit", (e) => {
+      if (!agree.checked) {
+        e.preventDefault();
+        alert("You must agree to the Terms and Privacy Policy.");
+      }
+    });
+
+    const exampleButtons = document.querySelectorAll(".example-btn");
+    const textarea = document.querySelector("textarea[name='initial_message']");
+    const exampleContainer = document.getElementById("example-buttons");
+
+    exampleButtons.forEach((btn) => {
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        textarea.value = btn.dataset.example;
+        textarea.focus();
+        exampleContainer.remove(); // removes the entire div block
+      });
+    });
+  });
+</script>

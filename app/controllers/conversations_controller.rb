@@ -3,7 +3,7 @@ class ConversationsController < ApplicationController
     user = current_user || create_guest_user
     @conversation = Conversation.create!(user: user)
 
-    SendMessageWorker.perform_async(@conversation.id, params[:initial_message], user.id)
+    SendMessageWorker.new.perform(@conversation.id, params[:initial_message], user.id)
 
     redirect_to conversation_path(@conversation)
   end
