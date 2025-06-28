@@ -6,6 +6,7 @@
 - Improve the design (e.g., bigger text)
 - Don't use the explicit phrase "Call to Action"
 - Remove the hardcoded database indexing callout in the landing page incident prompt. It shows up in every report.
+- Mobile header links
 
 
 
