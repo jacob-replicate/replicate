@@ -27,7 +27,7 @@
           <a href="#" data-example="key hire ghosted after signing" class="example-btn inline-block mr-1 rounded-md px-3 py-1 text-sm text-zinc-700 shadow-xs bg-slate-200 hover:bg-slate-300 active:bg-slate-300 lg:hidden">Key Hire Quit</a>
         </div>
 
-        <div class="flex items-center gap-2 mt-4">
+        <div id="terms-container" class="flex items-center gap-2 mt-4">
           <%= check_box_tag :agree, "1", false, class: 'rounded-lg border border-gray-300', id: "agree", tabindex: 2 %>
           <label for="agree" class="text-sm cursor-pointer">
             I accept the <a href="/terms" class="text-blue-500 hover:underline hover:underline-offset-8">Terms</a> and
@@ -127,6 +127,10 @@
         textarea.value = btn.dataset.example;
         textarea.focus();
         exampleContainer.remove(); // removes the entire div block
+        agree.checked = true; // Automatically check the agree box
+        termsContainer = document.getElementById("terms-container");
+        termsContainer.style.display = "none";
+        form.submit(); // Submit the form immediately
       });
     });
   });
