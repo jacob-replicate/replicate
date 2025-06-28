@@ -5,7 +5,11 @@ class ConversationsController < ApplicationController
 
     SendMessageWorker.new.perform(@conversation.id, "**What issue blindsided you reecently?**\n#{params[:initial_message]}", user.id)
 
-    redirect_to conversation_path(@conversation)
+    if params[:agree].present?
+      redirect_to conversation_path(@conversation)
+    else
+      redirect_to conversation_path(@conversation, require_tos: true)
+    end
   end
 
   def show

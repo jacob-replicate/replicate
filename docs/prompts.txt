@@ -7,6 +7,13 @@
 - Don't use the explicit phrase "Call to Action"
 - Remove the hardcoded database indexing callout in the landing page incident prompt. It shows up in every report.
 - Mobile header links
+- Weird border on conversation input box - left side gets cut off
+
+
+Docs:
+- Security doc
+- Features doc
+- Set up email
 
 
 
