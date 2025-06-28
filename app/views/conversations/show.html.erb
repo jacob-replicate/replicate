@@ -4,14 +4,11 @@
   <div class="flex flex-col h-full">
 
     <!-- Chat history -->
-    <div id="conversation"
-         class="flex-1 overflow-y-auto border border-gray-200 mb-4 p-4 rounded space-y-4">
+    <div id="conversation" class="flex-1 overflow-y-auto border border-gray-200 mb-4 p-4 rounded-lg space-y-4">
       <% @conversation.messages.each do |m| %>
         <div class="flex <%= m.user.present? ? 'justify-end' : 'justify-start' %>">
-          <div class="<%= m.user.present? ? 'bg-slate-800 text-white'
-                            : 'bg-gray-100 text-gray-900' %>
-                      rounded-2xl px-4 py-3 max-w-xl w-fit shadow-md">
-            <div class="prose prose-sm break-words"><%= markdown(m.content) %></div>
+          <div class="<%= m.user.present? ? 'bg-gray-100 text-white' : 'bg-gray-100 text-gray-900' %> rounded-2xl px-4 py-3 max-w-2xl w-fit shadow">
+            <div class="prose break-words"><%= markdown(m.content) %></div>
           </div>
         </div>
       <% end %>
@@ -129,7 +126,7 @@
               streamingMessageEl = document.createElement("div");
               streamingMessageEl.className =
                 "bg-gray-100 text-gray-900 rounded-2xl px-4 py-3 max-w-xl w-fit " +
-                "shadow-md prose prose-sm break-words";
+                "shadow-md prose break-words";
               streamingMessageEl.markdownBuffer = "";
 
               wrapper.appendChild(streamingMessageEl);
@@ -159,10 +156,7 @@
             wrapper.className = `flex ${isUser ? "justify-end" : "justify-start"}`;
 
             const bubble   = document.createElement("div");
-            bubble.className =
-              `${isUser ? "bg-slate-800 text-white"
-                : "bg-gray-100 text-gray-900"} ` +
-              "rounded-2xl px-4 py-3 max-w-xl w-fit shadow-md prose prose-sm break-words";
+            bubble.className = "bg-gray-100 rounded-2xl px-4 py-3 max-w-2xl w-fit shadow prose prose-sm break-words";
             bubble.innerHTML = marked.parse(data.message);
 
             wrapper.appendChild(bubble);

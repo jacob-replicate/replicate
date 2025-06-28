@@ -15,8 +15,7 @@ class SendMessageWorker
     end
 
     if message.user.present?
-      response_prompt_code = conversation.messages.count == 1 ? "landing_page_incident" : "respond_to_user_message"
-      ReplyToMessageWorker.perform_async(message.id, response_prompt_code)
+      ReplyToMessageWorker.perform_async(message.id)
     end
   end
 end

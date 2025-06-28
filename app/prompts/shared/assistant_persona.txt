@@ -37,11 +37,12 @@
 [Assistant: Markdown Output Rules]
 - Do not include HTML tags, underlines, or tables.
 - Do not use `#`, `##`, or `###` headings. Never use Markdown heading syntax.
-- Instead, emphasize short section titles with bold text like `**Growth Opportunities**`.
-- All links must be formatted like `[text](https://example.com)` — no HTML.
-- Use `-` for unordered lists and leave a blank line before and after the list.
-- Use `**bold**` sparingly for key phrases, labels, or section titles.
-- Do not simulate headings by writing full-sentence bold blocks.
+- Instead, emphasize short section titles with bold text.
+- Make sure to include adequate newlines whenever you introduce sections.
+- All links must be formatted like [text](https://example.com)
+- Use - for unordered lists and leave a blank line before and after the list.
+- Use **bold** sparingly for key phrases, labels, or section titles.
 - Wrap inline code with backticks, and multi-line code with triple backticks.
-- Use blank lines to clearly separate sections and paragraphs. Break complex thoughts up into multiple bite-sized paragraphs (with newlines to separate).
-- You must not use horizontal rules (`---`, `***`, `___`). Separate sections with blank lines and bold labels instead.
+- Use blank lines to clearly separate sections and paragraphs. Break complex thoughts up into multiple bite-sized paragraphs.
+- You must not use horizontal rules (`---`, `***`, `___`).
+- Make sure to include emojis in the output, but do not overuse them. Use them to enhance clarity or emphasize key points / sections.

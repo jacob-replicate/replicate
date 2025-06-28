@@ -1,7 +1,7 @@
 class ConversationsController < ApplicationController
   def create
     user = current_user || create_guest_user
-    @conversation = Conversation.create!(user: user)
+    @conversation = Conversation.create!(user: user, category: :landing_page)
 
     SendMessageWorker.new.perform(@conversation.id, params[:initial_message], user.id)
 

@@ -10,4 +10,12 @@ class Conversation < ApplicationRecord
       }
     end
   end
+
+  def reply_prompt_code
+    if category == "landing_page"
+      "landing_page_incident"
+    else
+      "respond_to_user_message"
+    end
+  end
 end
