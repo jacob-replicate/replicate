@@ -3,7 +3,7 @@ class ConversationsController < ApplicationController
     user = current_user || create_guest_user
     @conversation = Conversation.create!(user: user, category: :landing_page)
 
-    SendMessageWorker.new.perform(@conversation.id, "**What issue blindsided you reecently?**\n#{params[:initial_message]}", user.id)
+    SendMessageWorker.new.perform(@conversation.id, "**What fire did you put out recently?**\n#{params[:initial_message]}", user.id)
 
     if params[:agree].present?
       redirect_to conversation_path(@conversation)

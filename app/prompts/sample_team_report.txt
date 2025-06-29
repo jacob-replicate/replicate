@@ -1,0 +1,7 @@
+- Make sure to give a glimpse into what the conversation might have looked like from the engineer's perspective when we uncovered this blind spot.
+– Make sure to show how this might have surfaced in an example team report (for managers) about a fictional engineer's recent check-in's.
+- Highlight 2 hyperlinks you sent to the fictional engineer (e.g., blog posts, YouTube videos, e-books, etc) to level up. Include short summaries of the relevant content.
+- The engineer summary includes their name and job title.
+- The engineer summary does not only cover this incident's topic. It should highlight a few other likely growth opportunities (e.g., secrets management, on-call readiness).
+- The engineer summary hints at the employee's current morale. Are they happy? Burnt out? What did their previous check-in's suggest? Any trends?
+- The engineer summary has mix of growth opportunities, highlights from recent sessions, and impactful next steps.
