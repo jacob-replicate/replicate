@@ -2,6 +2,10 @@ class Conversation < ApplicationRecord
   belongs_to :user, optional: true
   has_many :messages, dependent: :destroy
 
+  def latest_user_message
+    messages.where(user: user).order(created_at: :desc).first&.content.to_s
+  end
+
   def message_history
     messages.order(created_at: :asc).map do |message|
       {
@@ -12,9 +16,19 @@ class Conversation < ApplicationRecord
   end
 
   def reply_prompt_code
+    email_regex = /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/i
+    last_message = latest_user_message
+
+    if last_message.match?(email_regex)
+      return "respond_to_email"
+    end
+
     if category == "landing_page"
-      if messages.where(user: user).count == 1
+
+      if messages.count == 1
         "landing_page_incident"
+      elsif last_message == "1"
+        "example_report"
       else
         "respond_to_user_message"
       end
