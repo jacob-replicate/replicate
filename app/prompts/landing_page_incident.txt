@@ -3,30 +3,53 @@
 - Don't make it obvious. Start with a higher-level question that can feed into preventing this specific fire (e.g., "If fire was DB crash due to missing index, higher-level topic might be learning about operational readiness at large")
 - Assume this message went out a few weeks before the fire actually happened.
 - The format is short email conversations with each engineer — written by an LLM trained to surface blind spots and patterns across many teams.
+- This demo flow conversation is focused around Steve, a junior engineer on our fictitious team. Confident in some areas, but still has quite a few risky blind spots if left unsupervised.
 
 {{ASSISTANT_PERSONA}}
 
-[Output]
-- Show an example message we would have sent to an example engineer (Steve) before the incident, his reply, and our platform's follow-up with helpful learning materials (e.g., YouTube videos, blog posts, book recommendations).
-- Steve is a mid-level engineer. Confident in some areas, but still has quite a few risky blind spots if left unsupervised.
-- The conversation should reference similar topics the engineer and AI coach have been working on that quarter.
-- Don't make it just about this fire. Show how you're helping the engineer level up overall, and picking apart their blind spots to find the next most important thing to work on.
-- Include CTA's at the bottom for the manager to explore the report they would have received as a manager, or to learn more about pricing and onboarding. Also give them space to ask any additional questions they have.
-- Use the following sections in your reply. Include a header for every section. **You must use the --- markdown tag to separate each section.** Make sure to separate the engineer's reply and follow-up email.
-    -- **Overview**
-        -- In 2 sentences, introduce Steve, with a concise summary for the email we're about to read. Highlight the high-impact growth areas we have been working on with Steve over the past few weeks (even if they're not related to this exact fire).
-    ---
-    -- **Initial Email to Engineer**
-    ---
-    -- **Engineer's Reply**
-    --- The engineer's reply should be simple with rushed English (not broken, just lazy). Make it resemble how people actually interact with AI tools. Don't type long paragraphs when simulating the message from Steve. The engineer does not have intro or outro text in their email.
-    ---
-    -- **Follow-up Email**
-      --- This should include 2 hyperlinks to helpful online content (e.g., YouTube, blog posts, book recommendations)
-      --- It should end on a question that invites the engineer to keep engaging with the AI agent.
-    ---
-    -- **Next Steps**
--
-- You must not sign any of the emails with the people's names.
+[Output Instructions for Assistant]
+- Use the following sections in your reply. Include a header for every section.
+- **You must use the --- markdown tag to separate each section.**
+
+[Output - Section 1 - Overview]
+- In 2 sentences, introduce Steve, with a concise summary for the email we're about to read. Highlight the high-impact growth areas we have been working on with Steve over the past few weeks (even if they're not related to this exact fire).
+- End the section with a "---" markdown tag.
+
+[Output - Section 2 - Initial Email to Engineer]
+- Show an example message we would have sent to an example engineer (Steve) before the incident
+- **Do not sign the email**
+- End the section with a "---" markdown tag.
+
+[Output - Section 3 - Steve's Reply]
+- The engineer's reply should be simple with rushed English (not broken, just lazy). Make it resemble how people actually interact with AI tools. Don't type long paragraphs when simulating the message from Steve. The engineer does not have intro or outro text in their email.
+- The engineer must not include an intro or outro text in their email.
+- The engineer must not use capital letters.
+- End the section with a "---" markdown tag.
+
+[Output - Section 4 - Replicate's Reply]
+- Reference Steve's reply, and how our platform would have followed up with helpful learning materials (e.g., YouTube videos, blog posts, book recommendations).
+- Include 2 hyperlinks to helpful online content (e.g., YouTube, blog posts, book recommendations), along with a link to a prefilled Google search link to learn more.
+- The email should end on a question that invites the engineer to keep engaging with the AI agent.
+- End the section with a "---" markdown tag.
+
+[Output - Section 5 - Steve's Reply]
+- Simulate a reply from Steve, which provides more information to the question at the end of section 4.
+- The reply should highlight the engineering getting value out of the conversation, and having actionable next steps for high-impact growth opportunities.
+
+[Output - Section 6 - Next Steps]
+- This section will nudge the manager reviewing replicate.info to continue engaging with the platform.
+- The copy will be formatted as a single paragraph.
+- For this section, you must only use the text I have defined in the assistant instructions below
+
+[Output - Section 6 - Assistant Instructions - Only use the copy defined below]
+How would you like to proceed?
+
+* Type `1` to view the weekly report you'd get as Steve's manager.
+
+* Type `2` to learn about pricing and onboarding.
+
+* Type `3` to provide your email, and try out the check-in flow yourself.
+
+Or simply type your **email address** if you'd like to try everything out for a few weeks yourself.
 
 {{PLATFORM_OVERVIEW}}
