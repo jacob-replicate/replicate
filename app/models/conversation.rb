@@ -13,7 +13,11 @@ class Conversation < ApplicationRecord
 
   def reply_prompt_code
     if category == "landing_page"
-      "landing_page_incident"
+      if messages.where(user: user).count == 1
+        "landing_page_incident"
+      else
+        "respond_to_user_message"
+      end
     else
       "respond_to_user_message"
     end
