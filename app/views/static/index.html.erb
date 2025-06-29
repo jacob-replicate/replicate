@@ -1,14 +1,12 @@
 <div class="flex gap-6">
-  <div>
-    <div class="px-20 md:px-16 lg:px-28 xl:px-24 2xl:px-28 mb-6">
-      <img class="w-full" src="/hero-left.jpg" />
-    </div>
+  <div class="basis-1/2">
     <div class="text-xl md:text-2xl font-semibold tracking-tight">
       Uncover your engineers' blind spots
     </div>
     <div class="mb-4 text-md md:text-lg tracking-tight" >
       (before a random PR takes down production)
     </div>
+
 
     <%= form_for Conversation.new, url: conversations_path, html: { id: "demo-form" } do |f| %>
       <div class="p-3 rounded-xl bg-gray-100">
@@ -33,8 +31,9 @@
     <% end %>
   </div>
 
-  <div class="hidden md:block lg:pl-10">
+  <div class="basis-1/2 hidden md:block lg:pl-10">
     <img src="/email-screenshot.jpg" class="w-full rounded-lg shadow-lg" />
+    <img class="w-full mx-auto mb-4" src="/hero.jpg" />
   </div>
 </div>
 
@@ -62,14 +61,12 @@
     Any of these happen to you recently?
   </div>
 
-  <div class="">
-    <div class="mt-2" id="example-buttons">
-      <% cta_classes = "example-btn inline-block mr-3 mb-3 sm:mb-0 rounded-md px-3 py-1 text-white shadow-xs bg-indigo-600 hover:bg-slate-300 active:bg-slate-300" %>
-      <a href="#" data-example="critical prod outage traced to config drift" class="<%= cta_classes %>">Prod Outage</a>
-      <a href="#" data-example="missed deadline, had to cut major scope" class="<%= cta_classes %>">Missed Deadline</a>
-      <a href="#" data-example="senior engineer quit, no handoff plan in place" class="<%= cta_classes %>">Key Engineer Quit</a>
-      <a href="#" data-example="PM expected one thing, team built another" class="<%= cta_classes %>">Misaligned Expectations</a>
-    </div>
+  <div class="mt-2" id="example-buttons">
+    <% cta_classes = "example-btn inline-block mr-3 mb-3 sm:mb-0 rounded-md px-3 py-1 text-sm text-white shadow-xs bg-neutral-600 transition hover:bg-neutral-800 active:bg-neutral-700" %>
+    <a href="#" data-example="critical prod outage traced to config drift" class="<%= cta_classes %>">Prod Outage</a>
+    <a href="#" data-example="missed deadline, had to cut major scope" class="<%= cta_classes %>">Missed Deadline</a>
+    <a href="#" data-example="senior engineer quit, no handoff plan in place" class="<%= cta_classes %>">Key Engineer Quit</a>
+    <a href="#" data-example="PM expected one thing, team built another" class="<%= cta_classes %>">Misaligned Expectations</a>
   </div>
 
   <div class="flex items-center gap-5 justify-end mt-10 not-prose">
