@@ -60,12 +60,12 @@
 - For this section, you must only use the text I have defined in the assistant instructions below
 
 [Output - Section 8 - Assistant Instructions - Only use the copy defined below]
-Pretend this went on for a few more messages, consistently nudging Alex to focus on his highest-impact growth areas. Open-ended, but curated around topics that trip up early-stage startups the most.
+LLM's are pretty wild these days. I know this sounds like vaporware, but it's real.
 
 * Type `1` to view the weekly report you'd get as Alex's manager.
 
 * Type `2` to learn about pricing and onboarding.
 
-You can also type your **email** to try a few weekly check-in's yourself for free. No credit cards.
+You can also type your **email** to try a few weekly check-in's yourself for free. No credit card required.
 
 {{PLATFORM_OVERVIEW}}
