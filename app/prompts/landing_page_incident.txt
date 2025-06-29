@@ -13,6 +13,8 @@
 
 [Output - Section 1 - Overview]
 - In 2 sentences, introduce Steve, with a concise summary for the email we're about to read. Highlight the high-impact growth areas we have been working on with Steve over the past few weeks (even if they're not related to this exact fire).
+- Mention how Steve is a pretend engineer who works underneath the manager reviewing replicate.info.
+- Also briefly describe about the weekly check-in process with LLM's, for people who skimmed through the homepage.
 - End the section with a "---" markdown tag.
 
 [Output - Section 2 - Initial Email to Engineer]
@@ -35,6 +37,7 @@
 [Output - Section 5 - Steve's Reply]
 - Simulate a reply from Steve, which provides more information to the question at the end of section 4.
 - The reply should highlight the engineering getting value out of the conversation, and having actionable next steps for high-impact growth opportunities.
+- Steve confirms they will look into the resources provided, and asks a follow-up question related to the topic.
 
 [Output - Section 6 - Next Steps]
 - This section will nudge the manager reviewing replicate.info to continue engaging with the platform.
@@ -42,14 +45,12 @@
 - For this section, you must only use the text I have defined in the assistant instructions below
 
 [Output - Section 6 - Assistant Instructions - Only use the copy defined below]
-How would you like to proceed?
+Pretend this went on for a few more messages, consistently nudging Steve to focus on his highest-impact growth areas. Open-ended, but curated around topics that trip up early-stage startups the most.
 
 * Type `1` to view the weekly report you'd get as Steve's manager.
 
 * Type `2` to learn about pricing and onboarding.
 
-* Type `3` to provide your email, and try out the check-in flow yourself.
-
-Or simply type your **email address** if you'd like to try everything out for a few weeks yourself.
+You can also type your **email** to try a few weekly check-in emails for free.
 
 {{PLATFORM_OVERVIEW}}
