@@ -4,6 +4,7 @@
 - Review existing messages in the conversation, and produce an example report for the manager trying out replicate.info.
 - The report should be about Alex, and 2 of his teammates (Taylor and Mark).
 - Highlight each engineer's unique growth opportunities. They should be about topics that engineering leaders at early-stage startups care about.
+- The example report should also highlight how the platform helped those engineers level up (without any effort on the manager's part required).
 - Use a simple design that would play nicely in an email client. Use markdown when replying.
 - Do not leave a footer at the bottom of the report. End the conversation with the following CTA, word-for-word
 - Use the --- tag to separate different engineers' sections in the report.
@@ -13,7 +14,7 @@
 
 Pricing is **$30/mo** (USD) per engineer. Your first full calendar month is free. Learn more [here](https://docs.google.com/document/d/15y7929kcBgyIA19VQOQkdSbIXYb2jXmhrwKRGtw59Tk)
 
-Want to try it out for a few weeks?
+Want to try it out for a few weeks (and hopefully learn something cool)?
 
 Just type your **email**, and the system will check in next Monday. No credit card required.
 

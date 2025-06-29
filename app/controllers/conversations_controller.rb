@@ -4,7 +4,7 @@ class ConversationsController < ApplicationController
       "critical prod outage (due to missing DB index)",
       "missed deadline, due to taking on unnecessary scope",
       "we started ignoring red CI builds, because they're \"probably just flaky\"",
-      "PM expected one thing, team built another"
+      "forgot to check foreign key, and accidentally leaked data across customer dashboards"
     ]
 
     user = current_user || create_guest_user

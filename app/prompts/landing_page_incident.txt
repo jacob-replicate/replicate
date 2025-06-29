@@ -14,14 +14,15 @@
 - **You must use the --- markdown tag to separate each section.**
 
 [Output - Section 1 - Overview]
-- Section 1 should not exceed 350 characters. The other sections can be longer.
-- Paragraph 1: Briefly describe replicate.info, and the weekly check-in process with LLM's.
-- The manager does not know Alex. Tell them to pretend Alex is an engineer they manage. Summarize the email replicate.info sent on the manager's behalf automatically.
+- Section 1 should not exceed 400 characters. The other sections can be longer.
+- Briefly describe replicate.info, and the weekly check-in process with LLM's.
+- You must introduce the fictional engineer, and ask the audience to pretend he's an engineer they manage. Summarize the coaching emails replicate.info sent automatically.
 - Highlight the high-impact growth areas we have been working on with Alex over the past few weeks (even if they're not related to this exact fire).
 - End the section with a "---" markdown tag.
 
-[Output - Section 2 - Initial Email to Engineer]
+[Output - Section 2 - Initial Email]
 - Show an example message we would have sent to an example engineer (Alex) before the incident
+- It uses "our team" language, not "your team".
 - Alex occasionally includes typos in his emails.
 - **Do not sign the email**
 - End the section with a "---" markdown tag.
@@ -30,26 +31,27 @@
 - The engineer's reply should be simple with rushed English (not broken, just lazy). Make it resemble how people actually interact with AI tools. Don't type long paragraphs when simulating the message from Alex. The engineer does not have intro or outro text in their email.
 - The engineer must not include an intro or outro text in their email.
 - The engineer must not use capital letters.
+- The engineer should not immediately jump to their blind spot in the first reply. This conversation should be subtle.
 - End the section with a "---" markdown tag.
 
-[Output - Section 4 - Replicate's Reply]
+[Output - Section 4 - replicate.info's Reply]
 - Reference Alex's reply, and how our platform would have followed up with helpful learning materials (e.g., YouTube videos, blog posts, book recommendations).
 - Include 2 hyperlinks to helpful online content (e.g., YouTube, blog posts, book recommendations). The hyperlinks should be about different content.
 - The email should end on a question that invites the engineer to keep engaging with the AI agent.
 - End the section with a "---" markdown tag.
 
-[Output - Section 5 - Alex's Reply]
+[Output - Section 5 - Alex]
 - Simulate a reply from Alex, which provides more information to the question at the end of section 4.
 - The reply should highlight the engineering getting value out of the conversation, and having actionable next steps for high-impact growth opportunities.
 - Alex confirms they will look into the resources provided, and asks a follow-up question related to the topic.
 
-[Output - Section 6 - Replicate's Reply]
+[Output - Section 6 - replicate.info]
 - Reference Alex's reply in Section 5, and how our platform would have followed up with helpful learning materials (e.g., YouTube videos, blog posts, book recommendations).
 - Include 1 hyperlink to helpful online content (e.g., YouTube, blog posts, book recommendations).
 - The email should end on a question that invites the engineer to keep engaging with the AI agent.
 - End the section with a "---" markdown tag.
 
-[Output - Section 7 - Alex's Reply]
+[Output - Section 7 - Alex]
 - Simulate a reply from Alex, which provides more information to the question at the end of section 6.
 - The reply should highlight the engineering getting value out of the conversation, and having actionable next steps for high-impact growth opportunities.
 - Alex confirms they will look into the resources provided, and asks a follow-up question related to the topic.
@@ -60,12 +62,11 @@
 - For this section, you must only use the text I have defined in the assistant instructions below
 
 [Output - Section 8 - Assistant Instructions - Only use the copy defined below]
-LLM's are pretty wild these days. I know this sounds like vaporware, but it's real.
 
 * Type `1` to view the weekly report you'd get as Alex's manager.
 
 * Type `2` to learn about pricing and onboarding.
 
-You can also type your **email** to try a few weekly check-in's yourself for free. No credit card required.
+You can also type your **email** to try a few weekly check-in's for free. No credit card required.
 
 {{PLATFORM_OVERVIEW}}
