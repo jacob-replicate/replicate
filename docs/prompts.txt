@@ -1,21 +1,16 @@
 - Make a new Apple ID for IBM phone so you can keep texting yourself
 - Include relevant links in prompts if needed
 - Auto-focus the input box (on desktop at least)
+- Fix scrolling + viewport height issue in chat view
+- Set up email (accounts + webhooks)
 - Wire up email invitation flow
-- Nudge the prompt with conversation-specific outcomes (e.g., nudge them toward a sales decision, include short CTA's)
-- Improve the design (e.g., bigger text)
-- Don't use the explicit phrase "Call to Action"
-- Remove the hardcoded database indexing callout in the landing page incident prompt. It shows up in every report.
+- Wire up the weekly check-in flow
+- Wire up the weekly manager report flow
 - Mobile header links
 - Weird border on conversation input box - left side gets cut off
-
-
-Docs:
-- Security doc
-- Features doc
-- Set up email
-
-
+- Stripe Atlas
+- Terms + Privacy docs
+- Security / features docs
 
 Eventually:
 - Handle page refreshes while streaming text during demo.
