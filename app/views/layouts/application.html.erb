@@ -45,18 +45,18 @@
 
   <body>
     <% if params[:controller] == "conversations" %>
-      <body class="h-screen flex flex-col bg-white container mx-auto">
+      <div class="h-screen flex flex-col bg-white container mx-auto">
         <div class="px-4 xl:px-56 2xl:px-96 py-4 md:py-6">
           <%= render 'layouts/navbar' %>
           <%= yield %>
         </div>
-      </body>
+      </div>
     <% else %>
       <div class="container mx-auto">
-        <div class="px-4 py-6 xl:px-40 2xl:px-[250px]">
+        <div class="px-4 py-6 xl:px-[120px] 2xl:px-[250px]">
           <%= render 'layouts/navbar' %>
 
-          <div class="pt-6 md:pt-14">
+          <div class="pt-6 md:pt-0 lg:pt-14">
             <%= yield %>
           </div>
         </div>
