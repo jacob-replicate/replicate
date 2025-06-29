@@ -1,12 +1,12 @@
 <div class="flex gap-6">
   <div>
-    <div class="px-20 md:px-16 lg:px-28 xl:px-24 2xl:px-24 mb-6">
+    <div class="px-20 md:px-16 lg:px-28 xl:px-24 2xl:px-28 mb-6">
       <img class="w-full" src="/hero-left.jpg" />
     </div>
-    <div class="text-xl font-medium">
+    <div class="text-xl md:text-2xl font-semibold tracking-tight">
       Uncover your engineers' blind spots
     </div>
-    <div class="mb-4 text-md" >
+    <div class="mb-4 text-md md:text-lg tracking-tight" >
       (before a random PR takes down production)
     </div>
 
@@ -28,7 +28,7 @@
       </div>
 
       <div class="text-center pt-4">
-        <%= f.submit 'Generate My Demo', class: 'cursor-pointer rounded-md px-4 py-2 text-lg font-semibold text-white shadow-xs bg-slate-600 hover:bg-slate-700 active:bg-slate-700', tabindex: 3 %>
+        <%= f.submit 'Generate My Demo', class: 'tracking-tight cursor-pointer rounded-md px-4 py-2 text-lg font-semibold text-white shadow-xs bg-slate-600 hover:bg-slate-700 active:bg-slate-700', tabindex: 3 %>
       </div>
     <% end %>
   </div>
@@ -45,29 +45,30 @@
       helps engineering leaders bridge knowledge gaps <span class="font-semibold">before</span> they derail your roadmap.
     </div>
     <div class="mb-4">
-      As a tech lead, there's always more that I want to teach my team, but never enough time. This platform gradually finds each engineer's unique growth opportunities, and sends personalized learning nudges to their inbox.
+      There's always more that I want to teach my team, but never enough time. This platform gradually finds each engineer's unique growth opportunities, and sends personalized learning nudges to their inbox.
     </div>
     <div class="mb-4 md:hidden">
       <img src="/email-screenshot.jpg" class="w-full rounded-lg shadow-lg" />
     </div>
     <div class="mb-4">
-      No accounts to create. No dashboards to manage. Your engineers check-in with a curated LLM over email, click a few links, learn something impactful, and get back to their sprint work.
+      No accounts to create, or dashboards to manage. Your engineers check-in with a curated LLM over email, click a few links, learn something impactful, and get back to their sprint work.
     </div>
     <div class="mb-4">
-      Managers get weekly reports on team growth, morale trends, and risks that might justify more headcount. I've spent 15 years at B2B tech startups, and hate watching small knowledge gaps become team-wide disasters.
+      Managers get weekly reports on team growth, morale trends, and risks that might justify more headcount. It sucks when small knowledge gaps become team-wide disasters. Let's find them early.
     </div>
   </div>
 
-  <div class="text-md pt-4 mt-4 border-t border-gray-200 font-semibold">
+  <div class="text-lg pt-4 mt-4 border-t border-gray-200 font-semibold tracking-tight">
     Any of these happen to you recently?
   </div>
 
   <div class="">
     <div class="mt-2" id="example-buttons">
-      <a href="#" data-example="critical prod outage traced to config drift" class="example-btn inline-block mr-3 mb-3 sm:mb-0 rounded-md px-3 py-1 text-md text-zinc-700 shadow-xs bg-slate-200 hover:bg-slate-300 active:bg-slate-300">💥 Prod Outage</a>
-      <a href="#" data-example="missed deadline, had to cut major scope" class="example-btn inline-block mr-3 mb-3 sm:mb-0 rounded-md px-3 py-1 text-md text-zinc-700 shadow-xs bg-slate-200 hover:bg-slate-300 active:bg-slate-300">🐢 Missed Deadline</a>
-      <a href="#" data-example="senior engineer quit, no handoff plan in place" class="example-btn inline-block mr-3 mb-3 sm:mb-0 rounded-md px-3 py-1 text-md text-zinc-700 shadow-xs bg-slate-200 hover:bg-slate-300 active:bg-slate-300">🚪 Key Engineer Quit</a>
-      <a href="#" data-example="PM expected one thing, team built another" class="example-btn inline-block mr-3 mb-3 sm:mb-0 rounded-md px-3 py-1 text-md text-zinc-700 shadow-xs bg-slate-200 hover:bg-slate-300 active:bg-slate-300">🪤 Misaligned Expectations</a>
+      <% cta_classes = "example-btn inline-block mr-3 mb-3 sm:mb-0 rounded-md px-3 py-1 text-white shadow-xs bg-indigo-600 hover:bg-slate-300 active:bg-slate-300" %>
+      <a href="#" data-example="critical prod outage traced to config drift" class="<%= cta_classes %>">Prod Outage</a>
+      <a href="#" data-example="missed deadline, had to cut major scope" class="<%= cta_classes %>">Missed Deadline</a>
+      <a href="#" data-example="senior engineer quit, no handoff plan in place" class="<%= cta_classes %>">Key Engineer Quit</a>
+      <a href="#" data-example="PM expected one thing, team built another" class="<%= cta_classes %>">Misaligned Expectations</a>
     </div>
   </div>
 
@@ -127,3 +128,11 @@
     });
   });
 </script>
+
+<style type="text/css">
+  body {
+    font-family: 'Suisse Intl Trial', sans-serif;
+  }
+</style>
+
+</style>
