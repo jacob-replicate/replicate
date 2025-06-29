@@ -10,7 +10,7 @@ class Prompt
 
     response = client.chat(
       parameters: {
-        model: "gpt-4.1",
+        model: "gpt-4.5-preview",
         messages: messages,
         temperature: 0.7,
       }
