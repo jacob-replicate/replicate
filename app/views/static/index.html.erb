@@ -8,12 +8,12 @@
     </div>
 
     <%= form_for Conversation.new, url: conversations_path, html: { id: "demo-form" } do |f| %>
-      <div class="mb-6 p-4 rounded-xl bg-gray-50 shadow-sm border border-gray-200">
-        <label for="initial_message" class="block text-gray-900 font-medium mb-2">
+      <div class="mb-6 p-4 rounded-xl bg-gray-50 shadow border border-gray-100">
+        <label for="initial_message" class="block text-gray-900 mb-2">
           What did you scramble to fix recently?
         </label>
 
-        <%= text_area_tag :initial_message, "", class: 'block w-full rounded-md bg-white px-3 py-2 text-base text-gray-900 border border-gray-300 outline-1 outline-indigo-300 placeholder:text-gray-400 focus:outline-2 focus:outline-indigo-600 sm:text-sm', rows: 3, placeholder: 'e.g., crashed DB because forgot index', tabindex: 1 %>
+        <%= text_area_tag :initial_message, "", class: 'block w-full rounded-md bg-white px-3 py-2 text-base text-gray-900 border border-gray-200 outline-1 outline-indigo-300 placeholder:text-gray-400 focus:outline-2 focus:outline-indigo-600 sm:text-sm', rows: 3, placeholder: 'e.g., crashed DB because forgot index', tabindex: 1 %>
 
         <div id="terms-container" class="flex items-start gap-2 mt-4">
           <%= check_box_tag :agree, "1", false, class: 'mt-1 rounded border-gray-300', id: "agree", tabindex: 2 %>
@@ -38,26 +38,34 @@
 
 <div class="mt-20">
   <div class="text-md leading-relaxed md:max-w-1/2">
-    <div class="mb-4">
-      There's always more you can teach, but never enough time. This platform gradually finds each engineer's unique growth opportunities, and sends personalized learning nudges to their inbox every week.
+    <div class="mb-4 text-xl font-semibold">
+      How replicate.info helps
     </div>
-    <div class="mb-4 md:hidden">
-      <img src="/email-screenshot.jpg" class="w-full rounded-lg shadow-lg" />
-    </div>
-    <div class="mb-4">
-      No accounts to create, or dashboards to manage. Your engineers check-in with a curated LLM over email, click a few links, learn something impactful, and get back to their sprint work.
-    </div>
-    <div class="mb-4">
-      Managers get weekly reports on team growth, morale trends, and risks that might justify more headcount. It sucks when small knowledge gaps become team-wide disasters. Let's find them early.
+    <div class="text-[18px]">
+      <div class="mb-4">
+        There's always more you can teach, but never enough time. This platform gradually helps find each engineer's unique growth opportunities, and emails them personalized learning nudges every week.
+      </div>
+      <div class="mb-4 md:hidden">
+        <img src="/email-screenshot.jpg" class="w-full rounded-lg shadow-lg" />
+      </div>
+      <div class="mb-4">
+        No accounts to create, or dashboards to manage.
+      </div>
+      <div class="mb-4">
+        Your engineers check-in with an LLM, click a few links, learn something impactful, and get back to their sprint work.
+      </div>
+      <div class="mb-4">
+        Managers get weekly reports on team growth, morale trends, and risks that might justify more headcount.
+      </div>
     </div>
   </div>
 
-  <div class="text-lg pt-4 mt-4 border-t border-gray-200 font-semibold tracking-tight">
+  <div class="text-lg pt-4 mt-4 font-medium tracking-tight">
     Any of these happen recently?
   </div>
 
   <div class="mt-2" id="example-buttons">
-    <% cta_classes = "example-btn inline-block mr-3 mb-3 sm:mb-0 rounded-md px-3 py-1 text-sm text-white shadow-xs bg-neutral-600 transition hover:bg-neutral-800 active:bg-neutral-700" %>
+    <% cta_classes = "example-btn inline-block mr-3 mb-3 sm:mb-0 rounded-md px-4 py-2 font-medium text-white shadow-xs bg-neutral-600 transition hover:bg-neutral-800 active:bg-neutral-700" %>
     <a href="#" data-example="critical prod outage traced to config drift" class="<%= cta_classes %>">Prod Outage</a>
     <a href="#" data-example="missed deadline, had to cut major scope" class="<%= cta_classes %>">Missed Deadline</a>
     <a href="#" data-example="senior engineer quit, no handoff plan in place" class="<%= cta_classes %>">Key Engineer Quit</a>
