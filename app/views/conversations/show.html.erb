@@ -78,7 +78,6 @@
     <% end %>
   </div>
 
-  <!-- Input + Checkbox -->
   <div class="pb-4">
     <div class="flex items-center gap-2">
       <textarea id="message-input"
@@ -95,14 +94,8 @@
     </div>
 
     <% if params[:require_tos] %>
-      <div id="tos-wrapper" class="mt-2 flex items-start text-sm text-gray-600 space-x-2">
-        <input type="checkbox" id="tos-checkbox" class="mt-1" />
-        <label for="tos-checkbox">
-          I agree to the
-          <a href="/terms" target="_blank" class="underline">Terms of Service</a>
-          and
-          <a href="/privacy" target="_blank" class="underline">Privacy Policy</a>.
-        </label>
+      <div id="terms-container" class="mt-3 text-xs text-gray-500">
+        By submitting, you agree to the <a href="/terms" class="text-blue-500 hover:underline">Terms</a> and <a href="/privacy" class="text-blue-500 hover:underline">Privacy Policy</a>
       </div>
     <% end %>
   </div>
@@ -116,8 +109,7 @@
     const textarea         = document.getElementById("message-input");
     const sendButton       = document.getElementById("send-button");
     const conversationEl   = document.getElementById("conversation");
-    const tosCheckbox      = document.getElementById("tos-checkbox");
-    const tosWrapper       = document.getElementById("tos-wrapper");
+    const tosWrapper       = document.getElementById("terms-container");
 
     const SCROLL_THRESHOLD = 120;
     let userManuallyScrolled = false;
@@ -154,13 +146,12 @@
       const message = textarea.value.trim();
       if (!message || aiIsTyping) return;
 
-      if (tosCheckbox && !tosCheckbox.checked) {
-        alert("Please agree to the Terms of Service and Privacy Policy to continue.");
-        return;
-      }
-
       aiIsTyping = true;
       setInputEnabled(false);
+
+      if (tosWrapper) {
+        tosWrapper.remove();
+      }
 
       fetch("/messages", {
         method: "POST",
@@ -170,10 +161,6 @@
         },
         body: JSON.stringify({ conversation_id: conversationId, content: message })
       });
-
-      if (tosWrapper) {
-        tosWrapper.remove();
-      }
 
       textarea.value = "";
       textarea.style.height = "auto";

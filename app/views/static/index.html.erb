@@ -3,7 +3,7 @@
     <div class="mb-1 text-2xl  font-bold leading-tight tracking-[-0.008em]">
       Prevent your next postmortem.
     </div>
-    <div class="mb-6 text-lg md:text-md text-gray-700 tracking-[-0.01em]">
+    <div class="mb-4 text-lg md:text-md text-gray-700 tracking-[-0.01em]">
       Fix the root causes, without lifting a finger.
     </div>
 
@@ -14,22 +14,14 @@
         </label>
 
         <%= text_area_tag :initial_message, "", class: 'block w-full rounded-md bg-white px-3 py-2 text-base text-gray-900 border border-gray-200 outline-1 outline-indigo-300 placeholder:text-gray-400 focus:outline-2 focus:outline-indigo-600 sm:text-sm', rows: 3, placeholder: 'e.g., crashed DB because forgot index', tabindex: 1 %>
-
-        <div class="mt-3">
-          AI will design an example coaching session, like your engineers will get in their inbox.
-        </div>
       </div>
 
-      <div id="terms-container" class="flex items-center gap-2 mt-4">
-        <%= check_box_tag :agree, "1", false, class: 'peer h-4 w-4 rounded border-gray-300', id: "agree", tabindex: 2 %>
-        <label for="agree" class="text-sm leading-relaxed tracking-[0.02em]">
-          I accept the <a href="/terms" class="text-blue-500 hover:underline">Terms</a> and
-          <a href="/privacy" class="text-blue-500 hover:underline">Privacy Policy</a>
-        </label>
+      <div id="terms-container" class="mt-3 text-xs text-gray-500 text-center">
+        By submitting, you agree to the <a href="/terms" class="text-blue-500 hover:underline">Terms</a> and <a href="/privacy" class="text-blue-500 hover:underline">Privacy Policy</a>
       </div>
 
       <div class="text-center mt-6">
-        <%= f.submit 'Generate Personalized Demo', class: 'hover:scale-[1.01] transition-transform shadow-md hover:shadow-lg tracking-[0.01em] cursor-pointer rounded-lg px-5 py-2.5 text-lg font-semibold text-white bg-slate-600 hover:bg-slate-700 active:bg-slate-800 transition', tabindex: 3 %>
+        <%= f.submit 'Simulate Coaching Session', class: 'hover:scale-[1.01] transition-transform shadow-md hover:shadow-lg tracking-[0.01em] cursor-pointer rounded-lg px-5 py-2.5 text-lg font-semibold text-white bg-slate-600 hover:bg-slate-700 active:bg-slate-800 transition', tabindex: 3 %>
       </div>
     <% end %>
   </div>
@@ -41,7 +33,7 @@
 </div>
 
 <div class="mt-10 lg:mt-12">
-  <div class="text-md leading-relaxed max-w-[90ch]">
+  <div class="text-md leading-relaxed max-w-[90ch] tracking-[0.008em]">
     <div class="text-[17px]">
 
       <div class="mb-4">
@@ -51,7 +43,7 @@
         <span class="font-medium">replicate.info</span> helps find your team's unique growth opportunities, and sends personalized learning nudges every week. Engineers check in with an LLM, click a few links, learn something impactful, and get back to their sprint work.
       </div>
       <div class="mb-4">
-        No accounts to create, or settings to mess with. It happens automatically over email. You have better stuff to focus on.
+        No accounts to create, or settings to mess with. Everything happens over email. You don't need another app to manage.
       </div>
       <div>
         Leaders get reports on growth and early red flags, so you can unblock the team and help them ship faster.
@@ -65,8 +57,8 @@
 
   <div class="bg-gray-50 border rounded-xl p-3 md:inline-block tracking-[0.01em] grid grid-cols-2 gap-2 mt-2" id="example-buttons">
     <% cta_classes = "hover:scale-[1.04] transition-transform example-btn inline-block last:mr-0 md:mr-3 rounded-md px-3 py-1 text-sm text-white shadow-xs bg-neutral-600 transition hover:bg-neutral-800 active:bg-neutral-700" %>
-    <a href="#" data-example="critical prod outage traced to config drift" class="<%= cta_classes %>">Prod Outage</a>
-    <a href="#" data-example="missed deadline, had to cut major scope" class="<%= cta_classes %>">Scope Creep</a>
+    <a href="#" data-example="critical prod outage (due to missing DB index)" class="<%= cta_classes %>">Prod Outage</a>
+    <a href="#" data-example="missed deadline, due to taking on unnecessary scope" class="<%= cta_classes %>">Scope Creep</a>
     <a href="#" data-example="senior engineer quit, no handoff plan in place" class="<%= cta_classes %>">Key Engineer Quit</a>
     <a href="#" data-example="PM expected one thing, team built another" class="<%= cta_classes %>">Misaligned Goals</a>
   </div>
@@ -75,14 +67,6 @@
 <script>
   document.addEventListener("DOMContentLoaded", () => {
     const form = document.getElementById("demo-form");
-    const agree = document.getElementById("agree");
-
-    form.addEventListener("submit", (e) => {
-      if (!agree.checked) {
-        e.preventDefault();
-        alert("You must agree to the Terms and Privacy Policy.");
-      }
-    });
 
     const exampleButtons = document.querySelectorAll(".example-btn");
     const textarea = document.querySelector("textarea[name='initial_message']");
