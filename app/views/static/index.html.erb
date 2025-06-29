@@ -1,36 +1,40 @@
 <div class="flex flex-col-reverse md:flex-row gap-12 items-center pt-8 md:pt-8">
-  <div class="md:basis-[45%] w-full">
+  <div class="md:basis-[40%] w-full">
     <div class="mb-2 text-2xl  font-semibold leading-tight tracking-tight">
-      Surface the insights your team needs
+      Prevent your next postmortem.
     </div>
-    <div class="mb-6 text-lg md:text-xl text-gray-700 tracking-tight">
-      before those gaps show up in production.
+    <div class="mb-6 text-lg md:text-lg text-gray-700 tracking-tight">
+      <span class="font-medium">replicate.info</span> helps tech leads find skill gaps, and send personalized coaching automatically.
     </div>
 
     <%= form_for Conversation.new, url: conversations_path, html: { id: "demo-form" } do |f| %>
-      <div class="mb-6 p-4 rounded-xl bg-gray-50 shadow border border-gray-100">
-        <label for="initial_message" class="block text-gray-900 mb-2">
-          What did you scramble to fix recently?
+      <div class="p-3 rounded-xl bg-gray-50 shadow border border-gray-100">
+        <label for="initial_message" class="block text-gray-900 mb-3">
+          What's a recent fire your team put out?
         </label>
 
         <%= text_area_tag :initial_message, "", class: 'block w-full rounded-md bg-white px-3 py-2 text-base text-gray-900 border border-gray-200 outline-1 outline-indigo-300 placeholder:text-gray-400 focus:outline-2 focus:outline-indigo-600 sm:text-sm', rows: 3, placeholder: 'e.g., crashed DB because forgot index', tabindex: 1 %>
 
-        <div id="terms-container" class="flex items-start gap-2 mt-4">
-          <%= check_box_tag :agree, "1", false, class: 'mt-1 rounded border-gray-300', id: "agree", tabindex: 2 %>
-          <label for="agree" class="text-sm leading-relaxed">
-            I accept the <a href="/terms" class="text-blue-500 hover:underline">Terms</a> and
-            <a href="/privacy" class="text-blue-500 hover:underline">Privacy Policy</a>
-          </label>
+        <div class="mt-3">
+          You'll get a real coaching walkthrough — just like your team might have received in their inbox.
         </div>
       </div>
 
-      <div class="text-center">
-        <%= f.submit 'Generate My Demo', class: 'tracking-tight cursor-pointer rounded-md px-5 py-2.5 text-lg font-semibold text-white bg-slate-600 hover:bg-slate-700 active:bg-slate-800 transition', tabindex: 3 %>
+      <div id="terms-container" class="flex items-start gap-2 mt-4">
+        <%= check_box_tag :agree, "1", false, class: 'mt-1 rounded border-gray-300', id: "agree", tabindex: 2 %>
+        <label for="agree" class="text-sm leading-relaxed">
+          I accept the <a href="/terms" class="text-blue-500 hover:underline">Terms</a> and
+          <a href="/privacy" class="text-blue-500 hover:underline">Privacy Policy</a>
+        </label>
+      </div>
+
+      <div class="text-center mt-8">
+        <%= f.submit 'Generate My Demo', class: 'shadow-md hover:shadow-lg tracking-tight cursor-pointer rounded-lg px-5 py-2.5 text-lg font-semibold text-white bg-slate-600 hover:bg-slate-700 active:bg-slate-800 transition', tabindex: 3 %>
       </div>
     <% end %>
   </div>
 
-  <div class="md:basis-[55%] w-full relative">
+  <div class="md:basis-[60%] w-full relative">
     <img src="/email-screenshot.png" class="w-[360px] rounded-lg absolute -bottom-4 -right-4 hidden md:block" />
     <img src="/hero.jpg" class="w-full rounded-lg shadow-md" />
   </div>
@@ -38,12 +42,12 @@
 
 <div class="mt-20">
   <div class="text-md leading-relaxed md:max-w-1/2">
-    <div class="mb-4 text-xl font-semibold">
-      How replicate.info helps
-    </div>
     <div class="text-[18px]">
       <div class="mb-4">
-        There's always more you can teach, but never enough time. This platform gradually helps find each engineer's unique growth opportunities, and emails them personalized learning nudges every week.
+        Your team wants to level up. You don't have enough time to coach everyone to their full potential.
+      </div>
+      <div class="mb-4">
+        replicate.info helps find each engineer's unique growth opportunities, and emails them personalized learning nudges every week. Your engineers check-in with an LLM, click a few links, learn something impactful, and get back to their sprint work.
       </div>
       <div class="mb-4 md:hidden">
         <img src="/email-screenshot.jpg" class="w-full rounded-lg shadow-lg" />
@@ -52,10 +56,10 @@
         No accounts to create, or dashboards to manage.
       </div>
       <div class="mb-4">
-        Your engineers check-in with an LLM, click a few links, learn something impactful, and get back to their sprint work.
+
       </div>
       <div class="mb-4">
-        Managers get weekly reports on team growth, morale trends, and risks that might justify more headcount.
+        Leaders get weekly reports on team growth, morale trends, and risks that might justify more headcount.
       </div>
     </div>
   </div>
@@ -72,28 +76,18 @@
     <a href="#" data-example="PM expected one thing, team built another" class="<%= cta_classes %>">Misaligned Expectations</a>
   </div>
 
-  <div class="flex items-center gap-5 justify-end mt-10">
-    <div style="padding-top: 4px">
-      <img src="/jacob.jpg" style="width: 70px" class="rounded-full mb-2" />
+  <div class="flex items-center gap-3 mt-10">
+    <div>
+      <%= link_to 'https://linkedin.com/in/jacobcomer', target: "_blank" do %>
+        <img src="/icons/linkedin.png" style="width: 25px" class="inline-block mr-1" />
+      <% end %>
+      <%= link_to 'https://jacobcomer.medium.com/write-code-faster-in-vim-c564ff9b9f6c', target: "_blank" do %>
+        <img src="/icons/medium.png" style="width: 25px" class="inline-block" />
+      <% end %>
     </div>
     <div>
-      <div class="text-md mb-1.5" style="font-family: 'Homemade Apple'">Jacob Comer</div>
-      <div class="flex gap-1.5">
-        <%= link_to 'https://instagram.com/jacob_comer', target: "_blank" do %>
-          <img src="/icons/instagram.png" style="width: 25px" />
-        <% end %>
-        <%= link_to 'https://linkedin.com/in/jacobcomer', target: "_blank" do %>
-          <img src="/icons/linkedin.png" style="width: 25px" />
-        <% end %>
-        <%= link_to 'https://jacobcomer.medium.com/write-code-faster-in-vim-c564ff9b9f6c', target: "_blank" do %>
-          <img src="/icons/medium.png" style="width: 25px" />
-        <% end %>
-        <%= link_to 'https://www.reddit.com/user/jacob_the_snacob', target: "_blank" do %>
-          <img src="/icons/reddit.png" style="width: 25px" />
-        <% end %>
-        <%= link_to 'mailto:jacob@jacobcomer.com', target: "_blank" do %>
-          <img src="/icons/email.png" style="width: 25px" />
-        <% end %>
+      <div class="text-sm">
+        Built by Jacob Comer — Staff Engineer w/ 15 years experience at B2B tech startups
       </div>
     </div>
   </div>
