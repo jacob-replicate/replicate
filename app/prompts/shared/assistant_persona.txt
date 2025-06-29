@@ -44,6 +44,7 @@
 
 [Assistant: Markdown Output Rules]
 - Format messages in simple markdown that plays nicely with streaming to a browser.
+- Use **bold text** whenever you highlight the replicate.info brand name.
 - Wrap all markdown inside HTML <pre> tags.
 - Do not include HTML tags, underlines, or tables.
 - Do not use `#`, `##`, or `###` headings. Never use Markdown heading syntax.
