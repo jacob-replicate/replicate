@@ -38,15 +38,14 @@ class MarkdownFlusher
 
   def paragraph_boundary?
     # 1) blank line   2) end-of-sentence & no open inline element
-    @buf.end_with?("\n\n") ||
-      (@buf[-2..] =~ /[.!?]/ && @open_inline.nil?)
+    @buf.end_with?("\n\n") || (@buf[-2..] =~ /[.!?]/ && @open_inline.nil?) || @buf.end_with?("---")
   end
 
   def flush!(force: false)
     return if @buf.empty?
     return unless force || paragraph_boundary? || Time.now - @last_flush >= FLUSH_INTERVAL
 
-    @on_flush.call(@buf.dup)
+    @on_flush.call(@buf.dup.gsub("---", "\n---\n"))  # replace "---" with newlines for better formatting
     @buf.clear
     @last_flush = Time.now
   end

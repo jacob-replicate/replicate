@@ -3,7 +3,7 @@ class ConversationsController < ApplicationController
     hardcoded_flow_messages = [
       "critical prod outage (due to missing DB index)",
       "missed deadline, due to taking on unnecessary scope",
-      "senior engineer quit, no handoff plan in place",
+      "we started ignoring red CI builds, because they're \"probably just flaky\"",
       "PM expected one thing, team built another"
     ]
 

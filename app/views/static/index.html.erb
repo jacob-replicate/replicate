@@ -21,7 +21,7 @@
       </div>
 
       <div class="text-center mt-6">
-        <%= f.submit 'Simulate Coaching Session', class: 'hover:scale-[1.01] transition-transform shadow-md hover:shadow-lg tracking-[0.01em] cursor-pointer rounded-lg px-5 py-2.5 text-lg font-semibold text-white bg-slate-600 hover:bg-slate-700 active:bg-slate-800 transition', tabindex: 3 %>
+        <%= f.submit 'What is the lesson here?', class: 'hover:scale-[1.01] transition-transform shadow-md hover:shadow-lg tracking-[0.01em] cursor-pointer rounded-lg px-5 py-2.5 text-lg font-semibold text-white bg-slate-600 hover:bg-slate-700 active:bg-slate-800 transition', tabindex: 3 %>
       </div>
     <% end %>
   </div>
@@ -59,7 +59,7 @@
     <% cta_classes = "hover:scale-[1.04] transition-transform example-btn inline-block last:mr-0 md:mr-3 rounded-md px-3 py-1 text-sm text-white shadow-xs bg-neutral-600 transition hover:bg-neutral-800 active:bg-neutral-700" %>
     <a href="#" data-example="critical prod outage (due to missing DB index)" class="<%= cta_classes %>">Prod Outage</a>
     <a href="#" data-example="missed deadline, due to taking on unnecessary scope" class="<%= cta_classes %>">Scope Creep</a>
-    <a href="#" data-example="senior engineer quit, no handoff plan in place" class="<%= cta_classes %>">Key Engineer Quit</a>
+    <a href="#" data-example='we started ignoring red CI builds, because they&apos;re "probably just flaky"' class="<%= cta_classes %>">Flaky Tests</a>
     <a href="#" data-example="PM expected one thing, team built another" class="<%= cta_classes %>">Misaligned Goals</a>
   </div>
 </div>
@@ -76,10 +76,6 @@
       btn.addEventListener("click", (e) => {
         e.preventDefault();
         textarea.value = btn.dataset.example;
-        textarea.focus();
-        exampleContainer.remove(); // removes the entire div block
-        termsContainer = document.getElementById("terms-container");
-        termsContainer.style.display = "none";
         form.submit(); // Submit the form immediately
       });
     });
