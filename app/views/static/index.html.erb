@@ -1,4 +1,4 @@
-<div class="flex flex-col-reverse md:flex-row gap-12 items-center pt-8 md:pt-8">
+<div class="flex flex-col-reverse md:flex-row gap-12 items-center md:pt-8">
   <div class="md:basis-[40%] w-full">
     <div class="mb-2 text-2xl  font-semibold leading-tight tracking-tight">
       Prevent your next postmortem.
@@ -35,7 +35,7 @@
   </div>
 
   <div class="md:basis-[60%] w-full relative">
-    <img src="/email-screenshot.png" class="w-[360px] rounded-lg absolute -bottom-4 -right-4 hidden md:block" />
+    <img src="/email-screenshot.png" class="w-[300px] md:w-[360px] rounded-lg absolute -bottom-2 -right-2" />
     <img src="/hero.jpg" class="w-full rounded-lg shadow-md" />
   </div>
 </div>
@@ -47,10 +47,7 @@
         Your team wants to level up. You don't have enough time to coach everyone to their full potential.
       </div>
       <div class="mb-4">
-        <span class="font-medium">replicate.info</span> helps find each engineer's unique growth opportunities, and emails them personalized learning nudges every week. Your engineers check-in with an LLM, click a few links, learn something impactful, and get back to their sprint work.
-      </div>
-      <div class="mb-4 md:hidden">
-        <img src="/email-screenshot.jpg" class="w-full rounded-lg shadow-lg" />
+        <span class="font-medium">replicate.info</span> helps find each engineer's growth opportunities, and emails them personalized learning nudges every week. Your engineers check-in with an LLM, click a few links, learn something impactful, and get back to their sprint work.
       </div>
       <div class="mb-4">
         No accounts to create, or dashboards to manage.
@@ -76,20 +73,14 @@
     <a href="#" data-example="PM expected one thing, team built another" class="<%= cta_classes %>">Misaligned Expectations</a>
   </div>
 
-  <div class="flex items-center gap-3 mt-10">
-    <div>
-      <%= link_to 'https://linkedin.com/in/jacobcomer', target: "_blank" do %>
-        <img src="/icons/linkedin.png" style="width: 25px" class="inline-block mr-1" />
-      <% end %>
-      <%= link_to 'https://jacobcomer.medium.com/write-code-faster-in-vim-c564ff9b9f6c', target: "_blank" do %>
-        <img src="/icons/medium.png" style="width: 25px" class="inline-block" />
-      <% end %>
-    </div>
-    <div>
-      <div class="text-sm">
-        Built by Jacob Comer — Staff Engineer w/ 15 years experience at B2B tech startups
-      </div>
-    </div>
+  <div class="flex items-center mt-10 italic">
+    Built by Jacob Comer — Staff Engineer w/ 15 years experience at B2B tech startups
+    <%= link_to 'https://linkedin.com/in/jacobcomer', target: "_blank" do %>
+      <img src="/icons/linkedin.png" style="width: 22px" class="inline-block mr-1 ml-2" />
+    <% end %>
+    <%= link_to 'https://jacobcomer.medium.com/write-code-faster-in-vim-c564ff9b9f6c', target: "_blank" do %>
+      <img src="/icons/medium.png" style="width: 22px" class="inline-block mr-2" />
+    <% end %>
   </div>
 </div>
 
