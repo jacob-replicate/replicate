@@ -1,77 +1,53 @@
-# frozen_string_literal: true
-
 class MarkdownFlusher
-  # Flush every 200 ms *or* when a structural boundary is reached
-  FLUSH_INTERVAL  = 0.20
-  SIZE_HARD_LIMIT = 1_000  # never keep >1 KB unflushed – safety valve
+  FLUSH_INTERVAL = 0.20 # seconds
 
   def initialize(&on_flush)
-    @buf         = +""
-    @last_flush  = Time.now
-    @open_inline = nil      # :bold, :code, :link, or nil
-    @on_flush    = on_flush # -> (string) { … }
+    @buf        = +""
+    @last_flush = Time.now
+    @on_flush   = on_flush # -> (string) { … }
   end
 
-  # feed each incoming chunk here
+  # Feed each token / chunk here
   def <<(chunk)
     @buf << chunk
-    track_inline_state(chunk)
-    flush! if flushable?
+    flush! if flush_ready?
     self
   end
 
-  # ensure everything is sent at the end
   def final_flush!
     flush!(force: true)
   end
 
   private
 
-  # ------- flushing logic -----------------------------------------------
-
-  def flushable?
-    return true if Time.now - @last_flush >= FLUSH_INTERVAL
-    return true if paragraph_boundary?
-    return true if @buf.size >= SIZE_HARD_LIMIT
-    false
+  # ----- flushing -------------------------------------------------------
+  def flush_ready?
+    boundary_reached? || timer_expired?
   end
 
-  def paragraph_boundary?
-    # 1) blank line   2) end-of-sentence & no open inline element
-    @buf.end_with?("\n\n") ||
-      (@buf[-2..] =~ /[.!?]/ && @open_inline.nil?)
+  def boundary_reached?
+    # We treat a blank line as a natural paragraph/list boundary.
+    @buf.include?("\n\n")
+  end
+
+  def timer_expired?
+    Time.now - @last_flush >= FLUSH_INTERVAL
   end
 
   def flush!(force: false)
     return if @buf.empty?
-    return unless force || paragraph_boundary? || Time.now - @last_flush >= FLUSH_INTERVAL
 
-    @on_flush.call(@buf.dup)
-    @buf.clear
-    @last_flush = Time.now
-  end
-
-  # ------- inline-state tracker -----------------------------------------
-
-  def track_inline_state(chunk)
-    chunk.each_char do |ch|
-      case ch
-      when '*'
-        toggle(:bold)
-      when '`'
-        toggle(:code)
-      when '['
-        @open_inline = :link unless @open_inline
-      when ']'
-        @open_inline = nil if @open_inline == :link
-      when ')'
-        # close link only if "](...)" pattern was completed – cheap check
-        @open_inline = nil if @open_inline == :link
-      end
+    chunks = if force
+      [@buf]
+    else
+      # Split on the *last* double‑newline so we keep an unfinished
+      # paragraph in @buf for the next round.
+      head, sep, tail = @buf.rpartition(/\n\n/)
+      sep.empty? ? [] : [head + sep]
     end
-  end
 
-  def toggle(type)
-    @open_inline = (@open_inline == type ? nil : type)
+    chunks.each { |c| @on_flush.call(c) }
+    @buf.sub!(chunks.join, "")
+    @last_flush = Time.now
   end
 end
