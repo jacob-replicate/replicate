@@ -13,7 +13,7 @@
     <%= form_for Conversation.new, url: conversations_path, html: { id: "demo-form" } do |f| %>
       <div class="p-3 rounded-xl bg-gray-100">
         <div class="block text-gray-900 mb-2">
-          What issue blindsided you recently?
+          What did you scramble to fix recently?
         </div>
 
         <%= text_area_tag :initial_message, "", class: 'block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 border border-gray-300 outline-1 -outline-offset-1 outline-indigo-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-1 focus:outline-indigo-600 sm:text-sm', rows: 3, placeholder: 'e.g., crashed DB because forgot index', tabindex: 1 %>
@@ -64,9 +64,9 @@
 
   <div class="">
     <div class="mt-2" id="example-buttons">
-      <a href="#" data-example="senior engineer quit, no handoff plan in place" class="example-btn inline-block mr-3 mb-3 sm:mb-0 rounded-md px-3 py-1 text-md text-zinc-700 shadow-xs bg-slate-200 hover:bg-slate-300 active:bg-slate-300">🚪 Key Engineer Quit</a>
       <a href="#" data-example="critical prod outage traced to config drift" class="example-btn inline-block mr-3 mb-3 sm:mb-0 rounded-md px-3 py-1 text-md text-zinc-700 shadow-xs bg-slate-200 hover:bg-slate-300 active:bg-slate-300">💥 Prod Outage</a>
       <a href="#" data-example="missed deadline, had to cut major scope" class="example-btn inline-block mr-3 mb-3 sm:mb-0 rounded-md px-3 py-1 text-md text-zinc-700 shadow-xs bg-slate-200 hover:bg-slate-300 active:bg-slate-300">🐢 Missed Deadline</a>
+      <a href="#" data-example="senior engineer quit, no handoff plan in place" class="example-btn inline-block mr-3 mb-3 sm:mb-0 rounded-md px-3 py-1 text-md text-zinc-700 shadow-xs bg-slate-200 hover:bg-slate-300 active:bg-slate-300">🚪 Key Engineer Quit</a>
       <a href="#" data-example="PM expected one thing, team built another" class="example-btn inline-block mr-3 mb-3 sm:mb-0 rounded-md px-3 py-1 text-md text-zinc-700 shadow-xs bg-slate-200 hover:bg-slate-300 active:bg-slate-300">🪤 Misaligned Expectations</a>
     </div>
   </div>
