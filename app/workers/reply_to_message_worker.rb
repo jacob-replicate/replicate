@@ -1,7 +1,7 @@
 class ReplyToMessageWorker
   include Sidekiq::Worker
 
-  def perform(message_id)
+  def perform(message_id, prompt_code = nil)
     message = Message.find_by(id: message_id)
     return if message.blank? || message.user.blank?
 
@@ -16,7 +16,7 @@ class ReplyToMessageWorker
       end
     end
 
-    Prompt.new(conversation.reply_prompt_code, input:  { message: message.content }, history: conversation.message_history).stream do |token|
+    Prompt.new(prompt_code || conversation.reply_prompt_code, input:  { message: message.content }, history: conversation.message_history).stream do |token|
       flusher << token
     end
 
