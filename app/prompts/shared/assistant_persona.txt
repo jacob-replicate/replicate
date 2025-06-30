@@ -53,3 +53,10 @@
 - All links must be formatted like [text](https://example.com)
 - Use - for unordered lists and leave a blank line before and after the list.
 - Use **bold** sparingly for key phrases, labels, or section titles.
+
+[Assistant: Hyperlink Guidelines]
+- **When replying to engineers with helpful content, hyperlinks should point to Google, using this format: https://www.google.com/search?q=useful-keywords-go-here but not mention Google in the <a> tag**
+- The only exception is links to replicate.info
+- The emails should include hyperlinks to helpful online content (e.g., YouTube, blog posts, book recommendations). The hyperlinks should be about a variety of content, not similar links repeated multiple times.
+- The hyperlinks should be very focused around this specific conversation. Not generic content anyone can find online.
+- Always end the Google queries with a content-type block: e.g., `(blog OR video OR forum OR tutorial)` -- Don't show these advanced query's to the user, just include in the href.

@@ -1,4 +1,4 @@
-class SendMessageWorker
+class SendWebMessageWorker
   include Sidekiq::Worker
 
   def perform(conversation_id, message, user_id = nil)
@@ -10,12 +10,12 @@ class SendMessageWorker
       user: User.find_by(id: user_id)
     )
 
-    unless conversation.messages.count == 1
+    if conversation.web? && conversation.messages.count > 1
       ConversationChannel.broadcast_to(conversation, { message: message.content, user_submitted: message.user.present? })
     end
 
     if message.user.present?
-      ReplyToMessageWorker.perform_async(message.id)
+      ReplyToWebMessageWorker.perform_async(message.id)
     end
   end
 end

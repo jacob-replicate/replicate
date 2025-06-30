@@ -1,21 +1,20 @@
 Launch
-- Include relevant links in prompts if needed
-- Set up email (accounts + webhooks)
-- Wire up email invitation flow
+- Set up replicate.info email (accounts + webhooks)
 - Wire up the weekly check-in flow
+- Wire up email invitation flow
 - Wire up the weekly manager report flow
-- Stripe Atlas
-
-Not really
-- Fix scrolling + viewport height issue in chat view
-- Auto-focus the input box (on desktop at least)
-- Weird border on conversation input box - left side gets cut off
 
 Eventually:
-- Make a new Apple ID for IBM phone so you can keep texting yourself
--------------
+------------------------------------------------------------------
+- Stripe Atlas
 - Handle page refreshes while streaming text during demo.
 - Tighten up Terms + Privacy + Security + Features docs
 - Instead of linking to Google searches, just generate your own content, and link to it (to keep emails tight).
-    - You could also just go super in-depth in the emails themselves too (if they ask for it).
+- Make a new Apple ID for IBM phone so you can keep texting yourself
+
+Not blocking:
+------------------------------------------------------------------
+- Fix scrolling + viewport height issue in chat view
+- Auto-focus the input box (on desktop at least)
+- Weird border on conversation input box - left side gets cut off
 - Cleaner mobile header links

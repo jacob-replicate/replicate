@@ -2,6 +2,10 @@ class Conversation < ApplicationRecord
   belongs_to :user, optional: true
   has_many :messages, dependent: :destroy
 
+  def web?
+    category == "landing_page"
+  end
+
   def latest_user_message
     messages.where(user: user).order(created_at: :desc).first&.content.to_s
   end

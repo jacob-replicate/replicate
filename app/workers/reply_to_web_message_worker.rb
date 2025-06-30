@@ -1,4 +1,4 @@
-class ReplyToMessageWorker
+class ReplyToWebMessageWorker
   include Sidekiq::Worker
 
   def perform(message_id, prompt_code = nil)
@@ -10,10 +10,7 @@ class ReplyToMessageWorker
 
     flusher = MarkdownFlusher.new do |chunk|
       full_response << chunk
-
-      Rails.logger.silence do
-        ConversationChannel.broadcast_to(conversation, { message: chunk, user_submitted: false, type: "stream" })
-      end
+      Rails.logger.silence { ConversationChannel.broadcast_to(conversation, { message: chunk, user_submitted: false, type: "stream" }) }
     end
 
     Prompt.new(prompt_code || conversation.reply_prompt_code, input:  { message: message.content }, history: conversation.message_history).stream do |token|
@@ -23,6 +20,9 @@ class ReplyToMessageWorker
     flusher.final_flush!
 
     Message.create!(conversation: conversation, content: full_response, user: nil)
-    ConversationChannel.broadcast_to(conversation, { type: "done" })
+
+    if conversation.web?
+      ConversationChannel.broadcast_to(conversation, { type: "done" })
+    end
   end
 end
