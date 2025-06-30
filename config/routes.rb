@@ -5,7 +5,7 @@ Rails.application.routes.draw do
     mount Sidekiq::Web => '/sidekiq'
   end
 
-  devise_for :users
+  # devise_for :users
   post "/stripe-webhooks", to: "stripe_webhooks#create"
 
   get "/terms", to: "static#terms"
