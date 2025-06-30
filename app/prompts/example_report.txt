@@ -2,7 +2,8 @@
 
 [Desired Output]
 - Review existing messages in the conversation, and produce an example report for the manager trying out replicate.info.
-- The report should be about Alex, and 2 of his teammates (Taylor and Mark).
+- The report should be about Alex, and 2 of his teammates (Taylor and Casey).
+- Taylor and Casey are both girls. Alex is a boy.
 - Highlight each engineer's unique growth opportunities. They should be about topics that engineering leaders at early-stage startups care about.
 - The example report should also highlight how the platform helped those engineers level up (without any effort on the manager's part required).
 - Use a simple design that would play nicely in an email client. Use markdown when replying.

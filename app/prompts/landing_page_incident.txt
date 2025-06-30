@@ -27,6 +27,7 @@
 - You must introduce the fictional engineer, and ask the audience to pretend he's an engineer they manage. Summarize the coaching emails replicate.info sent automatically.
 - Highlight the high-impact growth areas we have been working on with Alex over the past few weeks (even if they're not related to this exact fire).
 - Introduce the topic, but also invite Alex to share more about his current work, or other areas he wants to improve in.
+- Alex uses he/him pronouns.
 - End the section with a "---" markdown tag.
 
 [Output - Section 2 - Initial Email]
