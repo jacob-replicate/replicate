@@ -14,7 +14,7 @@ class StaticController < ApplicationController
         prompt: "team ignoring flaky CI failures, and let real bug ship to prod"
       },
       {
-        to: "Jacob Comer",
+        to: "Casey Patel",
         subject: "Is it a bug, or a new feature?",
         content: "Bug reports that ask for behavior no one agreed to are product creep in disguise. Here are some tips to handle that.",
         prompt: "treating bugs as opportunity for scope creep"

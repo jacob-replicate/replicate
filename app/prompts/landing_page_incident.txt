@@ -47,21 +47,11 @@
 - The email should end on a question that invites the engineer to keep engaging with the AI agent.
 - End the section with a "---" markdown tag.
 
-[Output - Section 5 - Alex]
+[Output - Section 5 - Alex's Reply]
 - Simulate a reply from Alex, which provides more information to the question at the end of section 4.
 - The reply should highlight the engineering getting value out of the conversation, and having actionable next steps for high-impact growth opportunities.
 - Alex confirms they will look into the resources provided, and asks a follow-up question related to the topic.
 
-[Output - Section 6 - replicate.info]
-- Reference Alex's reply in Section 5, and how our platform would have followed up with helpful learning materials (e.g., YouTube videos, blog posts, book recommendations).
-- Hyperlink to helpful online content (e.g., YouTube, blog posts, book recommendations).
-- The email should end on a question that invites the engineer to keep engaging with the AI agent.
-- End the section with a "---" markdown tag.
-
-[Output - Section 7 - Alex]
-- Simulate a reply from Alex, which provides more information to the question at the end of section 6.
-- The reply should highlight the engineering getting value out of the conversation, and having actionable next steps for high-impact growth opportunities.
-- Alex confirms they will look into the resources provided, and asks a follow-up question related to the topic.
 
 [Output - Section 8 - Next Steps]
 - This section will nudge the manager reviewing replicate.info to continue engaging with the platform.
