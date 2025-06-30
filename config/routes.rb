@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   get "/privacy", to: "static#privacy"
   get "/features", to: "static#features"
   get "/pricing", to: "static#pricing"
+  get "/request-demo", to: "static#request_demo"
 
   resources :conversations, only: [:create, :show]
   resources :messages, only: [:create]

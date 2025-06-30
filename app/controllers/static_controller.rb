@@ -21,4 +21,8 @@ class StaticController < ApplicationController
   def features
     redirect_to "https://docs.google.com/document/d/1wvh5NP537XPxR9aYDnADGVbqcUkWOUdFCJpCSvSyPRA", allow_other_host: true
   end
+
+  def request_demo
+    redirect_to "https://forms.gle/PWjALvJkMR8ShNa79", allow_other_host: true
+  end
 end
