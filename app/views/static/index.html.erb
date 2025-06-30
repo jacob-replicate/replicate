@@ -4,7 +4,7 @@
       Prevent your next postmortem.
     </div>
     <div class="mb-4 text-lg md:text-md text-gray-700 tracking-[-0.01em]">
-      Fix the root causes, without lifting a finger.
+      Fix the root cause early, without lifting a finger.
     </div>
 
     <%= form_for Conversation.new, url: conversations_path, html: { id: "demo-form" } do |f| %>
@@ -33,13 +33,16 @@
 
 <div class="pb-6 md:pb-0 mt-10 lg:mt-12">
   <div class="text-md leading-relaxed max-w-[90ch] tracking-[0.008em]">
-    <div class="text-[16px]">
+    <div class="text-[17px]">
 
       <div class="mb-4">
         I spent 15 years of <%= link_to 'my career', 'https://linkedin.com/in/jacobcomer', target: "_blank", class: "text-sky-700 underline underline-offset-4" %> at B2B startups, and hate watching small blind spots turn into production incidents.
       </div>
       <div class="mb-4">
-        <span class="font-medium">replicate.info</span> helps find your team's unique growth opportunities, and sends personalized learning nudges every week. Engineers check in with an LLM, click a few links, learn something impactful, and get back to their sprint work.
+        <span class="font-semibold">replicate.info</span> helps find your team's unique growth opportunities, and sends personalized learning nudges every week. <div class="block mt-4 md:inline-block md:mt-0">Engineers check in with an LLM, click a few links, learn something impactful, and get back to their sprint work.</div>
+      </div>
+      <div class="mb-4 text-center md:text-left">
+        <img src="/email-screenshot.png" class="max-w-sm inline-block" />
       </div>
       <div class="mb-4">
         No accounts to create, or settings to mess with. Everything happens over email. You don't need another app to manage.
@@ -80,11 +83,3 @@
     });
   });
 </script>
-
-<style type="text/css">
-  body {
-    font-family: 'Suisse Intl Trial', sans-serif;
-  }
-</style>
-
-</style>
