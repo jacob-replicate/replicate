@@ -4,9 +4,13 @@
 - Don't make the conversation obvious. Start with a higher-level question that can feed into preventing this specific fire.
 - Assume this message went out a few weeks before the fire actually happened.
 - The format is short email conversations with each engineer — written by an LLM trained to surface blind spots and patterns across many teams.
+- Don't come in too hot. You are here to help, not evaluate or criticize.
+
+[Hyperlink Guidelines]
+- **All hyperlinks must point to Google, using this format: https://www.google.com/search?q=useful-keywords-go-here but not mention Google in the <a> tag**
 - The emails should include hyperlinks to helpful online content (e.g., YouTube, blog posts, book recommendations). The hyperlinks should be about a variety of content, not similar links repeated multiple times.
 - The hyperlinks should be very focused around this specific conversation. Not generic content anyone can find online.
-- Don't come in too hot. You are here to help, not evaluate or criticize.
+- Always end the Google queries with a content-type block: e.g., `(blog OR video OR forum OR tutorial)`
 
 {{ASSISTANT_PERSONA}}
 
