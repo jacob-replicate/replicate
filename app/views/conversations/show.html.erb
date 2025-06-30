@@ -95,17 +95,8 @@
 
   <div class="pb-4">
     <div class="flex items-center gap-2">
-      <textarea id="message-input"
-                placeholder="Type a message…"
-                class="w-full border border-gray-200 rounded-lg p-2 resize-none
-                       disabled:opacity-50 disabled:cursor-not-allowed"
-                rows="1"
-                oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px';"></textarea>
-      <button id="send-button"
-              class="bg-slate-500 text-white px-4 py-2 rounded-lg hover:bg-slate-600
-                     ml-auto h-full disabled:opacity-50 disabled:cursor-not-allowed">
-        Send
-      </button>
+      <textarea id="message-input" placeholder="Type a message…" class="w-full border border-gray-200 rounded-lg p-2 resize-none disabled:opacity-50 disabled:cursor-not-allowed" rows="1" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px';"></textarea>
+      <button id="send-button" class="bg-slate-600 text-white px-4 py-2 rounded-lg hover:bg-slate-700 ml-auto h-full disabled:opacity-50 disabled:cursor-not-allowed">Send</button>
     </div>
 
     <% if params[:require_tos] %>

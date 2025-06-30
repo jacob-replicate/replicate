@@ -23,6 +23,10 @@ class Conversation < ApplicationRecord
     email_regex = /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/i
     last_message = latest_user_message
 
+    if last_message.match?(email_regex)
+      # return "respond_to_user_email"
+    end
+
     if category == "landing_page"
       if messages.count == 1
         "landing_page_incident"

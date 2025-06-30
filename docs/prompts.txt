@@ -1,8 +1,10 @@
 Launch
-- Set up replicate.info email (accounts + webhooks)
+
+--- Wire up email invitation flow (FINISH THIS ONE FIRST)
+
 - Wire up the weekly check-in flow
-- Wire up email invitation flow
 - Wire up the weekly manager report flow
+- Set up replicate.info email (accounts + webhooks)
 
 Eventually:
 ------------------------------------------------------------------
@@ -17,4 +19,3 @@ Not blocking:
 - Fix scrolling + viewport height issue in chat view
 - Auto-focus the input box (on desktop at least)
 - Weird border on conversation input box - left side gets cut off
-- Cleaner mobile header links
