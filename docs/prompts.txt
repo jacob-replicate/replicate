@@ -9,8 +9,7 @@
 - Mobile header links
 - Weird border on conversation input box - left side gets cut off
 - Stripe Atlas
-- Terms + Privacy docs
-- Security / features docs
 
 Eventually:
 - Handle page refreshes while streaming text during demo.
+- Tighten up Terms + Privacy + Security + Features docs
