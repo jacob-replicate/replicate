@@ -1,18 +1,11 @@
 class ConversationsController < ApplicationController
   def create
-    hardcoded_flow_messages = [
-      "critical prod outage (due to missing DB index)",
-      "missed deadline, due to taking on unnecessary scope",
-      "we started ignoring red CI builds, because they're \"probably just flaky\"",
-      "forgot to check foreign key, and accidentally leaked data across customer dashboards"
-    ]
-
     user = current_user || create_guest_user
     @conversation = Conversation.create!(user: user, category: :landing_page)
 
     SendWebMessageWorker.new.perform(@conversation.id, "**What fire did you put out recently?**\n#{params[:initial_message]}", user.id)
 
-    if hardcoded_flow_messages.include?(params[:initial_message]).present?
+    if EXAMPLE_EMAILS.map { |email| email[:prompt] }.include?(params[:initial_message]).present?
       redirect_to conversation_path(@conversation, require_tos: true)
     else
       redirect_to conversation_path(@conversation)
