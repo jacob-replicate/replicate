@@ -46,8 +46,16 @@
         </a>
         <span class="ml-3 text-md font-medium">replicate.info</span>
       </div>
-      <button type="button" class="text-gray-800" onclick="document.getElementById('mobile-menu').classList.add('hidden')">
-        X
+      <button
+        type="button"
+        class="text-gray-600 hover:text-gray-800 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500"
+        onclick="document.getElementById('mobile-menu').classList.add('hidden')"
+        aria-label="Close menu"
+      >
+        <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18" />
+          <line x1="6" y1="6" x2="18" y2="18" />
+        </svg>
       </button>
     </div>
     <div class="mt-6 flow-root">
