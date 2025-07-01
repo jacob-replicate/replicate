@@ -1,13 +1,13 @@
 class SendWebMessageWorker
   include Sidekiq::Worker
 
-  def perform(conversation_id, message, user_id = nil)
+  def perform(conversation_id, message, user_generated = false)
     conversation = Conversation.find_by(id: conversation_id)
     return if conversation.blank?
 
     message = conversation.messages.create!(
       content: message,
-      user: User.find_by(id: user_id)
+      user_generated: user_generatedc
     )
 
     if conversation.web? && conversation.messages.count > 1

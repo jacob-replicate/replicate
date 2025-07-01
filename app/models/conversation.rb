@@ -1,5 +1,5 @@
 class Conversation < ApplicationRecord
-  belongs_to :user, optional: true
+  belongs_to :recipient, polymorphic: true
   has_many :messages, dependent: :destroy
 
   def web?
@@ -7,13 +7,13 @@ class Conversation < ApplicationRecord
   end
 
   def latest_user_message
-    messages.where(user: user).order(created_at: :desc).first&.content.to_s
+    messages.where(recipient: recipient).order(created_at: :desc).first&.content.to_s
   end
 
   def message_history
     messages.order(created_at: :asc).map do |message|
       {
-        role: message.user ? "user" : "assistant",
+        role: (message.user_generated ? "user" : "assistant"),
         content: message.content
       }
     end

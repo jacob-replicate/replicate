@@ -5,7 +5,7 @@ class MessagesController < ApplicationController
     conversation = current_user.conversations.find_by(id: params[:conversation_id])
     return head :not_found unless conversation.present?
 
-    SendWebMessageWorker.perform_async(conversation.id, params[:content], current_user.id)
+    SendWebMessageWorker.perform_async(conversation.id, params[:content], true)
     head :ok
   end
 end
