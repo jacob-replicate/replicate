@@ -7,14 +7,14 @@ class SendWebMessageWorker
 
     message = conversation.messages.create!(
       content: message,
-      user_generated: user_generatedc
+      user_generated: user_generated
     )
 
     if conversation.web? && conversation.messages.count > 1
-      ConversationChannel.broadcast_to(conversation, { message: message.content, user_submitted: message.user.present? })
+      ConversationChannel.broadcast_to(conversation, { message: message.content, user_generated: message.user_generated })
     end
 
-    if message.user.present?
+    if message.user_generated
       ReplyToWebMessageWorker.perform_async(message.id)
     end
   end

@@ -85,8 +85,8 @@
   <!-- Chat history -->
   <div id="conversation" class="flex-1 md:border border-gray-200 mb-4 md:p-4 md:rounded-lg space-y-4">
     <% @conversation.messages.order(created_at: :asc).each do |m| %>
-      <div class="flex <%= m.user.present? ? 'justify-end' : 'justify-start' %>">
-        <% message_classes = "#{base_message_classes} #{user_message_classes if m.user.present?}" %>
+      <div class="flex <%= m.user_generated ? 'justify-end' : 'justify-start' %>">
+        <% message_classes = "#{base_message_classes} #{user_message_classes if m.user_generated}" %>
         <div class="<%= message_classes %>"><%= markdown(m.content) %></div>
       </div>
     <% end %>
@@ -184,7 +184,7 @@
       { channel: "ConversationChannel", id: conversationId },
       {
         received(data) {
-          const isUser  = data.user_submitted;
+          const isUser  = data.user_generated;
           const isStream = data.type === "stream";
           const isDone   = data.type === "done";
 

@@ -7,7 +7,7 @@ class Conversation < ApplicationRecord
   end
 
   def latest_user_message
-    messages.where(recipient: recipient).order(created_at: :desc).first&.content.to_s
+    messages.where(user_generated: true).order(created_at: :desc).first&.content.to_s
   end
 
   def message_history

@@ -1,7 +1,7 @@
 class ConversationsController < ApplicationController
   def create
     user = current_user || create_guest_user
-    @conversation = Conversation.create!(user: user, category: :landing_page)
+    @conversation = Conversation.create!(recipient: user, category: :landing_page)
 
     SendWebMessageWorker.new.perform(@conversation.id, "**What fire did you put out recently?**\n#{params[:initial_message]}", user.id)
 
@@ -15,7 +15,7 @@ class ConversationsController < ApplicationController
   def show
     @conversation = Conversation.find(params[:id])
 
-    if @conversation.user.present? && @conversation.user != current_user
+    if @conversation.recipient.present? && @conversation.recipient != current_user
       flash[:alert] = "You are not authorized to view this conversation."
       redirect_to root_path
     end

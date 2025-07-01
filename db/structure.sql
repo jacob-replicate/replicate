@@ -45,7 +45,8 @@ CREATE TABLE public.ar_internal_metadata (
 
 CREATE TABLE public.conversations (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
-    user_id character varying,
+    recipient_type character varying,
+    recipient_id uuid,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     category character varying
@@ -60,7 +61,7 @@ CREATE TABLE public.messages (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
     content text,
     conversation_id character varying,
-    user_id character varying,
+    user_generated boolean,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
@@ -191,10 +192,10 @@ ALTER TABLE ONLY public.users
 
 
 --
--- Name: index_conversations_on_user_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_conversations_on_recipient; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_conversations_on_user_id ON public.conversations USING btree (user_id);
+CREATE INDEX index_conversations_on_recipient ON public.conversations USING btree (recipient_type, recipient_id);
 
 
 --
@@ -202,13 +203,6 @@ CREATE INDEX index_conversations_on_user_id ON public.conversations USING btree 
 --
 
 CREATE INDEX index_messages_on_conversation_id ON public.messages USING btree (conversation_id);
-
-
---
--- Name: index_messages_on_user_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_messages_on_user_id ON public.messages USING btree (user_id);
 
 
 --
@@ -247,7 +241,6 @@ SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
 ('20250627002421'),
-('20250627002235'),
 ('20250627002057'),
 ('20250626230505'),
 ('20250625045130'),
