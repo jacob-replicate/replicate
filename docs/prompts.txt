@@ -1,10 +1,9 @@
 Launch
 
---- Wire up email invitation flow (FINISH THIS ONE FIRST)
-
+- Make example report talk about early warning signs (around their incident, not cleaning up the mess).
+- Wire up emails + webhooks + invitation flow
 - Wire up the weekly check-in flow
 - Wire up the weekly manager report flow
-- Set up replicate.info email (accounts + webhooks)
 
 Eventually:
 ------------------------------------------------------------------
