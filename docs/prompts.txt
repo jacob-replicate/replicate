@@ -7,7 +7,7 @@ Launch
 
 Eventually:
 ------------------------------------------------------------------
-- Stripe Atlas
+- Mercury + Stripe Billing
 - Handle page refreshes while streaming text during demo.
 - Tighten up Terms + Privacy + Security + Features docs
 - Instead of linking to Google searches, just generate your own content, and link to it (to keep emails tight).

@@ -40,6 +40,21 @@ CREATE TABLE public.ar_internal_metadata (
 
 
 --
+-- Name: contacts; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.contacts (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    email text,
+    location text,
+    company_domain text,
+    state text,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
 -- Name: conversations; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -62,6 +77,20 @@ CREATE TABLE public.messages (
     content text,
     conversation_id character varying,
     user_generated boolean,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: metadata; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.metadata (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    category text,
+    identifier text,
+    content jsonb,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
@@ -152,6 +181,14 @@ ALTER TABLE ONLY public.ar_internal_metadata
 
 
 --
+-- Name: contacts contacts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.contacts
+    ADD CONSTRAINT contacts_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: conversations conversations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -165,6 +202,14 @@ ALTER TABLE ONLY public.conversations
 
 ALTER TABLE ONLY public.messages
     ADD CONSTRAINT messages_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: metadata metadata_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.metadata
+    ADD CONSTRAINT metadata_pkey PRIMARY KEY (id);
 
 
 --
@@ -240,6 +285,8 @@ CREATE UNIQUE INDEX index_users_on_unlock_token ON public.users USING btree (unl
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250701232603'),
+('20250701232143'),
 ('20250627002421'),
 ('20250627002057'),
 ('20250626230505'),
