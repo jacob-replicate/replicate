@@ -21,7 +21,7 @@
       </div>
 
       <div class="text-center mt-6">
-        <%= f.submit 'Generate My Demo', class: 'hover:scale-[1.01] transition-transform shadow-md hover:shadow-lg tracking-[0.01em] cursor-pointer rounded-lg px-5 py-2.5 text-lg font-semibold text-white bg-slate-600 hover:bg-slate-700 active:bg-slate-800 transition', tabindex: 3 %>
+        <%= f.submit 'Generate My Demo', class: 'hover:scale-[1.01] transition-transform shadow-md hover:shadow-md tracking-[0.01em] cursor-pointer rounded-lg px-5 py-2.5 text-lg font-semibold text-white bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 transition', tabindex: 3 %>
       </div>
     <% end %>
   </div>
@@ -51,9 +51,9 @@
             <div class="text-slate-600">
               <span class="font-medium text-slate-800"><%= email[:subject] %></span><br>
               <%= email[:content] %>
-              <div class="mt-4">
-                <a href="#" data-example="<%= email[:prompt] %>" class="example-btn font-medium transition hover:scale-[1.07] inline-block bg-indigo-700 text-white rounded px-4 py-1.5 shadow">Learn More</a>
-              </div>
+            </div>
+            <div class="mt-4">
+              <a href="#" data-example="<%= email[:prompt] %>" class="example-btn font-medium transition hover:scale-[1.04] inline-block bg-slate-600 text-white rounded px-3 py-1 shadow">View Conversation</a>
             </div>
           </div>
         <% end %>
