@@ -1,27 +1,30 @@
 <div class="flex flex-col-reverse lg:flex-row gap-8 md:gap-12 items-center md:pt-14">
   <div class="lg:basis-[40%] w-full">
-    <div class="mb-1 text-2xl font-bold leading-tight tracking-[-0.008em]">
+    <div class="mb-1 text-2xl font-bold tracking-[-0.008em]">
       Prevent your next postmortem.
     </div>
-    <div class="mb-4 text-lg md:text-md text-gray-700 tracking-[-0.01em]">
-      Fix root causes early, without lifting a finger
+    <div class="mb-4 text-gray-700 tracking-[-0.01em]" style="font-size: 17px">
+      We email personalized learning nudges to your engineers every week — No logins. No dashboards. No extra effort required from tech leads.
     </div>
 
     <%= form_for Conversation.new, url: conversations_path, html: { id: "demo-form" } do |f| %>
       <div class="p-3 rounded-xl bg-gray-50 shadow border border-gray-100">
-        <label for="initial_message" class="block text-gray-900 mb-3">
+        <label for="initial_message" class="block text-gray-900 mb-3 font-medium">
           What fire did your team put out recently?
         </label>
 
-        <%= text_area_tag :initial_message, "", class: 'block w-full rounded-md bg-white px-3 py-2 text-base text-gray-900 border border-gray-200 outline-1 outline-indigo-300 placeholder:text-gray-400 focus:outline-2 focus:outline-indigo-600 sm:text-sm', rows: 3, placeholder: 'e.g., crashed DB because forgot index', tabindex: 1 %>
+        <%= text_area_tag :initial_message, "", class: 'block w-full rounded-md bg-white px-3 py-2 text-base text-gray-900 border-2 border-gray-200 focus:border-indigo-600 focus:ring-0 placeholder:text-gray-400 sm:text-sm', rows: 3, placeholder: 'e.g., crashed DB because forgot index', tabindex: 1 %>
+        <div id="terms-container" class="mt-3 text-xs text-gray-500 text-center">
+          By submitting, you agree to the <a href="/terms" class="text-blue-500 hover:underline">Terms</a> and <a href="/privacy" class="text-blue-500 hover:underline">Privacy Policy</a>
+        </div>
       </div>
 
-      <div id="terms-container" class="mt-3 text-xs text-gray-500 text-center">
-        By submitting, you agree to the <a href="/terms" class="text-blue-500 hover:underline">Terms</a> and <a href="/privacy" class="text-blue-500 hover:underline">Privacy Policy</a>
-      </div>
 
       <div class="text-center mt-6">
-        <%= f.submit 'Generate My Demo', class: 'hover:scale-[1.01] transition-transform shadow-md hover:shadow-md tracking-[0.01em] cursor-pointer rounded-lg px-5 py-2.5 text-lg font-semibold text-white bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 transition', tabindex: 3 %>
+        <%= f.submit 'What was the lesson here?', class: 'ring-1 ring-indigo-300 shadow-sm hover:scale-[1.01] transition-transform hover:shadow-md tracking-[0.01em] cursor-pointer rounded-lg px-5 py-2.5 text-lg font-semibold text-white bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 transition', tabindex: 3 %>
+      </div>
+      <div class="text-center mt-4 text-sm text-gray-400">
+        No login or credit card required.
       </div>
     <% end %>
   </div>
@@ -37,7 +40,7 @@
 
       <div class="max-w-[90ch]">
         <div class="mb-4">
-          <span class="font-semibold">replicate.info</span> helps engineering teams find their blind spots, and sends personalized learning nudges throughout the week. <div class="block mt-4 md:inline md:mt-0">Check in with a curated LLM on Monday, click a few links, learn something impactful, and get back to your sprint work.</div>
+          <span class="font-semibold">replicate.info</span> helps engineering teams spot blind spots early with personalized coaching, and provides resources to level up. <div class="block mt-4 md:inline md:mt-0">Check in with a curated LLM on Monday, click a few links, learn something impactful, and get back to your sprint work.</div>
         </div>
         <div class="mb-6">
           I spent 15 years of <%= link_to 'my career', 'https://linkedin.com/in/jacobcomer', target: "_blank", class: "text-sky-700 hover:text-sky-900 hover:font-medium underline underline-offset-8" %> at B2B startups, and hate watching preventable issues snowball into production incidents.
@@ -59,7 +62,7 @@
                 </div>
               </div>
             </div>
-            <div class="bg-neutral-50 p-2.5 border-l border-r border-gray-200 border-b rounded-bl-md rounded-br-md">
+            <div class="bg-neutral-50 p-2.5 border-l border-r border-gray-150 border-b rounded-bl-md rounded-br-md">
               <div class="text-slate-600">
                 <span class="font-medium text-slate-800 text-base block mb-2" style="font-size: 15px"><%= email[:subject] %></span>
                 <div class="text-sm"><%= email[:content] %></div>
@@ -73,10 +76,10 @@
       </div>
       <div class="max-w-[90ch]">
         <div class="mb-4">
-          Nobody has to create an account. <span class="font-semibold">Everything happens over email</span>. I like designing for startups who don't have time to manage another SaaS tool. Think of it as a simple way to add leverage in fast-paced Series B environments.
+          Nobody has to create an account. <span class="font-semibold">Everything happens over email</span>. I like designing for startups who don't have time to manage another SaaS tool. Think of it as a simple way to add leverage in high-pressure Series B environments.
         </div>
         <div>
-          Tech leads get weekly reports on growth and early red flags, so you can focus on helping the team ship faster.
+          Tech leads get weekly reports on growth and early warning signs, so you can focus on helping the team ship faster.
         </div>
       </div>
     </div>
