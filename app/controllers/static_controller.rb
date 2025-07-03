@@ -27,6 +27,6 @@ class StaticController < ApplicationController
   end
 
   def knowledge_gaps
-
+    redirect_to "https://docs.google.com/document/d/1YSmtsZYZ6qJrTOv4raqOUcU2Q1YvrVTzlab9QjUFT50/edit", allow_other_host: true
   end
 end

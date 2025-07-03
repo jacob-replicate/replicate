@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   get "/features", to: "static#features"
   get "/pricing", to: "static#pricing"
   get "/request-demo", to: "static#request_demo"
+  get '/knowledge-gaps', to: "static#knowledge_gaps"
 
   resources :conversations, only: [:create, :show]
   resources :messages, only: [:create]
