@@ -50,29 +50,35 @@
       </div>
       <div class="mb-6 flex gap-4">
         <% EXAMPLE_EMAILS.each_with_index do |email, i| %>
-          <div class="shadow-sm bg-transparent rounded-md md:basis-1/3 md:block <%= i > 0 ? "hidden" : "" %>">
-            <div class="py-1.5 px-2.5 border border-gray-150 text-sm rounded-tl-md rounded-tr-md" style="font-family: 'Source Code Pro'; background-color: #FEFBC7">
-              <div class="flex items-center justify-between">
-                <div class="basis-3/4">
-                  <div class="text-slate-800"><span class="font-semibold">To:</span> <%= email[:to] %></div>
-                </div>
+          <div class="bg-white border border-neutral-200 shadow rounded-2xl p-6 space-y-4 md:basis-1/3 md:block <%= i > 0 ? "hidden" : "" %>">
 
-                <div class="text-right basis-1/4">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 22px; display: inline-block" class="text-gray-500">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
-                  </svg>
-                </div>
-              </div>
+            <!-- Recipient Name -->
+            <div class="text-sm text-neutral-500 tracking-wide">
+              <%= email[:to] %>
             </div>
-            <div class="bg-neutral-50 p-2.5 border-l border-r border-gray-150 border-b rounded-bl-md rounded-br-md">
-              <div class="text-slate-600">
-                <span class="font-medium text-slate-800 text-base block mb-2" style="font-size: 15px"><%= email[:subject] %></span>
-                <div class="text-sm"><%= email[:content] %></div>
-              </div>
-              <div class="mt-4">
-                <a href="#" data-example="<%= email[:prompt] %>" class="text-sm example-btn font-medium transition hover:scale-[1.04] inline-block bg-slate-600 text-white rounded-md px-3 py-1.5 shadow">See the full coaching thread</a>
-              </div>
+
+            <!-- Coaching Subject -->
+            <div class="text-base text-neutral-900 font-semibold leading-snug">
+              <%= email[:subject] %>
             </div>
+
+            <!-- Coaching Body -->
+            <div class="text-sm text-neutral-700 leading-relaxed tracking-wide">
+              <%= email[:content] %>
+            </div>
+
+            <!-- CTA -->
+            <div>
+              <a href="#" data-example="<%= email[:prompt] %>" class="example-btn inline-block rounded-md border border-neutral-300 bg-white text-sm text-neutral-800 font-medium px-3 py-1.5 transition hover:bg-neutral-100">
+                Read the full coaching thread
+              </a>
+            </div>
+
+            <!-- Optional Footer Line -->
+            <div class="text-xs text-neutral-400 pt-2">
+              Sent quietly every Monday
+            </div>
+
           </div>
         <% end %>
       </div>

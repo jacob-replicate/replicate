@@ -1,20 +1,20 @@
 EXAMPLE_EMAILS = [
   {
     to: "Alex Shaw",
-    subject: "N+1 queries explained in 30 seconds",
-    content: "One query quietly explodes into hundreds. This pattern hides in loops, and often won’t show up until we hit real traffic...",
+    subject: "N+1 queries in 30 seconds",
+    content: "One query quietly explodes into hundreds. This pattern hides in loops, and usually only impacts production.",
     prompt: "we took production down for 8 minutes (due to forgetting to add a DB index)"
   },
   {
     to: "Taylor Morales",
-    subject: "Survive now, scale later",
-    content: "Premature optimization is a luxury. At this stage, fast feedback and real usage matter more than perfect infra. Make it work — then make it better.",
+    subject: "Survive Now, Scale Later",
+    content: "Premature optimization is a luxury. At our stage, fast feedback and real usage matter more than perfect infra.",
     prompt: "built a queueing system to support 100x load before validating demand"
   },
   {
     to: "Casey Patel",
     subject: "The rollback failed. Now what?",
-    content: "If your disaster recovery plan isn't tested, it's not real. Break-glass deploys need their own playbook.",
+    content: "If our disaster recovery plan isn't tested, it isn't real. Break-glass deploys need their own playbook.",
     prompt: "hotfix made things worse, rollback also failed"
   }
 ]
