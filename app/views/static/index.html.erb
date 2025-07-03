@@ -1,10 +1,10 @@
-<div class="flex flex-col-reverse lg:flex-row gap-8 md:gap-12 items-center md:pt-14">
-  <div class="lg:basis-[40%] w-full">
+<div class="flex flex-col-reverse lg:flex-row gap-8 md:gap-12 md:pt-14">
+  <div class="lg:basis-[45%] w-full">
     <div class="mb-1 text-2xl font-bold tracking-[-0.008em]">
       Prevent your next postmortem.
     </div>
-    <div class="mb-4 tracking-[-0.01em]" style="font-size: 17px">
-      We email personalized learning nudges to your engineers every week — No logins. No dashboards. No extra effort required from tech leads.
+    <div class="mb-8 text-gray-700 ">
+      I'll email personalized learning nudges to your engineers every Monday — No logins. No extra work.
     </div>
 
     <%= form_for Conversation.new, url: conversations_path, html: { id: "demo-form" } do |f| %>
@@ -24,12 +24,12 @@
         <%= f.submit 'View Coaching Example', class: 'shadow-sm hover:scale-[1.01] transition-transform hover:shadow-md tracking-[0.01em] cursor-pointer rounded-lg px-5 py-2.5 text-lg font-semibold text-white bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 transition', tabindex: 3 %>
       </div>
       <div class="text-center mt-4 text-sm text-gray-400">
-        No login or credit card required.
+        No logins or credit cards
       </div>
     <% end %>
   </div>
 
-  <div class="lg:basis-[60%] w-full relative">
+  <div class="lg:basis-[55%]">
     <img src="/hero.jpg" class="w-full rounded-lg shadow-md" />
   </div>
 </div>
@@ -39,11 +39,16 @@
     <div class="text-[17px]">
 
       <div class="max-w-[90ch]">
-        <div class="mb-4">
-          <span class="font-semibold">replicate.info</span> helps engineering teams spot blind spots early with personalized coaching, and provides resources to level up. <div class="block mt-4 md:inline md:mt-0">Check in with a curated LLM on Monday, click a few links, learn something impactful, and get back to your sprint work.</div>
-        </div>
         <div class="mb-6">
-          I spent 15 years of <%= link_to 'my career', 'https://linkedin.com/in/jacobcomer', target: "_blank", class: "text-sky-700 hover:text-sky-900 hover:font-medium underline underline-offset-8" %> at B2B startups, and hate watching preventable issues snowball into production incidents.
+          I spent 15 years of <%= link_to 'my career', 'https://linkedin.com/in/jacobcomer', target: "_blank", class: "text-sky-700 hover:text-sky-900 hover:font-medium underline underline-offset-[6px]" %> at B2B startups, and hate watching small blind spots turn into production incidents.
+        </div>
+
+        <div class="mb-4">
+          <span class="font-semibold">replicate.info</span> is for EM's who want to help their teams level up with modern tech, but don't have time to manage another SaaS tool. I fed a list of <a href="#" class="text-sky-700 underline underline-offset-[6px]">knowledge gaps</a> that can tank your sprint into an LLM. It emails your engineers every Monday, and helps them consistently find impactful areas to work on next. No logins. No extra work required from you.
+        </div>
+
+        <div class="mb-4">
+
         </div>
       </div>
       <div class="mb-6 flex gap-4">
@@ -76,10 +81,10 @@
       </div>
       <div class="max-w-[90ch]">
         <div class="mb-4">
-          Nobody has to create an account. <span class="font-semibold">Everything happens over email</span>. I like designing for startups who don't have time to manage another SaaS. Think of it as a simple way to prevent common mistakes in high-pressure Series B environments.
+          It costs <span class="font-semibold">$30</span>/mo (USD) per user. Your first month is free. No onboarding. Just send it your team's email addresses.
         </div>
         <div>
-          Tech leads get weekly reports on growth and early warning signs, so you can focus on helping the team ship faster.
+          Team leads get weekly reports on growth and early warning signs, so you can focus on helping the team ship faster.
         </div>
       </div>
     </div>

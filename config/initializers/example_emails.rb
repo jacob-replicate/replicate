@@ -7,14 +7,14 @@ EXAMPLE_EMAILS = [
   },
   {
     to: "Taylor Morales",
-    subject: "Flaky tests cost more than you think",
-    content: "If a test fails for the wrong reason, we learn to ignore it — until we ignore the right failures too. Flaky tests kill trust in CI.",
-    prompt: "team ignoring flaky CI failures, and let real bug ship to prod"
+    subject: "Survive now, scale later",
+    content: "Premature optimization is a luxury. At this stage, fast feedback and real usage matter more than perfect infra. Make it work — then make it better.",
+    prompt: "built a queueing system to support 100x load before validating demand"
   },
   {
     to: "Casey Patel",
-    subject: "Is it a bug, or a new feature?",
-    content: "Bug reports that ask for behavior no one agreed to are product creep in disguise. Here are some tips to handle that.",
-    prompt: "treating bugs as opportunity for scope creep"
+    subject: "The rollback failed. Now what?",
+    content: "If your disaster recovery plan isn't tested, it's not real. Break-glass deploys need their own playbook.",
+    prompt: "hotfix made things worse, rollback also failed"
   }
 ]

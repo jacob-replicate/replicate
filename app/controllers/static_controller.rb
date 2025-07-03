@@ -25,4 +25,8 @@ class StaticController < ApplicationController
   def request_demo
     redirect_to "https://forms.gle/PWjALvJkMR8ShNa79", allow_other_host: true
   end
+
+  def knowledge_gaps
+
+  end
 end
