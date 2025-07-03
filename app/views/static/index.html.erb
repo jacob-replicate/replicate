@@ -1,16 +1,16 @@
 <div class="flex flex-col-reverse lg:flex-row gap-8 md:gap-12 md:pt-14">
   <div class="lg:basis-[45%] w-full">
     <div class="mb-1 text-2xl font-bold tracking-[-0.008em]">
-      Prevent your next postmortem.
+      Raise the bar, before it breaks.
     </div>
     <div class="mb-8 text-gray-700 ">
-      I'll email personalized learning nudges to your engineers every Monday — No logins. No extra work.
+      Tailored coaching delivered straight to your engineers' inboxes. No logins. No dashboards. No extra work.
     </div>
 
     <%= form_for Conversation.new, url: conversations_path, html: { id: "demo-form" } do |f| %>
       <div class="p-3 rounded-xl bg-gray-50 shadow border border-gray-100">
         <label for="initial_message" class="block text-gray-900 mb-3 font-medium">
-          What fire did your team put out recently?
+          What issue disrupted your team recently?
         </label>
 
         <%= text_area_tag :initial_message, "", class: 'block w-full rounded-md bg-white px-3 py-2 text-base text-gray-900 border-2 border-gray-200 focus:border-indigo-600 focus:ring-0 placeholder:text-gray-400 sm:text-sm', rows: 3, placeholder: 'e.g., crashed DB because forgot index', tabindex: 1 %>
@@ -22,9 +22,6 @@
 
       <div class="text-center mt-6">
         <%= f.submit 'View Coaching Example', class: 'shadow-sm hover:scale-[1.01] transition-transform hover:shadow-md tracking-[0.01em] cursor-pointer rounded-lg px-5 py-2.5 text-lg font-semibold text-white bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 transition', tabindex: 3 %>
-      </div>
-      <div class="text-center mt-4 text-sm text-gray-400">
-        No logins or credit cards
       </div>
     <% end %>
   </div>
@@ -81,10 +78,10 @@
       </div>
       <div class="max-w-[90ch]">
         <div class="mb-4">
-          It costs <span class="font-semibold">$30</span>/mo (USD) per user. Your first month is free. No onboarding. Just send it your team's email addresses.
+          <span class="font-semibold">$30</span> user/month. No trial. No setup. Just send over your team’s emails. Everything else is taken care of.
         </div>
         <div>
-          Team leads get weekly reports on growth and early warning signs, so you can focus on helping the team ship faster.
+          Every Friday, you get a clear view of team growth, morale trends, and delivery risk — in one email.
         </div>
       </div>
     </div>

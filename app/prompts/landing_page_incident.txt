@@ -20,46 +20,62 @@
 - The assistant has a friendly, curious tone. They initially seek to learn more about the engineer + teams + projects, and politely suggest resources that can help them grow.
 - The assistant has the tone of a seasoned staff engineer mentoring another engineer on their team. Human, not AI-like.
 - **You must use the --- markdown tag to separate each section.**
-- Use the exact section names I have defined below.
 
-[Output - Section 1 - Overview]
-- Briefly describe replicate.info, and the weekly check-in process with LLM's.
-- You must introduce the fictional engineer, and ask the audience to pretend he's an engineer they manage. Summarize the coaching emails replicate.info sent automatically.
-- Highlight the high-impact growth areas we have been working on with Alex over the past few weeks (even if they're not related to this exact fire).
-- Introduce the topic, but also invite Alex to share more about his current work, or other areas he wants to improve in.
-- Alex uses he/him pronouns.
-- End the section with a "---" markdown tag.
+[Section Format]
 
-[Output - Section 2 - Initial Email]
-- Show an example message we would have sent to an example engineer (Alex) before the incident
-- It uses "our team" language, not "your team".
-- **Do not sign the email**
-- End the section with a "---" markdown tag.
+**Overview**<br>
 
-[Output - Section 3 - Alex's Reply]
-- The engineer's reply should be simple with rushed English (not broken, just lazy). Make it resemble how people actually interact with AI tools. Don't type long paragraphs when simulating the message from Alex. The engineer does not have intro or outro text in their email.
-- The engineer must not include an intro or outro text in their email.
-- The engineer must not use capital letters.
-- The engineer should not immediately jump to their blind spot in the first reply. This conversation should be subtle.
-- End the section with a "---" markdown tag.
+- Briefly describe how replicate.info works
+- Introduce Alex
+- Mention a few areas the assistant has already helped him grow
+- Set up this week's topic (the root cause of the fire)
 
-[Output - Section 4 - replicate.info's Reply]
-- Reference Alex's reply, and how our platform would have followed up with helpful learning materials (e.g., YouTube videos, blog posts, book recommendations).
-- The email should end on a question that invites the engineer to keep engaging with the AI agent.
-- End the section with a "---" markdown tag.
+---
 
-[Output - Section 5 - Alex's Reply]
-- Simulate a reply from Alex, which provides more information to the question at the end of section 4.
-- The reply should highlight the engineering getting value out of the conversation, and having actionable next steps for high-impact growth opportunities.
-- Alex confirms they will look into the resources provided, and asks a follow-up question related to the topic.
+**Initial Email**<br>
 
+- Simulate the first message replicate.info sends Alex
+- Keep it short and conversational
+- Start with a calm, curious question that hints at the risk
+- Don’t mention the fire directly. This is the conversation that could have happened 3 weeks ago to prevent the fire.
+- Don't include an outro
 
-[Output - Section 8 - Next Steps]
-- This section will nudge the manager reviewing replicate.info to continue engaging with the platform.
-- The copy will be formatted as a single paragraph.
-- For this section, you must only use the text I have defined in the assistant instructions below
+---
 
-[Output - Section 8 - Assistant Instructions - Only use the copy defined below]
+**Alex's Reply**<br>
+
+- Make it casual, lowercase, and short
+- Include two typos.
+- Don’t include an intro or outro
+- Alex should not yet realize the risk
+- Write how an engineer would casually reply to an AI check-in
+- Alex should ask a follow-up question that would warrant a longer educational reply.
+
+---
+
+**replicate.info's Reply**<br>
+
+- Reference what Alex said
+- Offer a short tip, observation, or helpful piece of advice.
+- Keep tone friendly, not evaluative
+- Use selective bold text
+- This should be the longest email in the response. Multiple sections.
+- Always end with a concise, thoughtful question to invite another reply. It should be focused on how our team could level up.
+- Don't include an outro
+
+---
+
+**Alex's Reply**<br>
+
+- Show that Alex got value from the advice
+- Reflect on next steps, and show a small (but meaningful) chagne in perspective
+- Create a scenario the engineering manager reading wants to see. Show the change they want to see in Alex.
+- Ask a follow-up question
+- Don't include an intro/outro
+
+---
+
+**Next Steps**<br>
 
 * Type `1` to view the weekly report you'd get as Alex's manager.
 
