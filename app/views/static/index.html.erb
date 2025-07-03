@@ -35,23 +35,33 @@
   <div class="text-md leading-relaxed tracking-[0.008em]">
     <div class="text-[17px]">
 
-      <div class="max-w-[90ch]">
-        <div class="mb-6">
-          I spent 15 years of <%= link_to 'my career', 'https://linkedin.com/in/jacobcomer', target: "_blank", class: "text-sky-700 hover:text-sky-900 hover:font-medium underline underline-offset-[6px]" %> at B2B startups, and hate watching small blind spots turn into production incidents.
+      <div class="mt-16 max-w-[90ch] text-[17px] leading-relaxed text-gray-800 space-y-6 mb-8">
+        <p>
+          I spent 15 years of
+          <%= link_to 'my career', 'https://linkedin.com/in/jacobcomer', target: "_blank", class: "text-sky-700 hover:text-sky-900 hover:font-medium underline underline-offset-[6px]" %>
+          at B2B startups, and hate watching small blind spots turn into production incidents.
+        </p>
+
+        <!-- Mobile-friendly version -->
+        <div class="block md:hidden space-y-4">
+          <p><span class="font-semibold">replicate.info</span> is for EM's who want to help their teams level up with modern tech, but don't have time to manage another SaaS tool. .</p>
+          <p>I fed a list of
+            <a href="/knowledge-gaps" class="text-sky-700 underline underline-offset-[6px] hover:font-medium" target="_blank">knowledge gaps</a>
+            that can tank your sprint into an LLM. It emails your engineers every Monday, and helps them consistently find impactful areas to work on next.
+          </p>
         </div>
 
-        <div class="mb-4">
-          <span class="font-semibold">replicate.info</span> is for EM's who want to help their teams level up with modern tech, but don't have time to manage another SaaS tool. I fed a list of <a href="/knowledge-gaps" class="text-sky-700 underline underline-offset-[6px]" target="_blank">knowledge gaps</a> that can tank your sprint into an LLM. It emails your engineers every Monday, and helps them consistently find impactful areas to work on next. No logins. No extra work required from you.
-        </div>
-
-        <div class="mb-4">
-
-        </div>
+        <!-- Desktop version -->
+        <p class="hidden md:block">
+          <span class="font-semibold">replicate.info</span> is for EM's who want to help their teams level up with modern tech, but don't have time to manage another SaaS tool. I fed a list of
+          <a href="/knowledge-gaps" class="text-sky-700 underline underline-offset-[6px] hover:font-medium" target="_blank">knowledge gaps</a>
+          that can tank your sprint into an LLM. It emails your engineers every Monday, and helps them consistently find impactful areas to work on next. No logins. No extra work required from you.
+        </p>
       </div>
       <div class="mb-6 flex gap-4">
         <% EXAMPLE_EMAILS.each_with_index do |email, i| %>
-          <div class="bg-white border border-gray-200 shadow rounded-xl p-5 space-y-4">
-            <div class="flex items-center justify-between">
+          <div class="bg-white border border-gray-200 shadow rounded-xl p-5 space-y-4 md:block <%= i > 0 ? "hidden" : "" %>">
+            <div class="flex items-center justify-between align-middle">
               <div class="text-sm text-gray-500"><%= email[:to] %></div>
               <img src="/jacob.jpg" alt="Avatar" class="w-8 h-8 rounded-full" />
             </div>
@@ -71,13 +81,13 @@
           </div>
         <% end %>
       </div>
-      <div class="max-w-[90ch]">
-        <div class="mb-4">
+      <div class="mt-8 max-w-[90ch] text-[17px] leading-relaxed text-gray-800 space-y-6 mb-8">
+        <p>
           <span class="font-semibold">$30</span> user/month. No trial. No setup. Just send over your team’s emails. Everything else is taken care of.
-        </div>
-        <div>
+        </p>
+        <p>
           Every Friday, you get a clear view of team growth, morale trends, and delivery risk — in one email.
-        </div>
+        </p>
       </div>
     </div>
   </div>
