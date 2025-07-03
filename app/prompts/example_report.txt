@@ -2,13 +2,15 @@
 
 [Desired Output]
 - Review existing messages in the conversation, and produce an example report for the manager trying out replicate.info.
-- The report should be about Alex, and 2 of his teammates (Taylor and Casey).
-- Taylor and Casey are both girls. Alex is a boy.
-- Highlight each engineer's unique growth opportunities. They should be about topics that engineering leaders at early-stage startups care about.
+- The report should be about Alex (Engineer II), and 3 of her teammates. Taylor (Senior Engineer), Casey (Staff Site Reliability Engineer)
+- Highlight each engineer's unique growth opportunities. They should be about core engineer topics that engineering leaders at Series B startups want to raise the bar in ASAP.
 - The example report should also highlight how the platform helped those engineers level up (without any effort on the manager's part required).
+- For the more experienced engineers, the topics should be much more concrete. For the less experienced engineers, the content can be more general.
 - Use a simple design that would play nicely in an email client. Use markdown when replying.
-- Do not leave a footer at the bottom of the report. End the conversation with the following CTA, word-for-word
 - Use the --- tag to separate different engineers' sections in the report.
+- **Use 2 newlines to separate paragraphs and headers.**<br>
+- Provide lots of detail about each team member. Reference how they're developing across the quarter, not just in the most recent AI check-in.
+- Do not leave a footer at the bottom of the report. End the conversation with the following CTA, word-for-word
 
 [CTA]
 **Next Steps**
@@ -17,6 +19,6 @@ Pricing is **$30/mo** (USD) per engineer. Your first full calendar month is free
 
 Want to try it out yourself for a few weeks (and hopefully learn something cool)?
 
-Just type your **email**, and the system will check in next Monday. No credit card required.
+Just type your **email** below, and **replicate.info** will check in next Monday. No need to make an account, or type in your credit card.
 
 {{PLATFORM_OVERVIEW}}

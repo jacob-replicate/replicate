@@ -3,7 +3,7 @@ EXAMPLE_EMAILS = [
     to: "Alex Shaw",
     subject: "N+1 queries in 30 seconds",
     content: "One query quietly explodes into hundreds. This pattern hides in loops, and usually only impacts production.",
-    prompt: "we took production down for 8 minutes (due to forgetting to add a DB index)"
+    prompt: "we forgot to add a DB index, and took down production for 6 minutes"
   },
   {
     to: "Taylor Morales",

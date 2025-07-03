@@ -1,11 +1,11 @@
-<div class="flex flex-col-reverse lg:flex-row gap-10 pt-14">
+<div class="flex flex-col-reverse lg:flex-row gap-8 md:pt-10">
   <!-- Left Column: Headline + Form -->
   <div class="lg:w-1/2 w-full">
-    <h1 class="text-3xl font-bold tracking-tight mb-3">
+    <h1 class="text-2xl md:text-3xl font-bold tracking-tight mb-3">
       Raise the bar, before it breaks.
     </h1>
-    <p class="text-gray-700 mb-8 leading-relaxed text-[17px]">
-      Tailored coaching delivered straight to your engineers' inboxes. No logins. No dashboards. No extra work.
+    <p class="text-gray-800 mb-8 leading-relaxed text-[17px]">
+      Tailored coaching delivered straight to your engineers' inboxes. No logins.<span class="hidden md:inline"> No dashboards.</span> No extra work.
     </p>
 
     <%= form_for Conversation.new, url: conversations_path, html: { id: "demo-form" } do |f| %>
@@ -13,14 +13,14 @@
         <label for="initial_message" class="block text-gray-900 mb-2 font-medium">
           What issue disrupted your team recently?
         </label>
-        <%= text_area_tag :initial_message, "", class: 'w-full rounded-md bg-white px-4 py-2 text-sm text-gray-900 border border-gray-300 focus:border-indigo-600 focus:ring-0 placeholder:text-gray-400', rows: 3, placeholder: 'e.g., crashed DB because forgot index', tabindex: 1 %>
+        <%= text_area_tag :initial_message, "", class: 'w-full rounded-md bg-white px-4 py-2 text-sm text-gray-900 border border-gray-300 focus:border-indigo-600 focus:ring-0 placeholder:text-gray-400', rows: 3, placeholder: 'e.g., missed subtle regression during PR review', tabindex: 1 %>
         <div class="mt-3 text-xs text-gray-500 text-center">
           By submitting, you agree to the <a href="/terms" class="text-blue-500 hover:underline">Terms</a> and <a href="/privacy" class="text-blue-500 hover:underline">Privacy Policy</a>
         </div>
       </div>
 
       <div class="text-center mt-6">
-        <%= f.submit 'View Coaching Example', class: 'rounded-lg px-5 py-2.5 text-base font-semibold text-white bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 transition shadow-sm hover:shadow-md focus:outline-none', tabindex: 3 %>
+        <%= f.submit 'Try the AI Coaching Demo &rarr;'.html_safe, class: 'cursor-pointer rounded-lg px-5 py-2.5 text-lg font-semibold text-white bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 transition shadow-sm hover:shadow-md focus:outline-none', tabindex: 3 %>
       </div>
     <% end %>
   </div>
@@ -37,25 +37,18 @@
 
       <div class="mt-16 max-w-[90ch] text-[17px] leading-relaxed text-gray-800 space-y-6 mb-8">
         <p>
-          I spent 15 years of
-          <%= link_to 'my career', 'https://linkedin.com/in/jacobcomer', target: "_blank", class: "text-sky-700 hover:text-sky-900 hover:font-medium underline underline-offset-[6px]" %>
-          at B2B startups, and hate watching small blind spots turn into production incidents.
+          I spent 15 years of <%= link_to 'my career', 'https://linkedin.com/in/jacobcomer', target: "_blank", class: "text-sky-700 hover:text-sky-900 hover:font-medium underline underline-offset-[6px]" %> at B2B startups, and hate watching small blind spots turn into production incidents.
         </p>
 
         <!-- Mobile-friendly version -->
         <div class="block md:hidden space-y-4">
-          <p><span class="font-semibold">replicate.info</span> is for EM's who want to help their teams level up with modern tech, but don't have time to manage another SaaS tool. .</p>
-          <p>I fed a list of
-            <a href="/knowledge-gaps" class="text-sky-700 underline underline-offset-[6px] hover:font-medium" target="_blank">knowledge gaps</a>
-            that can tank your sprint into an LLM. It emails your engineers every Monday, and helps them consistently find impactful areas to work on next.
-          </p>
+          <p><span class="font-semibold">replicate.info</span> is for EM's who want to help their teams level up with modern tech, but don't have time to manage another SaaS tool.</p>
+          <p>I fed a list of <a href="/knowledge-gaps" class="text-sky-700 underline underline-offset-[6px] hover:font-medium" target="_blank">knowledge gaps</a> that can tank your sprint into an LLM. It emails your engineers every Monday, and helps them consistently find impactful areas to work on next. </p>
         </div>
 
         <!-- Desktop version -->
         <p class="hidden md:block">
-          <span class="font-semibold">replicate.info</span> is for EM's who want to help their teams level up with modern tech, but don't have time to manage another SaaS tool. I fed a list of
-          <a href="/knowledge-gaps" class="text-sky-700 underline underline-offset-[6px] hover:font-medium" target="_blank">knowledge gaps</a>
-          that can tank your sprint into an LLM. It emails your engineers every Monday, and helps them consistently find impactful areas to work on next. No logins. No extra work required from you.
+          <span class="font-semibold">replicate.info</span> is for EM's who want to help their teams level up with modern tech, but don't have time to manage another SaaS tool. I fed a list of <a href="/knowledge-gaps" class="text-sky-700 underline underline-offset-[6px] hover:font-medium" target="_blank">knowledge gaps</a> that can tank your sprint into an LLM. It emails your engineers every Monday, and helps them consistently find impactful areas to work on next. No logins. No extra work required from you.
         </p>
       </div>
       <div class="mb-6 flex gap-4">
@@ -63,7 +56,7 @@
           <div class="bg-white border border-gray-200 shadow rounded-xl p-5 space-y-4 md:block <%= i > 0 ? "hidden" : "" %>">
             <div class="flex items-center justify-between align-middle">
               <div class="text-sm text-gray-500"><%= email[:to] %></div>
-              <img src="/jacob.jpg" alt="Avatar" class="w-8 h-8 rounded-full" />
+              <img src="/profile-photo-<%= i + 1 %>.jpg" alt="Avatar" class="w-10 h-10 rounded-full overflow-hidden" />
             </div>
 
             <div class="text-base font-semibold text-gray-900"><%= email[:subject] %></div>
@@ -83,7 +76,7 @@
       </div>
       <div class="mt-8 max-w-[90ch] text-[17px] leading-relaxed text-gray-800 space-y-6 mb-8">
         <p>
-          <span class="font-semibold">$30</span> user/month. No trial. No setup. Just send over your team’s emails. Everything else is taken care of.
+          <span class="font-semibold">$30</span> user/mo (USD). 1-month trial. No setup. Just <a href="#" data-example="enabled a feature flag 2 weeks early in production" class="example-btn text-sky-700 underline-offset-[6px] underline">send over</a> your team’s emails. Everything else is taken care of.
         </p>
         <p>
           Every Friday, you get a clear view of team growth, morale trends, and delivery risk — in one email.
