@@ -1,3 +1,28 @@
+class Contractor
+  has_many :role_assignments, as: :principal
+end
+
+class Email
+  has_many :role_assignments, as: :resource
+  validates :state, inclusion: { in: %w[pending_review pending_approval pending_delivery delivered failed] }
+end
+
+class RoleAssignment
+  belongs_to :resource, polymorphic: true
+  belongs_to :principal, polymorphic: true
+
+  before_validation :validate_contractor_permissions, if: -> { principal.is_a?(Contractor) }
+
+  def validate_contractor_permissions
+    return if resource.nil? || principal.nil?
+
+    if resource.is_a?(Email) && principal.role_assignments.where(resource_type: "Email").count >= 10
+      errors.add(:base, "Contractors can only have up to 10 emails in their queue at a time.")
+    end
+  end
+end
+
+
 #----------------------
 #
 #Organization
