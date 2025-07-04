@@ -8,7 +8,7 @@ EXAMPLE_EMAILS = [
   {
     to: "Casey Patel",
     subject: "Survive Now, Scale Later",
-    content: "Premature optimization is a luxury. At our stage, fast feedback and real usage matter more than perfect infra.",
+    content: "Premature optimization is a luxury. At our scale, fast feedback and real usage matter more than perfect infra.",
     prompt: "built a queueing system to support 100x load before validating demand"
   },
   {
