@@ -5,6 +5,7 @@ class Contact < ApplicationRecord
 
   validates :email, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }
   validates :company_domain, presence: true, format: { with: /\A[a-z0-9.-]+\.[a-z]{2,}\z/i }
+  validate :company_domain_not_on_blocklist
 
   def relevant_metadata
     @relevant_metadata ||= begin
@@ -47,6 +48,18 @@ class Contact < ApplicationRecord
   def set_company_domain
     if email.present? && company_domain.blank?
       self.company_domain = email.split('@').last
+    end
+  end
+
+  def company_domain_not_on_blocklist
+    blocked_domains = [
+      "givecampus.com",
+      "hashicorp.com",
+      "ibm.com"
+    ]
+
+    if company_domain.present? && blocked_domains.include?(company_domain.downcase)
+      errors.add(:company_domain, "is blocked")
     end
   end
 end
