@@ -11,7 +11,6 @@ class StaticController < ApplicationController
   end
 
   def pricing
-    redirect_to "https://docs.google.com/document/d/15y7929kcBgyIA19VQOQkdSbIXYb2jXmhrwKRGtw59Tk", allow_other_host: true
   end
 
   def security
