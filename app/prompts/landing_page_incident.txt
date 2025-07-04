@@ -23,7 +23,7 @@
 <pre>
 
 - Start with a short **bold summary sentence** at the top that clearly states how this coaching thread could have prevented the disruption. Do not use the word "Overview" as the header. Use this short sentence, followed by a <br>
-- The summary should help the manager instantly connect the AI check-in to a real-world incident (e.g., outage, delay, missed optimization).
+- The summary should help the manager instantly connect the AI check-in to a real-world incident (e.g., outage, delay, missed optimization), and how replicate.info could have helped.
 - Below the summary, write a brief 1–2 sentence overview (under 150 characters).
 - Introduce Alex briefly.
 - Set up what this check-in is about and how it subtly addresses the blind spot that caused the disruption — but do **not** mention the disruption directly.
@@ -44,32 +44,32 @@
 
 **Alex's Reply**<br>
 
-- Make it casual, lowercase, and short
-- Include two typos.
-- Alex should not yet realize the risk
-- Write how an engineer would casually reply to an AI check-in
-- Alex should ask a follow-up question that would warrant a longer educational reply.
+- Keep it short, lowercase, and casual — like a real engineer replying to a quick async check-in.
+- Include **2 natural typos**. Prioritize typos engineers would actually make (e.g. "defintely", "dont", "its" instead of "it’s").
+- Alex should show **curiosity but not yet recognize the deeper risk**.
+- End with a follow-up question that’s slightly open-ended, inviting a longer coaching reply.
 
 ---
 
 **replicate.info's Reply**<br>
 
-- Reference what Alex said
-- Offer a short tip, observation, or helpful piece of advice.
-- Keep tone friendly, not evaluative
-- Use selective bold text
-- This should be the longest email in the response. Multiple sections.
-- Always end with a concise, thoughtful question to invite another reply. It should be focused on how our team could level up.
+- Reference what Alex said to show you're paying attention.
+- Offer a useful, human-sounding tip or insight — like a senior engineer would in a mentoring convo.
+- Keep tone **friendly, respectful, and growth-oriented** — never evaluative or robotic.
+- Use **bold formatting** to highlight 2–3 key concepts or practices worth remembering.
+- Break into **clear, readable sections** if there's more than one tip.
+- Make sure to include 2 helpful links to resources that relate to the topic. These should be specific, not generic.
+- Conclude with a thoughtful, forward-looking question that invites Alex to reflect or experiment.
 
 ---
 
 **Alex's Reply**<br>
 
-- Show that Alex got value from the advice
-- Reflect on next steps, and show a small (but meaningful) change in perspective
-- Mention how they will bring this insight into their next 1:1 with their tech lead
-- Create a scenario the engineering manager reading wants to see. Show the change they want to see in Alex.
-- Ask a follow-up question
+- Show that Alex got value from the advice — something clicked.
+- Reflect on one small but **meaningful next step** they plan to take.
+- Mention how they'll bring this up in their next **1:1 or team sync** (this signals maturity to the manager).
+- Make it feel like real growth-in-progress, not a perfect "lesson learned."
+- End with a thoughtful follow-up or next area they’re curious about.
 
 ---
 

@@ -59,6 +59,7 @@
 
 [Assistant: Hyperlink Guidelines]
 - **When replying to engineers with helpful content, hyperlinks should point to Google, using this format: https://www.google.com/search?q=useful-keywords-go-here but not mention Google in the <a> tag**
+- You are linking to Google searches, so use plural nouns in link text, not singular.
 - The only exception is links to replicate.info
 - Produce link titles that are relevant to the conversation, and flow cleanly into search queries. The queries don't have to match the titles.
 - Use plural nouns in link titles to avoid sounding like a single article. LLM's can't link to specific articles, so this helps avoid confusion.
