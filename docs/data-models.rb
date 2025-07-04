@@ -7,7 +7,7 @@
 # approved - default false
 class Contractor
   has_many :role_assignments, as: :principal
-  has_many :emails, through: :role_assignments, source: :resource, source_type: 'Email'
+  has_many :emails, through: :role_assignments, source: :resource, source_type: 'PaidEmail'
 
   before_validation :generate_magic_token
 
@@ -20,8 +20,8 @@ class Contractor
   end
 end
 
-class SalesConversation
-  has_many :emails, class_name: "SalesEmail", dependent: :destroy
+class PaidConversation
+  has_many :paid_emails
   belongs_to :contact
 
   def draft_next_outreach
@@ -36,10 +36,10 @@ end
 # review_started_at
 # review_submitted_at
 # review_approved_at
-class SalesEmail
+class PaidEmail
   PAID_STATES = ["pending_approval", "approved", "skipped", "rejected", "delivered", "failed"]
 
-  belongs_to :conversation, class_name: "SalesConversation", foreign_key: :sales_conversation_id
+  belongs_to :paid_conversation
   has_many :role_assignments, as: :resource
   validates :state, inclusion: { in: %w[needs_review in_review pending_approval approved skipped delivered failed] }
 
@@ -51,7 +51,7 @@ class SalesEmail
 
   def calculate_price_paid_for_review
     return unless PAID_STATES.include?(state) && price_paid.blank?
-    update(price_paid: conversation.emails.user_generated.any? ? 2 : 0.5)
+    self.price_paid ||= conversation.emails.user_generated.any? ? 2 : 0.5
   end
 end
 
@@ -63,64 +63,19 @@ class RoleAssignment
 
   def validate_contractor_permissions
     return if resource.nil? || principal.nil?
+    return unless resource.is_a?(PaidEmail)
+    emails = principal.emails
 
-    if resource.is_a?(Email)
-      if principal.emails.in_review.count >= principal.parallel_email_limit
-        errors.add(:base, "You can only have up to 5 emails in their queue at a time.")
-      elsif principal.emails.submitted_today.count >= principal.daily_email_limit
-        errors.add(:base, "You can only submit #{principal.daily_email_limit} emails for review per day.")
-      elsif principal.emails.where(contact: resource.contact, state: "rejected").any?
-        errors.add(:base, "One of your previous emails in this conversation was rejected.")
-      elsif principal.emails.where(state: "rejected").count > 5
-        errors.add(:base, "You have too many rejected emails, and can no longer accept new assignments.")
-      elsif !(principal.approved)
-        errors.add(:base, "You are not currently able to accept new assignments.")
-      end
+    if emails.in_review.count >= principal.parallel_email_limit
+      errors.add(:base, "You can only have up to 5 emails in their queue at a time.")
+    elsif emails.submitted_today.count >= principal.daily_email_limit
+      errors.add(:base, "You can only submit #{principal.daily_email_limit} emails for review per day.")
+    elsif emails.where(contact: resource.contact, state: "rejected").any?
+      errors.add(:base, "One of your previous emails in this conversation was rejected.")
+    elsif emails.where(state: "rejected").count > 5
+      errors.add(:base, "You have too many rejected emails, and can no longer accept new assignments.")
+    elsif !(principal.approved)
+      errors.add(:base, "You are not currently able to accept new assignments.")
     end
   end
 end
-
-
-#----------------------
-#
-#Organization
-#- has_many :role_assignments
-#- name
-#
-#----------------------
-#
-#Team
-#- organization_id
-#- name
-#- state - :active, :archived, :deleted
-#
-#----------------------
-#
-#User
-#- email
-#- name
-#- confirmed_at
-#
-#----------------------
-#
-#RoleAssignment
-#- principal_id
-#- principal_type
-#- resource_id - 1, 2, 3, etc.
-#- resource_type - Organization, Team, Folder, Session, Project, etc.
-#- role - :administrator, :manager, :user
-#
-#  :administrator (org ID)
-#    * Billing
-#    * Revoke access
-#    * View 2FA reporting
-#
-#  :manager (team ID)
-#    * CRUD teams
-#    * CRUD assignments
-#    * CRUD questionnaires
-#    * Invite users
-#
-#  :user (team / org ID)
-#    * View reporting (questionnaire responses, blind spot summaries)
-#    * CRUD sessions

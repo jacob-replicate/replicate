@@ -90,27 +90,26 @@
     </div>
   </div>
 
-  <div class="flex items-center gap-5 justify-end mt-6">
-    <div style="padding-top: 4px">
-      <img src="/jacob.jpg" style="width: 70px" class="rounded-full mb-2" />
-    </div>
+  <div class="mt-8 flex flex-col sm:flex-row sm:items-center sm:justify-end gap-4 sm:gap-5 text-center sm:text-right">
     <div>
-      <div class="text-md mb-1.5 pl-1" style="font-family: 'Homemade Apple'">Jacob Comer</div>
-      <div class="flex gap-1.5">
-        <%= link_to 'https://instagram.com/jacob_comer', target: "_blank" do %>
-          <img src="/icons/instagram.png" style="width: 28px" />
-        <% end %>
+      <div class="text-base font-semibold text-gray-900" style="font-family: 'Homemade Apple'">
+        Jacob Comer
+      </div>
+      <div class="flex justify-center sm:justify-end gap-3 mt-2">
         <%= link_to 'https://linkedin.com/in/jacobcomer', target: "_blank" do %>
-          <img src="/icons/linkedin.png" style="width: 28px" />
+          <img src="/icons/linkedin.png" class="w-7 h-7 opacity-90 hover:opacity-100 transition" alt="LinkedIn" />
+        <% end %>
+        <%= link_to 'https://instagram.com/jacob_comer', target: "_blank" do %>
+          <img src="/icons/instagram.png" class="w-7 h-7 opacity-90 hover:opacity-100 transition" alt="Instagram" />
         <% end %>
         <%= link_to 'https://jacobcomer.medium.com/write-code-faster-in-vim-c564ff9b9f6c', target: "_blank" do %>
-          <img src="/icons/medium.png" style="width: 28px" />
+          <img src="/icons/medium.png" class="w-7 h-7 opacity-90 hover:opacity-100 transition" alt="Medium" />
         <% end %>
         <%= link_to 'https://www.reddit.com/user/jacob_the_snacob', target: "_blank" do %>
-          <img src="/icons/reddit.png" style="width: 28px" />
+          <img src="/icons/reddit.png" class="w-7 h-7 opacity-90 hover:opacity-100 transition" alt="Reddit" />
         <% end %>
         <%= link_to 'mailto:jacob@jacobcomer.com', target: "_blank" do %>
-          <img src="/icons/email.png" style="width: 28px" />
+          <img src="/icons/email.png" class="w-7 h-7 opacity-90 hover:opacity-100 transition" alt="Email" />
         <% end %>
       </div>
     </div>
