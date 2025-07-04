@@ -6,13 +6,13 @@ EXAMPLE_EMAILS = [
     prompt: "shipped an N+1 query, and took down production for 6 minutes"
   },
   {
-    to: "Taylor Morales",
+    to: "Casey Patel",
     subject: "Survive Now, Scale Later",
     content: "Premature optimization is a luxury. At our stage, fast feedback and real usage matter more than perfect infra.",
     prompt: "built a queueing system to support 100x load before validating demand"
   },
   {
-    to: "Casey Patel",
+    to: "Taylor Morales",
     subject: "The rollback failed. Now what?",
     content: "If our disaster recovery plan isn't tested, it isn't real. Break-glass deploys need their own playbook.",
     prompt: "hotfix made things worse, rollback also failed"

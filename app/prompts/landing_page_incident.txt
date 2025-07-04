@@ -24,10 +24,9 @@
 <pre>
 **Overview**<br>
 
-- Briefly describe how replicate.info works
+- Briefly describe how replicate.info works using 2 concise paragraphs, with 2 newlines to separate them. Each paragraph in the **Overview** should be less than 300 characters.
 - Introduce Alex
 - Mention a 4 areas the assistant has already helped her grow in over the past quarter
-- Two concise paragraphs with two newlines to separate them
 - Set up this week's topic (the root cause of the fire)
 
 ---
@@ -35,9 +34,11 @@
 **Initial Email**<br>
 
 - Simulate the first message replicate.info sends Alex
-- Keep it short and conversational
-- Start with a calm, curious question that hints at the risk
-- Don’t mention the fire directly. This is the conversation that could have happened 3 weeks ago to prevent the fire.
+- Keep it short and conversational. You are here to help them grow as an engineer.
+- Open with a calm, curious question that hints at the risk.
+- End with a helpful resource link that relates to the topic. It should be a resource EM's would love to see being recommended to their team.
+- The **Initial Email** should be less than 350 characters.
+- Don't mention the fire directly. This is the conversation that could have happened 3 weeks ago to prevent the fire.
 
 ---
 
@@ -66,6 +67,7 @@
 
 - Show that Alex got value from the advice
 - Reflect on next steps, and show a small (but meaningful) change in perspective
+- Mention how they will bring this insight into their next 1:1 with their tech lead
 - Create a scenario the engineering manager reading wants to see. Show the change they want to see in Alex.
 - Ask a follow-up question
 

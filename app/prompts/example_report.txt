@@ -2,14 +2,21 @@
 
 [Desired Output]
 - Review existing messages in the conversation, and produce an example report for the manager trying out replicate.info.
-- The report should be about Alex (Engineer II), and 3 of her teammates. Taylor (Senior Engineer), Casey (Staff Engineer)
+- The report should be about Alex Shaw (Engineer II), and 3 of her teammates. Taylor Morales (Senior Engineer), Casey Patel (Staff Engineer)
 - Highlight each engineer's unique growth opportunities. They should be about core engineer topics that engineering leaders at Series B startups want to raise the bar in ASAP.
 - The example report should also highlight how the platform helped those engineers level up (without any effort on the manager's part required).
 - For the more experienced engineers, the topics should be much more concrete. For the less experienced engineers, the content can be more general.
+- Each entry should include the engineer's name, their role, a brief summary of their current focus, and current morale.
+- Each entry should be visual, and have around 400 characters per engineer. The entries focus on how replicate.info has helped the engineer so far, and replicate's plans for next week's check-in.
+- Taylor is focused on distributed systems, Casey on stakeholder management.
+- Include <br> after each engineer's name (but in Markdown).
 - Use the --- tag to separate different engineers' sections in the report.
-- Use 2 newlines to separate paragraphs and headers.
+- Use a visual format that is easy to read, with clear headings and impactful bullet points.
 - Provide lots of detail about each team member. Reference how they're developing across the quarter, not just in the most recent AI check-in.
 - Do not leave a footer at the bottom of the report. End the conversation with the following CTA, word-for-word
+
+[Desired Header Format]
+**Alex Shaw** (Engineer II)<br>
 
 [CTA]
 **Next Steps**
