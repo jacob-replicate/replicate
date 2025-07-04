@@ -42,14 +42,7 @@
   </head>
 
   <body>
-    <% if params[:controller] == "static" && params[:action] == "how_it_works" %>
-      <div class="h-screen flex flex-col bg-white container mx-auto">
-        <div class="px-4 xl:px-56 2xl:px-[320px] py-4 md:py-6">
-          <div class="max-w-3xl mx-auto"><%= render 'layouts/navbar' %></div>
-          <%= yield %>
-        </div>
-      </div>
-    <% elsif params[:controller] == "static" && params[:action] == "index" %>
+    <% if params[:controller] == "static" && params[:action] == "index" %>
       <div class="container mx-auto">
         <div class="px-4 py-4 md:py-6 lg:px-[20px] xl:px-[120px] 2xl:px-[280px]">
           <%= render 'layouts/navbar' %>
@@ -62,8 +55,11 @@
     <% else %>
       <div class="h-screen flex flex-col bg-white container mx-auto">
         <div class="px-4 xl:px-56 2xl:px-[320px] py-4 md:py-6">
-          <%= render 'layouts/navbar' %>
-          <%= yield %>
+          <div class="max-w-3xl mx-auto"><%= render 'layouts/navbar' %></div>
+
+          <div class="max-w-3xl mx-auto">
+            <%= yield %>
+          </div>
         </div>
       </div>
     <% end %>

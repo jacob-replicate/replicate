@@ -22,7 +22,7 @@
 
 <pre>
 
-- Start with a short **bold summary sentence** at the top that clearly states how this coaching thread could have prevented the disruption. Do not use the word "Overview" as the header. Use this short sentence, followed by a <br>
+- Start with a short **bold summary sentence** (max 80 characters) at the top that clearly states how this coaching thread could have prevented the disruption. Do not use the word "Overview" as the header. Use this short sentence, followed by a <br>
 - The summary should help the manager instantly connect the AI check-in to a real-world incident (e.g., outage, delay, missed optimization), and how replicate.info could have helped.
 - Below the summary, write a brief 1–2 sentence overview (under 150 characters).
 - Introduce Alex briefly.
