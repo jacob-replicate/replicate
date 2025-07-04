@@ -25,8 +25,8 @@
 
 Pricing is **$30/mo** (USD) per engineer. Your first full calendar month is free. Learn more [here](https://replicate.info/pricing)
 
-Want to try it out yourself for a few weeks, and hopefully learn something cool?
+Want to try it out yourself for a few weeks, and hopefully learn something valuable?
 
-Just type your **email** below, and **replicate.info** will check in next Monday. No need to make an account, or type in your credit card.
+Just type your **email** below, and **replicate.info** will check in next Monday. No accounts / credit cards.
 
 {{PLATFORM_OVERVIEW}}
