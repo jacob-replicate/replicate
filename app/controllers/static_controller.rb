@@ -13,15 +13,15 @@ class StaticController < ApplicationController
   def pricing
   end
 
+  def demo
+    return redirect_to_demo_conversation(initial_message: "hotfix made things worse, rollback also failed", force_tos: true)
+  end
+
   def security
     redirect_to "https://docs.google.com/document/d/1rqwWku--SR-HS86kNIdHMhG-GRfn9QCCxcAARYOYLpA", allow_other_host: true
   end
 
   def how_it_works
-  end
-
-  def request_demo
-    redirect_to "https://forms.gle/PWjALvJkMR8ShNa79", allow_other_host: true
   end
 
   def knowledge_gaps

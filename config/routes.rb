@@ -8,11 +8,11 @@ Rails.application.routes.draw do
   devise_for :users
   post "/stripe-webhooks", to: "stripe_webhooks#create"
 
+  get "/demo", to: "static#demo"
   get "/terms", to: "static#terms"
   get "/privacy", to: "static#privacy"
   get "/how-it-works", to: "static#how_it_works"
   get "/pricing", to: "static#pricing"
-  get "/request-demo", to: "static#request_demo"
   get '/knowledge-gaps', to: "static#knowledge_gaps"
 
   resources :conversations, only: [:create, :show]
