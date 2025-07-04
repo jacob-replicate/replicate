@@ -10,7 +10,7 @@ Rails.application.routes.draw do
 
   get "/terms", to: "static#terms"
   get "/privacy", to: "static#privacy"
-  get "/documentation", to: "static#documentation"
+  get "/how-it-works", to: "static#how_it_works"
   get "/pricing", to: "static#pricing"
   get "/request-demo", to: "static#request_demo"
   get '/knowledge-gaps', to: "static#knowledge_gaps"

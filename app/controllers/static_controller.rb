@@ -18,8 +18,7 @@ class StaticController < ApplicationController
     redirect_to "https://docs.google.com/document/d/1rqwWku--SR-HS86kNIdHMhG-GRfn9QCCxcAARYOYLpA", allow_other_host: true
   end
 
-  def documentation
-    redirect_to "https://docs.google.com/document/d/1wvh5NP537XPxR9aYDnADGVbqcUkWOUdFCJpCSvSyPRA", allow_other_host: true
+  def how_it_works
   end
 
   def request_demo

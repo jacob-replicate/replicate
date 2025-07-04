@@ -42,14 +42,14 @@
   </head>
 
   <body>
-    <% if params[:controller] == "conversations" %>
+    <% if params[:controller] == "static" && params[:action] == "how_it_works" %>
       <div class="h-screen flex flex-col bg-white container mx-auto">
         <div class="px-4 xl:px-56 2xl:px-[320px] py-4 md:py-6">
-          <%= render 'layouts/navbar' %>
+          <div class="max-w-3xl mx-auto"><%= render 'layouts/navbar' %></div>
           <%= yield %>
         </div>
       </div>
-    <% else %>
+    <% elsif params[:controller] == "static" && params[:action] == "index" %>
       <div class="container mx-auto">
         <div class="px-4 py-4 md:py-6 lg:px-[20px] xl:px-[120px] 2xl:px-[280px]">
           <%= render 'layouts/navbar' %>
@@ -57,6 +57,13 @@
           <div class="pt-4 md:pt-0 lg:pt-2">
             <%= yield %>
           </div>
+        </div>
+      </div>
+    <% else %>
+      <div class="h-screen flex flex-col bg-white container mx-auto">
+        <div class="px-4 xl:px-56 2xl:px-[320px] py-4 md:py-6">
+          <%= render 'layouts/navbar' %>
+          <%= yield %>
         </div>
       </div>
     <% end %>
