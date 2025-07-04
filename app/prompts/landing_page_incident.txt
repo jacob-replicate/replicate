@@ -21,14 +21,13 @@
 [Section Format]
 
 <pre>
-**Overview**<br>
 
-- Keep the **Overview** section under 200 characters.
+- Start with a short **bold summary sentence** at the top that clearly states how this coaching thread could have prevented the disruption. Do not use the word "Overview" as the header. Use this short sentence, followed by a <br>
+- The summary should help the manager instantly connect the AI check-in to a real-world incident (e.g., outage, delay, missed optimization).
+- Below the summary, write a brief 1–2 sentence overview (under 150 characters).
 - Introduce Alex briefly.
-- Make it clear that this demo shows a moment replicate.info could have prevented a recent disruption.
-- Help the manager instantly connect this check-in to a real-world delivery or stability issue.
-- Do not mention the disruption directly. Just hint at how the check-in would have prevented it.
-- Keep tone helpful, not evaluative.
+- Set up what this check-in is about and how it subtly addresses the blind spot that caused the disruption — but do **not** mention the disruption directly.
+- Keep the tone supportive, clear, and human — not evaluative or robotic.
 
 ---
 
