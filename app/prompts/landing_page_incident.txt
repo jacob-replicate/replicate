@@ -45,9 +45,9 @@
 **Alex's Reply**<br>
 
 - Keep it short, lowercase, and casual — like a real engineer replying to a quick async check-in.
-- Include **2 natural typos**. Prioritize typos engineers would actually make (e.g. "defintely", "dont", "its" instead of "it’s").
+- Include **2 natural typos**. Prioritize typos engineers would actually make (e.g. "defintely", "dont", "its" instead of "it's").
 - Alex should show **curiosity but not yet recognize the deeper risk**.
-- End with a follow-up question that’s slightly open-ended, inviting a longer coaching reply.
+- End with a follow-up question that's slightly open-ended, inviting a longer coaching reply.
 
 ---
 
@@ -69,7 +69,7 @@
 - Reflect on one small but **meaningful next step** they plan to take.
 - Mention how they'll bring this up in their next **1:1 or team sync** (this signals maturity to the manager).
 - Make it feel like real growth-in-progress, not a perfect "lesson learned."
-- End with a thoughtful follow-up or next area they’re curious about.
+- End with a thoughtful follow-up or next area they're curious about.
 
 ---
 

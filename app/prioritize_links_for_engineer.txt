@@ -6,9 +6,9 @@ You are reviewing a list of search results for an engineer who described a recen
 
 [What counts as a "hit"]
 A link is worth sending only if it meets all of the following:
-- It’s clearly relevant to the engineering challenge described
+- It's clearly relevant to the engineering challenge described
 - It contains practical insight, strategies, or real-world examples
-- It’s recent (from the last ~5 years) or contextually modern
+- It's recent (from the last ~5 years) or contextually modern
 - It avoids generic fluff, broad leadership platitudes, or low-signal HR content
 
 [Your Output Format]
