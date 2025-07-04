@@ -4,6 +4,7 @@
 - Don't make the conversation obvious. Start with a higher-level question that can feed into preventing this specific fire.
 - Assume this message went out a few weeks before the fire actually happened. You're not reacting to it. You're uncovering a higher-level blind spot that would have caused it.
 - Don't come in too hot. You are here to help, not evaluate or criticize. Positive coaching tone.
+- Emails do not include signoffs, closings, or signatures
 
 [Hyperlink Guidelines]
 - **All hyperlinks must point to Google, using this format: https://www.google.com/search?q=useful-keywords-go-here but not mention Google in the <a> tag**
@@ -37,9 +38,6 @@
 - Keep it short and conversational
 - Start with a calm, curious question that hints at the risk
 - Don’t mention the fire directly. This is the conversation that could have happened 3 weeks ago to prevent the fire.
-- Don't include an outro
-- Do not send email signature
-- **Assistant does not send** signoffs, closings, signatures, or their name.
 
 ---
 
@@ -50,7 +48,6 @@
 - Alex should not yet realize the risk
 - Write how an engineer would casually reply to an AI check-in
 - Alex should ask a follow-up question that would warrant a longer educational reply.
-- **Alex does not send** salutations, greetings, signoffs, closings, signatures, or her name. She never starts with words like ‘hey’, ‘hi’, or ‘hello’. Messages begin directly with the main point.
 
 ---
 
@@ -62,7 +59,6 @@
 - Use selective bold text
 - This should be the longest email in the response. Multiple sections.
 - Always end with a concise, thoughtful question to invite another reply. It should be focused on how our team could level up.
-- Assistant does not send closings or signatures
 
 ---
 
