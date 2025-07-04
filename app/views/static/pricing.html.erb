@@ -2,7 +2,7 @@
   <h1 class="text-3xl font-bold mb-8">Pricing</h1>
 
   <p class="mb-4">
-    <%= link_to 'replicate.info', root_path, class: "text-blue-600 font-semibold" %> uses monthly, pay-as-you-go billing at <strong>$30 USD per user</strong>, per month.
+    <%= link_to 'replicate.info', root_path, class: "text-blue-600 font-semibold" %> uses monthly, pay-as-you-go billing at <span class="font-semibold">$30</span> user/month (USD).
   </p>
 
   <p class="mb-4">
@@ -12,7 +12,7 @@
   <p class="mb-4">
     There are no feature restrictions, upsells, or tiered pricing — just one flat rate per user.
     You can convert that price to other currencies
-    <%= link_to 'here', 'https://fiscaldata.treasury.gov/currency-exchange-rates-converter', target: "_blank", class: "text-blue-600 hover:text-blue-700 font-medium hover:underline hover:underline-offset-4 decoration-1 transition" %>.
+    <%= link_to 'here', 'https://www.google.com/search?q=convert+30+usd+to+eur', target: "_blank", class: "text-blue-600 hover:text-blue-700 font-medium hover:underline hover:underline-offset-4 decoration-1 transition" %>.
   </p>
 
   <p class="mb-4">
@@ -48,9 +48,15 @@
     The platform does not charge VAT. If required, you can self-account under reverse charge rules.
   </p>
 
-  <p class="mb-8">
+  <p>
     For questions or to request a W-9, email
     <%= mail_to 'support@replicate.info', 'support@replicate.info', class: "text-blue-600 font-semibold" %>.
+  </p>
+
+  <p class="mt-6 mb-6">
+    <a href="/demo" class="inline-block rounded-md bg-slate-800 px-5 py-3 text-white text-sm font-semibold shadow hover:bg-slate-700 transition">
+      Try the Demo →
+    </a>
   </p>
 
   <p class="text-sm text-gray-500">
