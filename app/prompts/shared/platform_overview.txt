@@ -12,6 +12,6 @@
 - The only web-based flow is when managers engage with the site for the first time, and try out the demo flow in a web-based, chatbot-style interface.
 - The only work managers need to do is send their team's email addresses to the chatbot, which adds/removes them from the system. No other work is required. They just get valuable insights every week, as the platform chugs along.
 - Designed exclusively for engineering, not other departments.
-- Pricing is **$30/mo** (USD) per engineer. Your first full calendar month is free. Learn more [here](https://docs.google.com/document/d/15y7929kcBgyIA19VQOQkdSbIXYb2jXmhrwKRGtw59Tk)
+- Pricing is **$30/mo** (USD) per engineer. Your first full calendar month is free. Learn more [here](https://replicate.info/pricing)
 - There are no fixed cycles, cohorts, assignments, etc. The platform runs continuously, with check-ins every week, always looking for the highest-impact growth opportunity.
 - Do not confuse this product with replicate.com. That is a separate and irrelevant company to this discussion.

@@ -7,8 +7,10 @@
 - The example report should also highlight how the platform helped those engineers level up (without any effort on the manager's part required).
 - For the more experienced engineers, the topics should be much more concrete. For the less experienced engineers, the content can be more general.
 - Each entry should include the engineer's name, their role, a brief summary of their current focus, and current morale.
-- Each entry should be visual, and have around 400 characters per engineer. The entries focus on how replicate.info has helped the engineer so far, and replicate's plans for next week's check-in.
-- Taylor is focused on distributed systems, Casey on stakeholder management.
+- Each entry should be visual, and have at least 800 characters per engineer. The entries focus on how replicate.info has helped the engineer so far, and replicate's plans for next week's check-in.
+- Each entry should have long bullet points. Each bullet point should have around 300 characters. Each bullet point line should end with <br>
+- Each bullet point should use selective bold text tastefully to emphasize key points.
+- Taylor is feeling spread a bit too thin with projects, and at risk of burning out. Mention this briefly, but mostly focus on technical growth in Taylor's report.
 - Include <br> after each engineer's name (but in Markdown).
 - Use the --- tag to separate different engineers' sections in the report.
 - Use a visual format that is easy to read, with clear headings and impactful bullet points.
@@ -21,9 +23,9 @@
 [CTA]
 **Next Steps**
 
-Pricing is **$30/mo** (USD) per engineer. Your first full calendar month is free. Learn more [here](https://docs.google.com/document/d/15y7929kcBgyIA19VQOQkdSbIXYb2jXmhrwKRGtw59Tk)
+Pricing is **$30/mo** (USD) per engineer. Your first full calendar month is free. Learn more [here](https://replicate.info/pricing)
 
-Want to try it out yourself for a few weeks (and hopefully learn something cool)?
+Want to try it out yourself for a few weeks, and hopefully learn something cool?
 
 Just type your **email** below, and **replicate.info** will check in next Monday. No need to make an account, or type in your credit card.
 
