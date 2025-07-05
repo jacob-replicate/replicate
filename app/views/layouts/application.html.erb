@@ -1,10 +1,6 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <% if Rails.env.production? %>
-      <%= render "google_analytics" %>
-    <% end %>
-
     <title><%= @title || "replicate.info" %></title>
 
     <%= csrf_meta_tags %>
