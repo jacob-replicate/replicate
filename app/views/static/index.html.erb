@@ -85,7 +85,7 @@
       </div>
       <div class="mb-6 flex gap-4">
         <% EXAMPLE_EMAILS.each_with_index do |email, i| %>
-          <div class="bg-white border border-gray-200 shadow rounded-xl p-5 space-y-4 md:block <%= i > 0 ? "hidden" : "" %>">
+          <div class="bg-white border border-gray-200 shadow rounded-xl p-5 space-y-4 <%= i == 1 ? "hidden lg:block" : "" %> <%= i == 2 ? "hidden md:block" : "" %>">
             <div class="flex items-center justify-between align-middle">
               <div class="text-sm text-gray-500"><%= email[:to] %></div>
               <img src="/profile-photo-<%= i + 1 %>.jpg" alt="Avatar" class="w-10 h-10 rounded-full overflow-hidden" />
