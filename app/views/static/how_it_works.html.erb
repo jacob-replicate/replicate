@@ -1,65 +1,80 @@
-<div class="py-10">
-  <h1 class="text-3xl font-semibold mb-8">How it Works</h1>
+<div class="py-10 space-y-12">
+  <div class="space-y-6">
+    <h1 class="text-3xl tracking-tight font-semibold">How it Works</h1>
 
-  <p class="mb-4">
-    <%= link_to 'replicate.info', root_path, class: "text-blue-600 hover:text-blue-700 font-medium hover:underline hover:underline-offset-4 decoration-1 transition" %> is a virtual staff engineer that helps your team grow through short, high-signal coaching emails sent every Monday.
-  </p>
+    <p>
+      <%= link_to 'replicate.info', root_path, class: "text-blue-600 hover:text-blue-700 font-medium hover:underline hover:underline-offset-4 decoration-1 transition" %>
+      acts like a virtual staff engineer — sending high-signal coaching emails to your team every Monday.
+    </p>
 
-  <p class="mb-4">
-    Each message focuses on a real problem that slows down velocity, like flaky tests, unclear ownership, or underestimating deployment risk. The advice is based on 15 years of <%= link_to 'engineering experience', "https://linkedin.com/in/jacobcomer", class: "text-blue-600 hover:text-blue-700 font-medium hover:underline hover:underline-offset-4 decoration-1 transition", target: "_blank" %> at high-growth startups, and is written to feel like it came from a teammate who's seen it before.
-  </p>
+    <p>
+      Each message tackles a real problem that slows teams down. Think flaky tests, unclear ownership, or poor rollback planning.
+    </p>
 
-  <p class="mb-4">
-    There's no setup, no dashboard, and nothing to configure. You paste your team's emails once, and coaching begins the following week. It works whether your engineers reply or not. If they do, the system adapts based on their responses, and provides more tailored advice over time.
-  </p>
+    <p>
+      The advice is shaped by 15 years of
+      <%= link_to 'startup experience', "https://linkedin.com/in/jacobcomer", class: "text-blue-600 hover:text-blue-700 font-medium hover:underline hover:underline-offset-4 decoration-1 transition", target: "_blank" %>,
+      and written to feel like it came from a teammate who's been there before.
+    </p>
 
-  <p class="mb-12">
-    It's like quiet, ongoing mentorship in a format engineers actually read.
-  </p>
+    <p>
+      No dashboards. No setup. You paste in your team's emails once, and coaching starts the following Monday. Whether engineers reply or not, the system adapts and gets smarter over time.
+    </p>
 
-  <h2 class="text-2xl font-semibold mb-4">Teaching what they don't know to ask</h2>
+    <p>
+      It's quiet, ongoing mentorship — delivered in a format engineers actually read.
+    </p>
+  </div>
 
-  <p class="mb-4">
-    Engineers don't need to chat with an AI. The system delivers proactive coaching that mirrors what a great mentor would explain. It's happy to engage when engineers reply, but that's not a requirement.
-  </p>
+  <div class="space-y-6">
+    <h2 class="text-2xl font-semibold">Teaching what they don't know to ask</h2>
 
-  <p class="mb-4">
-    It doesn't just answer questions. It teaches your team the things they didn't know to ask yet. Topics most junior and mid-level engineers haven't encountered until it's too late (e.g., letting N+1 queries slip into prod, skipping rollback plans during deploys, or how to handle risky work during crunch time).
-  </p>
+    <p>
+      Your team doesn't need to ask an AI the right question.
+    </p>
 
-  <p class="mb-12">
-    Every email is backed by a carefully written knowledge base and delivered in the voice of a helpful staff engineer. I've spent hundreds of hours turning real-world coaching experience into clear, trustworthy advice the system can send automatically. Check out <%= link_to "this post", "https://jacobcomer.medium.com/write-code-faster-in-vim-c564ff9b9f6c", class: "text-blue-600 hover:text-blue-700 font-medium hover:underline hover:underline-offset-4 decoration-1 transition", target: "_blank" %> for an example of my teaching style.
-  </p>
+    <p>
+      The system proactively teaches what a senior mentor would — even if no one replies. It focuses on the gaps most engineers don't spot until it's too late.
+    </p>
 
-  <h2 class="text-2xl font-semibold mb-4">Clarity for managers</h2>
+    <p>
+      Things like letting N+1 queries slip into prod, skipping rollback plans during deploys, or taking unnecessary risks during crunch time.
+    </p>
 
-  <p class="mb-4">
-    Every Friday, you'll get a summary email showing:
-  </p>
+    <p>
+      Every email is backed by a hand-crafted knowledge base and delivered in the voice of a helpful staff engineer. I've spent hundreds of hours turning real-world coaching into something your team can learn from automatically.
+      Check out <%= link_to "this post", "https://jacobcomer.medium.com/write-code-faster-in-vim-c564ff9b9f6c", class: "text-blue-600 hover:text-blue-700 font-medium hover:underline hover:underline-offset-4 decoration-1 transition", target: "_blank" %> for an example of my teaching style.
+    </p>
+  </div>
 
-  <ul class="list-disc pl-6 mb-6">
-    <li class="mb-1">Which topics your team engaged with</li>
-    <li class="mb-1">Where blind spots may exist</li>
-    <li class="mb-1">Where progress is being made</li>
-  </ul>
+  <div class="space-y-4">
+    <h2 class="text-2xl font-semibold">Clarity for managers</h2>
 
-  <p class="mb-6">
-    It's one of the simplest ways to support engineer growth without managing another tool or writing late-night docs. Most teams pay for it using their existing (and often underutilized) L&D budget.
-  </p>
+    <p>Every Friday, you'll get a summary email showing:</p>
+    <ul class="list-disc pl-6 space-y-1">
+      <li>Which topics your team engaged with</li>
+      <li>Where blind spots may exist</li>
+      <li>Where progress is being made</li>
+    </ul>
 
-  <p class="mt-6 mb-3">
-    <div class="flex flex-col items-center mb-10 gap-3">
-      <a href="/demo" class="inline-block rounded-md bg-slate-800 px-5 py-3 text-white text-sm font-semibold shadow hover:bg-slate-700 transition">
-        Preview a real coaching session →
-      </a>
-      <div class="text-sm ml-3 text-gray-600">
-        No login or credit card required.
-      </div>
+    <p>
+      It's one of the simplest ways to support engineer growth without managing another tool or writing late-night docs.
+      Most teams pay for it using their existing (and often underutilized) L&amp;D budget.
+    </p>
+  </div>
+
+  <div class="flex flex-col items-center gap-3">
+    <a href="/demo" class="inline-block rounded-md bg-slate-800 px-5 py-3 text-white text-sm font-semibold shadow hover:bg-slate-700 transition">
+      Preview a real coaching session →
+    </a>
+    <div class="text-sm text-gray-600">
+      No login or credit card required.
     </div>
-  </p>
+  </div>
 
-  <p class="text-sm text-gray-500">
-    <%= link_to 'Terms of Service', '/terms', class: "text-blue-600 hover:text-blue-700 font-medium hover:underline hover:underline-offset-4 decoration-1 transition" %> &nbsp;&nbsp;•&nbsp;&nbsp;
+  <p class="text-sm text-gray-500 mt-10">
+    <%= link_to 'Terms of Service', '/terms', class: "text-blue-600 hover:text-blue-700 font-medium hover:underline hover:underline-offset-4 decoration-1 transition" %>
+    &nbsp;&nbsp;•&nbsp;&nbsp;
     <%= link_to 'Privacy Policy', '/privacy', class: "text-blue-600 hover:text-blue-700 font-medium hover:underline hover:underline-offset-4 decoration-1 transition" %>
   </p>
 </div>
