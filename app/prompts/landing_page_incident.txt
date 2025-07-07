@@ -88,9 +88,9 @@
 
 ---
 
-**Weekly Reports**<br>
+**Manager Reports**<br>
 
-Type `1` to preview your weekly manager report<br>
+Type `1` to preview the growth summary you'll get in your inbox every Friday.<br>
 
 ---
 
