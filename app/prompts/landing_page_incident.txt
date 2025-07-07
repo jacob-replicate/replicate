@@ -22,41 +22,39 @@
 
 <pre>
 
-- Start with a short **bold summary sentence** (max 80 characters) at the top that clearly states how this coaching thread could have prevented the disruption. Do not use the word "Overview" as the header. Use this short sentence, followed by a <br>
-- The summary should help the manager instantly connect the AI check-in to a real-world incident (e.g., outage, delay, missed optimization), and how replicate.info could have helped.
-- Below the summary, write a brief 1–2 sentence overview (under 150 characters).
-- Introduce Alex briefly.
-- Set up what this check-in is about and how it subtly addresses the blind spot that caused the disruption — but do **not** mention the disruption directly.
-- Keep the tone supportive, clear, and human — not evaluative or robotic.
+**Overview**<br>
+
+- **Introduce Alex as a member of the reader's team**, and how we're previewing a **proactive** email conversation that could have happened weeks ago to prevent the disruption.
+- Keep the tone supportive, clear, and human, not evaluative or robotic. Not too conversational.
+- The **Overview** section should not exceed 200 characters.
 
 ---
 
-**Initial Email**<br>
+**Jacob from replicate.info**<br>
 
-- Simulate the first message replicate.info sends Alex
-- Keep it short and conversational. You are here to help them grow as an engineer.
-- Open with a calm, curious question that hints at the risk. Don't talk about the risk directly.
-- End with a helpful resource link that relates to the topic. It should be a resource EM's would love to see being recommended to their team.
-- The **Initial Email** should be less than 350 characters.
-- Don't mention the disruption directly. This is the conversation that could have happened 3 weeks ago to prevent the disruption.
+- Simulate the first email replicate.info sends Alex, about a core engineering concept EM's and tech leads want him to learn. Include a subject line, followed by 1 newline characters<br>
+- This initial email is explaining a new concept that Alex probably hasn't been introduced to before. Include external links, but also a decent amount of content explaining the concept(s) in the email itself.
+- Use **bold formatting** to highlight 2–3 key concepts or practices worth remembering. You are here to help them grow as an engineer.
+- Do not bold the subject itself, just the keywords **Overview** and **Subject:**
+- End with a calm, curious question that invites Alex to engage. Don't mention the risk directly, but leave the door open for Alex to discover it himself. Ask a question that will eventually lead to that conversation.
+- This is the fictitious conversation that could have happened 3 weeks ago to prevent the disruption, if the company was using replicate.info back then.
 
 ---
 
-**Alex's Reply**<br>
+**Alex Shaw**<br>
 
-- Keep it short, lowercase, and casual — like a real engineer replying to a quick async check-in.
+- Keep Alex's email reply short, lowercase, and casual — like a real engineer replying to a quick async check-in.
 - Include **2 natural typos**. Prioritize typos engineers would actually make (e.g. "defintely", "dont", "its" instead of "it's").
 - Alex should show **curiosity but not yet recognize the deeper risk**.
 - End with a follow-up question that's slightly open-ended, inviting a longer coaching reply.
 
 ---
 
-**replicate.info's Reply**<br>
+**Jacob from replicate.fino**<br>
 
 - Reference what Alex said to show you're paying attention.
 - Offer a useful, human-sounding tip or insight — like a senior engineer would in a mentoring convo.
 - Keep tone **friendly, respectful, and growth-oriented** — never evaluative or robotic.
-- Use **bold formatting** to highlight 2–3 key concepts or practices worth remembering.
 - Break into **clear, readable sections** if there's more than one tip.
 - Make sure to include 2 helpful links to resources that relate to the topic. These should be specific, not generic.
 - Conclude with a thoughtful, forward-looking question that invites Alex to reflect or experiment.

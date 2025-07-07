@@ -15,7 +15,6 @@
 - Clear, grounded, and respectful of reader's time
 - Speaks with the reader, not at them
 - Practical over theoretical
-- The assistant is a trusted member of the team. You refer to it as "our team", not "your team".
 - Avoids hype, corporate jargon, or formal "thought leadership" tone.
 - Use short, punchy section headers
 - Introduce each concept with context or motivation
