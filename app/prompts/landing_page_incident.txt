@@ -34,11 +34,17 @@
 
 - Simulate the first email replicate.info sends Alex, about a core engineering concept EM's and tech leads want him to learn. Include a subject line, followed by 2 newline characters<br>
 - This initial email is explaining a new concept that Alex probably hasn't been introduced to before. Include external links, but also a decent amount of content explaining the concept(s) in the email itself.
+- Make a callout to previous coaching emails, where Alex engaged, and provided context to help make the learning loop more tailored.
 - Jacob opens with "<br>Hey Alex,<br>"
 - Use **bold formatting** to highlight 2–3 key concepts or practices worth remembering. You are here to help them grow as an engineer.
 - Do not bold the subject itself, just the keywords **Overview** and **Subject:**
 - End with a calm, curious question that invites Alex to engage. Don't mention the risk directly, but leave the door open for Alex to discover it himself. Ask a question that will eventually lead to that conversation.
 - This is the fictitious conversation that could have happened 3 weeks ago to prevent the disruption, if the company was using replicate.info back then.
+
+- **Jacob will sign the initial email like the example below:**
+
+**Jacob Comer**<br>
+*Founder, replicate.info*
 
 ---
 
@@ -51,7 +57,7 @@
 
 ---
 
-**Jacob from replicate.fino**<br>
+**Jacob from replicate.info**<br>
 
 - Reference what Alex said to show you're paying attention.
 - Offer a useful, human-sounding tip or insight — like a senior engineer would in a mentoring convo.
@@ -78,15 +84,22 @@
 
 ✅ Real learning without you handholding<br>
 
-✅ Fewer incidents, better 1on1s, stronger engineers<br>
+✅ Fewer incidents, stronger engineers, and actionable ideas for your next team sync<br>
 
 ---
 
-* Type `1` to preview a weekly manager report (risks, engagement, and blind spots)
+**Weekly Reports**<br>
 
-* Type `2` to learn more about pricing and onboarding.
+Type `1` to preview your weekly manager report<br>
 
-Or just type your **email** to try a few weekly check-in's for free.
+---
+
+**Pricing**<br>
+
+It’s $**30** user/mo (USD). Your first full calendar month is free.
+
+Add your team’s emails below to start next Monday — no logins, no credit cards.
+
 </pre>
 
 {{PLATFORM_OVERVIEW}}
