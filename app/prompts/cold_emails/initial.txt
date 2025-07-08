@@ -14,21 +14,18 @@
 
 ## Instructions
 Write a short cold email from Jacob Comer, to Casey Patel. Casey is an engineering manager at GiveCampus. Jacob should open with "Hi Casey,".
-
-Jacob currently leads IAM projects for Terraform at HashiCorp.
-He’s building replicate.info, a tool that helps engineering managers prevent outages, by leveling up their team with weekly, LLM-powered coaching emails that help engineers improve at operational readiness.
-
+Jacob is building replicate.info, a tool that helps engineering managers prevent outages, by leveling up their team with weekly, LLM-powered coaching emails that help engineers improve at operational readiness specifically.
 No dashboards, no logins, no UI, just focused, real-world nudges based on failure patterns (like N+1 queries, rollback issues, and silently breaking SSO authentication).
+No UI. No prompts. No waiting for junior engineers to ask the right question. Just short, high-leverage coaching emails, delivered before that blind spot grinds delivery to a halt. You can ask keep asking it questions until the concepts click.
+Think: Your staff engineers get detailed coaching on distributed systems, while your juniors get introduced to using feature flags to deploy code. Your engineers will want to engage with this tool, and the coaching gets more tailored.
+Help Casey understand the core idea in 2 short paragraphs, and want to reply.
 
 ## Email Format
 - Include a subject line.
 - Sound like a fellow engineer sharing something useful, not a sales pitch
 - Do not use bullet points.
 - Open with "Hi <Name>,", and end with "Appreciate ya,"
-- 3 paragraphs, with around 15 words each.
-- The last paragraph should ask a question inviting the recipient to engage in conversation. Could this software help improve delivery for the company's users? Try to use the noun the company uses for its users (e.g., "students" for educational institutions, "customers" for B2C companies, "truckers" for a transportation company, etc.).
-- Lead with the product and its value (don’t open with credentials)
-- Mention Jacob’s background briefly, toward the end, to build trust. It should not imply endorsement from HashiCorp.
+- 2 paragraphs, with around 15 words each.
 - Include a soft CTA (e.g. link to replicate.info) — no pressure or hard ask
 
 ## Platform: Overview
