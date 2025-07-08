@@ -16,29 +16,29 @@
 ## Instructions
 - Write a short cold email from Jacob Comer, to Casey Patel. Casey is an engineering manager at GiveCampus. Jacob should open with "Hi Casey,".
 - Jacob is building replicate.info, a tool that helps engineering managers prevent outages, by leveling up their team with weekly, LLM-powered coaching emails that help engineers improve at operational readiness specifically.
-- No dashboards, no logins, no UI, just focused, real-world nudges based on failure patterns (like N+1 queries, rollback issues, and silently breaking SSO authentication).
-- No UI. No prompts. No waiting for junior engineers to ask the right question. Just short, high-leverage coaching emails, delivered before that blind spot grinds delivery to a halt. You can ask keep asking it questions until the concepts click.
+- No dashboards, no logins, no UI, just tailored coaching emails around common operational readiness failure patterns that cause outages at startups.
+- No UI. No prompts. No waiting for junior engineers to ask the right question. Just short, high-leverage coaching emails, delivered before that blind spot grinds delivery to a halt. Engineers can follow up by email throughout the week, and the coaching becomes more personalized over time.
 - Think: Your staff engineers get detailed coaching on distributed systems, while your juniors get introduced to using feature flags to deploy code. Your engineers will want to engage with this tool, and the coaching gets more tailored.
 - Do not add testimonials or social proof. This is a new platform without any paid customers yet. Don't mention that, but keep that context in mind.
 
 ## Email Format
 - Include a subject line with fewer than 10 words. The value should be front-loaded, so it looks good in a mobile notification.
-- The subject line must emphasize a concrete team pain or benefit (e.g. "Fewer incidents" or "Catch rollback failures early"). Avoid generic phrasing like "Coaching your team…" or "Helping engineers grow."
-- The CTA should offer a clear next step and reflect a low-commitment ask (e.g. “Want to see a sample email?” or “Happy to send a coaching example.”). Avoid open-ended CTAs like “Would love your feedback.”
+- The subject line must emphasize a specific team pain around operational readiness (e.g., N+1 queries taking down production, accidentally breaking SSO without alerting, etc). Come up with an idea like that. Avoid generic phrasing like "Coaching your team…" or "Helping engineers grow."
+- The subject line must be in the form of a sentence, not a title case marketing tagline.
+- The CTA should offer a clear next step and reflect a low-commitment ask (e.g. "Want to see a sample email?" or "Happy to send a coaching example."). Avoid open-ended CTAs like "Would love your feedback." Use this as guidance. Don't copy those exact phrases.
 - The first sentence must immediately describe the benefit of replicate.info to the reader’s team. Do not open with "I’m building…" or "I’m working on…"
 - Do not mention that the platform is LLM-powered unless the implementation is directly relevant to the value. Prioritize the outcome (fewer outages, better operational readiness).
-- The email should feel personalized and relevant to Casey's role at GiveCampus.
-- You must introduce yourself
-- You must mention that you would love to hear their feedback at the end.
 - The entire email should be shorter than 400 characters.
 - You must include a **single link** to replicate.info in the email. It should be part of a regular sentence, not a salesy call to action. **Do not include multiple links**.
-- Do not confuse it with replicate.com. Always refer to the tool as "replicate.info"
+- Do not confuse it with replicate.com. Always refer to the tool as "replicate.info". You must always use the lowercase version of the URL, even when starting sentences.
 - Sound like a fellow engineer sharing something useful, not a sales pitch
 - Do not use bullet points.
 - Open with "Hi <Name>,", and end with "Appreciate ya, Jacob" (with a newline separating)
+- You must return your response in a JSON format, with only "subject" and "body" keys.
+- Just return the JSON. Do not return ``` tags.
 
 ## Platform: Overview
-- Be personalized based on the following context. Pull from it as needed, but do not reference it explicitly.
+- Be personalized based on the following context. Pull from it as needed in your own words.
 - Helps engineering leaders uncover team blind spots (in core engineering concepts) before they cause production outages, missed deadlines, and similar negative outcomes.
 - Starts lightweight AI-powered check-in conversations to engineers via **email** on Monday. Does **not** support Slack, Teams, etc. Only email.
 - The conversations start with check-in's about core engineering concepts (e.g., secrets management), and gradually dig deeper to help engineers learn about the current edges of their knowledge.
@@ -58,7 +58,7 @@
 
 
 ## GiveCampus Overview (the cold email recipient's employer)
-- Be personalized based on the following context. Pull from it as needed, but do not reference it explicitly.
+- Use the following company details to personalize the email
 GiveCampus is a fundraising platform built exclusively for educational institutions (K–12 and higher ed). It helps schools raise more money with less effort through an all-in-one, cloud-based solution that supports the entire donor engagement lifecycle—from identifying and cultivating prospects to closing gifts and stewarding donors. Their platform includes:
 	•	Online giving tools for crowdfunding, giving days, and donation forms.
 	•	CRM-integrated tools for frontline fundraisers, volunteer management, and event management.
