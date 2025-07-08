@@ -94,7 +94,8 @@ Type `1` to preview the growth summary you'll get in your inbox every Friday.<br
 
 It’s $**30** user/mo (USD). Your first full calendar month is free.
 
-Just type your email below, and I’ll give you a signup link you can drop into your team’s Slack channel.
+Just type your email below. I’ll create a signup link you can drop into Slack.
+
 
 </pre>
 
