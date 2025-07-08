@@ -41,11 +41,6 @@
 - End with a calm, curious question that invites Alex to engage. Don't mention the risk directly, but leave the door open for Alex to discover it himself. Ask a question that will eventually lead to that conversation.
 - This is the fictitious conversation that could have happened 3 weeks ago to prevent the disruption, if the company was using replicate.info back then.
 
-- **Jacob will sign the initial email like the example below:**
-
-**Jacob Comer**<br>
-Founder, replicate.info
-
 ---
 
 **Alex Shaw**<br>

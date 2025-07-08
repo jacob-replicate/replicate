@@ -6,7 +6,7 @@
     </h1>
     <p class="text-gray-800 mb-6 leading-relaxed text-[17px]">
       <span class="hidden lg:block">Weekly coaching emails, powered by an LLM, to fix blind spots <span class="font-semibold">before</span> they take down production.</span>
-      <span class="lg:hidden">Weekly engineering coaching emails, to fix blind spots before they take down production.</span>
+      <span class="lg:hidden">Weekly engineering coaching emails, fixing blind spots before they take down production.</span>
     </p>
 
     <%= form_for Conversation.new, url: conversations_path, html: { id: "demo-form" } do |f| %>
@@ -15,7 +15,7 @@
           What did you scramble to fix recently?
         </label>
         <div class="text-sm text-indigo-600 mt-1 mb-2">
-          I'll show a coaching email that might've prevented it.
+          I'll show an email thread that might've prevented it.
         </div>
 
         <%= text_area_tag :initial_message, "", class: 'w-full rounded-md bg-white px-4 py-2 text-sm text-gray-900 border border-gray-300 focus:border-indigo-600 focus:ring-0 placeholder:text-gray-400', rows: 3, placeholder: 'e.g., latency spike after a config change', tabindex: 1 %>
@@ -80,11 +80,13 @@
         </p>
 
         <p>
-          No UI. No prompts. No waiting for junior engineers to ask the right question. Just short, high-leverage coaching emails, delivered <span class="font-semibold">before</span> that blind spot grinds delivery to a halt.
+          No UI. No prompts. No waiting for junior engineers to ask the right question. Just short, high-leverage coaching emails, delivered <span class="font-semibold">before</span> that blind spot grinds delivery to a halt. You can ask keep asking it questions until the concepts click.
         </p>
 
         <p>
-          It might look like a newsletter at first, but every engineer gets their own thread. The first emails hit common issues — N+1 queries, scope creep — but as people engage, the coaching gets personal. GPT learns where each person is stuck and sends sharper tips every week. This isn't some mass email blast. It's targeted, evolving, and actually helpful.
+        </p>
+        <p>
+          <span class="font-medium">Think:</span> Your staff engineers get detailed coaching on distributed systems, while your juniors get introduced to using feature flags to deploy code. Your engineers will want to engage with this tool, and the coaching gets more tailored.
         </p>
       </div>
       <div class="mb-6 flex gap-4">
@@ -118,7 +120,10 @@
           You'll get a short email every Friday. What's working, what's at risk, and how your team's growing — without having to ask.
         </p>
         <p>
-          It costs <span class="font-semibold">$30</span> user/mo (USD), with a 1-month free trial. If it's not helpful, I'll refund every dollar you've ever paid.
+          <span class="font-semibold">$30</span> user/mo (USD). Your engineers become noticeably better at operational readiness, and delivering with confidence.
+        </p>
+        <p>
+          1-month free trial. If it's not helpful, I'll refund every dollar you've ever paid.
         </p>
         <p>
           <a href="/demo" class="inline-block rounded-md bg-slate-800 px-4 py-2 text-white text-base font-semibold shadow hover:bg-slate-700 transition">
