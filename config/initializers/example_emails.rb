@@ -7,9 +7,9 @@ EXAMPLE_EMAILS = [
   },
   {
     to: "Casey Patel",
-    subject: "Survive Now, Scale Later",
-    content: "Premature optimization is a luxury. At our scale, fast feedback and real usage matter more than perfect infra.",
-    prompt: "built a queueing system to support 100x load before validating demand"
+    subject: "SSO failed quietly, again",
+    content: "Feature flags catch failures before users do. Skipping them turns a routine launch into a rescue mission.",
+    prompt: "deploy broke SSO authentication in prod (forgot to feature flag new project)"
   },
   {
     to: "Taylor Morales",

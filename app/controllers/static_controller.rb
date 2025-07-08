@@ -14,7 +14,7 @@ class StaticController < ApplicationController
   end
 
   def demo
-    return redirect_to_demo_conversation(initial_message: "hotfix made things worse, rollback also failed", force_tos: true)
+    return redirect_to_demo_conversation(initial_message: "deploy broke SSO authentication in prod (forgot to feature flag new project)", force_tos: true)
   end
 
   def security

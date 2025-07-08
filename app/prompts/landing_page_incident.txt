@@ -44,7 +44,7 @@
 - **Jacob will sign the initial email like the example below:**
 
 **Jacob Comer**<br>
-*Founder, replicate.info*
+Founder, replicate.info
 
 ---
 
