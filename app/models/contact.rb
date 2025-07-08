@@ -1,8 +1,12 @@
 class Contact < ApplicationRecord
+  has_many :metadata, as: :owner, dependent: :destroy
   has_many :conversations, as: :recipient, dependent: :destroy
   has_many :messages, through: :conversations
-  before_save :set_company_domain
 
+  before_save :set_company_domain
+  before_save :downcase_email
+
+  validates :name, presence: true
   validates :email, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }
   validates :company_domain, presence: true, format: { with: /\A[a-z0-9.-]+\.[a-z]{2,}\z/i }
   validate :company_domain_not_on_blocklist
@@ -49,6 +53,10 @@ class Contact < ApplicationRecord
     if email.present? && company_domain.blank?
       self.company_domain = email.split('@').last
     end
+  end
+
+  def downcase_email
+    self.email = email.downcase if email.present?
   end
 
   def company_domain_not_on_blocklist
