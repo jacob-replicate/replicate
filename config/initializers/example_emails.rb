@@ -1,8 +1,8 @@
 EXAMPLE_EMAILS = [
   {
     to: "Alex Shaw",
-    subject: "N+1 queries in 30 seconds",
-    content: "One query quietly explodes into hundreds. This pattern hides in loops, and usually only impacts production.",
+    subject: "N+1 query caused DB spike",
+    content: "One loop explodes into hundreds of expensive queries. Let's talk about ways to catch these during PR review.",
     prompt: "shipped an N+1 query, and took down production for 6 minutes"
   },
   {
@@ -13,7 +13,7 @@ EXAMPLE_EMAILS = [
   },
   {
     to: "Taylor Morales",
-    subject: "The rollback failed. Now what?",
+    subject: "The rollback didn't work",
     content: "If our disaster recovery plan isn't tested, it isn't real. Break-glass deploys need their own playbook.",
     prompt: "hotfix made things worse, rollback also failed"
   }
