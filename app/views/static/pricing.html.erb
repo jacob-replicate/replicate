@@ -2,55 +2,29 @@
   <h1 class="text-3xl font-semibold mb-8">Pricing</h1>
 
   <p class="mb-4">
-    <%= link_to 'replicate.info', root_path, class: "text-blue-600 font-semibold" %> uses monthly, pay-as-you-go billing at <span class="font-semibold">$30</span> user/month (USD).
-  </p>
+    <%= link_to 'replicate.info', root_path, class: "text-blue-600 font-semibold" %> is $<span class="font-semibold">30</span>/user/month (USD).
 
-  <p class="mb-4">
-    Your first full calendar month is free.
-  </p>
-
-  <p class="mb-4">
-    There are no feature restrictions, upsells, or tiered pricing — just one flat rate per user.
-    You can convert that price to other currencies
+    One flat rate. No upsells. Convert to your currency
     <%= link_to 'here', 'https://www.google.com/search?q=convert+30+usd+to+eur', target: "_blank", class: "text-blue-600 hover:text-blue-700 font-medium hover:underline hover:underline-offset-4 decoration-1 transition" %>.
   </p>
 
   <p class="mb-4">
-    No credit card is required to sign up. Toward the end of your trial, you'll receive an email asking whether you'd like to continue.
-  </p>
-
-  <p class="mb-12">
-    Invoices are sent on the first business day of each month, based on the total number of users at that time.
-    This includes invited users who haven't engaged yet.
-  </p>
-
-  <h2 class="text-2xl font-bold mb-4">Annual Pricing</h2>
-  <p class="mb-12">
-    Prefer a flat annual fee? Just email your estimated usage to
-    <%= mail_to 'support@replicate.info', 'support@replicate.info', class: "text-blue-600 font-semibold" %> for an offer.
-  </p>
-
-  <h2 class="text-2xl font-bold mb-4">Payments & Invoicing</h2>
-  <p class="mb-4">
-    Payments are processes with Stripe — via credit card or ACH. You can opt in to autopay at any time.
+    Invoices are sent (via Stripe) on the first business day of the month. They're based on the peak number of approved users you had during the prior month. Invoices include company details, user count, and remittance fields. Access may be paused if payment isn't received within 30 days.
   </p>
 
   <p class="mb-4">
-    Invoices include your company name, number of users, and full remittance details for finance teams.
+    Engineers get better. Managers get signal. Teams move faster, with less stress.
   </p>
 
-  <p class="mb-12">
-    Access may be paused if payment isn't received within 30 days of invoice delivery.
-  </p>
-
-  <h2 class="text-2xl font-bold mb-4">Other Notes</h2>
   <p class="mb-4">
-    The platform does not charge VAT. If required, you can self-account under reverse charge rules.
+    Your first full calendar month is free. No credit card required to start.
   </p>
 
-  <p>
-    For questions or to request a W-9, email
-    <%= mail_to 'support@replicate.info', 'support@replicate.info', class: "text-blue-600 font-semibold" %>.
+  <p class="mb-4">
+  </p>
+
+  <p class="mb-4">
+    We do not charge VAT. If needed, you can self-account under reverse charge rules.
   </p>
 
   <p class="mt-6 mb-6">
@@ -60,7 +34,7 @@
   </p>
 
   <p class="text-sm text-gray-500">
-    <%= link_to 'Terms of Service', '/terms', class: "underline" %> &nbsp;&nbsp;•&nbsp;&nbsp;
-    <%= link_to 'Privacy Policy', '/privacy', class: "underline" %>
+    <%= link_to 'Terms of Service', '/terms', class: "text-blue-600 hover:text-blue-700 hover:underline hover:underline-offset-4 decoration-1 transition" %> &nbsp;&nbsp;•&nbsp;&nbsp;
+    <%= link_to 'Privacy Policy', '/privacy', class: "text-blue-600 hover:text-blue-700 hover:underline hover:underline-offset-4 decoration-1 transition" %>
   </p>
 </div>
