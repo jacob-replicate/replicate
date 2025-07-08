@@ -25,6 +25,7 @@
 **Overview**<br>
 
 - **Introduce Alex as a member of the reader's team**, and how we're previewing a **proactive**a email conversation that could have happened weeks ago to prevent the disruption.
+- You must open with "Meet Alex, an engineer you manage, who..."
 - Keep the tone supportive, clear, and human, not evaluative or robotic. Not too conversational.
 - The **Overview** section should not exceed 200 characters.
 

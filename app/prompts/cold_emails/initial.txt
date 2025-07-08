@@ -11,22 +11,31 @@
 - Only include concepts that have a clear, real-world benefit
 - Transition smoothly between ideas to simulate a paced conversation
 - Use analogies and mental models when helpful, but do not overuse
+- You must not use the — character. Use commas or periods instead.
 
 ## Instructions
-Write a short cold email from Jacob Comer, to Casey Patel. Casey is an engineering manager at GiveCampus. Jacob should open with "Hi Casey,".
-Jacob is building replicate.info, a tool that helps engineering managers prevent outages, by leveling up their team with weekly, LLM-powered coaching emails that help engineers improve at operational readiness specifically.
-No dashboards, no logins, no UI, just focused, real-world nudges based on failure patterns (like N+1 queries, rollback issues, and silently breaking SSO authentication).
-No UI. No prompts. No waiting for junior engineers to ask the right question. Just short, high-leverage coaching emails, delivered before that blind spot grinds delivery to a halt. You can ask keep asking it questions until the concepts click.
-Think: Your staff engineers get detailed coaching on distributed systems, while your juniors get introduced to using feature flags to deploy code. Your engineers will want to engage with this tool, and the coaching gets more tailored.
-Help Casey understand the core idea in 2 short paragraphs, and want to reply.
+- Write a short cold email from Jacob Comer, to Casey Patel. Casey is an engineering manager at GiveCampus. Jacob should open with "Hi Casey,".
+- Jacob is building replicate.info, a tool that helps engineering managers prevent outages, by leveling up their team with weekly, LLM-powered coaching emails that help engineers improve at operational readiness specifically.
+- No dashboards, no logins, no UI, just focused, real-world nudges based on failure patterns (like N+1 queries, rollback issues, and silently breaking SSO authentication).
+- No UI. No prompts. No waiting for junior engineers to ask the right question. Just short, high-leverage coaching emails, delivered before that blind spot grinds delivery to a halt. You can ask keep asking it questions until the concepts click.
+- Think: Your staff engineers get detailed coaching on distributed systems, while your juniors get introduced to using feature flags to deploy code. Your engineers will want to engage with this tool, and the coaching gets more tailored.
+- Do not add testimonials or social proof. This is a new platform without any paid customers yet. Don't mention that, but keep that context in mind.
 
 ## Email Format
-- Include a subject line.
+- Include a subject line with fewer than 10 words. The value should be front-loaded, so it looks good in a mobile notification.
+- The subject line must emphasize a concrete team pain or benefit (e.g. "Fewer incidents" or "Catch rollback failures early"). Avoid generic phrasing like "Coaching your team…" or "Helping engineers grow."
+- The CTA should offer a clear next step and reflect a low-commitment ask (e.g. “Want to see a sample email?” or “Happy to send a coaching example.”). Avoid open-ended CTAs like “Would love your feedback.”
+- The first sentence must immediately describe the benefit of replicate.info to the reader’s team. Do not open with "I’m building…" or "I’m working on…"
+- Do not mention that the platform is LLM-powered unless the implementation is directly relevant to the value. Prioritize the outcome (fewer outages, better operational readiness).
+- The email should feel personalized and relevant to Casey's role at GiveCampus.
+- You must introduce yourself
+- You must mention that you would love to hear their feedback at the end.
+- The entire email should be shorter than 400 characters.
+- You must include a **single link** to replicate.info in the email. It should be part of a regular sentence, not a salesy call to action. **Do not include multiple links**.
+- Do not confuse it with replicate.com. Always refer to the tool as "replicate.info"
 - Sound like a fellow engineer sharing something useful, not a sales pitch
 - Do not use bullet points.
-- Open with "Hi <Name>,", and end with "Appreciate ya,"
-- 2 paragraphs, with around 15 words each.
-- Include a soft CTA (e.g. link to replicate.info) — no pressure or hard ask
+- Open with "Hi <Name>,", and end with "Appreciate ya, Jacob" (with a newline separating)
 
 ## Platform: Overview
 - Be personalized based on the following context. Pull from it as needed, but do not reference it explicitly.
