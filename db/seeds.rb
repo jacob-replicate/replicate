@@ -1,8 +1,8 @@
 chunks = [
   # Overview
   "replicate.info helps engineering leaders uncover team blind spots before they lead to outages or missed deadlines.",
-  "Engineers receive lightweight, AI-powered check-ins via email. It does not support other integrations (e.g., Slack, Teams, Zoom, etc).",
-  "Check-ins begin Mondays and continue organically throughout the week.",
+  "Engineers receive lightweight, AI-powered coaching insights via email. It does not support other integrations (e.g., Slack, Teams, Zoom, etc).",
+  "coaching insights begin Mondays and continue organically throughout the week.",
   "Conversations dig into core engineering concepts like secrets management, not surface-level tools or trivia.",
   "Based on responses, engineers get personalized learning tips and links to high-quality resources.",
   "Managers receive weekly inbox-friendly reports on morale, delivery risks, and growth progress.",

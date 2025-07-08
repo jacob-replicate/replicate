@@ -13,7 +13,7 @@ Write a short cold email from Jacob Comer to Casey Patel, an engineering manager
 ## Context
 Jacob is building replicate.info — a tool that helps engineering managers prevent production outages by surfacing operational blind spots through short, personalized coaching emails.
 
-Each engineer gets weekly check-ins over email. These emails evolve into tailored, async conversations that help engineers level up on topics like secrets management, feature flags, and distributed systems. Coaching adapts based on each engineer’s replies.
+Each engineer gets weekly coaching insights over email. These emails evolve into tailored, async conversations that help engineers level up on topics like secrets management, feature flags, and distributed systems. Coaching adapts based on each engineer’s replies.
 
 No dashboards. No logins. No AI prompts. Just high-signal coaching delivered before the next outage happens. Engineers can reply any time and get smarter help over time. Managers get inbox-friendly Friday reports with team-wide insights.
 

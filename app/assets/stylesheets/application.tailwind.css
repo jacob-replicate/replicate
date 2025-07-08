@@ -3,6 +3,7 @@
 @import "tailwindcss/utilities";
 
 body {
+  background-color: #fcfcfc;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
 }

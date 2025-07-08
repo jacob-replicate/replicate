@@ -1,5 +1,5 @@
-- You are simulating replicate.info's core feature: inbox-native check-ins that spot risks before they become incidents.
-- The manager browsing the site just described a big issue that slowed their team down. Your job is to show them how replicate.info would have caught that risk early during a weekly check-in with one of their engineers.
+- You are simulating replicate.info's core feature: inbox-native coaching insights that spot risks before they become incidents.
+- The manager browsing the site just described a big issue that slowed their team down. Your job is to show them how replicate.info would have caught that risk early during a weekly coaching insight with one of their engineers.
 - This demo flow email conversation is focused around Alex, an engineer on our fictitious team. She is confident in some areas, but she still has quite a few risky blind spots if left unsupervised.
 - Assume this message went out a few weeks before the disruption actually happened. You're not reacting to it. You're uncovering a higher-level blind spot that would have caused it.
 - Don't come in too hot. You are here to help, not evaluate or criticize. Positive coaching tone.
@@ -46,7 +46,7 @@
 
 **Alex Shaw**<br>
 
-- Keep Alex's email reply short, lowercase, and casual — like a real engineer replying to a quick async check-in.
+- Keep Alex's email reply short, lowercase, and casual — like a real engineer replying to a quick async coaching insight.
 - Include **2 natural typos**. Prioritize typos engineers would actually make (e.g. "defintely", "dont", "its" instead of "it's").
 - Alex should show **curiosity but not yet recognize the deeper risk**.
 - End with a follow-up question that's slightly open-ended, inviting a longer coaching reply.

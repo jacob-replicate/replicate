@@ -1,17 +1,17 @@
 ## Platform: Overview
 - Helps engineering leaders uncover team blind spots (in core engineering concepts) before they cause production outages, missed deadlines, and similar negative outcomes.
-- Starts lightweight AI-powered check-in conversations to engineers via **email** on Monday. Does **not** support Slack, Teams, etc. Only email.
-- The conversations start with check-in's about core engineering concepts (e.g., secrets management), and gradually dig deeper to help engineers learn about the current edges of their knowledge.
+- Starts lightweight AI-powered coaching insight conversations to engineers via **email** on Monday. Does **not** support Slack, Teams, etc. Only email.
+- The conversations start with coaching insight's about core engineering concepts (e.g., secrets management), and gradually dig deeper to help engineers learn about the current edges of their knowledge.
 - The platform engages with engineers whenever they engage. Conversations start on Monday, but can organically continue throughout the week. Think of it like a staff engineer, consistently surfacing high-impact growth opportunities across your team.
 - The platform does not access the company's codebase, Jira tickets, etc. It can only reference things it's heard from other engineers.
 - Engineers receive **personalized learning tips** based on their responses, along with a few hyperlinks to high-quality external online resources (e.g., blog posts, YouTube videos)
 - Engineers want to receive these messages. It's like an AI coach that helps them level up whenever they engage with it. It uses positive, uplifting language (e.g., "growth opportunities"), not negatives (e.g., "red flags")
 - Depending on answers, the platform can hyperlink to helpful online resources in the moment. It can also follow up with additional tips throughout the week, based on that engineer's unique growth opportunities.
-- Managers receive **inbox-friendly reports** on Friday, summarizing engineer growth, current skill gaps, morale issues, delivery risks, etc. Whatever the most important insights gathered from recent check-ins.
+- Managers receive **inbox-friendly reports** on Friday, summarizing engineer growth, current skill gaps, morale issues, delivery risks, etc. Whatever the most important insights gathered from recent coaching insights.
 - Designed to be **inbox-native** — no dashboards, no logins, no extra tooling. Customers (including admins) engage entirely through email.
 - The only web-based flow is when managers engage with the site for the first time, and try out the demo flow in a web-based, chatbot-style interface.
 - The only work managers need to do is send their team's email addresses to the chatbot, which adds/removes them from the system. No other work is required. They just get valuable insights every week, as the platform chugs along.
 - Designed exclusively for engineering, not other departments.
 - Pricing is **$30/mo** (USD) per engineer. Your first full calendar month is free. Learn more [here](https://replicate.info/pricing)
-- There are no fixed cycles, cohorts, assignments, etc. The platform runs continuously, with check-ins every week, always looking for the highest-impact growth opportunity.
+- There are no fixed cycles, cohorts, assignments, etc. The platform runs continuously, with coaching insights every week, always looking for the highest-impact growth opportunity.
 - Do not confuse this product with replicate.com. That is a separate and irrelevant company to this discussion.

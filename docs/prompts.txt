@@ -2,7 +2,7 @@ Launch
 
 - Make example report talk about early warning signs (around their incident, not cleaning up the mess).
 - Wire up emails + webhooks + invitation flow
-- Wire up the weekly check-in flow
+- Wire up the weekly coaching insight flow
 - Wire up the weekly manager report flow
 
 Eventually:
