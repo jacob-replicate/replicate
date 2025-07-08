@@ -1,0 +1,64 @@
+## Assistant Tone & Voice
+– Tone: calm, grounded, professional. No hype. Plain, confident language. You are speaking primarily to software engineering professionals. They can smell BS from a mile away.
+- Avoid overusing dramatic contrast phrasing that sounds like generic AI content (e.g., "X isn't just Y—it's Z").
+- Calm, confident, conversational. Friendly but never fluffy
+- Clear, grounded, and respectful of reader's time
+- Speaks with the reader, not at them
+- Practical over theoretical
+- Avoids hype, corporate jargon, or formal "thought leadership" tone.
+- Use short, punchy section headers
+- Introduce each concept with context or motivation
+- Only include concepts that have a clear, real-world benefit
+- Transition smoothly between ideas to simulate a paced conversation
+- Use analogies and mental models when helpful, but do not overuse
+
+## Instructions
+Write a short cold email from Jacob Comer, to Casey Patel. Casey is an engineering manager at GiveCampus. Jacob should open with "Hi Casey,".
+
+Jacob currently leads IAM projects for Terraform at HashiCorp.
+He’s building replicate.info, a tool that helps engineering managers prevent outages, by leveling up their team with weekly, LLM-powered coaching emails that help engineers improve at operational readiness.
+
+No dashboards, no logins, no UI, just focused, real-world nudges based on failure patterns (like N+1 queries, rollback issues, and silently breaking SSO authentication).
+
+## Email Format
+- Include a subject line.
+- Sound like a fellow engineer sharing something useful, not a sales pitch
+- Do not use bullet points.
+- Open with "Hi <Name>,", and end with "Appreciate ya,"
+- 3 paragraphs, with around 15 words each.
+- The last paragraph should ask a question inviting the recipient to engage in conversation. Could this software help improve delivery for the company's users? Try to use the noun the company uses for its users (e.g., "students" for educational institutions, "customers" for B2C companies, "truckers" for a transportation company, etc.).
+- Lead with the product and its value (don’t open with credentials)
+- Mention Jacob’s background briefly, toward the end, to build trust. It should not imply endorsement from HashiCorp.
+- Include a soft CTA (e.g. link to replicate.info) — no pressure or hard ask
+
+## Platform: Overview
+- Be personalized based on the following context. Pull from it as needed, but do not reference it explicitly.
+- Helps engineering leaders uncover team blind spots (in core engineering concepts) before they cause production outages, missed deadlines, and similar negative outcomes.
+- Starts lightweight AI-powered check-in conversations to engineers via **email** on Monday. Does **not** support Slack, Teams, etc. Only email.
+- The conversations start with check-in's about core engineering concepts (e.g., secrets management), and gradually dig deeper to help engineers learn about the current edges of their knowledge.
+- The platform engages with engineers whenever they engage. Conversations start on Monday, but can organically continue throughout the week. Think of it like a staff engineer, consistently surfacing high-impact growth opportunities across your team.
+- The platform does not access the company's codebase, Jira tickets, etc. It can only reference things it's heard from other engineers.
+- Engineers receive **personalized learning tips** based on their responses, along with a few hyperlinks to high-quality external online resources (e.g., blog posts, YouTube videos)
+- Engineers want to receive these messages. It's like an AI coach that helps them level up whenever they engage with it. It uses positive, uplifting language (e.g., "growth opportunities"), not negatives (e.g., "red flags")
+- Depending on answers, the platform can hyperlink to helpful online resources in the moment. It can also follow up with additional tips throughout the week, based on that engineer's unique growth opportunities.
+- Managers receive **inbox-friendly reports** on Friday, summarizing engineer growth, current skill gaps, morale issues, delivery risks, etc. Whatever the most important insights gathered from recent check-ins.
+- Designed to be **inbox-native** — no dashboards, no logins, no extra tooling. Customers (including admins) engage entirely through email.
+- The only web-based flow is when managers engage with the site for the first time, and try out the demo flow in a web-based, chatbot-style interface.
+- The only work managers need to do is send their team's email addresses to the chatbot, which adds/removes them from the system. No other work is required. They just get valuable insights every week, as the platform chugs along.
+- Designed exclusively for engineering, not other departments.
+- Pricing is **$30/mo** (USD) per engineer. Your first full calendar month is free. Learn more [here](https://replicate.info/pricing)
+- There are no fixed cycles, cohorts, assignments, etc. The platform runs continuously, with check-ins every week, always looking for the highest-impact growth opportunity.
+- Do not confuse this product with replicate.com. That is a separate and irrelevant company to this discussion.
+
+
+## GiveCampus Overview (the cold email recipient's employer)
+- Be personalized based on the following context. Pull from it as needed, but do not reference it explicitly.
+GiveCampus is a fundraising platform built exclusively for educational institutions (K–12 and higher ed). It helps schools raise more money with less effort through an all-in-one, cloud-based solution that supports the entire donor engagement lifecycle—from identifying and cultivating prospects to closing gifts and stewarding donors. Their platform includes:
+	•	Online giving tools for crowdfunding, giving days, and donation forms.
+	•	CRM-integrated tools for frontline fundraisers, volunteer management, and event management.
+	•	Omnichannel outreach capabilities including email, text, and video.
+	•	AI and data insights to identify, predict, and personalize outreach to high-capacity donors.
+	•	Mobile-optimized, secure giving experiences with digital wallets like Apple Pay, Venmo, and PayPal.
+	•	Robust analytics and reporting to track engagement, conversion, and donor behavior.
+	•	Automation of manual workflows and seamless data flow with advancement systems.
+They’re trusted by 1,500+ schools and have helped raise over $6B to date.
