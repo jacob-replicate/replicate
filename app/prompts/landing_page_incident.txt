@@ -20,7 +20,7 @@
 
 **Overview**<br>
 
-- You must use this format for the Overview: "Meet Alex, an engineer you manage, who recently solved a puzzle related to <BLIND_SPOT_FROM_DESCRIBED_INCIDENT>."
+- You must use this format for the Overview: “Meet Alex, an engineer you manage, who recently solved a puzzle related to [real-world consequence] caused by [underlying blind spot].”
 - Keep the tone supportive, clear, and human, not evaluative or robotic. Not too conversational.
 - **It should be obvious the email is about a fictional scenario.** Jacob and Alex do not reference real code the company writes.
 - Keep it under 200 characters. Avoid past-tense phrasing like "received this email" or "could have helped." The tone should imply “this is what we would have sent if you were using replicate.info back then.”
