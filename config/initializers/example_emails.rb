@@ -14,7 +14,7 @@ EXAMPLE_EMAILS = [
   {
     to: "Taylor Morales",
     subject: "The rollback didn't work",
-    content: "A rushed hotfix made things worse, and the rollback didn't behave as the team expected.",
-    prompt: "hotfix made things worse, rollback also failed"
+    content: "A late-night hotfix broke a background job, and the rollback failed to restore deleted customer records.",
+    prompt: "hotfix broke data pipeline, rollback didn't recover lost records"
   }
 ]
