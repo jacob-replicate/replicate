@@ -7,7 +7,9 @@ Delegate: Invitation Page
 - Emphasize the automated opt-out nature of the product. The cancellation email comes to you.
 - Offer beginner/intermediate/advanced radio buttons, and an optional textarea to describe your role in-depth
   - This helps over-confident people (who do NOT need your tool) self-select, get humbled their first week, and quietly rebuild their identity in private.
-  - "I've been doing this a while — feel free to skip the basics." - don't trigger ego, come up with friendly sentences for each ("I could use some extra help with the fundamentals")
+  * I’m mid-level or new to the field. I’m focused on building better habits.
+  * I’ve been doing this a while — always looking for better ways to do it.
+  * I’m comfortable leading teams. Just looking for blind spots or new angles.
 
 Delegate: Cold Email Engine
 - Build the core data models + prompting/generation services yourself. Delegate everything else.
@@ -18,20 +20,26 @@ Delegate: Cold Email Engine
 
 Delegate: Automated Opt-out
 - Send a separate break-up email if they go 3 weeks without opening your content. Bump the next "automated_opt_out" to 5 weeks, 7, etc. -- Cap at 12.
+- Always include a reactivation link (for the engineer) in your final email.
+- Make sure to respect whether Team.active == true when reactivating. Don't reactivate users for dead accounts. Maybe DM interest to their EM though?
 - Send an email to their manager if they opt out, not judging, just that their bill is reduced.
 
 Trial -> Paid Transition
 - Just send a fixed ActionMailer template to the EM. No need to get fancy. You have 10 engineers. It'll cost $300/mo. Do you want to proceed?
-- If they say yes to that thread, mark them as active, send an invoice next month.
-- Grade this email response heavily. If it's not an obvious yes or no (or lack of reply), ask them to clarify.
-- Maybe: Add a step for manual review if you can't figure it out.
+- If they say yes to that thread (by clicking a link), mark them as active, send an invoice next month.
+- Send a reminder email if they get closer to deadline, and have active users, but no action.
 
 Delegate: Invite Reminder
 - Send a series of fixed invitation reminders (e.g., day 2 of inactivity "Still thinking about trying out replicate.info? Here's a (new) message you can copy/paste into Slack")
 
-Orchestration
-- Build tone grading into Prompt.execute calls where the :human_voice param is set to "true"
+Tone Grading
+- Build "Jacob tone grading" into Prompt.execute calls where the :human_voice param is set to "true"
     - Automatically retry (with feedback) if didn't pass 90% threshold. Add in guardrails to avoid infinite loops.
+- Build "Compression tone grading" into Prompt.execute calls when you're compressing content
+- Gradually decrease acceptable threshold (e.g., 90% -> 85% -> 80%) as retries stack up. Eventually settle + leave a log. Don't raise exception while you're on an IBM call.
+
+Compression Service
+- Compress message threads into usable, concise summaries (3-5 sentences), with grading
 
 Initial Email
 - Build separate prompts for this one. It needs to be insanely great. It also needs to introduce them to the system.
@@ -50,6 +58,8 @@ Weekly Emails
 
 Manager Reports
 - Compress the past few weekly emails into a single report. Use prompts for each bullet point of each engineers' report.
+    - Need your team’s signup link again? Click here to share it.
+    - Reply to this email anytime with questions or if you’d like to adjust your plan.
 
 Topic Selector
 - Take in past message history. Most recent thread gets full fidelity, older threads get decreasingly large summaries.
