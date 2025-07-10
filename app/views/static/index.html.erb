@@ -12,10 +12,10 @@
     <%= form_for Conversation.new, url: conversations_path, html: { id: "demo-form" } do |f| %>
       <div class="p-4 rounded-xl bg-white shadow-sm" style="border: 1px solid #e6e6e6">
         <label for="initial_message" class="block text-gray-900 font-medium">
-          What did you scramble to fix recently?
+          What fire did your team put out recently?
         </label>
         <div class="text-sm text-indigo-600 mt-1 mb-2">
-          I'll show an email thread that might've prevented it.
+          I'll show you how I would've coached them through it.
         </div>
 
         <%= text_area_tag :initial_message, "", class: 'w-full rounded-md bg-white px-4 py-2 text-sm text-gray-900 border border-gray-300 focus:border-indigo-600 focus:ring-0 placeholder:text-gray-400', rows: 3, placeholder: 'e.g., latency spike after a config change', tabindex: 1 %>
