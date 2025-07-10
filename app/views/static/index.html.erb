@@ -2,10 +2,10 @@
   <!-- Left Column: Headline + Form -->
   <div class="lg:w-1/2 w-full">
     <h1 class="text-2xl lg:text-3xl font-semibold tracking-tight mb-2">
-      Your next outage is preventable.
+      Your next outage is avoidable.
     </h1>
     <p class="text-gray-800 mb-6 leading-relaxed text-[17px]">
-      Each week, your team gets a coaching thread that surfaces the failure no one saw coming — before it happens again.
+      Coaching lands in your inbox every Monday, pinpointing risky patterns before they take down production.
     </p>
 
     <%= form_for Conversation.new, url: conversations_path, html: { id: "demo-form" } do |f| %>
@@ -24,7 +24,7 @@
       </div>
 
       <div class="text-center mt-6">
-        <%= f.submit 'How I\'d coach your team&nbsp;&nbsp;&rarr;'.html_safe, class: 'cursor-pointer rounded-lg px-5 py-2.5 text-lg font-semibold text-white bg-slate-600 hover:bg-slate-700 active:bg-slate-800 transition shadow-sm hover:shadow-md focus:outline-none', tabindex: 3 %>
+        <%= f.submit 'Uncover the root cause&nbsp;&nbsp;&rarr;'.html_safe, class: 'cursor-pointer rounded-lg px-5 py-2.5 text-lg font-semibold text-white bg-slate-600 hover:bg-slate-700 active:bg-slate-800 transition shadow-sm hover:shadow-md focus:outline-none', tabindex: 3 %>
       </div>
       <div class="mt-4 text-sm text-center text-gray-500">
         No logins. No credit cards.
@@ -107,7 +107,7 @@
         </p>
 
         <p>
-          Every thread starts with a failure that feels all too familiar. Not your code, but something that feels familiar. You think it's just a puzzle at first. But 3 messages in, it's clear you've seen this exact failure before, and there's a lesson if you dig.
+          Every thread starts with a mistake you never see it coming. Not your code, but something that feels familiar. You think it's just a puzzle at first. But 3 messages in, it's clear you've seen this exact failure before, and there's a lesson if you dig.
         </p>
 
         <p>
