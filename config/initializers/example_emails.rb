@@ -7,7 +7,7 @@ EXAMPLE_EMAILS = [
   },
   {
     to: "Casey Patel",
-    subject: "SSO failed quietly, again",
+    subject: "SSO failed silently, again",
     content: "The team launched a new authentication flow without feature gating it, causing SSO to fail in production.",
     prompt: "deploy broke SSO authentication in prod (forgot to feature flag new project)"
   },
