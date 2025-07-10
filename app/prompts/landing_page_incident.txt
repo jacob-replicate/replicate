@@ -85,7 +85,8 @@
 
 Alex Shaw
 - Alex achieves the “aha!” moment, and ultimately lands on the blind spot that could have prevented the recent production issue reported by the manager.
-- Alex communicates a vivid, concrete, and actionable next step they will take into their next weekly team sync (e.g., “I’ll write a test that simulates 10K users hitting that page to stress the DB,” not just “I’ll bring this up”). They ask AI for feedback on the idea.
+- Alex communicates a vivid, concrete, and actionable next step he will take into his next 1on1 with Chris (e.g., “I’ll write a test that simulates 10K users hitting that page to stress the DB,” not just “I’ll bring this up”). They ask AI for feedback on the idea.
+- Alex must mention he will bring the idea up with Chris in their next 1on1.
 - The tone should still feel casual and realistic — like a sharp but busy engineer typing in Slack, not a student writing an essay.
 - Make it feel like real growth-in-progress, not a perfect “lesson learned.”
 - This message should close the loop for the manager reading. It should be clear: this is the moment where Alex now sees the risk and knows how to avoid it next time.
@@ -112,7 +113,7 @@ Type `1` to preview the growth summary you'll get in your inbox every Friday.<br
 
 It’s $**30** user/mo (USD). Your first full calendar month is free.
 
-Just type your email below. I’ll create a signup link you can drop into Slack.
+Just type your email(s) below. I'll reach out in a few weeks once everything's live.
 
 
 </pre>

@@ -2,21 +2,17 @@
 
 [Desired Output]
 - Review existing messages in the conversation, and produce an example report for the manager trying out replicate.info.
-- The report should help the manager instantly connect the AI coaching insight to real-world incidents (e.g., outage, delay, missed optimization), and how replicate.info could have helped.
+- The report should help the manager instantly connect AI coaching insights to real-world incidents (e.g., outage, delay, missed optimization), and how replicate.info helped prevent them.
 - **The disruption the manager mentioned originally did not happen in this fictional universe. replicate.info stepped in early and prevented it.**
 - The report should be about Alex Shaw (Engineer II), and 3 of her teammates. Taylor Morales (Senior Engineer), Casey Patel (Staff Engineer)
 - Highlight each engineer's unique growth opportunities. They should be about core engineer topics that engineering leaders at Series B startups want to raise the bar in ASAP.
-- The example report should also highlight how the platform helped those engineers level up (without any effort on the manager's part required).
 - For the more experienced engineers, the topics should be much more concrete. For the less experienced engineers, the content can be more general.
-- Each entry should include the engineer's name, their role, a brief summary of their current focus, and current morale.
-- Each entry should be visual, and have at least 800 characters per engineer. The entries focus on how replicate.info has helped the engineer so far, and replicate's plans for next week's coaching insight.
-- Each entry should have long bullet points. Each bullet point should have around 300 characters. Each bullet point line should end with <br>
-- Each bullet point should use selective bold text tastefully to emphasize key points.
-- Taylor is feeling spread a bit too thin with projects, and at risk of burning out. Mention this briefly, but mostly focus on technical growth in Taylor's report.
+- It should sound like a Staff Engineer reporting progress to his manager. Plain language, to the point.
+- You must not include bullet points. It should feel like a single paragraph about each specific engineer's progress. The paragraph should not exceed 300 characters.
+- You should mention in a separate paragraph what you plan to introduce them to next week.
 - Include <br> after each engineer's name (but in Markdown).
+- The engineers on the manager's team do not mentor each other. This is a progress report on how each engineer engaged with replicate.info directly, in private coaching threads.
 - Use the --- tag to separate different engineers' sections in the report.
-- Use a visual format that is easy to read, with clear headings and impactful bullet points.
-- Provide lots of detail about each team member. Reference how they're developing across the quarter, not just in the most recent AI coaching insight.
 - Do not leave a footer at the bottom of the report. End the conversation with the following CTA, word-for-word
 
 [Desired Header Format]
@@ -29,6 +25,6 @@ Pricing is **$30/mo** (USD) per engineer. Your first full calendar month is free
 
 Want to try it for a few weeks, and learn something valuable about your craft?
 
-Just type your team's emails below, and **replicate.info** will check in next Monday.
+Just type your email(s) below. I'll reach out in a few weeks once everything's live.
 
 {{PLATFORM_OVERVIEW}}
