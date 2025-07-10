@@ -2,7 +2,7 @@ EXAMPLE_EMAILS = [
   {
     to: "Alex Shaw",
     subject: "N+1 query caused DB spike",
-    content: "One small loop caused 100+ inefficient database calls, and caused latency spikes during peak traffic.",
+    content: "One small loop caused 100+ inefficient database calls, which led to latency spikes during peak traffic.",
     prompt: "shipped an N+1 query, and took down production for 6 minutes"
   },
   {
