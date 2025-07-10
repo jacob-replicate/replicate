@@ -1,4 +1,4 @@
-<div class="flex flex-col-reverse lg:flex-row gap-9 md:pt-10">
+<div class="flex flex-col lg:flex-row gap-9 md:pt-10">
   <!-- Left Column: Headline + Form -->
   <div class="lg:w-1/2 w-full">
     <h1 class="text-2xl lg:text-3xl font-semibold tracking-tight mb-2">
@@ -104,7 +104,7 @@
       </div>
       <div class="mb-6 flex gap-4">
         <% EXAMPLE_EMAILS.each_with_index do |email, i| %>
-          <div class="bg-white border border-gray-200 shadow rounded-xl p-5 space-y-4 <%= i == 1 ? "hidden lg:block" : "" %> <%= i == 2 ? "hidden md:block" : "" %>">
+          <div class="bg-white border border-gray-200 shadow rounded-xl p-5 space-y-4 <%= i == 0 ? "hidden md:block" : "" %> <%= i == 1 ? "hidden lg:block" : "" %> <%= i == 2 ? "md:block" : "" %>">
             <div class="flex items-center justify-between align-middle">
               <div class="text-sm text-gray-500"><%= email[:to] %></div>
               <img src="/profile-photo-<%= i + 1 %>.jpg" alt="Avatar" class="w-10 h-10 rounded-full overflow-hidden" />
