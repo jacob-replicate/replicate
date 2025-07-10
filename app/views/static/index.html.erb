@@ -35,22 +35,34 @@
   <!-- Right Column: Email Visual -->
   <div class="lg:w-1/2 w-full">
     <div class="bg-white border border-gray-200 rounded-xl shadow overflow-hidden text-sm">
-      <div class="bg-gray-100 text-gray-700 px-4 py-2 border-b border-gray-200 font-medium">
-        Alex Shaw — Re: The rollback didn't work
+      <!-- Header: Subject line + pseudo timestamp -->
+      <div class="bg-gray-100 text-gray-700 px-4 py-2 border-b border-gray-200 font-medium flex justify-between items-center">
+        <span>Re: The rollback didn't work</span>
+        <span class="text-xs text-gray-500 font-normal">Mon, Jul 8 &bull; 9:17am</span>
       </div>
+
+      <!-- Thread body -->
       <div class="p-4 space-y-6 text-gray-800">
-        <div>
-          <span class="font-bold">Jacob:</span> Imagine a hotfix gets rushed and only makes things worse. The team tries a rollback... but it doesn't behave like anyone expected. How do you know your rollback logic is actually safe?
+        <div class="flex gap-2">
+          <div>
+            <span class="font-bold">Jacob:</span> Imagine a hotfix gets rushed and only makes things worse. The team tries a rollback... but it doesn't behave like anyone expected. <span class="font-semibold">How do you know your rollback logic is actually safe?</span>
+          </div>
         </div>
-        <div>
-          <span class="font-bold">Alex:</span> yeah that defintely happened once. we assumed it was safe to just revert the last commit, but it made the data mismatch worse. didnt catch it til customers complained.
+        <div class="flex gap-2">
+          <div>
+            <span class="font-bold">Alex:</span> yeah that definitely happened once. we assumed it was safe to just revert the last commit, but it made the data mismatch worse. didn't catch it til customers complained.
+          </div>
         </div>
-        <div>
-          <span class="font-bold">Jacob:</span> That's a super common trap — especially if the rollback path isn't tested the same way as the deploy path. What would break if a background job had already run on the new data?
+        <div class="flex gap-2">
+          <div>
+            <span class="font-bold">Jacob:</span> That's a super common trap — especially if the rollback path isn't tested the same way as the deploy path. <span class="font-semibold">What would break if a background job had already run on the new data?</span>
+          </div>
         </div>
       </div>
-      <div class="px-4 py-3 border-t border-gray-100 bg-gray-50 text-right text-xs text-gray-500">
-        Sent automatically every Monday
+
+      <!-- Footer: Sending note -->
+      <div class="px-4 py-3 border-t border-gray-100 bg-gray-50 text-xs text-gray-500 italic flex justify-end items-center">
+        <span>Sent automatically every Monday</span>
       </div>
     </div>
 
