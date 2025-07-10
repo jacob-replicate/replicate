@@ -4,7 +4,7 @@
 - Review existing messages in the conversation, and produce an example report for the manager trying out replicate.info.
 - The report should help the manager instantly connect AI coaching insights to real-world incidents (e.g., outage, delay, missed optimization), and how replicate.info helped prevent them.
 - **The disruption the manager mentioned originally did not happen in this fictional universe. replicate.info stepped in early and prevented it.**
-- The report should be about Alex Shaw (Engineer II), and 3 of her teammates. Taylor Morales (Senior Engineer), Casey Patel (Staff Engineer)
+- The report should be about Alex Shaw (Engineer II), and 3 of his teammates. Taylor Morales (Senior Engineer), Casey Patel (Staff Engineer)
 - Highlight each engineer's unique growth opportunities. They should be about core engineer topics that engineering leaders at Series B startups want to raise the bar in ASAP.
 - For the more experienced engineers, the topics should be much more concrete. For the less experienced engineers, the content can be more general.
 - It should sound like a Staff Engineer reporting progress to his manager. Plain language, to the point.
