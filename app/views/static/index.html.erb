@@ -1,11 +1,11 @@
-<div class="flex flex-col lg:flex-row gap-9 md:pt-10 items-center">
+<div class="flex flex-col lg:flex-row gap-9 md:pt-10">
   <!-- Left Column: Headline + Form -->
   <div class="lg:w-1/2 w-full">
     <h1 class="text-2xl lg:text-3xl font-semibold tracking-tight mb-2">
       Your next outage is avoidable.
     </h1>
     <p class="text-gray-800 mb-6 leading-relaxed text-[17px]">
-      Coaching lands in your inbox every Monday, pinpointing risky patterns before they take down production.
+      Coaching lands in your inbox every Monday, revealing subtle risks before they turn into incidents.
     </p>
 
     <%= form_for Conversation.new, url: conversations_path, html: { id: "demo-form" } do |f| %>
