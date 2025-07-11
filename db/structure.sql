@@ -64,7 +64,9 @@ CREATE TABLE public.conversations (
     recipient_id uuid,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    category character varying
+    category character varying,
+    context character varying DEFAULT 'default'::character varying NOT NULL,
+    channel character varying
 );
 
 
@@ -285,6 +287,8 @@ CREATE UNIQUE INDEX index_users_on_unlock_token ON public.users USING btree (unl
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250711035414'),
+('20250711035405'),
 ('20250701232603'),
 ('20250701232143'),
 ('20250627002421'),

@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
     user = current_user || create_guest_user
     @conversation = Conversation.create!(recipient: user, category: :landing_page)
 
-    SendWebMessageWorker.new.perform(@conversation.id, "**What did you scramble to fix recently?**\n#{initial_message}", user.id)
+    session[:initial_message] = "#{initial_message}"
 
     if force_tos || EXAMPLE_EMAILS.map { |email| email[:prompt] }.include?(initial_message).present?
       redirect_to conversation_path(@conversation, require_tos: true)
@@ -20,5 +20,9 @@ class ApplicationController < ActionController::Base
 
     user = User.create!(name: "Anonymous", email: "placeholder+#{SecureRandom.hex(10)}@replicate.info", password: SecureRandom.hex(10))
     sign_in user
+  end
+
+  def query_spike_intro_message
+    "Show me an example conversation about a query spike caused by an N+1"
   end
 end

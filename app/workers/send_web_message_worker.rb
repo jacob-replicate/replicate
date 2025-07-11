@@ -10,7 +10,7 @@ class SendWebMessageWorker
       user_generated: user_generated
     )
 
-    if conversation.web? && conversation.messages.count > 1
+    if conversation.web?
       ConversationChannel.broadcast_to(conversation, { message: message.content, user_generated: message.user_generated })
     end
 

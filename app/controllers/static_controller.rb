@@ -14,11 +14,14 @@ class StaticController < ApplicationController
   end
 
   def demo
-    return redirect_to_demo_conversation(initial_message: "deploy broke SSO authentication in prod (forgot to feature flag new project)", force_tos: true)
+    return redirect_to_demo_conversation(initial_message: "**What fire did your team put out recently?**\ndeploy broke SSO authentication in prod (forgot to feature flag new project)", force_tos: true)
+  end
+
+  def query_spike
+    return redirect_to_demo_conversation(initial_message: query_spike_intro_message, force_tos: true)
   end
 
   def security
-    redirect_to "https://docs.google.com/document/d/1rqwWku--SR-HS86kNIdHMhG-GRfn9QCCxcAARYOYLpA", allow_other_host: true
   end
 
   def how_it_works
