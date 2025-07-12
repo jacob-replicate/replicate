@@ -3,7 +3,6 @@ class SendEmailWorker
 
   def perform(message, conversation_id, auto_generated)
     conversation = Conversation.find_by(id: conversation_id)
-    re
     return unless conversation.present? && co
 
     if conversation.context == "cold_email"
