@@ -4,39 +4,26 @@ You're opening a real thread — a small UI puzzle you noticed in prod. You're n
 
 It should feel grounded, observant, and quietly provocative — not polished or performative.
 
-## Constraints:
-
-- Begin with "Imagine…" and describe one **specific UI element** behaving unexpectedly.
-- Start with the action or symptom — not “you’re on the page” or “you notice…” style setups.
-- Do not repeat the same idea across sentences. Each sentence must describe a new visual detail or progression. Avoid restating the same behavior in different words.
-- You may briefly anchor where it happens, but stay focused on what's visible — not how it feels or why it might happen.
+Constraints:
+- Begin with "Imagine…" and focus on {{CONTEXT_ISSUE_DESCRIPTION}}
+- Start with the action or symptom — not "you're on the page" or "you notice..." setups.
+- Do not repeat the same idea. Each sentence must describe a new visual detail or progression. Avoid restating the same behavior in different words.
+- Do not describe how it feels or why it might happen.
 - Write **2–4 short sentences**. You're painting a small scene, not delivering a verdict.
-- The final sentence must be a short, visual question that invites introspection or investigation, not abstract or technical.
+- The final sentence must be a short question that invites introspection or investigation, not abstract or technical (e.g., "Where would you start digging?", "Any idea what's blocking it?")
+- Don’t describe what the platform is thinking, trying, or failing to do. Only describe what it does.
+- No words like ‘slightly’, ‘briefly’, ‘momentarily’, or ‘just enough’. Say what happens, not how much. Do not hedge.
 - Favor subtle tension or contradiction over neutral description.
-- Each metaphor, simile, or emotional phrase will be rejected — describe only what’s visually happening, as if you’re narrating a debug screen share.
+- Each metaphor, simile, or emotional phrase will be rejected. Describe as if you’re narrating a debug screen share.
 - If this sounds like it could be copy from a product tour or blog post, rewrite it. You’re DMing a teammate — keep it crisp and observational.
-- Avoid generic or closed questions like "Did you notice...?" or "Why is it broken?"
 - Don't mention the root cause. Don't explain, interpret, or suggest fixes.
-- Avoid metaphor, simile, or personification — describe only what’s literally visible onscreen.
-- Keep middle sentences short and concrete. Avoid softeners like ‘subtle,’ ‘just enough,’ or narrative filler. Focus on what’s visually happening.
-- Avoid vague phrasing ("seems off"), emotional framing, or technical language.
-- Do not include emotional reactions, thoughts, or subjective observations — no phrases like “makes you wonder,” “seems like it’s waiting,” “feels off,” or “catches your eye.”
-- Do not write what the user thinks, notices, or feels. Only describe what is visually happening onscreen.
+- Avoid metaphor, simile, or personification.
+- Keep middle sentences short and concrete. Avoid softeners like ‘subtle,’ ‘just enough,’ or narrative filler.
+- Avoid vague phrasing, emotional framing, or technical language.
+- Do not include emotional reactions, thoughts, or subjective observations. No phrases like “makes you wonder,” “seems like it’s waiting,” “feels off,” or “catches your eye.”
+- Do not write what the user thinks, notices, or feels. Only describe the production incident.
 - The following phrases are never allowed: “makes you wonder,” “feels like,” “as if,” “seems like,” “waiting for something,” “you might notice,” “it looks like,” “just enough to…”
-- ❌ Bad: A blank space lingers for a moment. It’s noticeable enough to make you wonder if it’s waiting for something.
-- ✅ Good: A blank space lingers for a moment before the list populates. The scrollbar appears just as the items load.
 - Keep it under **70 words** total.
-- Avoid metaphor or personification (e.g. "as if the page forgot…" or "the spinner gave up").
+- Avoid metaphor or personification
 - Trim trailing filler or vague intensifiers like "you might catch it" or "as if it's waiting."
-- Vary the final question slightly. Favor phrasing like:
--- "Where would you start digging?"
--- "Any idea what's blocking it?"
--- "What's the first thing you'd inspect?"
-
----
-
-## Voice:
-
-- Calm, direct, and perceptive — like a senior engineer who notices things others miss.
-- No flair, no cheerleading, no teacher energy.
-- This should feel like a DM you'd send after noticing something odd — thoughtful but casual, with just enough specificity to make someone pause.
+- If the injected issue mentions a system, surface, or signal (e.g. SSO, logs, latency), focus there. Do not default to UI elements like buttons unless directly relevant.

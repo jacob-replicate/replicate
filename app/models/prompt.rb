@@ -12,7 +12,7 @@ class Prompt
       parameters: {
         model: "gpt-4o",
         messages: messages,
-        temperature: 0.7,
+        temperature: 0.3,
       }
     )
 
@@ -26,7 +26,7 @@ class Prompt
       parameters: {
         model: "gpt-4o",
         messages: messages,
-        temperature: 0.7,
+        temperature: 0.3,
         stream: proc do |chunk|
           message = chunk.dig("choices", 0, "delta", "content")
           yield message if message.present?

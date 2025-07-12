@@ -32,20 +32,30 @@ module Prompts
       /\bappears to\b/i
     ].freeze
 
-    TRANSITIONS_OR_CONJUNCTIONS = [
-      /\bbut\b/i,
-      /\band\b/i,
-      /\bwhile\b/i,
-      /\bso\b/i,
-      /\beven though\b/i,
-      /\beven after\b/i,
-      /\bdespite\b/i,
-      /\binstead of\b/i
+    SOFT_LANGUAGE = [
+      /\bnoticeable (enough )?to\b/i,
+      /\bmake(s)? you wonder\b/i,
+      /\bit's just\b/i,
+      /\ba(n)? extra (beat|moment|second)\b/i,
+      /\bhang(s)? (in the air|back)\b/i,
+      /\bslight\b/i,
+      /\bit (feels|seems|looks) (like|as if)?\b/i
     ].freeze
+
+    WEAK_QUESTIONS = [
+      /\bwhat's your first move\b/i,
+      /\bhow would you debug\b/i,
+      /\bcan you tell\b/i,
+      /\bwhat happened\b/i
+    ].freeze
+
+    def initialize(issue_description:)
+      @issue_description = issue_description
+    end
 
     def call
       RETRY_COUNT.times do
-        text = Prompt.new(:coaching_intro).execute
+        text = Prompt.new(:coaching_intro, context: { issue_description: @issue_description }).execute
         error = validate(text)
 
         return text unless error
@@ -55,10 +65,10 @@ module Prompts
       nil
     end
 
-    def self.test
+    def self.test(issue_description)
       10.times.map.with_index(1) do |_, i|
         puts "Iteration: #{i}"
-        new.call
+        new(issue_description: issue_description).call
       end.compact
     end
 
@@ -71,10 +81,12 @@ module Prompts
       return "Final line must end with a question mark" unless lines.last.end_with?("?")
       return "Metaphor or personification detected" if contains?(text, METAPHOR_PATTERNS)
       return "Interpretive language detected" if contains?(text, INTERPRETIVE_PHRASES)
-      # return "Conjunction or transition detected in setup" if contains?(lines.first, TRANSITIONS_OR_CONJUNCTIONS)
-      return "Must be 2–4 sentences" unless sentence_count_valid?(text)
+      return "Soft or narrative phrasing detected" if contains?(text, SOFT_LANGUAGE)
+      return "Weak or off-tone question phrasing" if contains?(lines.last, WEAK_QUESTIONS)
+      #return "Must be 2–4 sentences" unless sentence_count_valid?(text)
       return "Sentence exceeds 20 words: #{long_sentence(text)}" if long_sentence(text)
       return "Final question does not reference first UI noun" unless question_references_first_noun?(lines)
+      return "Redundant sentences detected" if redundant_sentences?(text)
 
       nil
     end
@@ -98,6 +110,19 @@ module Prompts
       last = lines.last
       noun = UI_NOUNS.find { |n| first =~ /\b#{Regexp.escape(n)}\b/i }
       noun && last =~ /\b#{Regexp.escape(noun)}\b/i
+    end
+
+    def redundant_sentences?(text)
+      sentences = text.strip.scan(/[^.!?]+[.!?]/).map(&:strip).map { |s| normalize(s) }
+      return false if sentences.size < 2
+
+      sentences.combination(2).any? do |a, b|
+        a.include?(b) || b.include?(a)
+      end
+    end
+
+    def normalize(sentence)
+      sentence.downcase.gsub(/\W/, "")
     end
 
     def nonempty_lines(text)
