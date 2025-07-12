@@ -21,7 +21,7 @@ class StaticController < ApplicationController
     return start_conversation(
       context: {
         conversation_type: "coaching",
-        focus_area: "N+1 query spikes",
+        issue_description: "User profile page crashes when switching tabs",
       },
       force_tos: true
     )

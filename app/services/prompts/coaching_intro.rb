@@ -55,11 +55,14 @@ module Prompts
 
     def call
       RETRY_COUNT.times do
-        text = Prompt.new(:coaching_intro, context: { issue_description: @issue_description }).execute
+        text = Prompt.new(:coaching_intro, context: { issue_description: @issue_description, question: @question }).execute
         error = validate(text)
 
-        return text unless error
-        puts error
+        if error.present?
+          puts "Failure: #{error}"
+        else
+          return "#{text} #{questions.sample}"
+        end
       end
 
       nil
@@ -74,18 +77,29 @@ module Prompts
 
     private
 
+    def questions
+      [
+        "Where would you look first?",
+        "What is the first thing you'd check?",
+        "What would you poke at first?",
+        "What would you want to rule out early?",
+        "What's your first move here?",
+        "What would you dig into first?",
+        "Where's the first place you'd start digging?"
+      ]
+    end
+
     def validate(text)
       lines = nonempty_lines(text)
 
       return "First line must start with 'Imagine'" unless lines.first.start_with?("Imagine")
-      return "Final line must end with a question mark" unless lines.last.end_with?("?")
       return "Metaphor or personification detected" if contains?(text, METAPHOR_PATTERNS)
       return "Interpretive language detected" if contains?(text, INTERPRETIVE_PHRASES)
       return "Soft or narrative phrasing detected" if contains?(text, SOFT_LANGUAGE)
       return "Weak or off-tone question phrasing" if contains?(lines.last, WEAK_QUESTIONS)
       #return "Must be 2–4 sentences" unless sentence_count_valid?(text)
       return "Sentence exceeds 20 words: #{long_sentence(text)}" if long_sentence(text)
-      return "Final question does not reference first UI noun" unless question_references_first_noun?(lines)
+      # return "Final question does not reference first UI noun" unless question_references_first_noun?(lines)
       return "Redundant sentences detected" if redundant_sentences?(text)
 
       nil
