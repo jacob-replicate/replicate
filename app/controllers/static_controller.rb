@@ -16,7 +16,7 @@ class StaticController < ApplicationController
   def demo
     return start_conversation(
       context: {
-        conversation_type: "landing_page_incident",
+        conversation_type: :landing_demo,
         initial_message: "**What went sideways in production recently?**\n\ndeploy broke SSO authentication in prod (forgot to feature flag new project)"
       },
       force_tos: true
@@ -26,7 +26,7 @@ class StaticController < ApplicationController
   def query_spike
     return start_conversation(
       context: {
-        conversation_type: "coaching_intro",
+        conversation_type: :coaching,
         issue_description: "User profile page crashes when switching tabs",
       },
       force_tos: true

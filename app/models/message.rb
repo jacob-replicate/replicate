@@ -16,6 +16,6 @@ class Message < ApplicationRecord
 
   def schedule_system_reply
     return unless conversation.web? && user_generated
-    SendMessageWorker.perform_async(conversation_id)
+    ConversationDriverWorker.perform_async(conversation_id)
   end
 end

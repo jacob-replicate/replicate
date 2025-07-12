@@ -18,8 +18,4 @@ class ApplicationController < ActionController::Base
     user = User.create!(name: "Anonymous", email: "placeholder+#{SecureRandom.hex(10)}@replicate.info", password: SecureRandom.hex(10))
     sign_in user
   end
-
-  def query_spike_intro_message
-    "We shipped a few changes to the billing dashboard this morning. The database is spiking now, and we're not sure how to proceed."
-  end
 end

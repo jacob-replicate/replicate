@@ -1,5 +1,7 @@
 module Prompts
   class Base
+    @@template_cache ||= {}
+
     def initialize(conversation:)
       @conversation = conversation
     end
@@ -9,7 +11,7 @@ module Prompts
     end
 
     def validate(llm_output)
-      true
+      nil
     end
 
     def fetch_valid_response
@@ -36,7 +38,7 @@ module Prompts
         }
       )
 
-      response.dig("choices", 0, "message", "content")
+      response.dig("choices", 0, "message", "content").to_s.gsub("<pre>", "").gsub("</pre>", "")
     end
 
     private
@@ -45,26 +47,36 @@ module Prompts
       self.class.name.demodulize.underscore
     end
 
+    def template(name: nil, shared: false)
+      name ||= template_name
+      cache_key = shared ? "shared/#{name}" : name
+      return @@template_cache[cache_key] if @@template_cache.key?(cache_key)
+
+      full_path = shared ?
+        Rails.root.join("app", "prompts", "shared", "#{name}.txt") :
+        Rails.root.join("app", "prompts", "#{name}.txt")
+      return nil unless File.exist?(full_path)
+
+      text = File.read(full_path)
+      @@template_cache[cache_key] = text
+    end
+
     def client
       OpenAI::Client.new(access_token: ENV["OPENAI_API_KEY"])
     end
 
     def instructions
-      valid_names = Dir.glob(Rails.root.join('app', 'prompts', '*.txt')).map { |x| File.basename(x, '.txt') }
-      return nil unless valid_names.include?(template)
-
-      instructions = File.read(Rails.root.join('app', 'prompts', "#{template}.txt"))
+      prompt_instructions = template&.dup
+      return "" if prompt_instructions.blank?
 
       Dir.glob(Rails.root.join('app', 'prompts', 'shared', '*.txt')).each do |file|
-        name = File.basename(file, '.txt').upcase
-        instructions.gsub!("{{#{name}}}", File.read(file)) # TODO: Replace this one day? Lots of disk reads.
+        name = File.basename(file, '.txt')
+        prompt_instructions.gsub!("{{#{name.upcase}}}", template(name: name, shared: true))
       end
 
-      Hash(@context).each do |key, val|
-        instructions.gsub!("{{CONTEXT_#{key.upcase}}}", val.to_s)
-      end
+      @conversation.context.each { |key, val| prompt_instructions.gsub!("{{CONTEXT_#{key.upcase}}}", val.to_s) }
 
-      instructions
+      prompt_instructions
     end
   end
 end

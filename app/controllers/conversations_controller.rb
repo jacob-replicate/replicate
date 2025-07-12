@@ -2,7 +2,7 @@ class ConversationsController < ApplicationController
   def create
     return start_conversation(
       context: {
-        conversation_type: :landing_page,
+        conversation_type: :landing_demo,
         initial_message: "**What went sideways in production recently?**<br>#{params[:initial_message]}"
       }
     )

@@ -16,14 +16,34 @@ module MessageGenerators
       end
     end
 
+    def deliver_intro
+      raise NotImplementedError, "You must implement the deliver_intro method in your subclass"
+    end
+
+    def deliver_reply
+      raise NotImplementedError, "You must implement the deliver_reply method in your subclass"
+    end
+
+    # TODO: Add error handling for prompts that failed all retries
     def deliver_elements(elements)
       full_response = ""
 
-      elements.each do |element|
-        if element.is_a?(String)
-        elsif element.is_a?(Prompt::Base)
-          element_text = element.new(conversation: @conversation)
+      elements.each_with_index do |element, i|
+        text = element.is_a?(String) ? element : element.new(conversation: @conversation).call
+        next if text.blank? # TODO: Add error handling for empty elements
+
+        if @conversation.web?
+          broadcast_to_web(message: text, type: "element")
+          broadcast_to_web(type: "loading") unless i == elements.length - 1
         end
+
+        Rails.logger.info(text.class)
+        Rails.logger.info(text)
+        full_response += text
+      end
+
+      if @conversation.email?
+        # TODO: Send it via another DeliverEmailWorker.perform_async(@conversation.id)
       end
     end
 
@@ -31,34 +51,15 @@ module MessageGenerators
       "<div class='flex items-center mb-3 gap-3'><div style='width: 40px'><img src='/jacob-square.jpg' class='rounded-full' /></div><div class='font-medium text-md'>Jacob Comer</div></div>"
     end
 
-    # TODO: Pass summaries to prompt if conversation history is too long.
-    def stream_prompt(prompts)
-      full_response = ""
-
-      prompts.each do |prompt|
-        flusher = MarkdownFlusher.new do |chunk|
-          full_response << chunk
-          Rails.logger.silence { stream_to_web(message: chunk) }
-        end
-
-        Prompt.new(prompt_code, context: @conversation.context, history: @conversation.message_history).stream { |token| flusher << token }
-        flusher.final_flush!
-      end
-
-      full_response
-    end
-
-    def stream_to_web(message: "", type: "stream")
-      streaming_context = { type: type, sequence: @message_sequence }
+    def broadcast_to_web(message: "", type: "broadcast")
+      broadcasting_context = { type: type, sequence: @message_sequence }
 
       if message.present?
-        streaming_context[:message] = message
+        broadcasting_context[:message] = message
       end
 
-      ConversationChannel.broadcast_to(conversation, streaming_context)
+      ConversationChannel.broadcast_to(@conversation, broadcasting_context)
       @message_sequence += 1
-
-      stream_to_web(type: "loading") unless ["loading", "done"].include?(type)
     end
   end
 end

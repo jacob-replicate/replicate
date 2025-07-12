@@ -4,7 +4,7 @@ module MessageGenerators
       deliver_elements([avatar_row, Prompts::CoachingIntro])
     end
 
-    def reply
+    def deliver_reply
       deliver_elements([avatar_row, Prompts::CoachingReply])
     end
   end
