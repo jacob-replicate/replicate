@@ -1,11 +1,11 @@
 class ReplyToWebMessageWorker
   include Sidekiq::Worker
 
-  def perform(message_id, prompt_code = nil)
-    message = Message.find_by(id: message_id)
-    return if message.blank? || !(message.user_generated)
+  def perform(conversation_id, prompt_code = nil)
+    conversation = Conversation.find_by(id: conversation_id)
+    return if conversation.blank?
+    message = conversation.latest_user_message
 
-    conversation = message.conversation
     full_response = ""
 
     flusher = MarkdownFlusher.new do |chunk|
@@ -13,7 +13,7 @@ class ReplyToWebMessageWorker
       Rails.logger.silence { ConversationChannel.broadcast_to(conversation, { message: chunk, user_generated: false, type: "stream" }) }
     end
 
-    Prompt.new(prompt_code || conversation.reply_prompt_code, input:  { message: message.content }, history: conversation.message_history).stream do |token|
+    Prompt.new(conversation.next_prompt_code, context: conversation.context, history: conversation.message_history).stream do |token|
       flusher << token
     end
 

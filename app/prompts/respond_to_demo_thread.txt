@@ -1,5 +1,5 @@
 [User Message]
-{{INPUT_MESSAGE}}
+{{CONTEXT_MESSAGE}}
 
 {{ASSISTANT_PERSONA}}
 

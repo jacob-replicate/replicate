@@ -18,6 +18,9 @@
 [Desired Header Format]
 **Alex Shaw** (Engineer II)<br>
 
+[Restrictions]
+- You must use the following CTA text below, and not add anything.
+
 [CTA]
 **Next Steps**
 

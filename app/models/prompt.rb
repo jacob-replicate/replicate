@@ -1,7 +1,7 @@
 class Prompt
-  def initialize(prompt_code, input: nil, history: [])
+  def initialize(prompt_code, context: nil, history: [])
     @prompt_code = prompt_code.to_s.gsub(BANNED_TERMS_REGEX, "")
-    @input = input || {}
+    @context = context || {}
     @history = Array(history).map { |m| { role: m[:role], content: m[:content].to_s } }
   end
 
@@ -59,13 +59,13 @@ class Prompt
     end
 
     # Inject user-provided variables
-    Hash(@input).each do |key, val|
-      instructions.gsub!("{{INPUT_#{key.upcase}}}", val.to_s)
+    Hash(@context).each do |key, val|
+      instructions.gsub!("{{CONTEXT_#{key.upcase}}}", val.to_s)
     end
 
     # Inject relevant context only if {{RETRIEVED_CONTEXT}} exists
     if instructions.include?("{{RETRIEVED_CONTEXT}}")
-      query_text = @input[:message] || @input[:incident] || ""
+      query_text = @context[:message] || @context[:incident] || ""
       instructions.gsub!("{{RETRIEVED_CONTEXT}}", Retriever.find_relevant_chunks(query_text).join("\n\n"))
     end
 

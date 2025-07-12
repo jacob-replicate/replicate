@@ -14,11 +14,17 @@ class StaticController < ApplicationController
   end
 
   def demo
-    return redirect_to_demo_conversation(initial_message: "**What fire did your team put out recently?**\ndeploy broke SSO authentication in prod (forgot to feature flag new project)", force_tos: true)
+    return start_conversation(initial_message: "**What fire did your team put out recently?**\ndeploy broke SSO authentication in prod (forgot to feature flag new project)", force_tos: true)
   end
 
   def query_spike
-    return redirect_to_demo_conversation(initial_message: query_spike_intro_message, force_tos: true)
+    return start_conversation(
+      context: {
+        conversation_type: "coaching",
+        focus_area: "N+1 query spikes",
+      },
+      force_tos: true
+    )
   end
 
   def security

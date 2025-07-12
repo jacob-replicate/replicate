@@ -1,10 +1,7 @@
 class ApplicationController < ActionController::Base
-  def redirect_to_demo_conversation(initial_message:, force_tos: false)
-    raise if initial_message.blank?
+  def start_conversation(initial_message: nil, context: {}, force_tos: false)
     user = current_user || create_guest_user
-    @conversation = Conversation.create!(recipient: user, category: :landing_page)
-
-    session[:initial_message] = "#{initial_message}"
+    @conversation = Conversation.create!(recipient: user, context: context, channel: :web)
 
     if force_tos || EXAMPLE_EMAILS.map { |email| email[:prompt] }.include?(initial_message).present?
       redirect_to conversation_path(@conversation, require_tos: true)
@@ -23,6 +20,6 @@ class ApplicationController < ActionController::Base
   end
 
   def query_spike_intro_message
-    "Show me an example conversation about a query spike caused by an N+1"
+    "We shipped a few changes to the billing dashboard this morning. The database is spiking now, and we're not sure how to proceed."
   end
 end

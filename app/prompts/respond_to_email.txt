@@ -1,6 +1,0 @@
-[Desired Output]
-- Return a JSON object with two keys.
-- The first key is "commands", to highlight the emails the user wants to add/remove from their environment.
-- The second key is "response", which should be a string that acknowledges the user's request and provides a brief markdown-based overview of the next steps.
-{{ASSISTANT_PERSONA}}
-{{PLATFORM_OVERVIEW}}
