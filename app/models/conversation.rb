@@ -23,6 +23,12 @@ class Conversation < ApplicationRecord
     messages.count == 0 ? initial_prompt_code : reply_prompt_code
   end
 
+  def reply_to_user
+    message_template = "MessageTemplates::#{context[:conversation_type]}".constantize.new(self)
+    # TODO: Create it
+    # TODO: Deliver it
+  end
+
   def initial_prompt_code
     conversation_type = context["conversation_type"]
 

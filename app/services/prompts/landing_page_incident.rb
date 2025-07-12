@@ -1,65 +1,15 @@
 module Prompts
   class CoachingIntro < Prompts::BasePrompt
-    RETRY_COUNT = 10
-
-    UI_NOUNS = %w[
-      spinner button dropdown list summary form field tab ticket page label log user users
-    ].freeze
-
-    METAPHOR_PATTERNS = [
-      /\blike\b/i,
-      /\bas if\b/i,
-      /\bas though\b/i,
-      /\bfeels like\b/i,
-      /\bcatching a glimpse\b/i,
-      /\bfrozen in time\b/i,
-      /\bwaiting for something that never comes\b/i,
-      /\bsits there\b/i,
-      /\bseems content\b/i,
-      /\bstays frozen\b/i,
-      /\bstays that way\b/i
-    ].freeze
-
-    INTERPRETIVE_PHRASES = [
-      /\bseems to\b/i,
-      /\bshould\b/i,
-      /\btrying to\b/i,
-      /\brefuses\b/i,
-      /\bexpected\b/i,
-      /\bwants to\b/i,
-      /\bconfused\b/i,
-      /\backnowledge\b/i,
-      /\bappears to\b/i
-    ].freeze
-
-    SOFT_LANGUAGE = [
-      /\bnoticeable (enough )?to\b/i,
-      /\bmake(s)? you wonder\b/i,
-      /\bit's just\b/i,
-      /\ba(n)? extra (beat|moment|second)\b/i,
-      /\bhang(s)? (in the air|back)\b/i,
-      /\bslight\b/i,
-      /\bit (feels|seems|looks) (like|as if)?\b/i
-    ].freeze
-
     def initialize(conversation: nil, issue_description: nil)
       @issue_description = issue_description
     end
 
     def call
-      RETRY_COUNT.times do
-        text = Prompt.new(:coaching_intro, context: { issue_description: @issue_description, question: @question }).execute
-        text += " #{questions.sample}" if text.present?
-        error = validate(text)
+      Prompt.new(:landing_page_incident, context: conversation.context).execute
 
-        if error.present?
-          puts "Failure: #{error}"
-        else
-          return "<div class='flex items-center mb-3 gap-3'><div style='width: 40px'><img src='/jacob-square.jpg' class='rounded-full' /></div><div class='font-medium text-md'>Jacob Comer</div></div>#{text}"
-        end
+      Prompt.new(conversation.next_prompt_code, context: conversation.context, history: conversation.message_history).stream do |token|
+        flusher << token
       end
-
-      nil
     end
 
     def self.test(issue_description)

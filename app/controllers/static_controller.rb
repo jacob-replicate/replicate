@@ -14,7 +14,13 @@ class StaticController < ApplicationController
   end
 
   def demo
-    return start_conversation(initial_message: "**What fire did your team put out recently?**\ndeploy broke SSO authentication in prod (forgot to feature flag new project)", force_tos: true)
+    return start_conversation(
+      context: {
+        conversation_type: "landing_page_incident",
+        initial_message: "**What fire did your team put out recently?**\n\ndeploy broke SSO authentication in prod (forgot to feature flag new project)"
+      },
+      force_tos: true
+    )
   end
 
   def query_spike

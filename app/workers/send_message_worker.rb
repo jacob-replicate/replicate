@@ -33,10 +33,13 @@ class SendMessageWorker
     service_class = "Prompts::#{conversation.context["conversation_type"].camelize}".constantize
 
     if service_class.present?
-      message = service_class.new(conversation: conversation).call
-      Message.create!(conversation: conversation, content: message, user_generated: false)
-      ConversationChannel.broadcast_to(conversation, { message: message, user_generated: false, type: "stream" })
-      ConversationChannel.broadcast_to(conversation, { type: "done" })
+      if service_class.stream?
+      else
+        message = service_class.new(conversation: conversation).call
+        Message.create!(conversation: conversation, content: message, user_generated: false)
+        ConversationChannel.broadcast_to(conversation, { message: message, user_generated: false, type: "stream" })
+        ConversationChannel.broadcast_to(conversation, { type: "done" })
+      end
     else
       full_response = ""
 
