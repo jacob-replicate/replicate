@@ -97,7 +97,7 @@
   <div class="text-md leading-relaxed tracking-[0.008em]">
     <div class="text-[17px]">
 
-      <div class="mt-16 max-w-[90ch] text-[17px] leading-relaxed text-gray-800 space-y-6 mb-8">
+      <div class="mt-16 max-w-[90ch] text-[17px] leading-relaxed text-gray-800 space-y-6 mb-10">
         <p>
           I help mid/senior-level engineers at tech startups sharpen their production instincts. Each week, you get interactive coaching emails about the <a href="/knowledge-gaps" class="text-blue-600 hover:text-blue-700 font-medium hover:underline hover:underline-offset-4 decoration-1 transition" target="_blank">blind spots</a> that page you at 3:00am. Built by a Staff Engineer who works on Terraform.
         </p>
@@ -110,10 +110,13 @@
           Every email describes a real incident and asks where you'd look first. Then GPT replies with the pushback you'd get from someone five years ahead of you, challenging your assumptions and pointing out what you missed. It doesn't matter what stack you use. The threads cover failure patterns commonly seen across backend, platform, SRE, and full-stack teams.
         </p>
       </div>
-      <div class="mb-4 text-xl font-medium">
+      <div class="mb-1 text-xl font-medium">
         Most postmortems never need to happen.
       </div>
-      <div class="mb-6 flex gap-4">
+      <div class="mb-4 text-sm">
+        Trained of 15 years of startup experience, these threads feel like a thoughtful note from your tech lead, not a chatbot.
+      </div>
+      <div class="mb-10 flex gap-4">
         <% EXAMPLE_EMAILS.each_with_index do |email, i| %>
           <div class="bg-white border border-gray-200 shadow rounded-xl p-5 space-y-4 <%= i == 0 ? "hidden md:block" : "" %> <%= i == 1 ? "hidden lg:block" : "" %> <%= i == 2 ? "md:block" : "" %>">
             <div class="flex items-center justify-between align-middle">
@@ -141,7 +144,7 @@
           I stole the idea from my chess coach. Set up a position, think out loud, and get feedback on your worst blind spots.
         </p>
         <p>
-          If you want to start next Monday, just paste your team's emails <a href="/demo" class="text-blue-600 hover:text-blue-700 font-medium hover:underline hover:underline-offset-4 decoration-1 transition">here</a>. Your full first calendar month is free.
+          Want to start next Monday? Just paste your team's emails <a href="/demo" class="text-blue-600 hover:text-blue-700 font-medium hover:underline hover:underline-offset-4 decoration-1 transition">here</a>. Your full first calendar month is free. Each teammate gets one private email per week, with a realistic scenario to engage with. The core idea will stick, even if they don't reply.
         </p>
         <p>
           <span class="font-semibold">$30</span> user/mo* (USD) for a team that ships with clarity. I'd offer annual pricing, but I doubt you'll still need me in a year. 😉
