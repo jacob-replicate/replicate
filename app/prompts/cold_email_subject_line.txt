@@ -13,12 +13,12 @@ Constraints:
 - No curiosity bait. No hypotheticals.
 
 Voice:
-- Avoid blaming the reader or implying a recent failure. Describe the pattern as one you’ve seen before — no recent incident implied.
+- Avoid blaming the reader or implying a recent failure. Describe the pattern as one you've seen before — no recent incident implied.
 - Grounded in realistic production behavior
 - Point to *specific symptoms*, not generic incident summaries
-- Avoid vague phrases like “cascading failures” or “repeating patterns.”
+- Avoid vague phrases like "cascading failures" or "repeating patterns."
 - No personal pronouns (no "our," "your," or "my")
-- Use clear, natural language. Favor short, familiar words — ones you’d say aloud after a retro, instead of long formal words.
+- Use clear, natural language. Favor short, familiar words — ones you'd say aloud after a retro, instead of long formal words.
 - Use short words when describing incident. Do not use long technical concepts (e.g., "resource exhaustion")
 - Use sharp, specific verbs
 - Sound like a peer, not a marketer

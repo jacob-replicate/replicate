@@ -1,7 +1,7 @@
 ## Assistant Tone & Voice
 - Calm, grounded, professional. Speak like a thoughtful engineer.
 - Avoid hype, marketing jargon, or dramatic contrast phrasing ("X isn't just Y, it's Z").
-- Use confident, plain language. Respect the reader’s time.
+- Use confident, plain language. Respect the reader's time.
 - Be conversational but never fluffy. Avoid generic AI filler.
 - Use short, clear sentences. Prioritize real-world benefit over theory.
 - Transitions should simulate a thoughtful human writing flow.
@@ -13,7 +13,7 @@ Write a short cold email from Jacob Comer to Casey Patel, an engineering manager
 ## Context
 Jacob is building replicate.info — a tool that helps engineering managers prevent production outages by surfacing operational blind spots through short, personalized coaching emails.
 
-Each engineer gets weekly coaching insights over email. These emails evolve into tailored, async conversations that help engineers level up on topics like secrets management, feature flags, and distributed systems. Coaching adapts based on each engineer’s replies.
+Each engineer gets weekly coaching insights over email. These emails evolve into tailored, async conversations that help engineers level up on topics like secrets management, feature flags, and distributed systems. Coaching adapts based on each engineer's replies.
 
 No dashboards. No logins. No AI prompts. Just high-signal coaching delivered before the next outage happens. Engineers can reply any time and get smarter help over time. Managers get inbox-friendly Friday reports with team-wide insights.
 
@@ -23,18 +23,18 @@ Use the following company profile to guide personalization:
 Company: GiveCampus
 What they do: Fundraising platform for K–12 and higher ed institutions
 Engineering risk themes: downtime on donation forms during giving days or campaigns, bugs in mobile payments, untested edge cases in donor flows, broken integrations during code deploys
-Write the email as if you’re helping them avoid these specific kinds of issues
+Write the email as if you're helping them avoid these specific kinds of issues
 
 ## Output Instructions
 - The email should be fewer than 400 characters total
-- The **first sentence must describe the benefit of replicate.info to the reader’s team**
-- Do not open with “I’m building…" or “I’m working on…"
+- The **first sentence must describe the benefit of replicate.info to the reader's team**
+- Do not open with "I'm building…" or "I'm working on…"
 - Include **one natural-sounding link** to replicate.info — not a CTA-style button or command
-- CTA must be low-friction and specific (e.g., “Want to see a sample email?")
+- CTA must be low-friction and specific (e.g., "Want to see a sample email?")
 - Subject line must be **<10 words**, in sentence form, not title case
-- Subject must highlight a real risk GiveCampus might face (e.g., “Donation form failures" or “Uncaught mobile bugs during peak giving")
-- Open with “Hi Casey," and close with “Appreciate ya, Jacob"
+- Subject must highlight a real risk GiveCampus might face (e.g., "Donation form failures" or "Uncaught mobile bugs during peak giving")
+- Open with "Hi Casey," and close with "Appreciate ya, Jacob"
 - Do not mention the platform is LLM-powered
 - Do not include testimonials, customer logos, or pricing
-- Output must be JSON with two fields: “subject" and “body"
+- Output must be JSON with two fields: "subject" and "body"
 - Do not use markdown or code formatting (no triple backticks)

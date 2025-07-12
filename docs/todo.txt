@@ -7,9 +7,9 @@ Delegate: Invitation Page
 - Emphasize the automated opt-out nature of the product. The cancellation email comes to you.
 - Offer beginner/intermediate/advanced radio buttons, and an optional textarea to describe your role in-depth
   - This helps over-confident people (who do NOT need your tool) self-select, get humbled their first week, and quietly rebuild their identity in private.
-  * I’m mid-level or new to the field. I’m focused on building better habits.
-  * I’ve been doing this a while — always looking for better ways to do it.
-  * I’m comfortable leading teams. Just looking for blind spots or new angles.
+  * I'm mid-level or new to the field. I'm focused on building better habits.
+  * I've been doing this a while — always looking for better ways to do it.
+  * I'm comfortable leading teams. Just looking for blind spots or new angles.
 
 Delegate: Cold Email Engine
 - Build the core data models + prompting/generation services yourself. Delegate everything else.
@@ -58,8 +58,8 @@ Weekly Emails
 
 Manager Reports
 - Compress the past few weekly emails into a single report. Use prompts for each bullet point of each engineers' report.
-    - Need your team’s signup link again? Click here to share it.
-    - Reply to this email anytime with questions or if you’d like to adjust your plan.
+    - Need your team's signup link again? Click here to share it.
+    - Reply to this email anytime with questions or if you'd like to adjust your plan.
 
 Topic Selector
 - Take in past message history. Most recent thread gets full fidelity, older threads get decreasingly large summaries.
