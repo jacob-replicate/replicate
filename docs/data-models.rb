@@ -1,3 +1,25 @@
+[
+  {
+    primary_observation: "Search for archived users feels much slower after support filters were added",
+    root_cause: "Missing database index"
+  },
+  {
+    primary_observation: "Audit logs show a spike in query count when toggling between user roles",
+    root_cause: "N+1 query introduced in permissions lookup"
+  },
+  {
+    primary_observation: "Customer settings take longer to save after MFA settings were updated",
+    root_cause: "New background job blocks main thread"
+  },
+].each_with_index do |context, i|
+  puts "Iteration: ##{i}"
+  puts "Observeration: #{context[:primary_observation]}\nRoot Cause: #{context[:root_cause]}"
+  puts
+  puts "Intro: #{Prompt.new(:coaching_intro, context: context).execute}"
+  puts "---"
+end; nil
+
+
 # name
 # email
 # magic_token

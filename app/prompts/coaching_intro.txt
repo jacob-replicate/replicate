@@ -18,14 +18,16 @@ Root Cause:
 
 ## Constraints:
 
-- Your first sentence **must include this exact observation**: {{CONTEXT_PRIMARY_OBSERVATION}}. Do not invent a new one.
-- Anchor the scenario in a real, plausible product feature a <150-person SaaS team might build. Don’t say “data” or “items.” Be concrete — e.g., “user directory,” “billing form,” “role settings.”
+- Your first sentence must embed the observed behavior naturally. You can then add a realistic scenario that connects it to a plausible recent UI or backend change.
+- Use specific, observable UI behaviors to convey the symptom — like a list flashing empty, a spinner lingering, or a button freezing mid-click. Avoid metaphors or abstractions. Describe what an engineer would actually see.
+- Anchor the scenario in a real, plausible product surface a <150-person SaaS team might own. This could be a new feature or an existing one. Keep it believable, and ensure it relates to the observed behavior.
 - Never mention the root cause directly. Describe the impact or behavior, not the diagnosis.
 - Keep it under **40 words**. No filler. No greetings.
-- Start with **“Imagine”** to help them visualize the situation.
-- Use the engineer’s perspective: “You just merged a small change…”
+- Begin with "Imagine" and immediately anchor in a specific feature (e.g. "Imagine filtering the billing form...") to create a vivid, believable scene.
 - No catastrophes — just a subtle, believable risk.
-- End with one sharp, open-ended question. Invite curiosity, not resolution.
+- End with one short, direct question about what the engineer would see or debug. No soft phrases like “user perception” or “behavior.”
+- Final question must be < 10 words, concrete, and refer to visible UI behavior.
+- The question should reference what’s visible, not how users feel.
 - No subject line. No signature. No links, lists, or formatting.
 
 ---
