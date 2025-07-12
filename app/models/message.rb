@@ -4,11 +4,18 @@ class Message < ApplicationRecord
 
   validates :content, presence: true
 
+  after_create :deliver_user_message_to_web
   after_create :schedule_system_reply
 
   private
 
+  def deliver_user_message_to_web
+    return unless conversation.web? && user_generated
+    ConversationChannel.broadcast_to(conversation, { message: content, user_generated: user_generated })
+  end
+
   def schedule_system_reply
-    conversation.reply_to_user if user_generated?
+    return unless conversation.web? && user_generated
+    SendMessageWorker.perform_async(conversation_id)
   end
 end

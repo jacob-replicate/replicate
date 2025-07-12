@@ -5,7 +5,7 @@ class MessagesController < ApplicationController
     conversation = current_user.conversations.find_by(id: params[:conversation_id])
     return head :not_found unless conversation.present?
 
-    SendMessageWorker.perform_async(conversation.id, params[:content], true)
+    message = conversation.messages.create!(content: params[:content], user_generated: true)
     head :ok
   end
 end

@@ -1,6 +1,6 @@
 class Prompt
   def initialize(prompt_code, context: nil, history: [])
-    @prompt_code = prompt_code.to_s.gsub(BANNED_TERMS_REGEX, "")
+    @prompt_code = prompt_code
     @context = context || {}
     @history = Array(history).map { |m| { role: m[:role], content: m[:content].to_s } }
   end
@@ -52,22 +52,20 @@ class Prompt
 
     instructions = File.read(Rails.root.join('app', 'prompts', "#{@prompt_code}.txt"))
 
-    # Inject shared sections (e.g. PLATFORM_OVERVIEW)
     Dir.glob(Rails.root.join('app', 'prompts', 'shared', '*.txt')).each do |file|
       name = File.basename(file, '.txt').upcase
-      instructions.gsub!("{{#{name}}}", File.read(file))
+      instructions.gsub!("{{#{name}}}", File.read(file)) # TODO: Replace this one day? Lots of disk reads.
     end
 
-    # Inject user-provided variables
     Hash(@context).each do |key, val|
       instructions.gsub!("{{CONTEXT_#{key.upcase}}}", val.to_s)
     end
 
-    # Inject relevant context only if {{RETRIEVED_CONTEXT}} exists
-    if instructions.include?("{{RETRIEVED_CONTEXT}}")
-      query_text = @context[:message] || @context[:incident] || ""
-      instructions.gsub!("{{RETRIEVED_CONTEXT}}", Retriever.find_relevant_chunks(query_text).join("\n\n"))
-    end
+#    TODO: Get this working again eventually. You need to rethink where the user input comes from.
+#    last_user_message = @context[:last_user_message]
+#    if last_user_message.present? && instructions.include?("{{CONTEXT_RAG}}")
+#      instructions.gsub!("{{CONTEXT_RAG}}", Retriever.find_relevant_chunks(query_text).join("\n\n"))
+#    end
 
     instructions
   end

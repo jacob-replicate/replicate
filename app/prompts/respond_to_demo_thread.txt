@@ -7,4 +7,4 @@
 
 [Context]
 The following documentation may help answer the user's question:
-{{RETRIEVED_CONTEXT}}
+{{CONTEXT_RAG}}

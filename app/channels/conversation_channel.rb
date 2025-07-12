@@ -7,10 +7,10 @@ class ConversationChannel < ApplicationCable::Channel
 
       if conversation.messages.count == 0
         initial_message = conversation.context["initial_message"]
+
         if initial_message.present?
-          SendMessageWorker.perform_async(conversation.id, initial_message, true)
-          session[:initial_message] = nil
-        elsif conversation.messages.count == 0
+          conversation.messages.create!(content: initial_message, user_generated: true)
+        else
           SendMessageWorker.perform_async(conversation.id)
         end
       end
