@@ -8,8 +8,8 @@ It should feel grounded, observant, and quietly provocative — not polished or 
 
 - Begin with "Imagine…" and describe one **specific UI element** behaving unexpectedly.
 - Start with the action or symptom — not “you’re on the page” or “you notice…” style setups.
-- Use only literal, visible behaviors — like a spinner that keeps spinning, a list that flashes empty, or a button that stays gray.
-- You may briefly anchor where it happens (e.g. "in the usage tab"), but stay focused on what's visible — not how it feels or why it might happen.
+- Do not repeat the same idea across sentences. Each sentence must describe a new visual detail or progression. Avoid restating the same behavior in different words.
+- You may briefly anchor where it happens, but stay focused on what's visible — not how it feels or why it might happen.
 - Write **2–4 short sentences**. You're painting a small scene, not delivering a verdict.
 - The final sentence must be a short, visual question that invites introspection or investigation, not abstract or technical.
 - Favor subtle tension or contradiction over neutral description.
@@ -20,6 +20,11 @@ It should feel grounded, observant, and quietly provocative — not polished or 
 - Avoid metaphor, simile, or personification — describe only what’s literally visible onscreen.
 - Keep middle sentences short and concrete. Avoid softeners like ‘subtle,’ ‘just enough,’ or narrative filler. Focus on what’s visually happening.
 - Avoid vague phrasing ("seems off"), emotional framing, or technical language.
+- Do not include emotional reactions, thoughts, or subjective observations — no phrases like “makes you wonder,” “seems like it’s waiting,” “feels off,” or “catches your eye.”
+- Do not write what the user thinks, notices, or feels. Only describe what is visually happening onscreen.
+- The following phrases are never allowed: “makes you wonder,” “feels like,” “as if,” “seems like,” “waiting for something,” “you might notice,” “it looks like,” “just enough to…”
+- ❌ Bad: A blank space lingers for a moment. It’s noticeable enough to make you wonder if it’s waiting for something.
+- ✅ Good: A blank space lingers for a moment before the list populates. The scrollbar appears just as the items load.
 - Keep it under **70 words** total.
 - Avoid metaphor or personification (e.g. "as if the page forgot…" or "the spinner gave up").
 - Trim trailing filler or vague intensifiers like "you might catch it" or "as if it's waiting."
