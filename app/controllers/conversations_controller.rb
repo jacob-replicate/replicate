@@ -3,7 +3,7 @@ class ConversationsController < ApplicationController
     return start_conversation(
       context: {
         conversation_type: :landing_page,
-        initial_message: "**What fire did your team put out recently?**<br>#{params[:initial_message]}"
+        initial_message: "**What went sideways in production recently?**<br>#{params[:initial_message]}"
       }
     )
   end

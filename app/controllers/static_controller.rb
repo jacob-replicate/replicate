@@ -17,7 +17,7 @@ class StaticController < ApplicationController
     return start_conversation(
       context: {
         conversation_type: "landing_page_incident",
-        initial_message: "**What fire did your team put out recently?**\n\ndeploy broke SSO authentication in prod (forgot to feature flag new project)"
+        initial_message: "**What went sideways in production recently?**\n\ndeploy broke SSO authentication in prod (forgot to feature flag new project)"
       },
       force_tos: true
     )

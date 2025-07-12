@@ -1,7 +1,5 @@
 module Prompts
-  class CoachingIntro < Prompts::BasePrompt
-    RETRY_COUNT = 10
-
+  class CoachingIntro < Prompts::Base
     UI_NOUNS = %w[
       spinner button dropdown list summary form field tab ticket page label log user users
     ].freeze
@@ -42,31 +40,12 @@ module Prompts
       /\bit (feels|seems|looks) (like|as if)?\b/i
     ].freeze
 
-    def initialize(conversation: nil, issue_description: nil)
-      @issue_description = issue_description
-    end
 
     def call
-      RETRY_COUNT.times do
-        text = Prompt.new(:coaching_intro, context: { issue_description: @issue_description, question: @question }).execute
-        text += " #{questions.sample}" if text.present?
-        error = validate(text)
+      intro_paragraph = fetch_valid_response
+      return "" if intro_paragraph.nil?
 
-        if error.present?
-          puts "Failure: #{error}"
-        else
-          return "<div class='flex items-center mb-3 gap-3'><div style='width: 40px'><img src='/jacob-square.jpg' class='rounded-full' /></div><div class='font-medium text-md'>Jacob Comer</div></div>#{text}"
-        end
-      end
-
-      nil
-    end
-
-    def self.test(issue_description)
-      10.times.map.with_index(1) do |_, i|
-        puts "Iteration: #{i}"
-        new(issue_description: issue_description).call
-      end.compact
+      intro_paragraph + " #{questions.sample}"
     end
 
     private
@@ -83,15 +62,15 @@ module Prompts
       ]
     end
 
-    def validate(text)
-      lines = nonempty_lines(text)
+    def validate(llm_output)
+      lines = nonempty_lines(llm_output)
 
       return "First line must start with 'Imagine'" unless lines.first.start_with?("Imagine")
-      return "Metaphor or personification detected" if contains?(text, METAPHOR_PATTERNS)
-      return "Interpretive language detected" if contains?(text, INTERPRETIVE_PHRASES)
-      return "Soft or narrative phrasing detected" if contains?(text, SOFT_LANGUAGE)
-      return "Sentence exceeds 20 words: #{long_sentence(text)}" if long_sentence(text)
-      return "Redundant sentences detected" if redundant_sentences?(text)
+      return "Metaphor or personification detected" if contains?(llm_output, METAPHOR_PATTERNS)
+      return "Interpretive language detected" if contains?(llm_output, INTERPRETIVE_PHRASES)
+      return "Soft or narrative phrasing detected" if contains?(llm_output, SOFT_LANGUAGE)
+      return "Sentence exceeds 20 words: #{long_sentence(llm_output)}" if long_sentence(llm_output)
+      return "Redundant sentences detected" if redundant_sentences?(llm_output)
 
       nil
     end
