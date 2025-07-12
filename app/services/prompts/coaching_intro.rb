@@ -42,7 +42,7 @@ module Prompts
       /\bit (feels|seems|looks) (like|as if)?\b/i
     ].freeze
 
-    def initialize(issue_description:)
+    def initialize(conversation: nil, issue_description: nil)
       @issue_description = issue_description
     end
 

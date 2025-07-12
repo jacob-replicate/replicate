@@ -20,7 +20,7 @@ class StaticController < ApplicationController
   def query_spike
     return start_conversation(
       context: {
-        conversation_type: "coaching",
+        conversation_type: "coaching_intro",
         issue_description: "User profile page crashes when switching tabs",
       },
       force_tos: true
