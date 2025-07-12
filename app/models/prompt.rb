@@ -10,7 +10,7 @@ class Prompt
 
     response = client.chat(
       parameters: {
-        model: "gpt-4o",
+        model: "gpt-4o-2024-11-20",
         messages: messages,
         temperature: 0.3,
       }
@@ -24,7 +24,7 @@ class Prompt
 
     client.chat(
       parameters: {
-        model: "gpt-4o",
+        model: "gpt-4o-2024-11-20",
         messages: messages,
         temperature: 0.3,
         stream: proc do |chunk|

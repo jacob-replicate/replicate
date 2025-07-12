@@ -42,13 +42,6 @@ module Prompts
       /\bit (feels|seems|looks) (like|as if)?\b/i
     ].freeze
 
-    WEAK_QUESTIONS = [
-      /\bwhat's your first move\b/i,
-      /\bhow would you debug\b/i,
-      /\bcan you tell\b/i,
-      /\bwhat happened\b/i
-    ].freeze
-
     def initialize(issue_description:)
       @issue_description = issue_description
     end
@@ -56,12 +49,13 @@ module Prompts
     def call
       RETRY_COUNT.times do
         text = Prompt.new(:coaching_intro, context: { issue_description: @issue_description, question: @question }).execute
+        text += " #{questions.sample}" if text.present?
         error = validate(text)
 
         if error.present?
           puts "Failure: #{error}"
         else
-          return "#{text} #{questions.sample}"
+          return text
         end
       end
 
@@ -96,10 +90,7 @@ module Prompts
       return "Metaphor or personification detected" if contains?(text, METAPHOR_PATTERNS)
       return "Interpretive language detected" if contains?(text, INTERPRETIVE_PHRASES)
       return "Soft or narrative phrasing detected" if contains?(text, SOFT_LANGUAGE)
-      return "Weak or off-tone question phrasing" if contains?(lines.last, WEAK_QUESTIONS)
-      #return "Must be 2–4 sentences" unless sentence_count_valid?(text)
       return "Sentence exceeds 20 words: #{long_sentence(text)}" if long_sentence(text)
-      # return "Final question does not reference first UI noun" unless question_references_first_noun?(lines)
       return "Redundant sentences detected" if redundant_sentences?(text)
 
       nil

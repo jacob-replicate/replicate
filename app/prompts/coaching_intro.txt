@@ -7,24 +7,24 @@ It should feel grounded, observant, and quietly provocative — not polished or 
 ## Constraints:
 
 - Begin with "Imagine…" and describe a real symptom from {{CONTEXT_ISSUE_DESCRIPTION}}.
-- Vary nouns and verbs. Do not repeat the same word (e.g. “crash,” “error,” “fail”) across multiple sentences. Use distinct, literal terms.
-- The incident should feel like a real snapshot from production — grounded in logs, UI, or system output — not a hypothetical observation,  a believable slice of production behavior, not a dramatic reenactment or vague hunch.
+- The incident should feel like a real snapshot from production — grounded in logs, UI, or system output — not a dramatic reenactment or vague hunch.
+- Never include a question. End with a literal, observational sentence — no speculation, summaries, or prompts.
 - Never write from the reader’s perspective (e.g., “you notice,” “you’re on the page”).
-- Describe a real-time sequence — one event leading to another — as if replaying a debug session.
+- Describe a literal sequence — one event leading to another — as if replaying a debug session.
+- Vary nouns and verbs. Do not repeat the same word (e.g. “crash,” “error,” “fail”) across multiple sentences. Use distinct, literal terms.
 - Focus on the injected issue — whether it involves UI, logs, infrastructure, or latency. Do not default to generic UI behaviors like a button that does nothing unless the issue explicitly involves that.
-- Start with the visible or measurable behavior — not “you notice…” or “you're on the page…” style setups.
-- Describe a short sequence of observable facts. Each sentence should add something new — no repetition or paraphrased restatement.
+- Describe a short sequence of observable facts. Each sentence must add something new — no repetition or paraphrased restatement.
 - Do not explain why it happens. Just narrate what you see.
-- Write **2–4 short sentences**, under **70 words** total.
-- Do not include a question. Stop after describing the last observable fact. The output should end with a clear, literal sentence — no open-ended prompts, speculation, or summary lines.
-- Avoid dramatic outcomes like 'the page crashes,' 'closes,' or 'disappears.' Favor realistic symptoms like reloads, freezes, or stuck states.
-- Avoid vague terms like 'interface,' 'panel,' or 'element.' Be specific: say 'tab,' 'console,' or 'API call.'
-- Do not describe what the system wants, expects, or tries to do. No thoughts, intentions, or emotions — only literal behavior.
+- Keep the output under 50 words total.
+- Avoid dramatic outcomes like “the page crashes,” “closes,” or “disappears.” Favor realistic symptoms like reloads, freezes, or stuck states.
+- Avoid vague terms like “interface,” “panel,” or “element.” Be specific: say “tab,” “console,” or “API call.”
 - Absolutely no soft language: Don't use “slightly,” “briefly,” “just enough,” “feels like,” or similar hedges.
 - Avoid metaphor, simile, and personification entirely.
 - Favor different entry points — not always logs → spike → error pattern. Vary surfaces like status pages, DB traces, latency graphs, or auth headers.
-- Don't editorialize or interpret. No guesses, summaries, or reactions.
+- Don’t editorialize or interpret. No guesses, summaries, or reactions.
 - If it sounds like it came from a blog post or product tour, rewrite it. You're DMing a teammate — keep it crisp and observational.
+- Do not describe what the browser, user, or system does intentionally. No phrasing like “Safari skips,” “Chrome fetches,” or “other browsers behave differently.” Only describe what is logged, rendered, or measured.
+- Do not describe what the system wants, expects, tries to do, or does intentionally. No thoughts, intent, logic, or behavior — only literal logs, rendered outputs, or measurements.
 
 ## Voice:
 
@@ -33,7 +33,12 @@ It should feel grounded, observant, and quietly provocative — not polished or 
 - This should read like a private message from someone who quietly sees more than most.
 
 ## Hard Bans:
+
 - Emotional or interpretive phrasing (e.g., “seems off,” “makes you wonder,” “as if it's waiting”)
 - Any sentence that restates a previous one in different words
 - Any technical explanation or reference to debugging tools
 - Any guess at intent (e.g., “it should…” or “it's trying to…”)
+- Do not suggest the user input is valid or invalid. Never speculate about credentials.
+- Do not reference source code changes, commits, or deployments unless they’re explicitly visible in logs.
+- Only include surfaces directly tied to the issue (e.g., console logs, network tab, response payloads). Ignore system-wide graphs unless clearly related.
+- Do not describe differences in behavior across browsers unless they are visible in logs, headers, or status codes. Never say one browser “does” or “doesn’t” do something — only report what was shown, logged, or returned.
