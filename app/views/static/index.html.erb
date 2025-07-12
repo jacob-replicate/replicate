@@ -110,6 +110,9 @@
           Every email describes a real incident and asks where you'd look first. Then GPT replies with the pushback you'd get from someone five years ahead of you — challenging your assumptions and pointing out what you missed.
         </p>
       </div>
+      <div class="mb-4 text-xl font-medium">
+        Most postmortems never need to happen.
+      </div>
       <div class="mb-6 flex gap-4">
         <% EXAMPLE_EMAILS.each_with_index do |email, i| %>
           <div class="bg-white border border-gray-200 shadow rounded-xl p-5 space-y-4 <%= i == 0 ? "hidden md:block" : "" %> <%= i == 1 ? "hidden lg:block" : "" %> <%= i == 2 ? "md:block" : "" %>">
@@ -135,7 +138,10 @@
       </div>
       <div class="mt-8 max-w-[90ch] text-[17px] leading-relaxed text-gray-800 space-y-6">
         <p>
-          Want to start coaching next Monday? Just paste your team's emails <a href="/demo" class="text-blue-600 hover:text-blue-700 font-medium hover:underline hover:underline-offset-4 decoration-1 transition">here</a>. Your full first calendar month is free.
+          I stole the idea from my chess coach. Set up a position, think out loud, and get feedback on your worst blind spots.
+        </p>
+        <p>
+          If you want to start next Monday, just paste your team's emails <a href="/demo" class="text-blue-600 hover:text-blue-700 font-medium hover:underline hover:underline-offset-4 decoration-1 transition">here</a>. Your full first calendar month is free.
         </p>
         <p>
           You'll get a concise, automated report every Friday. What's working, what's at risk, and how your team's growing.
