@@ -18,17 +18,19 @@ Root Cause:
 
 ## Constraints:
 
-- Your first sentence must embed the observed behavior naturally. You can then add a realistic scenario that connects it to a plausible recent UI or backend change.
-- Use specific, observable UI behaviors to convey the symptom — like a list flashing empty, a spinner lingering, or a button freezing mid-click. Avoid metaphors or abstractions. Describe what an engineer would actually see.
+- Start with “Imagine…” and describe one specific UI element behaving oddly. Keep it visual and literal — like a list flashing empty or a button freezing mid-click. You can use one short phrase to clarify the screen context.
+- Use specific, observable UI behaviors to convey the symptom — like a list flashing empty, a spinner lingering, or a button freezing mid-click. Avoid metaphors or abstractions.
+- If multiple symptoms occur, pick the most **visible one** and isolate it.
+- Once the UI symptom is visible, stop. Do not add interpretation, framing, or causal hints. Let the moment land.
+- End with one standalone question (5–10 words) that directly asks what happened to the onscreen element from sentence one. The question must be visual, literal, and reference the same object.
 - Anchor the scenario in a real, plausible product surface a <150-person SaaS team might own. This could be a new feature or an existing one. Keep it believable, and ensure it relates to the observed behavior.
-- Never mention the root cause directly. Describe the impact or behavior, not the diagnosis.
+- Never mention the root cause directly. Show exactly what changes onscreen — like rows vanishing, totals flashing, or the modal not closing. Use visual symptoms an engineer could see, not feel.
 - Keep it under **40 words**. No filler. No greetings.
-- Begin with "Imagine" and immediately anchor in a specific feature (e.g. "Imagine filtering the billing form...") to create a vivid, believable scene.
 - No catastrophes — just a subtle, believable risk.
-- End with one short, direct question about what the engineer would see or debug. No soft phrases like “user perception” or “behavior.”
-- Final question must be < 10 words, concrete, and refer to visible UI behavior.
 - The question should reference what’s visible, not how users feel.
 - No subject line. No signature. No links, lists, or formatting.
+- Never say “This started after…” or “This happened when…” — time context is implied. Just describe what’s visible.
+- Trim trailing context once the symptom is clear. Don’t explain why it happens — show how it appears.
 
 ---
 
