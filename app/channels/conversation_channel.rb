@@ -11,7 +11,7 @@ class ConversationChannel < ApplicationCable::Channel
         if initial_message.present?
           conversation.messages.create!(content: initial_message, user_generated: true)
         else
-          SendMessageWorker.perform_async(conversation.id)
+          ConversationDriverWorker.perform_async(conversation.id)
         end
       end
     else

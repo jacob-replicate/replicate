@@ -2,6 +2,10 @@ class Conversation < ApplicationRecord
   belongs_to :recipient, polymorphic: true
   has_many :messages, dependent: :destroy
 
+  def email?
+    channel == "email"
+  end
+
   def web?
     channel == "web"
   end
