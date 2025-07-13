@@ -68,10 +68,7 @@ module MessageGenerators
     end
 
     def sanitize_response(message)
-      renderer = Redcarpet::Render::HTML.new(filter_html: true, hard_wrap: true)
-      markdown = Redcarpet::Markdown.new(renderer, autolink: true, tables: true)
-      html = markdown.render(message.gsub("<pre>", "").gsub("</pre>", ""))
-      html.html_safe
+      message.gsub("<pre>", "").gsub("</pre>", "").html_safe
     end
   end
 end

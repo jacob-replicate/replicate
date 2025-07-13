@@ -20,7 +20,6 @@ gem 'pry', '~> 0.14.2'
 gem "rack-attack"
 gem 'awesome_print'
 gem 'pgvector'
-gem 'redcarpet'
 
 group :development, :test do
   gem "dotenv"

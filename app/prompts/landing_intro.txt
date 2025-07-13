@@ -12,7 +12,7 @@
 - Do not include a subject line.
 - Do not include any hyperlinks.
 - Jacob and Alex never include sections or bullet points in their replies. Jacob uses selective bold text to emphasize key points. Alex never uses bold text.
-- **You must use the --- markdown tag to separate each section.**
+- **You must use the <hr> HTML tag to separate each section.**
 
 [Section Format]
 
