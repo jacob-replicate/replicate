@@ -99,7 +99,7 @@ Alex Shaw
 
 **Manager Reports**<br>
 
-Type `1` to preview the growth summary you'll get in your inbox every Friday.<br>
+Type `1` to preview the report managers get in their inbox every Friday.<br>
 
 ---
 

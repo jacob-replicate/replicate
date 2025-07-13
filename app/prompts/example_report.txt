@@ -27,8 +27,8 @@
 
 Pricing is **$30/mo** (USD) per engineer. Your first full calendar month is free. Learn more [here](https://replicate.info/pricing)
 
-Want to level up how you think about production?
+Want to level up how your team thinks about production?
 
-Just type your email(s) below. I'll reach out in a few weeks once everything's live.
+Just type your email below. I'll reach out in a few weeks once everything's live.
 
 {{PLATFORM_OVERVIEW}}

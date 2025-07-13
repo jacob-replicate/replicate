@@ -74,22 +74,41 @@
   }
 </style>
 
-<%# ----------------------------------------------------------------------- %>
-<%#  View constants %>
-<% user_message_classes = "bg-gray-100 rounded-2xl shadow px-4 py-3 mb-4" %>
+<% user_message_classes = "bg-gray-100 rounded-2xl shadow px-4 py-3 mb-3" %>
 <% base_message_classes = "break-words message-body" %>
 
-<%# ----------------------------------------------------------------------- %>
-<%#  Main container: fill viewport height, keep CTA + input visible %>
 <div class="flex flex-col mt-6">
   <!-- Chat history -->
-  <div id="conversation" class="flex-1 md:border border-gray-200 mb-4 md:p-4 md:rounded-lg space-y-4">
-    <% @conversation.messages.order(created_at: :asc).each do |m| %>
-      <div class="flex <%= m.user_generated ? 'justify-end' : 'justify-start' %>">
-        <% message_classes = "#{base_message_classes} #{user_message_classes if m.user_generated}" %>
-        <div class="<%= message_classes %>"><%= markdown(m.content) %></div>
+  <div class="flex-1 rounded-md border border-gray-200 mb-4">
+    <div id="conversation" class="p-4 space-y-4">
+      <% @conversation.messages.order(created_at: :asc).each do |m| %>
+        <div class="flex <%= m.user_generated ? 'justify-end' : 'justify-start' %>">
+          <% message_classes = "#{base_message_classes} #{user_message_classes if m.user_generated}" %>
+          <div class="<%= message_classes %>"><%= m.content.html_safe %></div>
+        </div>
+      <% end %>
+    </div>
+    <div class="text-sm bg-gray-100 py-2 px-4 border-t border-gray-200">
+      <div class="flex justify-between w-full items-center">
+        <div class="">
+          Sent<span class="md:inline hidden"> automatically</span> every Monday
+        </div>
+        <div class="justify-end">
+          <a href="/coaching" class="text-blue-600 hover:text-blue-700 font-medium hover:underline hover:underline-offset-4 decoration-1 transition">
+            <% if @conversation.context["conversation_type"] == "landing_demo" %>
+              Try your first puzzle<
+            <% else %>
+              <div class="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 inline-block mr-1.5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
+                </svg>
+                Try another puzzle
+              </div>
+            <% end %>
+          </a>
+        </div>
       </div>
-    <% end %>
+    </div>
   </div>
 
   <div class="pb-4">
@@ -138,7 +157,6 @@
     });
 
     let aiIsTyping         = false;
-    let streamingMessageEl = null;
     let loadingEl          = null;
 
     function setInputEnabled(enabled) {
@@ -186,7 +204,6 @@
       {
         received(data) {
           const isUser     = data.user_generated;
-          const isStream   = data.type === "stream";
           const isLoading  = data.type === "loading";
           const isDone     = data.type === "done";
 
@@ -210,44 +227,8 @@
               conversationEl.appendChild(loadingEl);
               scrollToBottomIfWanted();
             }
-            return;
-          }
-
-          if (isStream && !aiIsTyping) {
             aiIsTyping = true;
             setInputEnabled(false);
-          }
-
-          if (isStream) {
-            if (loadingEl) {
-              loadingEl.remove();
-              loadingEl = null;
-              clearInterval(dotInterval);
-            }
-
-            if (!streamingMessageEl) {
-              const wrapper = document.createElement("div");
-              wrapper.className = "flex justify-start";
-
-              streamingMessageEl = document.createElement("div");
-              streamingMessageEl.className = isUser ? "<%= "#{base_message_classes} #{user_message_classes}" %>" : "<%= base_message_classes %>";
-              streamingMessageEl.markdownBuffer = "";
-
-              wrapper.appendChild(streamingMessageEl);
-              conversationEl.appendChild(wrapper);
-            }
-
-            streamingMessageEl.markdownBuffer += data.message;
-            let markdown = streamingMessageEl.markdownBuffer
-              .replace("<pre>", "")
-              .replace("</pre>", "")
-              .replace(/(?<!\n)(---)/g, '\n$1')
-              .replace(/\.(?=- )/g, '.\n');
-            if (markdown.length > 10) {
-              streamingMessageEl.innerHTML = marked.parse(markdown);
-            }
-
-            scrollToBottomIfWanted();
             return;
           }
 
@@ -257,7 +238,6 @@
               loadingEl = null;
             }
 
-            streamingMessageEl   = null;
             aiIsTyping           = false;
             userManuallyScrolled = false;
             setInputEnabled(true);
@@ -276,7 +256,7 @@
 
             const bubble = document.createElement("div");
             bubble.className = isUser ? "<%= "#{base_message_classes} #{user_message_classes}" %>" : "<%= base_message_classes %>";
-            bubble.innerHTML = marked.parse(data.message);
+            bubble.innerHTML = data.message;
 
             wrapper.appendChild(bubble);
             conversationEl.appendChild(wrapper);

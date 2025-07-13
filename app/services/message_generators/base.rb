@@ -41,12 +41,11 @@ module MessageGenerators
           broadcast_to_web(type: "loading") unless i == elements.length - 1
         end
 
-        Rails.logger.info(text.class)
-        Rails.logger.info(text)
-        full_response += text
+        full_response += "#{text}\n"
       end
 
       broadcast_to_web(type: "done")
+      @conversation.messages.create!(content: full_response, user_generated: false)
 
       if @conversation.email?
         # TODO: Send it via another DeliverEmailWorker.perform_async(@conversation.id)
@@ -54,18 +53,25 @@ module MessageGenerators
     end
 
     def avatar_row
-      "<div class='flex items-center mb-1 gap-3'><div style='width: 32px'><img src='/jacob-square.jpg' class='rounded-full' /></div><div class='font-medium'>Jacob Comer</div></div>"
+      "<div class='flex items-center mb-2 gap-3'><div style='width: 32px'><img src='/jacob-square.jpg' class='rounded-full' /></div><div class='font-medium'>Jacob Comer</div></div>"
     end
 
     def broadcast_to_web(message: "", type: "broadcast")
       broadcasting_context = { type: type, sequence: @message_sequence }
 
       if message.present?
-        broadcasting_context[:message] = message
+        broadcasting_context[:message] = sanitize_response(message)
       end
 
       ConversationChannel.broadcast_to(@conversation, broadcasting_context)
       @message_sequence += 1
+    end
+
+    def sanitize_response(message)
+      renderer = Redcarpet::Render::HTML.new(filter_html: true, hard_wrap: true)
+      markdown = Redcarpet::Markdown.new(renderer, autolink: true, tables: true)
+      html = markdown.render(message.gsub("<pre>", "").gsub("</pre>", ""))
+      html.html_safe
     end
   end
 end
