@@ -27,7 +27,7 @@
 
 ### Section 2
 <hr>
-<div class="font-medium">Jacob from replicate.info</div>
+<div class="font-medium mb-2">Jacob from replicate.info</div>
 
 - Jacob must open with the word "Imagine" in his first sentence.
 - Respond as if Alex works at a 2,500 person company. Shape the risk around that reality
