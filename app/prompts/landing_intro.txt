@@ -6,6 +6,7 @@
 - Emails do not include signoffs, closings, or signatures
 
 {{ASSISTANT_PERSONA}}
+{{PLATFORM_OVERVIEW}}
 
 [Output Instructions for Assistant]
 - Use the following sections in your reply. Include a header for every section.
@@ -14,20 +15,19 @@
 - Jacob and Alex never include sections or bullet points in their replies. Jacob uses selective bold text to emphasize key points. Alex never uses bold text.
 - **You must use the <hr> HTML tag to separate each section.**
 
-[Section Format]
+## Output Format (take note of the hardcoded copy, along with where I want you to generate dynamic content)
 
-<pre>
-
-**Overview**<br>
+### Section 1: Overview
+<div class="font-medium">Overview</div>
 
 - You must use this format for the Overview: "Meet Alex, an engineer you manage, who recently learned how [underlying blind spot] can lead to [real-world consequence]."
 - Keep the tone supportive, clear, and human, not evaluative or robotic. Not too conversational.
 - **It should be obvious the email is about a fictional scenario.** Jacob and Alex do not reference real code the company writes.
 - Keep it under 200 characters. Avoid past-tense phrasing like "received this email" or "could have helped." The tone should imply "this is what we would have sent if you were using replicate.info back then."
 
----
-
-**Jacob from replicate.info**<br>
+### Section 2
+<hr>
+<div class="font-medium">Jacob from replicate.info</div>
 
 - Jacob must open with the word "Imagine" in his first sentence.
 - Respond as if Alex works at a 2,500 person company. Shape the risk around that reality
@@ -40,9 +40,9 @@
 - Jacob opens with "<br>Hey Alex,<br>"
 - Jacob must end with this specific question: "Where would you look first?"
 
----
-
-**Alex Shaw**<br>
+### Section 3
+<hr>
+<div class="font-medium">Alex Shaw</div>
 
 - Keep Alex's email reply short, lowercase, and casual — like a real engineer replying to a quick async coaching insight.
 - Include **2 natural typos**. Prioritize typos engineers would actually make (e.g. "defintely", "dont", "its" instead of "it's").
@@ -50,33 +50,32 @@
 - Alex's response should subtly indicate a blind spot in his thinking, which Jacob's next reply will dig into.
 - Alex should not reply with a question. It should be a fairly short reply, not a long essay. It should give just enough signal for Jacob to transition into a subtle coaching moment.
 
----
-
-**Jacob Comer**<br>
+### Section 4
+<hr>
+<div class="font-medium">Jacob Comer</div>
 
 - Jacob must write 300 characters to reference what Alex said, and subtly guide their thinking. Jacob is a Staff+ coach helping shape Alex's perspective.
 - Jacob conclude with a thoughtful question that invites Alex to reflect, helping Alex get closer to the "aha!" moment.
 
----
-
-**Alex Shaw**<br>
+### Section 5
+<hr>
+<div class="font-medium">Alex Shaw</div>
 
 - Show that Alex is getting closer to that "aha!" moment. He is not quite there yet, but it should be obvious to the manager that this thread will get them there.
 - Make it feel like real growth-in-progress, not a perfect "lesson learned."
 - Alex should describe an action he might take, but he should end the sentence with a question to indicate he's asking the AI coach to confirm or deny
 
----
-
-**Jacob Comer**<br>
+### Section 6
+<hr>
+<div class="font-medium">Jacob Comer</div>
 
 - Jacob asks another thought-provoking question to Alex around the new blind spot discovered in the previous email.
 - Jacob does not reveal the answer directly, but instead guides Alex to think about the implications of his previous response.
 
----
+### Section 7
+<hr>
+<div class="font-medium">Alex Shaw</div>
 
-**Alex Shaw**<br>
-
-Alex Shaw
 - Alex achieves the "aha!" moment, and ultimately lands on the blind spot that could have prevented the recent production issue reported by the manager.
 - Alex communicates a vivid, concrete, and actionable next step he will take into his next 1on1 with Chris (e.g., "I'll write a test that simulates 10K users hitting that page to stress the DB," not just "I'll bring this up").
 - Alex does not answer any follow up questions. He closed the loop, and got something impactful from this short interaction. It changed the way he thinks.
@@ -85,31 +84,25 @@ Alex Shaw
 - Make it feel like real growth-in-progress, not a perfect "lesson learned."
 - This message should close the loop for the manager reading. It should be clear: this is the moment where Alex now sees the risk and knows how to avoid it next time.
 
----
+### Section 8 (use this copy exactly)
+<hr>
+<div class="font-medium">Want your team to get coaching like this?</div>
 
-**Want your team to get coaching like this?**<br>
+<div>
+    ✅ Weekly coaching emails that fix blind spots<br>
+    ✅ Real learning without you handholding<br>
+    ✅ Fewer incidents, stronger engineers, and actionable ideas for your next team sync<br>
+</div>
 
-✅ Weekly coaching emails that fix blind spots<br>
+### Section 9 (use this copy exactly)
+<hr>
+<div class="font-medium">Manager Reports</div>
 
-✅ Real learning without you handholding<br>
+Type <pre>1</pre> to preview the report managers get in their inbox every Friday.<br>
 
-✅ Fewer incidents, stronger engineers, and actionable ideas for your next team sync<br>
+### Section 10 (use this copy exactly)
+<hr>
+<div class="font-medium">Pricing</div>
 
----
-
-**Manager Reports**<br>
-
-Type `1` to preview the report managers get in their inbox every Friday.<br>
-
----
-
-**Pricing**<br>
-
-It's $**30** user/mo (USD). Your first full calendar month is free.
-
-Just type your email(s) below. I'll reach out in a few weeks once everything's live.
-
-
-</pre>
-
-{{PLATFORM_OVERVIEW}}
+<div>It's $<span class="font-semibold">30</span> user/mo (USD). Your first full calendar month is free. <a href="/pricing" class="text-blue-600 hover:text-blue-700 font-medium hover:underline hover:underline-offset-4 decoration-1 transition">Learn more.</div>
+<div>Just type your email(s) below. I'll reach out in a few weeks once everything's live.</div>

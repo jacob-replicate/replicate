@@ -3,7 +3,7 @@ EXAMPLE_EMAILS = [
     to: "Alex Shaw",
     subject: "N+1 query caused DB spike",
     content: "One small loop triggered 100 inefficient database calls, temporarily killing the site during peak traffic.",
-    prompt: "shipped an N+1 query that took down production for 6 minutes - didn't have automation in place to catch during PR review"
+    prompt: "A junior shipped an N+1 query that took down production for 6 minutes. We didn't have automation to catch it during PR review. How can <span class='font-medium'>replicate.info</span> help next time?"
   },
   {
     to: "Casey Patel",

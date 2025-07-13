@@ -50,7 +50,10 @@ module Prompts
     def template(name: nil, shared: false)
       name ||= template_name
       cache_key = shared ? "shared/#{name}" : name
-      return @@template_cache[cache_key] if @@template_cache.key?(cache_key)
+
+      if @@template_cache.key?(cache_key) && Rails.env.production?
+        return @@template_cache[cache_key]
+      end
 
       full_path = shared ?
         Rails.root.join("app", "prompts", "shared", "#{name}.txt") :

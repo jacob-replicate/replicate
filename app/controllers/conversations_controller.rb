@@ -3,7 +3,7 @@ class ConversationsController < ApplicationController
     return start_conversation(
       context: {
         conversation_type: :landing_demo,
-        initial_message: "**What caught you by surprise recently?**<br>#{params[:initial_message]}"
+        initial_message: "<div>#{params[:initial_message]}</div>"
       }
     )
   end
