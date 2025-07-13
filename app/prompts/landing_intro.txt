@@ -96,12 +96,6 @@
 
 ### Section 9 (use this copy exactly)
 <hr>
-<div class="font-medium">Manager Reports</div>
-
-Type <pre>1</pre> to preview the report managers get in their inbox every Friday.<br>
-
-### Section 10 (use this copy exactly)
-<hr>
 <div class="font-medium">Pricing</div>
 
 <div>It's $<span class="font-semibold">30</span> user/mo (USD). Your first full calendar month is free. <a href="/pricing" class="text-blue-600 hover:text-blue-700 font-medium hover:underline hover:underline-offset-4 decoration-1 transition">Learn more.</a></div>
