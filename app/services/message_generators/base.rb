@@ -54,7 +54,7 @@ module MessageGenerators
     end
 
     def avatar_row
-      "<div class='flex items-center mb-3 gap-3'><div style='width: 40px'><img src='/jacob-square.jpg' class='rounded-full' /></div><div class='font-medium text-md'>Jacob Comer</div></div>"
+      "<div class='flex items-center mb-3 gap-3'><div style='width: 32px'><img src='/jacob-square.jpg' class='rounded-full' /></div><div class='font-medium'>Jacob Comer</div></div>"
     end
 
     def broadcast_to_web(message: "", type: "broadcast")
