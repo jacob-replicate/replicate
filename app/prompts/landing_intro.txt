@@ -104,5 +104,5 @@ Type <pre>1</pre> to preview the report managers get in their inbox every Friday
 <hr>
 <div class="font-medium">Pricing</div>
 
-<div>It's $<span class="font-semibold">30</span> user/mo (USD). Your first full calendar month is free. <a href="/pricing" class="text-blue-600 hover:text-blue-700 font-medium hover:underline hover:underline-offset-4 decoration-1 transition">Learn more.</div>
+<div>It's $<span class="font-semibold">30</span> user/mo (USD). Your first full calendar month is free. <a href="/pricing" class="text-blue-600 hover:text-blue-700 font-medium hover:underline hover:underline-offset-4 decoration-1 transition">Learn more.</a></div>
 <div>Just type your email(s) below. I'll reach out in a few weeks once everything's live.</div>
