@@ -139,6 +139,7 @@
 
     let aiIsTyping         = false;
     let streamingMessageEl = null;
+    let loadingEl          = null;
 
     function setInputEnabled(enabled) {
       textarea.disabled = !enabled;
@@ -184,9 +185,25 @@
       { channel: "ConversationChannel", id: conversationId },
       {
         received(data) {
-          const isUser  = data.user_generated;
-          const isStream = data.type === "stream";
-          const isDone   = data.type === "done";
+          const isUser     = data.user_generated;
+          const isStream   = data.type === "stream";
+          const isLoading  = data.type === "loading";
+          const isDone     = data.type === "done";
+
+          if (isLoading) {
+            if (!loadingEl) {
+              loadingEl = document.createElement("div");
+              loadingEl.className = "flex justify-start";
+              loadingEl.innerHTML = `
+                <div class="message-body bg-white border border-gray-200 text-gray-500 rounded-2xl px-4 py-3 mb-4 italic">
+                  Thinking…
+                </div>
+              `;
+              conversationEl.appendChild(loadingEl);
+              scrollToBottomIfWanted();
+            }
+            return;
+          }
 
           if (isStream && !aiIsTyping) {
             aiIsTyping = true;
@@ -194,6 +211,11 @@
           }
 
           if (isStream) {
+            if (loadingEl) {
+              loadingEl.remove();
+              loadingEl = null;
+            }
+
             if (!streamingMessageEl) {
               const wrapper = document.createElement("div");
               wrapper.className = "flex justify-start";
@@ -207,8 +229,12 @@
             }
 
             streamingMessageEl.markdownBuffer += data.message;
-            let markdown = streamingMessageEl.markdownBuffer.replace("<pre>", "").replace("</pre>", "").replace(/(?<!\n)(---)/g, '\n$1').replace(/\.(?=- )/g, '.\n');
-            if(markdown.length > 10) {
+            let markdown = streamingMessageEl.markdownBuffer
+              .replace("<pre>", "")
+              .replace("</pre>", "")
+              .replace(/(?<!\n)(---)/g, '\n$1')
+              .replace(/\.(?=- )/g, '.\n');
+            if (markdown.length > 10) {
               streamingMessageEl.innerHTML = marked.parse(markdown);
             }
 
@@ -217,6 +243,11 @@
           }
 
           if (isDone) {
+            if (loadingEl) {
+              loadingEl.remove();
+              loadingEl = null;
+            }
+
             streamingMessageEl   = null;
             aiIsTyping           = false;
             userManuallyScrolled = false;
@@ -226,6 +257,11 @@
           }
 
           if (data.message) {
+            if (loadingEl) {
+              loadingEl.remove();
+              loadingEl = null;
+            }
+
             const wrapper = document.createElement("div");
             wrapper.className = `flex ${isUser ? "justify-end" : "justify-start"}`;
 

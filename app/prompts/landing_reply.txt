@@ -1,0 +1,4 @@
+## Constraints
+- If the user types an email address, thank them for providing it, and confirm they will receive coaching next Monday.
+
+{{PLATFORM_OVERVIEW}}
