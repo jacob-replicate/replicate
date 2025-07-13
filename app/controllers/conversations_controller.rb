@@ -3,16 +3,12 @@ class ConversationsController < ApplicationController
     return start_conversation(
       context: {
         conversation_type: :landing_demo,
-        initial_message: "**What went sideways in production recently?**<br>#{params[:initial_message]}"
+        initial_message: "**What caught you by surprise recently?**<br>#{params[:initial_message]}"
       }
     )
   end
 
   def show
     @conversation = Conversation.find(params[:id])
-
-    if @conversation.messages.count > 1
-      # return redirect_to "/query-spike"
-    end
   end
 end

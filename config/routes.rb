@@ -14,7 +14,7 @@ Rails.application.routes.draw do
   get "/pricing", to: "static#pricing"
   get "/security", to: "static#security"
   get '/knowledge-gaps', to: "static#knowledge_gaps"
-  get '/query-spike', to: "static#query_spike"
+  get '/coaching', to: "static#coaching"
 
   resources :conversations, only: [:create, :show]
   resources :messages, only: [:create]

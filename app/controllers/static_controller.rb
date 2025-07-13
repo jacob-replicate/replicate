@@ -23,12 +23,9 @@ class StaticController < ApplicationController
     )
   end
 
-  def query_spike
+  def coaching
     return start_conversation(
-      context: {
-        conversation_type: :coaching,
-        issue_description: "User profile page crashes when switching tabs",
-      },
+      context: { conversation_type: :coaching },
       force_tos: true
     )
   end

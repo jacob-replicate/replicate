@@ -6,6 +6,10 @@ module MessageGenerators
       @message_sequence = conversation.messages.count + 1
     end
 
+    def latest_user_message
+      @conversation.latest_user_message
+    end
+
     def deliver
       return if @conversation.latest_author == :assistant
 
