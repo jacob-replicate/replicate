@@ -38,7 +38,8 @@ module Prompts
         }
       )
 
-      response.dig("choices", 0, "message", "content").to_s.gsub(/<\/div>\s*<br\s*\/?>/, "</div>").gsub("```html", "").gsub("```", "")
+      avatar = "<div class='flex items-center mb-3 gap-3'><div style='width: 32px'><img src='/jacob-square.jpg' class='rounded-full' /></div><div class='font-medium'>Jacob Comer</div></div>"
+      response.dig("choices", 0, "message", "content").to_s.gsub(/<\br>\s*<br\s*\/?>/, "</div>").gsub(/<\/div>\s*<br\s*\/?>/, "</div>").gsub("```html", "").gsub("```", "").gsub("`", "").gsub(avatar, "")
     end
 
     private

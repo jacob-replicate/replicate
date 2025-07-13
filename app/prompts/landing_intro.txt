@@ -18,8 +18,7 @@
 ## Output Format (take note of the hardcoded copy, along with where I want you to generate dynamic content)
 
 ### Section 1: Overview
-<div class="font-medium">Overview</div>
-
+- Do not show a header in this section.
 - You must use this format for the Overview: "Meet Alex, an engineer you manage, who recently learned how [underlying blind spot] can lead to [real-world consequence]."
 - Keep the tone supportive, clear, and human, not evaluative or robotic. Not too conversational.
 - **It should be obvious the email is about a fictional scenario.** Jacob and Alex do not reference real code the company writes.
@@ -89,14 +88,21 @@
 <div class="font-medium">Want your team to get coaching like this?</div>
 
 <div>
+<div class="mb-3 mt-4">
     ✅ Weekly coaching emails that fix blind spots<br>
+</div>
+<div class="mb-3">
     ✅ Real learning without you handholding<br>
+</div>
+<div class="">
     ✅ Fewer incidents, stronger engineers, and actionable ideas for your next team sync<br>
+</div>
 </div>
 
 ### Section 9 (use this copy exactly)
 <hr>
 <div class="font-medium">Pricing</div>
 
-<div>It's $<span class="font-semibold">30</span> user/mo (USD). Your first full calendar month is free. <a href="/pricing" class="text-blue-600 hover:text-blue-700 font-medium hover:underline hover:underline-offset-4 decoration-1 transition">Learn more.</a></div>
-<div>Just type your email(s) below. I'll reach out in a few weeks once everything's live.</div>
+<div class="mt-4">$<span class="font-semibold">30</span> user/mo (USD). Your first full calendar month is free. <a href="/pricing" class="text-blue-600 hover:text-blue-700 font-medium hover:underline hover:underline-offset-4 decoration-1 transition">Learn more</a></div>
+<div class="mt-4">Larger orgs can prepay <span class="font-semibold">$300,000</span>/year for unlimited usage. No seat tracking.</div>
+<div class="mt-4">Want to start next Monday? Just send a list of your engineers' emails to <a href="mailto:jacob@replicate.info" class="text-blue-600 hover:text-blue-700 font-medium hover:underline hover:underline-offset-4 decoration-1 transition">jacob@replicate.info</a></div>

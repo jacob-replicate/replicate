@@ -1,4 +1,4 @@
 class ApplicationMailer < ActionMailer::Base
-  default from: "support@replicate.info"
+  default from: "jacob@replicate.info"
   layout "mailer"
 end
