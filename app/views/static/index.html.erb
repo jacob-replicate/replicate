@@ -8,19 +8,23 @@
       Coaching lands in your email every Monday, helping you fix blind spots before they turn into incidents.
     </p>
 
+
     <%= form_for Conversation.new, url: conversations_path, html: { id: "demo-form" } do |f| %>
-      <div class="p-4 rounded-xl bg-slate-100 border border-gray-300 shadow-sm">
-        <label for="initial_message" class="block text-gray-900 font-medium">
+      <div class="rounded-xl border border-gray-200 bg-slate-50 p-5 shadow leading-snug">
+        <label for="initial_message" class="block font-semibold text-gray-900 leading-snug text-[17px]">
           Could your team have caught it earlier?
         </label>
-        <div class="text-sm text-indigo-600 mt-1 mb-2">
-          Describe a recent incident. I'll show how the system would've pressure tested the blind spot that caused it.
-        </div>
+        <p class="mt-1 text-[15px] text-gray-600 leading-normal">
+          Describe a recent incident. I'll show how the system might have pressure tested the blind spot that caused it.
+        </p>
 
-        <%= text_area_tag :initial_message, "", class: 'w-full rounded-md bg-white px-4 py-2 text-sm text-gray-900 border border-gray-300 focus:border-indigo-600 focus:ring-0 placeholder:text-gray-400', rows: 3, placeholder: 'e.g., latency spike after a config change', tabindex: 1 %>
-        <div class="mt-3 text-xs text-gray-500 text-center">
-          By submitting, you agree to the <a href="/terms" class="text-blue-500 hover:underline">Terms</a> and <a href="/privacy" class="text-blue-500 hover:underline">Privacy Policy</a>
-        </div>
+        <%= text_area_tag :initial_message, "", class: "mt-4 w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:border-indigo-600 focus:ring-0", rows: 3, placeholder: "e.g., latency spike after a config change", tabindex: 1 %>
+
+        <p class="mt-3 text-xs text-center text-gray-500">
+          By submitting, you agree to the
+          <a href="/terms" class="text-blue-500 hover:underline">Terms</a> and
+          <a href="/privacy" class="text-blue-500 hover:underline">Privacy Policy</a>
+        </p>
       </div>
 
       <div class="text-center mt-6">
@@ -102,7 +106,7 @@
 
       <div class="mt-16 max-w-[90ch] text-[17px] leading-relaxed text-gray-800 space-y-6 mb-10">
         <p>
-          <span class="font-medium">replicate.info</span> helps mid/senior-level engineers at tech startups sharpen their production instincts. It sends short coaching emails about the <a href="/knowledge-gaps" class="text-blue-600 hover:text-blue-700 font-medium hover:underline hover:underline-offset-4 decoration-1 transition" target="_blank">blind spots</a> that page you at 3:00am. Built by a Staff Engineer who works on Terraform.
+          <span class="font-medium">replicate.info</span> helps full-stack engineers at tech startups sharpen their production instincts. It sends short coaching emails about the <a href="/knowledge-gaps" class="text-blue-600 hover:text-blue-700 font-medium hover:underline hover:underline-offset-4 decoration-1 transition" target="_blank">blind spots</a> that page you at 3:00am. Built by a Staff Engineer who works on Terraform.
         </p>
 
         <p>
