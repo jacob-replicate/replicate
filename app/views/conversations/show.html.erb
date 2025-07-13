@@ -222,6 +222,7 @@
             if (loadingEl) {
               loadingEl.remove();
               loadingEl = null;
+              clearInterval(dotInterval);
             }
 
             if (!streamingMessageEl) {
