@@ -3,10 +3,7 @@
 
   <p class="mb-4">
     <%= link_to 'replicate.info', root_path, class: "text-blue-600 font-semibold" %> is email-first and intentionally simple, following modern security practices without unnecessary complexity.
-  </p>
-
-  <p class="mb-4">
-    For questions or to request additional documentation, contact
+    To request additional documentation, contact
     <%= mail_to 'support@replicate.info', 'support@replicate.info', class: "text-blue-600 font-medium hover:text-blue-700 hover:underline transition" %>.
   </p>
 
@@ -15,7 +12,7 @@
     <li><span class="font-semibold">Hosted on Heroku.</span> We run on AWS with encrypted storage and enforce HTTPS for all traffic.</li>
     <li><span class="font-semibold">Data is encrypted in transit and at rest.</span> Background jobs run in isolated Heroku worker dynos.</li>
     <li><span class="font-semibold">We collect only essential data.</span> Used solely to deliver insights and generate reports. Never sold, shared, or used to train AI models.</li>
-    <li><span class="font-semibold">You own your data.</span> We'll export or delete it upon request. By default, check-in responses are retained for up to 12 months to support trend analysis.</li>
+    <li><span class="font-semibold">You own your data.</span> We'll export or delete it upon request.</li>
     <li><span class="font-semibold">No user accounts or persistent logins.</span> Managers receive secure reports by email only.</li>
     <li><span class="font-semibold">Internal tools are protected.</span> Only authorized staff have access to customer data, and only when needed for support.</li>
   </ul>
