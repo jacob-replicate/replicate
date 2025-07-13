@@ -9,12 +9,12 @@
     </p>
 
     <%= form_for Conversation.new, url: conversations_path, html: { id: "demo-form" } do |f| %>
-      <div class="p-4 rounded-xl bg-white shadow-sm" style="border: 1px solid #e6e6e6">
+      <div class="p-4 rounded-xl bg-slate-100 border border-gray-300 shadow-sm">
         <label for="initial_message" class="block text-gray-900 font-medium">
-          What went sideways in production recently?
+          Could your team have caught it earlier?
         </label>
         <div class="text-sm text-indigo-600 mt-1 mb-2">
-          Here's how the system would coach you through it.
+          Describe a recent incident. I'll show how the system would've pressure tested the blind spot that caused it.
         </div>
 
         <%= text_area_tag :initial_message, "", class: 'w-full rounded-md bg-white px-4 py-2 text-sm text-gray-900 border border-gray-300 focus:border-indigo-600 focus:ring-0 placeholder:text-gray-400', rows: 3, placeholder: 'e.g., latency spike after a config change', tabindex: 1 %>
@@ -24,7 +24,7 @@
       </div>
 
       <div class="text-center mt-6">
-        <%= f.submit 'See the coaching thread&nbsp;&nbsp;&rarr;'.html_safe, class: 'cursor-pointer rounded-lg px-5 py-2.5 text-lg font-semibold text-white bg-slate-600 hover:bg-slate-700 active:bg-slate-800 transition shadow-sm hover:shadow-md focus:outline-none', tabindex: 3 %>
+        <%= f.submit 'Uncover the blind spot&nbsp;&nbsp;&rarr;'.html_safe, class: 'cursor-pointer rounded-lg px-5 py-2.5 text-lg font-semibold text-white bg-slate-600 hover:bg-slate-700 active:bg-slate-800 transition shadow-sm hover:shadow-md focus:outline-none', tabindex: 3 %>
       </div>
       <div class="mt-4 text-sm text-center text-gray-500">
         No logins. No credit cards.
@@ -106,7 +106,7 @@
         </p>
 
         <p>
-          No UI. No logins. No dashboards. Just a 5-minute puzzle that nudges you toward an <span class="italic font-medium">"aha!"</span> moment, 52 times per year. Think of it as structured, bite-sized pressure — helping engineers confront risks before they surface in production.
+          No UI. No logins. No dashboards. Just a 5-minute puzzle that nudges you toward an <span class="italic font-medium">"aha!"</span> moment, 52 times per year. <span class="font-medium">Think of it as consistent, bite-sized pressure</span> — helping engineers confront risks before they surface in production.
         </p>
 
         <p>
@@ -154,7 +154,7 @@
         </p>
         <p>
           <a href="/query-spike" class="inline-block rounded-md bg-neutral-700 px-4 py-2 text-white text-base font-semibold shadow hover:bg-neutral-700 transition">
-            Try a thread — no login needed&nbsp;&rarr;
+            Test your instincts&nbsp;&rarr;
           </a>
         </p>
 
