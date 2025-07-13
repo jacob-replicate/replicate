@@ -36,16 +36,13 @@
     <% end %>
   </div>
 
-  <!-- Right Column: Email Visual -->
   <div class="lg:w-1/2 w-full">
     <div class="bg-white border border-gray-200 rounded-xl shadow overflow-hidden text-sm">
-      <!-- Header: Subject line + pseudo timestamp -->
       <div class="bg-gray-100 text-gray-700 px-4 py-2 border-b border-gray-200 font-medium flex justify-between items-center">
         <span>Re: The rollback didn't work</span>
         <span class="text-xs text-gray-500 font-normal">Mon, Jul 7 &bull; 9:17am</span>
       </div>
 
-      <!-- Thread body -->
       <div class="p-4 space-y-6 text-gray-800">
         <div class="flex gap-2">
           <div>
@@ -64,7 +61,6 @@
         </div>
       </div>
 
-      <!-- Footer: Sending note -->
       <div class="px-4 py-3 border-t border-gray-100 bg-gray-50 text-xs text-gray-500 flex justify-end items-center">
         Sent automatically every Monday
       </div>
@@ -117,11 +113,11 @@
           Every email describes a real incident and asks where you'd look first. Then GPT replies with the pushback you'd get from someone five years ahead of you, challenging your assumptions and pointing out what you missed.
         </p>
       </div>
-      <div class="mb-1 text-xl font-medium hidden md:block">
-        Most postmortems never need to happen.
+      <div class="mb-1 text-xl font-medium">
+        Raise the bar, before it breaks.
       </div>
-      <div class="mb-4 text-[15px] hidden md:block">
-        Trained of 15 years of startup experience, these threads feel like a thoughtful note from your tech lead, not a chatbot.
+      <div class="mb-4 text-[15px]">
+        Short, high-pressure threads that surface weak spots in your team's habits. No UI. No logins. Just emails that make you think.
       </div>
       <div class="mb-10 flex gap-4">
         <% EXAMPLE_EMAILS.each_with_index do |email, i| %>
@@ -136,7 +132,7 @@
 
             <div>
               <a href="#" data-example="<%= email[:prompt] %>" class="example-btn inline-block rounded-md border border-gray-300 bg-white text-sm text-gray-800 font-medium px-3 py-1.5 hover:bg-gray-100">
-                See how it played out
+                Prevent the fire
               </a>
             </div>
 
@@ -148,7 +144,7 @@
       </div>
       <div class="mt-8 max-w-[90ch] text-[17px] leading-relaxed text-gray-800 space-y-6">
         <p>
-          Threads apply broadly, regardless of your tech stack, covering failures common to platform, SRE, and full-stack teams.
+          We write tests for code. Why not for people? LLM's can monitor your team's blind spots, and catch them <span class="font-medium">before</span> the SEV1.
         </p>
         <p>
           Want to start next Monday? Just paste your team's emails <a href="/demo" class="text-blue-600 hover:text-blue-700 font-medium hover:underline hover:underline-offset-4 decoration-1 transition">here</a>. Each thread introduces itself with no surprises. Engineers get one private email per week, with a realistic scenario to engage with. The core idea will stick, even if they don't reply.
@@ -158,7 +154,7 @@
         </p>
         <p>
           <a href="/query-spike" class="inline-block rounded-md bg-neutral-700 px-4 py-2 text-white text-base font-semibold shadow hover:bg-neutral-700 transition">
-            Test your instincts&nbsp;&rarr;
+            Test your production instincts&nbsp;&rarr;
           </a>
         </p>
 
