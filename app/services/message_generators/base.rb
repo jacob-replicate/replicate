@@ -42,6 +42,8 @@ module MessageGenerators
         full_response += text
       end
 
+      broadcast_to_web(type: "done")
+
       if @conversation.email?
         # TODO: Send it via another DeliverEmailWorker.perform_async(@conversation.id)
       end
