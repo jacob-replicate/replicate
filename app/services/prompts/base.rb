@@ -38,7 +38,7 @@ module Prompts
         }
       )
 
-      response.dig("choices", 0, "message", "content").to_s.gsub("<pre>", "").gsub("</pre>", "")
+      response.dig("choices", 0, "message", "content").to_s.gsub(/<\/div>\s*<br\s*\/?>/, "</div>").gsub("```html", "").gsub("```", "")
     end
 
     private

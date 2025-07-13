@@ -9,12 +9,12 @@ EXAMPLE_EMAILS = [
     to: "Casey Patel",
     subject: "SSO failed silently, again",
     content: "The team launched a new authentication flow without feature gating it, causing SSO to fail in production.",
-    prompt: "deploy broke SSO authentication in prod (forgot to feature flag new project)"
+    prompt: "We launched a new authentication flow without feature gating it, causing SSO to fail in production. How can <span class='font-medium'>replicate.info</span> help next time?"
   },
   {
     to: "Taylor Morales",
     subject: "The rollback didn't work",
     content: "A late-night hotfix broke a background job, and the rollback failed to restore deleted customer records.",
-    prompt: "hotfix broke data pipeline, rollback didn't recover lost customer records"
+    prompt: "A late-night hotfix broke a background job, and the rollback failed to restore deleted customer records. How can <span class='font-medium'>replicate.info</span> help next time?"
   }
 ]
