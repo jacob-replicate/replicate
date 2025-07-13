@@ -22,6 +22,7 @@
 - You must use the following CTA text below, and not add anything.
 
 [CTA]
+---
 **Next Steps**
 
 Pricing is **$30/mo** (USD) per engineer. Your first full calendar month is free. Learn more [here](https://replicate.info/pricing)
