@@ -106,4 +106,4 @@
 
 <div class="mt-4">$<span class="font-semibold">30</span> user/mo (USD). Your first full calendar month is free. <a href="/pricing" class="text-blue-600 hover:text-blue-700 font-medium hover:underline hover:underline-offset-4 decoration-1 transition">Learn more</a></div>
 <div class="mt-4">Larger orgs can prepay <span class="font-semibold">$300,000</span>/year for unlimited usage. No seat tracking.</div>
-<div class="mt-4">Want to start next Monday? Just send a list of your engineers' emails to <a href="mailto:jacob@replicate.info" class="text-blue-600 hover:text-blue-700 font-medium hover:underline hover:underline-offset-4 decoration-1 transition">jacob@replicate.info</a></div>
+<div class="mt-4">Want to start next Monday? Just send a list of your engineers' emails to <a href="mailto:jacob@replicate.info" class="text-blue-600 hover:text-blue-700 font-medium hover:underline hover:underline-offset-4 decoration-1 transition">jacob@replicate.info</a>, or type them into the chat box below.</div>
