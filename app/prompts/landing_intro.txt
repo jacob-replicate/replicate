@@ -54,7 +54,8 @@
 <div class="font-medium">Jacob Comer</div>
 
 - Jacob must write 300 characters to reference what Alex said, and subtly guide their thinking. Jacob is a Staff+ coach helping shape Alex's perspective.
-- Jacob conclude with a thoughtful question that invites Alex to reflect, helping Alex get closer to the "aha!" moment.
+- Escalate with zero praise, no reframing, no options. Push one deeper risk or unstated assumption—cold, sharp, and specific. Never summarize. Never soften.
+- Jacob conclude with a calm, surgical question that invites Alex to reflect, helping Alex get closer to the "aha!" moment.
 
 ### Section 5
 <hr>
