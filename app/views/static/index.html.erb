@@ -1,4 +1,4 @@
-<div class="flex flex-col lg:flex-row gap-9 pt-4 md:pt-10">
+<div class="flex flex-col lg:flex-row gap-9 pt-4 md:pt-10 items-center">
   <!-- Left Column: Headline + Form -->
   <div class="lg:w-1/2 w-full">
     <h1 class="text-2xl lg:text-3xl font-semibold tracking-tight mb-2">
@@ -37,26 +37,26 @@
   </div>
 
   <div class="lg:w-1/2 w-full">
-    <div class="bg-white border border-gray-200 rounded-xl shadow overflow-hidden text-sm">
+    <div class="bg-white border border-gray-200 rounded-md shadow overflow-hidden text-sm">
       <div class="bg-gray-100 text-gray-700 px-4 py-2 border-b border-gray-200 font-medium flex justify-between items-center">
         <span>Re: The rollback didn't work</span>
         <span class="text-xs text-gray-500 font-normal">Mon, Jul 7 &bull; 9:17am</span>
       </div>
 
-      <div class="p-4 space-y-6 text-gray-800">
-        <div class="flex gap-2">
+      <div class="text-gray-800">
+        <div class="p-4">
           <div>
-            <span class="font-bold">Jacob:</span> Imagine a hotfix gets rushed and only makes things worse. The team tries a rollback... but it doesn't behave like anyone expected. How do you know your rollback logic is actually safe?
+            <div class="font-semibold">Jacob Comer</div> Imagine a hotfix gets rushed and only makes things worse. The team tries a rollback... but it doesn't behave like anyone expected. How do you know your rollback logic is actually safe?
           </div>
         </div>
-        <div class="flex gap-2">
+        <div class="p-4 border-t border-gray-100">
           <div>
-            <span class="font-bold">Alex:</span> yeah that definitely happened once. we assumed it was safe to just revert the last commit, but it made the data mismatch worse. didn't catch it til customers complained.
+            <div class="font-semibold">Alex Shaw</div> yeah that definitely happened once. we assumed it was safe to just revert the last commit, but it made the data mismatch worse. didn't catch it til customers complained.
           </div>
         </div>
-        <div class="flex gap-2">
+        <div class="p-4 border-t border-gray-100">
           <div>
-            <span class="font-bold">Jacob:</span> Rollback paths often aren't tested like deploys. <span class="font-semibold">What would break if a background job already ran on the new data?</span>
+            <div class="font-semibold">Jacob Comer</div> Rollback paths often aren't tested like deploys. <span class="font-medium">What would break if a background job already ran on the new data?</span>
           </div>
         </div>
       </div>

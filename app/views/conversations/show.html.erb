@@ -162,6 +162,7 @@
     let aiIsTyping = false;
     let loadingEl = null;
     let activeStreamContainer = null;
+    let dotInterval;
 
     function setInputEnabled(enabled) {
       textarea.disabled = !enabled;
@@ -215,7 +216,6 @@
             if (!loadingEl) {
               loadingEl = document.createElement("div");
               loadingEl.className = "flex justify-start";
-              let dotInterval;
 
               loadingEl.innerHTML = `
                 <div class="message-body bg-white border border-gray-200 text-gray-500 rounded-2xl px-4 py-3 mb-2 italic">
@@ -241,6 +241,12 @@
               loadingEl.remove();
               loadingEl = null;
             }
+
+            if (dotInterval) {
+              clearInterval(dotInterval);
+              dotInterval = null;
+            }
+
             aiIsTyping = false;
             activeStreamContainer = null;
             setInputEnabled(true);
