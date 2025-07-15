@@ -17,7 +17,9 @@ class StaticController < ApplicationController
     return start_conversation(
       context: {
         conversation_type: :landing_demo,
-        initial_message: "**What went sideways in production recently?**\n\ndeploy broke SSO authentication in prod (forgot to feature flag new project)"
+        engineer_name: "Alex Shaw",
+        first_name: "Alex",
+        incident: "deploy broke SSO authentication in prod (forgot to feature flag new project)"
       },
       force_tos: true
     )
@@ -25,7 +27,10 @@ class StaticController < ApplicationController
 
   def coaching
     return start_conversation(
-      context: { conversation_type: :coaching },
+      context: {
+        conversation_type: :coaching,
+        incident: "deploy broke SSO authentication in prod (forgot to feature flag new project)"
+      },
       force_tos: true
     )
   end

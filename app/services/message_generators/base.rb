@@ -29,7 +29,7 @@ module MessageGenerators
     end
 
     # TODO: Add error handling for prompts that failed all retries
-    def deliver_elements(elements)
+    def deliver_elements(elements, user_generated = false)
       full_response = ""
 
       elements.each_with_index do |element, i|
@@ -45,15 +45,33 @@ module MessageGenerators
       end
 
       broadcast_to_web(type: "done")
-      @conversation.messages.create!(content: full_response, user_generated: false)
+      @conversation.messages.create!(content: full_response, user_generated: user_generated)
 
       if @conversation.email?
         # TODO: Send it via another DeliverEmailWorker.perform_async(@conversation.id)
       end
     end
 
-    def avatar_row
-      "<div class='flex items-center mb-3 gap-3'><div style='width: 32px'><img src='/jacob-square.jpg' class='rounded-full' /></div><div class='font-medium'>Jacob Comer</div></div>"
+    def coach_avatar_row(first: false)
+      avatar_row(first: first)
+    end
+
+    def student_avatar_row
+      engineer_name = @conversation.context["engineer_name"]
+
+      photo_id = if engineer_name.include?("Alex")
+        1
+      elsif engineer_name.include?("Casey")
+        2
+      else
+        3
+      end
+
+      avatar_row(name: engineer_name, photo_path: "profile-photo-#{photo_id}.jpg")
+    end
+
+    def avatar_row(name: "Jacob Comer", photo_path: "jacob-square.jpg", first: false)
+      "<div class='mb-4'><div class='flex items-center gap-3'><div style='width: 32px'><img src='/#{photo_path}' class='rounded-full' /></div><div class='font-medium'>#{name}</div></div></div>"
     end
 
     def broadcast_to_web(message: "", type: "broadcast")

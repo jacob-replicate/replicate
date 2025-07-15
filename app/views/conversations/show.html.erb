@@ -97,11 +97,7 @@
         <div class="justify-end">
           <a href="/coaching" class="text-blue-600 hover:text-blue-700 font-medium hover:underline hover:underline-offset-4 decoration-1 transition">
             <% if @conversation.context["conversation_type"] == "landing_demo" %>
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 inline-block mr-1.5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M14.25 6.087c0-.355.186-.676.401-.959.221-.29.349-.634.349-1.003 0-1.036-1.007-1.875-2.25-1.875s-2.25.84-2.25 1.875c0 .369.128.713.349 1.003.215.283.401.604.401.959v0a.64.64 0 0 1-.657.643 48.39 48.39 0 0 1-4.163-.3c.186 1.613.293 3.25.315 4.907a.656.656 0 0 1-.658.663v0c-.355 0-.676-.186-.959-.401a1.647 1.647 0 0 0-1.003-.349c-1.036 0-1.875 1.007-1.875 2.25s.84 2.25 1.875 2.25c.369 0 .713-.128 1.003-.349.283-.215.604-.401.959-.401v0c.31 0 .555.26.532.57a48.039 48.039 0 0 1-.642 5.056c1.518.19 3.058.309 4.616.354a.64.64 0 0 0 .657-.643v0c0-.355-.186-.676-.401-.959a1.647 1.647 0 0 1-.349-1.003c0-1.035 1.008-1.875 2.25-1.875 1.243 0 2.25.84 2.25 1.875 0 .369-.128.713-.349 1.003-.215.283-.4.604-.4.959v0c0 .333.277.599.61.58a48.1 48.1 0 0 0 5.427-.63 48.05 48.05 0 0 0 .582-4.717.532.532 0 0 0-.533-.57v0c-.355 0-.676.186-.959.401-.29.221-.634.349-1.003.349-1.035 0-1.875-1.007-1.875-2.25s.84-2.25 1.875-2.25c.37 0 .713.128 1.003.349.283.215.604.401.96.401v0a.656.656 0 0 0 .658-.663 48.422 48.422 0 0 0-.37-5.36c-1.886.342-3.81.574-5.766.689a.578.578 0 0 1-.61-.58v0Z" />
-              </svg>
-
-              Try your first puzzle
+              Test your prod instincts&nbsp;&nbsp;&rarr;
             <% else %>
               <div class="flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 inline-block mr-1.5">
@@ -116,18 +112,20 @@
     </div>
   </div>
 
-  <div class="pb-4">
-    <div class="flex items-center gap-2">
-      <textarea id="message-input" placeholder="Type a message…" class="w-full border border-gray-200 rounded-lg p-2 resize-none disabled:opacity-50 disabled:cursor-not-allowed" rows="1" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px';"></textarea>
-      <button id="send-button" class="bg-slate-600 text-white px-4 py-2 rounded-lg hover:bg-slate-700 ml-auto h-full disabled:opacity-50 disabled:cursor-not-allowed">Send</button>
-    </div>
-
-    <% if params[:require_tos] %>
-      <div id="terms-container" class="mt-3 text-xs text-gray-500">
-        By submitting, you agree to the <a href="/terms" class="text-blue-500 hover:underline">Terms</a> and <a href="/privacy" class="text-blue-500 hover:underline">Privacy Policy</a>
+  <% unless @conversation.context["conversation_type"] == "landing_demo" %>
+    <div class="pb-4">
+      <div class="flex items-center gap-2">
+        <textarea id="message-input" placeholder="Type a message…" class="w-full border border-gray-200 rounded-lg p-2 resize-none disabled:opacity-50 disabled:cursor-not-allowed" rows="1" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px';"></textarea>
+        <button id="send-button" class="bg-slate-600 text-white px-4 py-2 rounded-lg hover:bg-slate-700 ml-auto h-full disabled:opacity-50 disabled:cursor-not-allowed">Send</button>
       </div>
-    <% end %>
-  </div>
+
+      <% if params[:require_tos] %>
+        <div id="terms-container" class="mt-3 text-xs text-gray-500">
+          By submitting, you agree to the <a href="/terms" class="text-blue-500 hover:underline">Terms</a> and <a href="/privacy" class="text-blue-500 hover:underline">Privacy Policy</a>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
 </div>
 
 <script>
@@ -165,7 +163,9 @@
     let dotInterval;
 
     function setInputEnabled(enabled) {
-      textarea.disabled = !enabled;
+      if(textarea) {
+        textarea.disabled = !enabled;
+      }
       sendButton.disabled = !enabled;
       sendButton.classList.toggle("opacity-50", !enabled);
       sendButton.classList.toggle("cursor-not-allowed", !enabled);
@@ -196,13 +196,15 @@
       textarea.focus();
     }
 
-    sendButton.addEventListener("click", sendMessage);
-    textarea.addEventListener("keydown", e => {
-      if (e.key === "Enter" && !e.shiftKey) {
-        e.preventDefault();
-        sendMessage();
-      }
-    });
+    if(textarea) {
+      sendButton.addEventListener("click", sendMessage);
+      textarea.addEventListener("keydown", e => {
+        if (e.key === "Enter" && !e.shiftKey) {
+          e.preventDefault();
+          sendMessage();
+        }
+      });
+    }
 
     window.consumer.subscriptions.create(
       { channel: "ConversationChannel", id: conversationId },
@@ -265,7 +267,7 @@
 
               activeStreamContainer = document.createElement("div");
               let classes = finalClass;
-              if (data.sequence && data.sequence > 1) classes += " mt-4";
+              if (data.sequence && data.sequence > 1) classes += " mt-8";
 
               activeStreamContainer.className = classes;
               wrapper.appendChild(activeStreamContainer);

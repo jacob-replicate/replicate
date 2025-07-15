@@ -15,10 +15,11 @@
           What broke recently?
         </label>
         <p class="mt-1 text-[15px] text-gray-600 leading-normal">
-          I'll show how we could have caught the risk earlier.
+          Let's figure out what you missed.
         </p>
 
-        <%= text_area_tag :initial_message, "", class: "mt-4 w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:border-indigo-600 focus:ring-0", rows: 3, placeholder: "e.g., reverted code and corrupted invoices table", tabindex: 1 %>
+        <%= text_area_tag :incident, "", class: "mt-4 w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:border-indigo-600 focus:ring-0", rows: 3, placeholder: "e.g., reverted code and corrupted invoices table", tabindex: 1 %>
+        <%= hidden_field_tag :engineer_name, "Alex Shaw", name: "engineer_name", class: "hidden" %>
 
         <p class="mt-3 text-xs text-center text-gray-500">
           By submitting, you agree to the
@@ -122,7 +123,7 @@
             <div class="text-sm text-gray-700 leading-relaxed"><%= email[:content] %></div>
 
             <div>
-              <a href="#" data-example="<%= email[:prompt] %>" class="example-btn inline-block rounded-md border border-gray-300 bg-white text-sm text-gray-800 font-medium px-3 py-1.5 hover:bg-gray-100">
+              <a href="#" data-example="<%= email[:prompt] %>" data-name="<%= email[:to] %>" class="example-btn inline-block rounded-md border border-gray-300 bg-white text-sm text-gray-800 font-medium px-3 py-1.5 hover:bg-gray-100">
                 Prevent the fire
               </a>
             </div>
@@ -165,13 +166,15 @@
     const form = document.getElementById("demo-form");
 
     const exampleButtons = document.querySelectorAll(".example-btn");
-    const textarea = document.querySelector("textarea[name='initial_message']");
+    const engineer_name = document.querySelector("input[name='engineer_name']");
+    const textarea = document.querySelector("textarea[name='incident']");
     const exampleContainer = document.getElementById("example-buttons");
 
     exampleButtons.forEach((btn) => {
       btn.addEventListener("click", (e) => {
         e.preventDefault();
         textarea.value = btn.dataset.example;
+        engineer_name.value = btn.dataset.name;
         form.submit(); // Submit the form immediately
       });
     });

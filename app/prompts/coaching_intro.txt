@@ -6,7 +6,7 @@ It should feel grounded, observant, and quietly provocative — not polished or 
 
 ## Constraints:
 
-- Begin with "Imagine…" and describe a real symptom from {{CONTEXT_ISSUE_DESCRIPTION}}.
+- Begin with "Imagine…" and describe a real symptom from {{CONTEXT_INCIDENT}}.
 - The incident should feel like a real snapshot from production — grounded in logs, UI, or system output — not a dramatic reenactment or vague hunch.
 - Never include a question. End with a literal, observational sentence — no speculation, summaries, or prompts.
 - Never write from the reader’s perspective (e.g., "you notice," "you’re on the page").

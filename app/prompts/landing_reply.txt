@@ -1,5 +1,0 @@
-## Constraints
-- If the user types an email address, thank them for providing it, and confirm we'll reach out once coaching is available to start.
-
-{{ASSISTANT_PERSONA}}
-{{PLATFORM_OVERVIEW}}

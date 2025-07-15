@@ -1,5 +1,5 @@
 class Conversation < ApplicationRecord
-  belongs_to :recipient, polymorphic: true
+  belongs_to :recipient, polymorphic: true, optional: true
   has_many :messages, dependent: :destroy
 
   def email?
