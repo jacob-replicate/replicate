@@ -10,7 +10,7 @@
 
 
     <%= form_for Conversation.new, url: conversations_path, html: { id: "demo-form" } do |f| %>
-      <div class="rounded-xl border border-gray-200 bg-gray-50 p-5 shadow leading-snug">
+      <div class="rounded-xl border border-gray-150 bg-gray-50 p-5 shadow leading-snug">
         <label for="initial_message" class="block font-semibold text-gray-900 leading-snug text-[17px]">
           Could your team have caught it earlier?
         </label>
@@ -37,7 +37,7 @@
   </div>
 
   <div class="lg:w-1/2 w-full">
-    <div class="bg-white border border-gray-200 rounded-md shadow overflow-hidden text-sm">
+    <div class="bg-white border border-gray-150 rounded-md shadow overflow-hidden text-sm">
       <div class="bg-gray-100 text-gray-700 px-4 py-2 border-b border-gray-200 font-medium flex justify-between items-center">
         <span>Re: The rollback didn't work</span>
         <span class="text-xs text-gray-500 font-normal">Mon, Jul 7 &bull; 9:17am</span>
@@ -117,7 +117,7 @@
           Every email describes a real incident and asks where you'd look first. Then GPT replies with the pushback you'd get from someone five years ahead of you, calmly challenging your assumptions and pointing out what you missed.
         </p>
       </div>
-      <div class="mb-8 flex gap-4">
+      <div class="mb-8 flex gap-6">
         <% EXAMPLE_EMAILS.each_with_index do |email, i| %>
           <div class="bg-white border border-gray-100 shadow rounded-xl p-5 space-y-4 <%= i == 0 ? "hidden md:block" : "" %> <%= i == 1 ? "hidden lg:block" : "" %> <%= i == 2 ? "md:block" : "" %>">
             <div class="flex items-center justify-between align-middle">
