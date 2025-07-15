@@ -1,16 +1,16 @@
-<div class="flex flex-col lg:flex-row gap-9 pt-4 md:pt-10 items-center">
+<div class="flex flex-col lg:flex-row gap-9 pt-4 md:pt-10">
   <!-- Left Column: Headline + Form -->
   <div class="lg:w-1/2 w-full">
     <h1 class="text-2xl lg:text-3xl font-semibold tracking-tight mb-2">
       Your next outage is avoidable.
     </h1>
-    <p class="text-gray-800 mb-6 leading-relaxed text-[17px]">
+    <p class="text-gray-800 mb-4 leading-relaxed text-[17px]">
       No logins. No UI. Just a weekly email that surfaces infra and security blind spots, and helps you fix them with GPT.
     </p>
 
 
     <%= form_for Conversation.new, url: conversations_path, html: { id: "demo-form" } do |f| %>
-      <div class="rounded-xl border border-gray-150 bg-gray-50 p-5 shadow leading-snug">
+      <div class="rounded-xl border border-neutral-150 bg-neutral-100 p-5 shadow leading-snug">
         <label for="initial_message" class="block font-semibold text-gray-900 leading-snug text-[17px]">
           Could your team have caught it earlier?
         </label>
@@ -38,35 +38,31 @@
 
   <div class="lg:w-1/2 w-full">
     <div class="bg-white border border-gray-150 rounded-md shadow overflow-hidden text-sm">
-      <div class="bg-gray-100 text-gray-700 px-4 py-2 border-b border-gray-200 font-medium flex justify-between items-center">
+      <div class="bg-neutral-700 text-white px-4 py-2 border-b border-neutral-150 font-medium flex justify-between items-center">
         <span>Re: The rollback didn't work</span>
-        <span class="text-xs text-gray-500 font-normal">Mon, Jul 7 &bull; 9:17am</span>
+        <span class="text-xs text-gray-400 font-normal">Mon, Jul 7 &bull; 9:17am</span>
       </div>
 
       <div class="text-gray-800">
         <div class="p-4">
           <div>
-            <div class="font-semibold">Jacob Comer</div> Imagine a hotfix gets rushed and only makes things worse. The team tries a rollback... but it doesn't behave like anyone expected. How do you know your rollback logic is actually safe?
+            <div class="font-medium text-gray-600">Jacob Comer</div> Imagine a hotfix gets rushed and only makes things worse. The team tries a rollback... but it doesn't behave like anyone expected. How do you know your rollback logic is actually safe?
           </div>
         </div>
         <div class="p-4 border-t border-gray-100">
           <div>
-            <div class="font-semibold">Alex Shaw</div> yeah that definitely happened once. we assumed it was safe to just revert the last commit, but it made the data mismatch worse. didn't catch it til customers complained.
+            <div class="font-medium text-gray-600">Alex Shaw</div> yeah that definitely happened once. we assumed it was safe to just revert the last commit, but it made the data mismatch worse. didn't catch it til customers complained.
           </div>
         </div>
         <div class="p-4 border-t border-gray-100">
           <div>
-            <div class="font-semibold">Jacob Comer</div> Rollback paths often aren't tested like deploys. <span class="font-medium">What would break if a background job already ran on the new data?</span>
+            <div class="font-medium text-gray-600">Jacob Comer</div> Rollback paths often aren't tested like deploys. <span class="font-medium">What would break if a background job already ran on the new data?</span>
           </div>
         </div>
-      </div>
-
-      <div class="px-4 py-3 border-t border-gray-100 bg-gray-50 text-xs text-gray-500 flex justify-end items-center">
-        Sent automatically every Monday
       </div>
     </div>
 
-    <div class="mt-4">
+    <div class="mt-3">
       <div class="flex items-center gap-3 justify-end">
         <div class="text-[17px] font-semibold text-gray-900 signature pt-1.5">
           Jacob Comer
@@ -89,18 +85,15 @@
           <% end %>
         </div>
       </div>
-      <div class="mt-3 text-right text-sm">
-        Launched July 2025 &bull; 600 hours spent (so far)
-      </div>
     </div>
   </div>
 </div>
 
-<div class="pb-6 mt-10 lg:mt-14">
+<div class="pb-6">
   <div class="text-md leading-relaxed tracking-[0.008em]">
     <div class="text-[17px]">
 
-      <div class="mt-16 max-w-[90ch] text-[17px] leading-relaxed text-gray-800 space-y-6 mb-8">
+      <div class="mt-12 max-w-[90ch] text-[17px] leading-relaxed text-gray-800 space-y-6 mb-8">
         <p>
           <span class="font-medium">replicate.info</span> helps engineers sharpen their production instincts. It sends one email per week to help you catch blind spots, before they page you at 3:00am. Built by a Staff Engineer who helps lead IAM for Terraform Enterprise.
         </p>
