@@ -119,7 +119,7 @@
       </div>
       <div class="mb-8 flex gap-4">
         <% EXAMPLE_EMAILS.each_with_index do |email, i| %>
-          <div class="bg-white border border-gray-200 shadow rounded-xl p-5 space-y-4 <%= i == 0 ? "hidden md:block" : "" %> <%= i == 1 ? "hidden lg:block" : "" %> <%= i == 2 ? "md:block" : "" %>">
+          <div class="bg-white border border-gray-100 shadow rounded-xl p-5 space-y-4 <%= i == 0 ? "hidden md:block" : "" %> <%= i == 1 ? "hidden lg:block" : "" %> <%= i == 2 ? "md:block" : "" %>">
             <div class="flex items-center justify-between align-middle">
               <div class="text-sm text-gray-500"><%= email[:to] %></div>
               <img src="/profile-photo-<%= i + 1 %>.jpg" alt="Avatar" class="w-10 h-10 rounded-full overflow-hidden" />
@@ -149,6 +149,9 @@
         </p>
         <p>
           Larger orgs can prepay <span class="font-semibold">$300,000</span>/year for unlimited usage. No seat tracking. Email <a href="mailto:jacob@replicate.info" class="text-blue-600 hover:text-blue-700 font-medium hover:underline hover:underline-offset-4 decoration-1 transition">jacob@replicate.info</a> for an invoice.
+        </p>
+        <p>
+          Not quite self-serve, not quite unlimited? I'm open to offers — no promises, but I'll get back to you either way.
         </p>
         <p>
           <a href="/coaching" class="inline-block rounded-md bg-neutral-700 px-4 py-2 text-white text-md font-semibold shadow hover:bg-neutral-700 transition">
