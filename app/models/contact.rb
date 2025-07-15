@@ -1,5 +1,5 @@
 class Contact < ApplicationRecord
-  has_many :metadata, as: :owner, dependent: :destroy
+  # has_many :metadata, as: :owner, dependent: :destroy
   has_many :conversations, as: :recipient, dependent: :destroy
   has_many :messages, through: :conversations
 
