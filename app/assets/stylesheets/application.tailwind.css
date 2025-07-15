@@ -17,6 +17,14 @@ body {
 }
 
 @font-face {
+  font-family: 'RecklessNeue';
+  src: url('/fonts/RecklessNeue-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
   font-family: 'Canela Text Web';
   src: url('/fonts/CanelaText-MediumItalic-Web.woff2') format('woff2');
   font-weight: 600;
