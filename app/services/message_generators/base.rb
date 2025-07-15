@@ -33,11 +33,11 @@ module MessageGenerators
       full_response = ""
 
       elements.each_with_index do |element, i|
-        text = element.is_a?(String) ? element : element.new(conversation: @conversation).call
+        text = element.is_a?(String) ? element.html_safe : element.new(conversation: @conversation).call
         next if text.blank? # TODO: Add error handling for empty elements
 
         if @conversation.web?
-          broadcast_to_web(message: text, type: "element")
+          broadcast_to_web(message: text, type: "element", user_generated: user_generated)
           broadcast_to_web(type: "loading") unless i == elements.length - 1
         end
 
@@ -74,8 +74,8 @@ module MessageGenerators
       "<div class='mb-4'><div class='flex items-center gap-3'><div style='width: 32px'><img src='/#{photo_path}' class='rounded-full' /></div><div class='font-medium'>#{name}</div></div></div>"
     end
 
-    def broadcast_to_web(message: "", type: "broadcast")
-      broadcasting_context = { type: type, sequence: @message_sequence }
+    def broadcast_to_web(message: "", type: "broadcast", user_generated: false)
+      broadcasting_context = { type: type, sequence: @message_sequence, user_generated: user_generated }
 
       if message.present?
         broadcasting_context[:message] = sanitize_response(message)
