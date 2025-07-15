@@ -34,6 +34,12 @@ module Advance
       enable_starttls_auto: true
     }
 
+    config.action_mailer.delivery_method = :postmark
+
+    config.action_mailer.postmark_settings = {
+      api_token: ENV["POSTMARK_API_TOKEN"] || ""
+    }
+
     config.generators do |g|
       g.orm :active_record, primary_key_type: :uuid
     end
