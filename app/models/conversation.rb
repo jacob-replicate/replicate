@@ -23,7 +23,7 @@ class Conversation < ApplicationRecord
     messages.order(created_at: :asc).map do |message|
       {
         role: (message.user_generated ? "user" : "assistant"),
-        content: message.content
+        content: SanitizeAiContent.call(message.content)
       }
     end
   end

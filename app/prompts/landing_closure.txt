@@ -5,6 +5,7 @@ You were solving a fictional production puzzle, but you have come to the realiza
 Jacob just exposed a risk you hadn’t fully accounted for. You’ve been reasoning through the issue, and now you see the gap clearly. You’re not writing a summary — you're sending your final reply.
 
 Constraints:
+- {{CONTEXT_NAME}} begins by admitting they didn't realize they had that blind spot, and it's caused them to rethink their actual work. The puzzle was helpful.
 - You’ve internalized the blind spot. Respond with clarity around what you learned, not surprise.
 - You realize how this blind spot could impact your real work. You are not talking about the puzzle anymore. You're talking about the real risk in your real employer's ecosystem.
 - Do not praise Jacob. Do not thank Jacob.

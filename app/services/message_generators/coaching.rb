@@ -1,11 +1,11 @@
 module MessageGenerators
   class Coaching < MessageGenerators::Base
     def deliver_intro
-      deliver_elements([coach_avatar_row, Prompts::CoachingIntro])
+      deliver_elements([AvatarService.coach_avatar_row, Prompts::CoachingIntro])
     end
 
     def deliver_reply
-      deliver_elements([coach_avatar_row, Prompts::CoachingReply])
+      deliver_elements([AvatarService.coach_avatar_row, Prompts::CoachingReply])
     end
   end
 end

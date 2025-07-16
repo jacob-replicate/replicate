@@ -1,8 +1,12 @@
 <style>
   /* --- Markdown styling for chat bubbles --- */
   .message-body {
-    font-size: 1.05rem;
+    font-size: 1.0rem;
     line-height: 1.625;
+  }
+
+  .prompt-output {
+    margin-top: 15px;
   }
 
   .message-body p {
@@ -67,7 +71,7 @@
   }
 </style>
 
-<% user_message_classes = "bg-gray-100 rounded-2xl shadow px-4 py-3 mb-3" %>
+<% user_message_classes = "bg-gray-100 rounded-2xl shadow px-4 py-3" %>
 <% base_message_classes = "break-words message-body" %>
 
 <div class="flex flex-col mt-6">
@@ -160,10 +164,10 @@
     function setInputEnabled(enabled) {
       if(textarea) {
         textarea.disabled = !enabled;
+        sendButton.disabled = !enabled;
+        sendButton.classList.toggle("opacity-50", !enabled);
+        sendButton.classList.toggle("cursor-not-allowed", !enabled);
       }
-      sendButton.disabled = !enabled;
-      sendButton.classList.toggle("opacity-50", !enabled);
-      sendButton.classList.toggle("cursor-not-allowed", !enabled);
     }
 
     function sendMessage() {
@@ -212,10 +216,12 @@
           if (isLoading) {
             if (!loadingEl) {
               loadingEl = document.createElement("div");
-              loadingEl.className = "flex justify-start";
+              loadingEl.className = `flex ${isUser ? "justify-end" : "justify-start"}`;
+
+              const bubbleClass = "bg-white border border-gray-200 text-gray-500";
 
               loadingEl.innerHTML = `
-                <div class="message-body bg-white border border-gray-200 text-gray-500 rounded-2xl px-4 py-3 mb-2 italic">
+                <div class="message-body ${bubbleClass} rounded-xl px-4 py-3 mb-2 italic mt-2">
                   Thinking<span id="loading-dots">.</span>
                 </div>
               `;
@@ -262,7 +268,7 @@
 
               activeStreamContainer = document.createElement("div");
               let classes = finalClass;
-              if (data.sequence && data.sequence > 1) classes += " mt-8";
+              if (data.sequence && data.sequence > 1) classes += " mt-6";
 
               activeStreamContainer.className = classes;
               wrapper.appendChild(activeStreamContainer);

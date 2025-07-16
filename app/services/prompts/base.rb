@@ -16,7 +16,7 @@ module Prompts
 
     def fetch_valid_response
       10.times do
-        llm_output = fetch_raw_output
+        llm_output = SanitizeAiContent.call(fetch_raw_output)
         error = validate(llm_output)
 
         if error.present?
@@ -38,27 +38,7 @@ module Prompts
         }
       )
 
-      avatar = "<div class='flex items-center mb-3 gap-3'><div style='width: 32px'><img src='/jacob-square.jpg' class='rounded-full' /></div><div class='font-medium'>Jacob Comer</div></div>"
-      avatar = "<div class='flex items-center mb-3 gap-3'><div style='width: 32px'><img src='/jacob-square.jpg' class='rounded-full' /></div><div class='font-medium'>Jacob Comer</div></div>"
-      avatars = [
-        coach_avatar_row(first: true),
-        coach_avatar_row,
-        avatar_row(name: "Taylor Morales"),
-        avatar_row(name: "Casey Patel"),
-        avatar_row(name: "Alex Shaw")
-      ]
-      response = response.dig("choices", 0, "message", "content").to_s
-      response.gsub!(/<\br>\s*<br\s*\/?>/, "</div>")
-      response.gsub!(/<\/div>\s*<br\s*\/?>/, "</div>")
-      response.gsub!("```html", "")
-      response.gsub!("```", "")
-      response.gsub!("`", "")
-      response.gsub!(avatar, "")
-      avatars.each do |avatar|
-        response.gsub!(avatar, "")
-      end
-
-      response
+      response.dig("choices", 0, "message", "content").to_s
     end
 
     private
@@ -100,28 +80,6 @@ module Prompts
       @conversation.context.each { |key, val| prompt_instructions.gsub!("{{CONTEXT_#{key.upcase}}}", val.to_s) }
 
       prompt_instructions
-    end
-
-    def coach_avatar_row(first: false)
-      avatar_row(first: first)
-    end
-
-    def student_avatar_row
-      engineer_name = @conversation.context["engineer_name"]
-
-      photo_id = if engineer_name.include?("Alex")
-        1
-      elsif engineer_name.include?("Casey")
-        2
-      else
-        3
-      end
-
-      avatar_row(name: engineer_name, photo_path: "profile-photo-#{photo_id}.jpg")
-    end
-
-    def avatar_row(name: "Jacob Comer", photo_path: "jacob-square.jpg", first: false)
-      "<div class='mb-4'><div class='flex items-center gap-3'><div style='width: 32px'><img src='/#{photo_path}' class='rounded-full' /></div><div class='font-medium'>#{name}</div></div></div>"
     end
   end
 end
