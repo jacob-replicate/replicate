@@ -11,7 +11,7 @@ module MessageGenerators
       deliver_elements([student_avatar_row, Prompts::LandingConversation], true)
       deliver_elements([AvatarService.coach_avatar_row, Prompts::CoachingReply])
       deliver_elements([student_avatar_row, Prompts::LandingClosure], true)
-      deliver_elements([AvatarService.brand_avatar_row + "<div class='mt-2'>Want coaching like this in your team's inbox every Monday?</div><div class='mt-2'>You'll receive an <span class='font-medium'>optional</span> invoice at the end of your first full calendar month.</div><div class='mt-2'>No follow-up emails. If the ROI is there, your team will let you know.</div>"])
+      deliver_elements([AvatarService.brand_avatar_row + "<div class='mt-2'>Want coaching like this in your team's inbox every Monday?</div><div class='mt-2'>Paste your engineers' emails below. You can always update the list later.</div><div class='mt-2'>Your first full calendar month is free. I'll send you an email after to see if you want to continue.</div>"])
       broadcast_to_web(type: "show_cta")
     end
 

@@ -285,86 +285,100 @@
       });
     }
 
+    let messageQueue = {};
+    let expectedSequence = 1;
+
+    function tryFlushQueue() {
+      while (messageQueue[expectedSequence]) {
+        const data = messageQueue[expectedSequence];
+        renderMessage(data);
+        delete messageQueue[expectedSequence];
+        expectedSequence++;
+      }
+    }
+
+    function renderMessage(data) {
+      const isUser = data.user_generated;
+      const isLoading = data.type === "loading";
+      const isDone = data.type === "done";
+
+      if (data.type === "show_cta") {
+        const emailUploadEl = document.getElementById("email-upload");
+        if (emailUploadEl) emailUploadEl.classList.remove("hidden");
+        return;
+      }
+
+      if (isLoading) {
+        if (!loadingEl) {
+          loadingEl = document.createElement("div");
+          loadingEl.className = `flex ${isUser ? "justify-end" : "justify-start"}`;
+          const bubbleClass = "bg-white border border-gray-200 text-gray-500";
+          loadingEl.innerHTML = `
+        <div class="message-body ${bubbleClass} rounded-xl px-4 py-3 mb-2 italic mt-2">
+          Thinking<span id="loading-dots">.</span>
+        </div>
+      `;
+          dotInterval = setInterval(() => {
+            const dots = document.getElementById("loading-dots");
+            if (!dots) return;
+            dots.textContent = dots.textContent.length >= 3 ? "." : dots.textContent + ".";
+          }, 500);
+          conversationEl.appendChild(loadingEl);
+          scrollToBottomIfWanted();
+        }
+        aiIsTyping = true;
+        setInputEnabled(false);
+        return;
+      }
+
+      if (isDone) {
+        if (loadingEl) {
+          loadingEl.remove();
+          loadingEl = null;
+        }
+        if (dotInterval) {
+          clearInterval(dotInterval);
+          dotInterval = null;
+        }
+        aiIsTyping = false;
+        activeStreamContainer = null;
+        setInputEnabled(true);
+        scrollToBottomIfWanted();
+        return;
+      }
+
+      if (data.message) {
+        const baseClass = conversationEl.dataset.baseClass;
+        const userClass = conversationEl.dataset.userClass;
+        const finalClass = isUser ? `${baseClass} ${userClass}` : baseClass;
+
+        if (!activeStreamContainer || data.sequence === 1) {
+          const wrapper = document.createElement("div");
+          wrapper.className = `flex ${isUser ? "justify-end" : "justify-start"}`;
+
+          activeStreamContainer = document.createElement("div");
+          let classes = finalClass;
+          if (data.sequence && data.sequence > 1) classes += " mt-4";
+
+          activeStreamContainer.className = classes;
+          wrapper.appendChild(activeStreamContainer);
+          conversationEl.appendChild(wrapper);
+        }
+
+        activeStreamContainer.innerHTML += data.message;
+        scrollToBottomIfWanted();
+      }
+    }
+
     window.consumer.subscriptions.create(
       { channel: "ConversationChannel", id: conversationId },
       {
         received(data) {
-          const isUser = data.user_generated;
-          const isLoading = data.type === "loading";
-          const isDone = data.type === "done";
-
-          if(data.type === "show_cta") {
-            const emailUploadEl = document.getElementById("email-upload");
-            if (emailUploadEl) {
-              emailUploadEl.classList.remove("hidden");
-            }
-            return;
-          }
-
-          if (isLoading) {
-            if (!loadingEl) {
-              loadingEl = document.createElement("div");
-              loadingEl.className = `flex ${isUser ? "justify-end" : "justify-start"}`;
-
-              const bubbleClass = "bg-white border border-gray-200 text-gray-500";
-
-              loadingEl.innerHTML = `
-                <div class="message-body ${bubbleClass} rounded-xl px-4 py-3 mb-2 italic mt-2">
-                  Thinking<span id="loading-dots">.</span>
-                </div>
-              `;
-
-              dotInterval = setInterval(() => {
-                const dots = document.getElementById("loading-dots");
-                if (!dots) return;
-                dots.textContent = dots.textContent.length >= 3 ? "." : dots.textContent + ".";
-              }, 500);
-              conversationEl.appendChild(loadingEl);
-              scrollToBottomIfWanted();
-            }
-            aiIsTyping = true;
-            setInputEnabled(false);
-            return;
-          }
-
-          if (isDone) {
-            if (loadingEl) {
-              loadingEl.remove();
-              loadingEl = null;
-            }
-
-            if (dotInterval) {
-              clearInterval(dotInterval);
-              dotInterval = null;
-            }
-
-            aiIsTyping = false;
-            activeStreamContainer = null;
-            setInputEnabled(true);
-            scrollToBottomIfWanted();
-            return;
-          }
-
-          if (data.message) {
-            const baseClass = conversationEl.dataset.baseClass;
-            const userClass = conversationEl.dataset.userClass;
-            const finalClass = isUser ? `${baseClass} ${userClass}` : baseClass;
-
-            if (!activeStreamContainer) {
-              const wrapper = document.createElement("div");
-              wrapper.className = `flex ${isUser ? "justify-end" : "justify-start"}`;
-
-              activeStreamContainer = document.createElement("div");
-              let classes = finalClass;
-              if (data.sequence && data.sequence > 1) classes += " mt-4";
-
-              activeStreamContainer.className = classes;
-              wrapper.appendChild(activeStreamContainer);
-              conversationEl.appendChild(wrapper);
-            }
-
-            activeStreamContainer.innerHTML += data.message;
-            scrollToBottomIfWanted();
+          if (data.sequence !== undefined) {
+            messageQueue[data.sequence] = data;
+            tryFlushQueue();
+          } else {
+            renderMessage(data); // still support non-sequenced messages
           }
         }
       }
