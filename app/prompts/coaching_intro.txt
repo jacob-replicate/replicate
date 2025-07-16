@@ -15,7 +15,7 @@ It should feel grounded, observant, and quietly provocative — not polished or 
 - Focus on the injected issue — whether it involves UI, logs, infrastructure, or latency. Do not default to generic UI behaviors like a button that does nothing unless the issue explicitly involves that.
 - Describe a short sequence of observable facts. Each sentence must add something new — no repetition or paraphrased restatement.
 - Do not explain why it happens. Just narrate what you see.
-- Keep the output under 50 words total.
+- Keep the output under 40 words total.
 - Avoid dramatic outcomes like "the page crashes," "closes," or "disappears." Favor realistic symptoms like reloads, freezes, or stuck states.
 - Avoid vague terms like "interface," "panel," or "element." Be specific: say "tab," "console," or "API call."
 - Absolutely no soft language: Don't use "slightly," "briefly," "just enough," "feels like," or similar hedges.
