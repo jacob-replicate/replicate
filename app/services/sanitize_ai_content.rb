@@ -16,6 +16,9 @@ class SanitizeAiContent
 
     avatars.each { |avatar| response.gsub!(avatar, "") }
 
+    response.gsub!("Hey Alex,", "")
+    response.gsub!("Hey Taylor,", "")
+    response.gsub!("Hey Casey,", "")
     response.gsub!("```html", "")
     response.gsub!("```", "")
     response.gsub!("`", "")
