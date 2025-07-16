@@ -3,6 +3,10 @@ class AvatarService
     avatar_row(first: first)
   end
 
+  def self.brand_avatar_row(first: false, name: "replicate.info")
+    avatar_row(first: first, name: name, photo_path: "logo.png")
+  end
+
   def self.student_avatar_row(engineer_name)
     photo_id = if engineer_name.include?("Alex")
       1

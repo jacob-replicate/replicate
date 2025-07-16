@@ -1,6 +1,5 @@
 <style>
   .message-body {
-    font-size: 1rem;
     line-height: 1.6;
     margin-bottom: 0.5rem;
     word-break: break-word;
@@ -111,7 +110,40 @@
     <% end %>
   </div>
 
-  <% unless @conversation.context["conversation_type"] == "landing_demo" %>
+  <% if @conversation.context["conversation_type"] == "landing_demo" %>
+    <div class="md:w-2/3 mt-2 <%= @conversation.messages.count == 10 ? "" : "hidden" %>" id="email-upload">
+      <div class="bg-neutral-100 shadow border border-gray-200 rounded-md">
+        <div class="p-3">
+          <div class="font-medium">
+            Your Name
+          </div>
+          <div class="">
+            <input type="text" id="name-input" class="w-full border border-gray-200 rounded-lg p-2 mt-2 disabled:opacity-50 disabled:cursor-not-allowed" />
+          </div>
+          <div class="font-medium mt-4">
+            Your Email
+          </div>
+          <div class="">
+            <input type="text" id="email-input" class="w-full border border-gray-200 rounded-lg p-2 mt-2 disabled:opacity-50 disabled:cursor-not-allowed" />
+          </div>
+          <div class="font-medium mt-4">
+            Your Engineers' Emails
+          </div>
+          <div class="text-sm text-gray-700">
+            Use whatever format you want (commas, newlines, etc).
+          </div>
+          <div class="">
+            <textarea id="team-emails-input" rows="5" class="w-full border border-gray-200 rounded-lg p-2 mt-2 disabled:opacity-50 disabled:cursor-not-allowed"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="mt-4 text-center">
+        <a href="#" class="cursor-pointer rounded-lg px-5 py-2.5 text-lg font-semibold text-white bg-slate-600 hover:bg-slate-700 active:bg-slate-800 inline-block transition shadow-sm hover:shadow-md focus:outline-none">
+          Sharpen Prod Instincts
+        </a>
+      </div>
+    </div>
+  <% else %>
     <div class="pb-4">
       <div class="flex items-center gap-2">
         <textarea id="message-input" placeholder="Type a message…" class="w-full border border-gray-200 rounded-lg p-2 resize-none disabled:opacity-50 disabled:cursor-not-allowed" rows="1" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px';"></textarea>
@@ -212,6 +244,14 @@
           const isUser = data.user_generated;
           const isLoading = data.type === "loading";
           const isDone = data.type === "done";
+
+          if(data.type === "show_cta") {
+            const emailUploadEl = document.getElementById("email-upload");
+            if (emailUploadEl) {
+              emailUploadEl.classList.remove("hidden");
+            }
+            return;
+          }
 
           if (isLoading) {
             if (!loadingEl) {

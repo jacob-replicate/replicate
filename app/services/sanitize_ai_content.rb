@@ -9,6 +9,10 @@ class SanitizeAiContent
     avatars = [
       AvatarService.coach_avatar_row(first: true),
       AvatarService.coach_avatar_row,
+      AvatarService.brand_avatar_row(first: true),
+      AvatarService.brand_avatar_row,
+      AvatarService.brand_avatar_row(name: "Overview"),
+      AvatarService.brand_avatar_row(name: "replicate.info"),
       AvatarService.student_avatar_row("Taylor Morales"),
       AvatarService.student_avatar_row("Casey Patel"),
       AvatarService.student_avatar_row("Alex Shaw")
