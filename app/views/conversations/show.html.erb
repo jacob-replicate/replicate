@@ -112,36 +112,39 @@
 
   <% if @conversation.context["conversation_type"] == "landing_demo" %>
     <div class="md:w-2/3 mt-2 <%= @conversation.messages.count == 10 ? "" : "hidden" %>" id="email-upload">
-      <div class="bg-neutral-100 shadow border border-gray-200 rounded-md">
-        <div class="p-3">
-          <div class="font-medium">
-            My Name
-          </div>
-          <div class="">
-            <input type="text" id="name-input" class="w-full border border-gray-200 rounded-lg p-2 mt-2 disabled:opacity-50 disabled:cursor-not-allowed" />
-          </div>
-          <div class="font-medium mt-4">
-            My Email
-          </div>
-          <div class="">
-            <input type="text" id="email-input" class="w-full border border-gray-200 rounded-lg p-2 mt-2 disabled:opacity-50 disabled:cursor-not-allowed" />
-          </div>
-          <div class="font-medium mt-4">
-            My Engineers' Emails
-          </div>
-          <div class="text-sm text-gray-700">
-            Use whatever format you want (commas, newlines, spaces, etc).
-          </div>
-          <div class="">
-            <textarea id="team-emails-input" rows="5" class="w-full border border-gray-200 rounded-lg p-2 mt-2 disabled:opacity-50 disabled:cursor-not-allowed"></textarea>
+      <form id="coaching-form" class="mt-4 text-left">
+
+        <div class="bg-neutral-100 shadow border border-gray-200 rounded-md">
+          <div class="p-3">
+            <div class="font-medium">
+              My Name
+            </div>
+            <div class="">
+              <input type="text" id="name-input" class="w-full border border-gray-200 rounded-lg p-2 mt-2 disabled:opacity-50 disabled:cursor-not-allowed" />
+            </div>
+            <div class="font-medium mt-4">
+              My Email
+            </div>
+            <div class="">
+              <input type="text" id="email-input" class="w-full border border-gray-200 rounded-lg p-2 mt-2 disabled:opacity-50 disabled:cursor-not-allowed" />
+            </div>
+            <div class="font-medium mt-4">
+              My Engineers' Emails
+            </div>
+            <div class="text-sm text-gray-700">
+              Use whatever format you want (commas, newlines, spaces, etc).
+            </div>
+            <div class="">
+              <textarea id="team-emails-input" rows="5" class="w-full border border-gray-200 rounded-lg p-2 mt-2 disabled:opacity-50 disabled:cursor-not-allowed"></textarea>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="mt-4 text-center">
-        <a href="#" class="cursor-pointer rounded-lg px-5 py-2.5 text-lg font-semibold text-white bg-slate-600 hover:bg-slate-700 active:bg-slate-800 inline-block transition shadow-sm hover:shadow-md focus:outline-none">
-          Begin Coaching
-        </a>
-      </div>
+        <div class="mt-4 text-center">
+          <button type="submit" class="rounded-lg px-5 py-2.5 text-lg font-semibold text-white bg-slate-600 hover:bg-slate-700 active:bg-slate-800 inline-block transition shadow-sm hover:shadow-md focus:outline-none">
+            Begin Coaching
+          </button>
+        </div>
+      </form>
     </div>
   <% else %>
     <div class="pb-4">
@@ -162,9 +165,9 @@
 <script>
   document.addEventListener("DOMContentLoaded", () => {
     // Email form submission
-    const submitButton = document.querySelector("#email-upload a");
-    if (submitButton) {
-      submitButton.addEventListener("click", async (e) => {
+    const coachingForm = document.querySelector("#coaching-form");
+    if (coachingForm) {
+      coachingForm.addEventListener("submit", async (e) => {
         e.preventDefault();
 
         const name = document.getElementById("name-input")?.value?.trim();
@@ -190,8 +193,11 @@
 
           const formWrapper = document.getElementById("email-upload");
           formWrapper.innerHTML = `
-        <div class="text-center text-md text-gray-800 font-medium py-6">
-          You're in. The first email goes out Monday.
+        <div class="text-center text-md text-gray-800 py-6">
+          <span class="font-medium">You're in. The first email goes out Monday.</span>
+          <div class="mt-2">
+            <a href="/coaching" class="text-blue-600 hover:text-blue-700 hover:underline hover:underline-offset-4 decoration-1 transition">Test your production instincts.&nbsp;&rarr;</a>
+          </div>
         </div>
       `;
         } catch (error) {
