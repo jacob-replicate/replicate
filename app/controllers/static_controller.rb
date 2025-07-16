@@ -19,7 +19,7 @@ class StaticController < ApplicationController
         conversation_type: :landing_demo,
         engineer_name: "Alex Shaw",
         first_name: "Alex",
-        incident: "deploy broke SSO authentication in prod (forgot to feature flag new project)"
+        incident: example_incidents.sample
       },
       force_tos: true
     )
