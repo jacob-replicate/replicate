@@ -111,8 +111,19 @@
   </div>
 
   <% if @conversation.context["conversation_type"] == "landing_demo" %>
-    <div class="md:w-2/3 mt-2 <%= @conversation.messages.count == 10 ? "" : "hidden" %>" id="email-upload">
+    <div class="md:w-2/3 mt-10 <%= @conversation.messages.count == 9 ? "" : "hidden" %>" id="email-upload">
       <form id="coaching-form" class="text-left">
+        <div class="mb-2 font-medium text-2xl">
+          Want to try it out?
+        </div>
+
+        <div class="mb-4">
+          Just drop your email(s) in the form below, and you'll get your first incident next Monday. You can always wire up SCIM later.
+        </div>
+
+        <div class="mb-4">
+          No sales calls. Once you send a few hundred replies, the system will send you invoicing options. No commitments. Take a few weeks to try it out for free. Email <a href="mailto:jacob@replicate.info" class="text-blue-600 hover:text-blue-700 font-medium hover:underline hover:underline-offset-4 decoration-1 transition">jacob@replicate.info</a> if you have questions.
+        </div>
 
         <div class="bg-neutral-100 shadow border border-gray-200 rounded-md">
           <div class="p-3">
@@ -132,7 +143,7 @@
               My Engineers' Emails
             </div>
             <div class="text-sm text-gray-700">
-              Use whatever format you want (commas, newlines, spaces, etc).
+              Use whatever format you want (commas, newlines<span class="hidden md:inline">, spaces</span>, etc).
             </div>
             <div class="">
               <textarea id="team-emails-input" rows="5" class="w-full border border-gray-200 rounded-lg p-2 mt-2 disabled:opacity-50 disabled:cursor-not-allowed"></textarea>
