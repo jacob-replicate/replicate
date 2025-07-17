@@ -111,41 +111,41 @@
   </div>
 
   <% if @conversation.context["conversation_type"] == "landing_demo" %>
-    <div class="md:w-2/3 mt-10 <%= @conversation.messages.count == 9 ? "" : "hidden" %>" id="email-upload">
-      <form id="coaching-form" class="text-left">
-        <div class="mb-2 font-medium text-2xl">
-          Want to try it out?
-        </div>
+    <div class="md:w-2/3 mt-10 <%= @conversation.messages.count == 9 ? "" : "hidden" %>">
+      <div class="mb-2 font-medium text-2xl tracking-tight">
+        Want to try it out?
+      </div>
 
-        <div class="mb-4">
-          Just drop your email(s) in the form below, and you'll get your first incident next Monday. You can always wire up SCIM later.
-        </div>
+      <div class="mb-4">
+        Just drop your email(s) in the form below, and you'll get your first incident next Monday. You can always wire up SCIM later.
+      </div>
 
-        <div class="mb-4">
-          No sales calls. Once you send a few hundred replies, the system will send you invoicing options. No commitments. Take a few weeks to try it out for free. Email <a href="mailto:jacob@replicate.info" class="text-blue-600 hover:text-blue-700 font-medium hover:underline hover:underline-offset-4 decoration-1 transition">jacob@replicate.info</a> if you have questions.
-        </div>
+      <div class="mb-4">
+        No sales calls. If you send a few hundred replies, the system will send you invoicing options. No commitments. Take a few weeks to try it out for free. Email <a href="mailto:jacob@replicate.info" class="text-blue-600 hover:text-blue-700 font-medium hover:underline hover:underline-offset-4 decoration-1 transition">jacob@replicate.info</a> if you have questions.
+      </div>
 
-        <div class="bg-gray-100 shadow border border-gray-200 rounded-md text-[15px] leading-tight">
-          <div class="p-4">
-            <div>
-              <label for="name-input" class="block font-medium mb-1">My Name</label>
-              <input type="text" id="name-input" class="w-full border border-gray-300 rounded px-3 py-2" />
-            </div>
-            <div class="mt-6">
-              <label for="email-input" class="block font-medium mb-1">My Email</label>
-              <input type="text" id="email-input" class="w-full border border-gray-300 rounded px-3 py-2" />
-            </div>
-            <div class="mt-6">
-              <label for="team-emails-input" class="block font-medium mb-1">My Engineers' Emails</label>
-              <p class="text-gray-600 text-xs mb-1"></p>
-              <textarea id="team-emails-input" rows="4" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" placeholder="Use whatever format you want (commas, newlines, spaces</span>, etc)."></textarea>
-            </div>
-            <div class="text-xs text-gray-500 mt-4">
-              By submitting, you agree to the <a href="/terms" class="text-blue-500 hover:underline">Terms</a> and <a href="/privacy" class="text-blue-500 hover:underline">Privacy Policy</a>.
-            </div>
+      <hr style="padding: 10px 0; margin: 0"/>
+
+      <form id="email-upload">
+        <div>
+          <label for="name-input" class="block font-medium mb-1 tracking-normal">Name</label>
+          <input type="text" id="name-input" class="block w-full border border-neutral-300 shadow-sm rounded-md bg-white px-3 py-1.5 text-gray-900 outline-1 -outline-offset-1 outline-indigo-100 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 text-sm" />
+        </div>
+        <div class="mt-6">
+          <label for="email-input" class="block font-medium mb-1 tracking-normal">Email</label>
+          <input type="text" id="email-input" class="block w-full border border-neutral-300 shadow-sm rounded-md bg-white px-3 py-1.5 text-gray-900 outline-1 -outline-offset-1 outline-indigo-100 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 text-sm" />
+        </div>
+        <div class="mt-6">
+          <label for="team-emails-input" class="block font-medium tracking-normal">Team Emails</label>
+          <div class="text-sm text-gray-600 mb-2">
+            Optional. You can always add people later.
           </div>
+          <textarea id="team-emails-input" rows="4" class="block w-full border border-neutral-300 shadow-sm rounded-md bg-white px-3 py-1.5 text-gray-900 outline-1 -outline-offset-1 outline-indigo-100 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 text-sm" placeholder="(any format works)"></textarea>
         </div>
-        <div class="mt-4 text-center">
+        <div class="text-xs text-gray-500 mt-4">
+          By submitting, you agree to the <a href="/terms" class="text-blue-500 hover:underline">Terms</a> and <a href="/privacy" class="text-blue-500 hover:underline">Privacy Policy</a>.
+        </div>
+        <div class="mt-8 text-center">
           <button type="submit" class="rounded-lg px-5 py-2.5 text-lg font-semibold text-white bg-slate-600 hover:bg-slate-700 active:bg-slate-800 inline-block transition shadow-sm hover:shadow-md focus:outline-none">
             Begin Coaching
           </button>
