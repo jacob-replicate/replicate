@@ -2,7 +2,7 @@ class ConversationChannel < ApplicationCable::Channel
   def subscribed
     conversation = Conversation.find_by(id: params[:id])
 
-    if conversation.present? && conversation.web?
+    if conversation.web?
       stream_for conversation
 
       if conversation.messages.count == 0
