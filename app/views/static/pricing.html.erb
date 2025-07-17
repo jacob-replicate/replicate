@@ -1,46 +1,61 @@
 <div class="max-w-3xl mx-auto py-10">
-  <h1 class="text-3xl font-semibold mb-4">Pricing</h1>
+  <h1 class="text-3xl font-semibold mb-6">Pricing</h1>
 
-  <p class="mb-4">
-    <%= link_to 'replicate.info', root_path, class: "text-blue-600 font-semibold" %> is $<span class="font-semibold">30</span> user/month (USD).
-    One flat rate. No upsells. Convert to your currency
-    <%= link_to 'here', 'https://www.google.com/search?q=convert+30+usd+to+eur', target: "_blank", class: "text-blue-600 hover:text-blue-700 font-medium hover:underline hover:underline-offset-4 decoration-1 transition" %>.
+  <p class="mb-6">
+    replicate.info is priced annually. No per-seat billing, no usage tracking. Just clear pricing for engineering leaders who want their team to level up, fast.
   </p>
 
-  <p class="mb-4">
-    Larger orgs can prepay $<span class="font-semibold">300,000</span>/year for unlimited usage (no seat tracking). Simple rollout, no extra contracts. Just email <a href="mailto:jacob@replicate.info" class="text-blue-600 hover:text-blue-700 font-medium hover:underline hover:underline-offset-4 decoration-1 transition">jacob@replicate.info</a> for an invoice.
-  </p>
+  <div class="grid gap-2 mb-8 border border-gray-200 rounded-lg overflow-hidden text-sm">
+    <div class="grid grid-cols-3 bg-gray-100 font-semibold text-gray-800 border-b border-gray-200">
+      <div class="px-4 py-2">Team Size</div>
+      <div class="px-4 py-2">Annual Price (USD)</div>
+      <div class="px-4 py-2">Monthly Equivalent</div>
+    </div>
+    <div class="grid grid-cols-3 border-b border-gray-100">
+      <div class="px-4 py-2">Up to 5 engineers</div>
+      <div class="px-4 py-2 font-medium">$5,000/year</div>
+      <div class="px-4 py-2 text-gray-500">$417/mo</div>
+    </div>
+    <div class="grid grid-cols-3 border-b border-gray-100">
+      <div class="px-4 py-2">Up to 10 engineers</div>
+      <div class="px-4 py-2 font-medium">$10,000/year</div>
+      <div class="px-4 py-2 text-gray-500">$833/mo</div>
+    </div>
+    <div class="grid grid-cols-3 border-b border-gray-100">
+      <div class="px-4 py-2">Up to 25 engineers</div>
+      <div class="px-4 py-2 font-medium">$25,000/year</div>
+      <div class="px-4 py-2 text-gray-500">$2,083/mo</div>
+    </div>
+    <div class="grid grid-cols-3 border-b border-gray-100">
+      <div class="px-4 py-2">Up to 50 engineers</div>
+      <div class="px-4 py-2 font-medium">$45,000/year</div>
+      <div class="px-4 py-2 text-gray-500">$3,750/mo</div>
+    </div>
+    <div class="grid grid-cols-3">
+      <div class="px-4 py-2">Unlimited (org-wide)</div>
+      <div class="px-4 py-2 font-medium">$300,000/year</div>
+      <div class="px-4 py-2 text-gray-500">Flat rate</div>
+    </div>
+  </div>
 
   <p class="mb-4">
-    Invoices are sent (via Stripe) on the first business day of the month. They're based on the peak number of approved users you had during the prior month. Invoices include company details, user count, and remittance fields. Access may be paused if payment isn't received within 30 days.
+    You'll receive an invoice by email once your team has replied to a few hundred messages. No sales calls, no commitments. Just pay when it's working.
   </p>
 
   <ul class="list-disc list-inside mb-4 space-y-1">
-    <li><span class="font-semibold">Engineers are auto-removed from billing</span> if they stop engaging for a few weeks.</li>
-    <li><span class="font-semibold">Managers are notified</span>. Your bill shrinks without you lifting a finger.</li>
-    <li><span class="font-semibold">Not satisfied?</span> I'll refund your last invoice, no questions asked.</li>
+    <li><span class="font-semibold">Your first full calendar month is free.</span></li>
+    <li><span class="font-semibold">No credit card required to start.</span></li>
+    <li><span class="font-semibold">Need SOC 2 or SCIM?</span> Just email <a href="mailto:jacob@replicate.info" class="text-blue-600">jacob@replicate.info</a>.</li>
   </ul>
 
-  <p class="mb-4">
-    Engineers get better. Managers get signal. Teams move faster, with less stress.
-  </p>
-
-  <p class="mb-4">
-    Your first full calendar month is free. No credit card required to start.
-  </p>
-
-  <p class="mb-4">
-    We do not charge VAT. If needed, you can self-account under reverse charge rules.
-  </p>
-
-  <p class="mt-6 mb-6">
+  <p class="mt-8 mb-6">
     <a href="/coaching" class="inline-block rounded-md bg-neutral-700 px-5 py-3 text-white font-semibold shadow hover:bg-neutral-600 transition cursor-pointer">
       Try the Demo →
     </a>
   </p>
 
   <p class="text-sm text-gray-500">
-    <%= link_to 'Terms of Service', '/terms', class: "text-blue-600 hover:text-blue-700 hover:underline hover:underline-offset-4 decoration-1 transition" %> &nbsp;&nbsp;•&nbsp;&nbsp;
-    <%= link_to 'Privacy Policy', '/privacy', class: "text-blue-600 hover:text-blue-700 hover:underline hover:underline-offset-4 decoration-1 transition" %>
+    <%= link_to 'Terms of Service', '/terms', class: "text-blue-600 hover:underline" %> &nbsp;&nbsp;•&nbsp;&nbsp;
+    <%= link_to 'Privacy Policy', '/privacy', class: "text-blue-600 hover:underline" %>
   </p>
 </div>

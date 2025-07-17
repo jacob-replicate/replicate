@@ -111,7 +111,7 @@
   </div>
 
   <% if @conversation.context["conversation_type"] == "landing_demo" %>
-    <div class="md:w-2/3 mt-10 <%= @conversation.messages.count == 9 ? "" : "hidden" %>">
+    <div class="md:w-2/3 mt-10 <%= @conversation.messages.count == 9 ? "" : "hidden" %>" id="cta">
       <div class="mb-2 font-medium text-2xl tracking-tight">
         Want to try it out?
       </div>
@@ -121,7 +121,7 @@
       </div>
 
       <div class="mb-4">
-        No sales calls. If you send a few hundred replies, the system will send you invoicing options. No commitments. Take a few weeks to try it out for free. Email <a href="mailto:jacob@replicate.info" class="text-blue-600 hover:text-blue-700 font-medium hover:underline hover:underline-offset-4 decoration-1 transition">jacob@replicate.info</a> if you have questions.
+        Take a few weeks to try it out for free. No sales calls. If you send a few hundred replies, the system will send you invoicing options. No commitments. Email <a href="mailto:jacob@replicate.info" class="text-blue-600 hover:text-blue-700 font-medium hover:underline hover:underline-offset-4 decoration-1 transition">jacob@replicate.info</a> if you have questions.
       </div>
 
       <hr style="padding: 10px 0; margin: 0"/>
@@ -306,8 +306,8 @@
       const isDone = data.type === "done";
 
       if (data.type === "show_cta") {
-        const emailUploadEl = document.getElementById("email-upload");
-        if (emailUploadEl) emailUploadEl.classList.remove("hidden");
+        const cta = document.getElementById("cta");
+        if (cta) cta.classList.remove("hidden");
         return;
       }
 
