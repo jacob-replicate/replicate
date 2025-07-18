@@ -94,7 +94,7 @@
   <div class="text-md leading-relaxed tracking-[0.008em]">
     <div class="text-[17px]">
 
-      <div class="mt-12 max-w-[90ch] text-[17px] leading-relaxed text-gray-800 space-y-6 mb-8">
+      <div class="mt-12 max-w-[90ch] text-[17px] leading-relaxed text-gray-800 space-y-6 mb-10">
         <p>
           <span class="font-medium">replicate.info</span> helps engineers sharpen their production instincts. It sends one email per week to help you catch blind spots, before they page you at 3:00am. Built by a Staff Engineer who leads IAM for an infra company you've heard of.
         </p>
@@ -134,52 +134,65 @@
           </div>
         <% end %>
       </div>
-      <div class="mt-6 max-w-[90ch] text-[17px] leading-relaxed text-gray-800">
-        <div class="md:flex gap-6">
+      <div class="mt-10 max-w-[90ch] text-[17px] leading-relaxed text-gray-800">
+        <div class="md:flex gap-8">
           <div class="md:basis-1/2 space-y-6">
-            <p class="text-xl font-medium tracking-tight">
+            <p class="text-xl font-semibold tracking-tight">
               Next Steps
             </p>
             <p>
-              Want to start next Monday? Paste your team's emails <a href="/demo" class="text-blue-600 hover:text-blue-700 font-medium hover:underline hover:underline-offset-4 decoration-1 transition">here</a>.
+              Want to start next Monday? Add your work emails <a href="/demo" class="text-blue-600 hover:text-blue-700 font-medium hover:underline hover:underline-offset-4 decoration-1 transition">here</a>.
             </p>
             <p>
-              Each thread introduces itself with no surprises. Engineers get one private email per week, with a realistic scenario to engage with. Your first few weeks are free.
+              Each thread introduces itself with no surprises. Engineers get one incident per week, and a private coaching thread to engage with. Your first few weeks are free. No rush.
             </p>
             <p>
-              <a href="/security" class="text-blue-600 hover:text-blue-700 font-medium hover:underline hover:underline-offset-4 decoration-1 transition">Click here</a> to learn about user provisioning (SCIM), data security, AI policy, etc. Internal approvals will take 5min.
+              Want to <a href="/security" class="text-blue-600 hover:text-blue-700 font-medium hover:underline hover:underline-offset-4 decoration-1 transition">learn more</a> about user provisioning, data security, and AI usage? Internal purchase approvals will be quick.
+            </p>
+            <p>
+              Hosted <span class="hidden md:inline">securely </span>on Heroku. <span class="font-semibold">No customer data.</span> Includes a lightweight admin portal for optional SCIM integration. The setup takes minutes. End-users engage via email only.
             </p>
             <p>
               <a href="/coaching" class="inline-block rounded-md bg-neutral-700 px-4 py-2 text-white text-md font-semibold shadow hover:bg-neutral-700 transition">
-                Test your production instincts&nbsp;&rarr;
+                Try the web-based demo
               </a>
             </p>
           </div>
-          <div class="mt-8 md:mt-0 md:basis-1/2">
-            <div class="grid gap-2 mb-8 border border-gray-200 rounded-md overflow-hidden text-sm">
-              <div class="grid grid-cols-2 bg-gray-100 font-semibold text-gray-800 border-b border-gray-200">
-                <div class="px-4 py-2">Team Size</div>
-                <div class="px-4 py-2">Annual Price (USD)</div>
+          <div class="mt-8 md:mt-0 md:basis-1/2 space-y-6">
+            <p class="text-xl font-semibold tracking-tight">
+              Pricing
+            </p>
+            <div class="grid gap-2 mb-8 border border-gray-200 rounded-md overflow-hidden text-sm shadow">
+              <div class="grid grid-cols-2 bg-gray-100 text-gray-800 border-b border-gray-200">
+                <div class="px-4 py-2 font-semibold">Team Size</div>
+                <div class="px-4 py-2"><span class="font-semibold">Annual Price</span> (USD)</div>
               </div>
               <div class="grid grid-cols-2 border-b border-gray-100">
-                <div class="px-4 py-2">Up to 5 engineers</div>
-                <div class="px-4 py-2 font-medium">$5,000/year</div>
+                <div class="px-4 py-2">Up to <span class="font-semibold">10</span> engineers</div>
+                <div class="px-4 py-2 font-medium">$5,000</div>
               </div>
               <div class="grid grid-cols-2 border-b border-gray-100">
-                <div class="px-4 py-2">Up to 10 engineers</div>
-                <div class="px-4 py-2 font-medium">$10,000/year</div>
+                <div class="px-4 py-2">Up to <span class="font-semibold">25</span> engineers</div>
+                <div class="px-4 py-2 font-medium">$10,000</div>
               </div>
               <div class="grid grid-cols-2 border-b border-gray-100">
-                <div class="px-4 py-2">Up to 25 engineers</div>
-                <div class="px-4 py-2 font-medium">$25,000/year</div>
+                <div class="px-4 py-2">Up to <span class="font-semibold">75</span> engineers</div>
+                <div class="px-4 py-2 font-medium">$20,000</div>
               </div>
               <div class="grid grid-cols-2 border-b border-gray-100">
-                <div class="px-4 py-2">Up to 50 engineers</div>
-                <div class="px-4 py-2 font-medium">$45,000/year</div>
+                <div class="px-4 py-2">Up to <span class="font-semibold">150</span> engineers</div>
+                <div class="px-4 py-2 font-medium">$40,000</div>
+              </div>
+              <div class="grid grid-cols-2 border-b border-gray-100">
+                <div class="px-4 py-2">Up to <span class="font-semibold">300</span> engineers</div>
+                <div class="px-4 py-2 font-medium">$80,000</div>
               </div>
               <div class="grid grid-cols-2">
                 <div class="px-4 py-2">Unlimited (org-wide)</div>
-                <div class="px-4 py-2 font-medium">$300,000/year</div>
+                <div class="px-4 py-2 font-medium">$100,000</div>
+              </div>
+              <div class="px-4 py-2 text-sm border-t border-gray-200 bg-neutral-100 md:text-center rounded-bl-md rounded-br-md">
+                <span class="font-medium">One fixed invoice per year.</span> <span class="block md:inline md:mt-0">No surprise mid-cycle upgrades.</span>
               </div>
             </div>
           </div>

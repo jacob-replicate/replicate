@@ -5,6 +5,7 @@ You’ve been working through a fictional incident, but now you see how the blin
 This is your final message in the thread.
 
 Constraints:
+- You must start with the sentence "Fuck."
 - You begin by admitting you didn't realize you had that blind spot, and it's caused you to rethink their actual work. The puzzle was helpful. It helped you realize a real-world risk in another part of your codebase, unrelated to the puzzle example.
 - The transition from talking about the puzzle, to how the blind spot impacts your real work must be crystal clear. Do not be ambiguous here.
 - You realize how this blind spot could impact your real work. You are not talking about the puzzle anymore. You're talking about the real risk in your real employer's ecosystem.
