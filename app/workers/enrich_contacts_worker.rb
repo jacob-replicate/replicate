@@ -24,16 +24,12 @@ class EnrichContactsWorker
       next unless response.code.to_i == 200
 
       parsed = JSON.parse(response.body)
-      puts parsed
-      puts "---------"
       results = parsed["matches"] || []
 
       results.each do |person|
+        next if person.blank?
         enriched_email = person["email"]
         apollo_id = person["id"]
-
-
-
         contact = batch.find { |c| c.external_id == apollo_id }
         next unless contact
         next if enriched_email.blank? || enriched_email == contact.email

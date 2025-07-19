@@ -8,7 +8,7 @@ class FetchContactsWorker
       "person_locations[]" => "United States",
       "organization_num_employees_ranges[]" => "150,750",
       "contact_email_status[]" => "verified",
-      "per_page" => "100",
+      "per_page" => "50",
       "page" => page.to_s
     }
 
@@ -44,7 +44,7 @@ class FetchContactsWorker
       end
 
       begin
-        Contact.create!(
+        contact = Contact.create!(
           cohort: title,
           name: person["name"],
           email: person["email"],
@@ -55,6 +55,8 @@ class FetchContactsWorker
           external_id: external_id,
           metadata: person.deep_stringify_keys
         )
+
+        GradeContactWorker.perform_async(contact.id)
       rescue => e
         Rails.logger.error "[FetchContactsWorker] Failed to create contact #{external_id} (#{person['email']}): #{e.class} - #{e.message}"
         Rails.logger.error e.backtrace.join("\n") if Rails.env.development? || Rails.env.test?

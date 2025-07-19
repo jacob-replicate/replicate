@@ -60,7 +60,31 @@ class Contact < ApplicationRecord
     page_count = FetchContactsWorker.new.perform(title, 1, true)["total_pages"]
 
     1.upto(page_count) do |page|
-      FetchContactsWorker.perform_async(title, page)
+      FetchContactsWorker.perform_in((page * 5).seconds, title, page)
+    end
+  end
+
+  def self.report(cohort: nil)
+    scope = cohort.present? ? where(cohort: cohort) : all
+
+    score_counts = scope.group(:score).count
+    total = scope.count
+    scored = scope.where.not(score: nil).count
+    unscored = total - scored
+
+    puts "Lead Quality Report#{cohort ? " (cohort: #{cohort})" : ''}"
+    puts "----------------------------------"
+    puts "Total contacts: #{total}"
+    puts "Scored: #{scored}"
+    puts "Unscored: #{unscored}"
+    puts
+
+    sorted_scores = score_counts.keys.compact.sort.reverse
+
+    sorted_scores.each do |score|
+      contacts = scope.where(score: score)
+      conversation_count = Conversation.where(recipient_id: contacts.pluck(:id)).count
+      puts "Score #{score}: #{contacts.count} contacts, #{conversation_count} conversations"
     end
   end
 

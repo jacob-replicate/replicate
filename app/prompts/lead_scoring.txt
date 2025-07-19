@@ -6,7 +6,6 @@ The product is most useful to engineers who:
 
 Constraints:
 - You must reject leads who primarily work on machine learning, frontend only, data engineering, QA, business intelligence, or mobile development (over the past 5 years). Full-stack is fine.
-- If they are a Staff+ engineer at an elite household name (e.g., Stripe, Brex), you must include them.
 
 Return a JSON object in this exact format:
 { "score": 80, "action": "email", "reason": "explanation of the decision" }
