@@ -11,6 +11,7 @@ class StaticController < ApplicationController
   end
 
   def billing
+    @title = "Billing"
   end
 
   def demo
@@ -36,6 +37,7 @@ class StaticController < ApplicationController
   end
 
   def security
+    @title = "Security"
   end
 
   def how_it_works

@@ -19,7 +19,7 @@
       <p>No bring-your-own-key or client-side encryption support at this time.</p>
 
       <h3 class="font-semibold mt-4 mb-1">Minimal data collection</h3>
-      <p>Only team email addresses are stored — no user-submitted content, tracking, or PII.</p>
+      <p>We only store team email addresses and conversation history (for personalized coaching insights).</p>
 
       <h3 class="font-semibold mt-4 mb-1">No persistent syncing</h3>
       <p>No background jobs, inbox access, or client-side storage inside customer systems.</p>
@@ -38,7 +38,10 @@
       <p>Content can be exported or permanently deleted on request. Nothing is used for AI training.</p>
 
       <h3 class="font-semibold mt-4 mb-1">Strict access control</h3>
-      <p>Only authorized staff can access internal tools — and only when needed for billing or delivery support.</p>
+      <p>Only authorized staff can access internal tools — and only when needed for billing or access management.</p>
+
+      <h3 class="font-semibold mt-4 mb-1">SCIM not yet available</h3>
+      <p>Account owners can manage employee access using the <a href="/admin" class="text-blue-600 font-medium hover:text-blue-700 hover:underline transition">administrator web portal</a>.</p>
     </div>
 
     <div>
@@ -54,16 +57,14 @@
     <div>
       <h2 class="font-semibold mt-6 mb-1 text-base">Subprocessors</h2>
 
-      <p class="mt-4"><span class="font-semibold">replicate.info</span> relies on a small number of trusted subprocessors:</p>
-
-      <ul class="list-disc list-inside text-sm mt-1 space-y-1">
+      <ul class="list-disc list-inside text-sm mt-4 space-y-1">
         <li>Heroku (AWS) — Infrastructure and encrypted storage</li>
         <li>OpenAI — Language generation. Data is sent for one-time processing only. Nothing is stored or retained.</li>
-        <li>Postmark — Transactional email delivery</li>
+        <li>Postmark — Transactional email delivery (no click/open tracking)</li>
         <li>Stripe — Payment processing</li>
+        <li>Google Analytics — Measuring basic marketing website traffic</li>
       </ul>
 
-      <p class="mt-2">Google Analytics is used to measure basic site traffic. No user-submitted data, PII, or coaching content is tracked.</p>
     </div>
 
   </div>
