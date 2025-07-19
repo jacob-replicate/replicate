@@ -1,32 +1,75 @@
 <div class="max-w-3xl mx-auto py-10">
-  <h1 class="text-3xl font-semibold mb-4">Security</h1>
+  <h1 class="text-3xl font-semibold mb-4">Security & IT Readiness</h1>
 
-  <p class="mb-4">
-    <%= link_to 'replicate.info', root_path, class: "text-blue-600 font-semibold" %> is email-first and intentionally simple, following modern security practices without unnecessary complexity.
-    To request additional documentation, contact
+  <p class="mb-6">
+    <%= link_to 'replicate.info', root_path, class: "text-blue-600 font-semibold" %> is email-based by design — no dashboards, no logins, no integrations. The architecture minimizes risk and follows modern security practices without unnecessary complexity.
+    For a DPA, security docs, or procurement review, contact
     <%= mail_to 'jacob@replicate.info', 'jacob@replicate.info', class: "text-blue-600 font-medium hover:text-blue-700 hover:underline transition" %>.
   </p>
 
-  <ul class="list-disc list-inside mb-4 space-y-2">
-    <li><span class="font-semibold">No integrations required.</span> All content is delivered by email. We don't connect to Slack, GitHub, Jira, or other internal systems.</li>
-    <li><span class="font-semibold">Hosted on Heroku.</span> We run on AWS with encrypted storage and enforce HTTPS for all traffic.</li>
-    <li><span class="font-semibold">Data is encrypted in transit and at rest.</span> Background jobs run in isolated Heroku worker dynos.</li>
-    <li><span class="font-semibold">We collect only essential data.</span> Used solely to deliver insights and generate reports. Never sold, shared, or used to train AI models.</li>
-    <li><span class="font-semibold">You own your data.</span> We'll export or delete it upon request.</li>
-    <li><span class="font-semibold">No user accounts or persistent logins.</span> Managers receive secure reports by email only.</li>
-    <li><span class="font-semibold">Internal tools are protected.</span> Only authorized staff have access to customer data, and only when needed for support.</li>
-  </ul>
+  <div class="space-y-10 text-sm">
 
-  <p class="mt-6 mb-6">
-    <a href="/coaching" class="inline-block rounded-md bg-neutral-700 px-5 py-3 text-white font-semibold shadow hover:bg-neutral-600 transition cursor-pointer">
-      Try the Demo →
-    </a>
-  </p>
+    <div>
+      <h2 class="font-semibold mb-2 text-base">Architecture & Data</h2>
 
-  <p class="text-sm text-gray-500">
-    <%= link_to 'Terms of Service', '/terms', class: "text-blue-600 hover:text-blue-700 hover:underline hover:underline-offset-4 decoration-1 transition" %> &nbsp;&nbsp;•&nbsp;&nbsp;
-    <%= link_to 'Privacy Policy', '/privacy', class: "text-blue-600 hover:text-blue-700 hover:underline hover:underline-offset-4 decoration-1 transition" %>
+      <h3 class="font-semibold mt-4 mb-1">Hosted on Heroku (AWS)</h3>
+      <p>All infrastructure runs in isolated worker dynos with encrypted storage and enforced HTTPS.</p>
+
+      <h3 class="font-semibold mt-4 mb-1">Data encrypted in transit and at rest</h3>
+      <p>No bring-your-own-key or client-side encryption support at this time.</p>
+
+      <h3 class="font-semibold mt-4 mb-1">Minimal data collection</h3>
+      <p>Only team email addresses are stored — no user-submitted content, tracking, or PII.</p>
+
+      <h3 class="font-semibold mt-4 mb-1">No persistent syncing</h3>
+      <p>No background jobs, inbox access, or client-side storage inside customer systems.</p>
+    </div>
+
+    <div>
+      <h2 class="font-semibold mb-2 text-base">Access & Delivery</h2>
+
+      <h3 class="font-semibold mt-4 mb-1">No user accounts or logins</h3>
+      <p>Coaching is delivered by email or Slack. No sessions, passwords, or user-managed devices.</p>
+
+      <h3 class="font-semibold mt-4 mb-1">No integrations required</h3>
+      <p>replicate.info does not connect to GitHub, Jira, Slack, or other internal tools.</p>
+
+      <h3 class="font-semibold mt-4 mb-1">You own your data</h3>
+      <p>Content can be exported or permanently deleted on request. Nothing is used for AI training.</p>
+
+      <h3 class="font-semibold mt-4 mb-1">Strict access control</h3>
+      <p>Only authorized staff can access internal tools — and only when needed for billing or delivery support.</p>
+    </div>
+
+    <div>
+      <h2 class="font-semibold mb-2 text-base">Compliance & Documentation</h2>
+
+      <h3 class="font-semibold mt-4 mb-1">DPA available on request</h3>
+      <p>While replicate.info does not process customer-submitted data, a standard agreement is available for internal review.</p>
+
+      <h3 class="font-semibold mt-4 mb-1">SOC 2 not yet available</h3>
+      <p>Documentation is available for teams evaluating vendor readiness.</p>
+    </div>
+
+    <div>
+      <h2 class="font-semibold mt-6 mb-1 text-base">Subprocessors</h2>
+
+      <p class="mt-4"><span class="font-semibold">replicate.info</span> relies on a small number of trusted subprocessors:</p>
+
+      <ul class="list-disc list-inside text-sm mt-1 space-y-1">
+        <li>Heroku (AWS) — Infrastructure and encrypted storage</li>
+        <li>OpenAI — Language generation. Data is sent for one-time processing only. Nothing is stored or retained.</li>
+        <li>Postmark — Transactional email delivery</li>
+        <li>Stripe — Payment processing</li>
+      </ul>
+
+      <p class="mt-2">Google Analytics is used to measure basic site traffic. No user-submitted data, PII, or coaching content is tracked.</p>
+    </div>
+
+  </div>
+
+  <p class="text-sm text-gray-500 mt-6">
+    <%= link_to 'Terms of Service', '/terms', class: "text-blue-600 hover:underline" %> &nbsp;&nbsp;•&nbsp;&nbsp;
+    <%= link_to 'Privacy Policy', '/privacy', class: "text-blue-600 hover:underline" %>
   </p>
-</div>
-<div class="mb-3 mt-3">
 </div>
