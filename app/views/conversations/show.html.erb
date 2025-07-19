@@ -293,7 +293,7 @@
     }
 
     let messageQueue = {};
-    let expectedSequence = 1;
+    let expectedSequence = <%= @conversation.next_message_sequence %>;
 
     function tryFlushQueue() {
       while (messageQueue[expectedSequence]) {
@@ -359,13 +359,13 @@
         const userClass = conversationEl.dataset.userClass;
         const finalClass = isUser ? `${baseClass} ${userClass}` : baseClass;
 
-        if (!activeStreamContainer || data.sequence === 1) {
+        if (!activeStreamContainer || data.sequence === 0) {
           const wrapper = document.createElement("div");
           wrapper.className = `flex ${isUser ? "justify-end" : "justify-start"}`;
 
           activeStreamContainer = document.createElement("div");
           let classes = finalClass;
-          if (data.sequence && data.sequence > 1) classes += " mt-4";
+          if (data.sequence && data.sequence > 0) classes += " mt-4";
 
           activeStreamContainer.className = classes;
           wrapper.appendChild(activeStreamContainer);
@@ -381,6 +381,7 @@
       { channel: "ConversationChannel", id: conversationId },
       {
         received(data) {
+          console.log(data);
           if (data.sequence !== undefined) {
             messageQueue[data.sequence] = data;
             tryFlushQueue();

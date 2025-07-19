@@ -3,7 +3,7 @@ module MessageGenerators
     def initialize(conversation)
       @conversation = conversation
       @context = conversation.context || {}
-      @message_sequence = conversation.messages.count + 1
+      @message_sequence = conversation.next_message_sequence
     end
 
     def latest_user_message
@@ -44,8 +44,14 @@ module MessageGenerators
         full_response += "#{text}\n"
       end
 
-      broadcast_to_web(type: "done")
       @conversation.messages.create!(content: full_response, user_generated: user_generated)
+
+      if @conversation.web?
+      broadcast_to_web(type: "done")
+      elsif @conversation.email?
+      end
+
+      @message_sequence = @conversation.next_message_sequence
 
       if @conversation.email?
         # TODO: Send it via another DeliverEmailWorker.perform_async(@conversation.id)

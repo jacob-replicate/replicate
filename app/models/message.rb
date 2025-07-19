@@ -7,6 +7,9 @@ class Message < ApplicationRecord
   after_create :deliver_user_message_to_web
   after_create :schedule_system_reply
 
+  scope :system, -> { where(user_generated: false) }
+  scope :user, -> { where(user_generated: true) }
+
   private
 
   def demo_message?
@@ -15,8 +18,9 @@ class Message < ApplicationRecord
 
   def deliver_user_message_to_web
     return unless conversation.web? && user_generated && !demo_message?
-    ConversationChannel.broadcast_to(conversation, { message: content, user_generated: user_generated, sequence: conversation.messages.count })
-    ConversationChannel.broadcast_to(conversation, { type: "done" })
+    sequence = conversation.next_message_sequence
+    ConversationChannel.broadcast_to(conversation, { message: content, user_generated: user_generated, sequence: sequence })
+    ConversationChannel.broadcast_to(conversation, { type: "done", sequence: sequence + 1 })
   end
 
   def schedule_system_reply
