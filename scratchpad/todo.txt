@@ -30,50 +30,19 @@ Thursday:
 
 Week (3 days): 450 + 270 + 180 = 900 emails/week
 
-Delegate: Cold Email Engine
-- Build the core data models + prompting/generation services yourself. Delegate everything else.
-- Give yourself a way to assign emails to a contractor's UUID, and send them that email over whatever gig working site you found them on. No logins to approve, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks, just bookmarks.
-- Build UI for contractors to review emails, approve, reject, regenerate
-- Admin approval UI -- i.e., give yourself a way to judge new contractors before queueing their approved emails
-- Once approved, queue these emails for delivery in scheduled job. Block emails (at runtime, not just schedule time) if the user provided their email on the site. They get "Invite your team" drip campaign now.
-
-Delegate: Automated Opt-out
-- Send a separate break-up email if they go 3 weeks without opening your content. Bump the next "automated_opt_out" to 5 weeks, 7, etc. -- Cap at 12.
-- Always include a reactivation link (for the engineer) in your final email.
-- Make sure to respect whether Team.active == true when reactivating. Don't reactivate users for dead accounts. Maybe DM interest to their EM though?
-- Send an email to their manager if they opt out, not judging, just that their bill is reduced.
-
 Trial -> Paid Transition
 - Just send a fixed ActionMailer template to the EM. No need to get fancy. You have 10 engineers. It'll cost $300/mo. Do you want to proceed?
 - If they say yes to that thread (by clicking a link), mark them as active, send an invoice next month.
 - Send a reminder email if they get closer to deadline, and have active users, but no action.
 
-Delegate: Invite Reminder
-- Send a series of fixed invitation reminders (e.g., day 2 of inactivity "Still thinking about trying out replicate.info? Here's a (new) message you can copy/paste into Slack")
-
-Tone Grading
-- Build "Jacob tone grading" into Prompt.execute calls where the :human_voice param is set to "true"
-    - Automatically retry (with feedback) if didn't pass 90% threshold. Add in guardrails to avoid infinite loops.
-- Build "Compression tone grading" into Prompt.execute calls when you're compressing content
-- Gradually decrease acceptable threshold (e.g., 90% -> 85% -> 80%) as retries stack up. Eventually settle + leave a log. Don't raise exception while you're on an IBM call.
-
 Compression Service
 - Compress message threads into usable, concise summaries (3-5 sentences), with grading
 
-Initial Email
-- Build separate prompts for this one. It needs to be insanely great. It also needs to introduce them to the system.
-
-Weekly Emails
-- Build a "wince list" of painful mistakes, based on seniority. Juniors get an email similar to "shipped an N+1", staff get "didn't test rollback strategy, and it bit us"
-    - If no previous emails, default to this list.
-- Use a consistent format, spread across multiple prompts to prevent tone drift. Subject -> Heading -> Hook -> Insight -> Reflection -> Signature
-- Give GPT context around past topics (subject lines + internal 1-line summaries) so it doesn't repeat itself
-- Make reply optional but warmly invited. Some people think of this as extra work.
-- Schedule emails to go out at 11am
-- Eventually: Make GPT grade itself on "Does this modular block match this copy/paste example from Jacob's blog?"
-    - If not, regenerate the prompt. Bake this into Prompt.new().execute, so you don't have to write it a million times.
-- Eventually: Send a follow-up email in the middle of the week if they didn't open it
-- Include an unsubscribe link in the footer
+Legal
+- MSA
+- DPA
+- W9
+- Refund terms
 
 Manager Reports
 - Compress the past few weekly emails into a single report. Use prompts for each bullet point of each engineers' report.
