@@ -12,7 +12,7 @@
     <%= form_for Conversation.new, url: conversations_path, html: { id: "demo-form" } do |f| %>
       <div class="rounded-xl border border-neutral-150 bg-neutral-100 p-5 shadow leading-snug">
         <label for="initial_message" class="block font-semibold text-gray-900 leading-snug text-[17px]">
-          What did you scramble to fix?
+          What did you scramble to fix recently?
         </label>
         <p class="mt-1 text-[15px] text-gray-600 leading-normal">
           Let's take 5min, and trace the pattern behind it.
@@ -99,7 +99,7 @@
 
       <div class="mt-12 max-w-[90ch] text-[17px] leading-relaxed text-gray-800 space-y-6 mb-10">
         <p>
-          <span class="font-medium">replicate.info</span> helps engineers sharpen their production instincts. There's no UI. No logins. Just recurring emails that pressure test your knowledge of infra/security fundamentals. When it finds a gap, GPT sends you personalized coaching.
+          <span class="font-medium">replicate.info</span> helps engineers sharpen their production instincts. There's no UI. No logins. Just recurring emails that pressure test your knowledge of infra/security fundamentals. Whenever it finds a gap, GPT helps you think through it.
         </p>
 
         <p>
@@ -107,11 +107,11 @@
         </p>
 
         <p>
-          No UI. No logins. No tracking. No reports. Just a 5-minute puzzle that nudges you to an <span class="italic font-medium">"aha!"</span> moment, 52 times per year.
+          No tracking. No reports for your manager. Just a 5-minute puzzle that nudges you to an <span class="italic font-medium">"aha!"</span> moment, 52 times per year.
         </p>
 
         <p>
-         <span class="font-medium">Think of it as consistent, bite-sized pressure</span> — It's not meant to be comfortable. It's meant to prevent your next SEV-1.
+         <span class="font-medium">Think of it as consistent, bite-sized pressure</span>. It's not meant to be comfortable. It's meant to prevent your next SEV-1.
         </p>
       </div>
       <div class="mb-8 flex gap-6">
@@ -138,8 +138,8 @@
         <% end %>
       </div>
       <div class="mt-10 max-w-[90ch] text-[17px] leading-relaxed text-gray-800">
-        <div class="md:flex gap-8">
-          <div class="md:basis-1/2 space-y-6">
+        <div class="lg:flex gap-8">
+          <div class="lg:basis-1/2 space-y-6">
             <p class="text-xl font-semibold tracking-tight">
               Next Steps
             </p>
@@ -159,7 +159,7 @@
               Your first month is free. Email <a href="mailto:jacob@replicate.info" class="text-blue-600 hover:text-blue-700 font-medium hover:underline hover:underline-offset-4 decoration-1 transition">jacob@replicate.info</a> if you have questions. It's a pretty simple product to adopt.
             </p>
           </div>
-          <div class="mt-8 md:mt-0 md:basis-1/2 space-y-6">
+          <div class="mt-8 lg:mt-0 lg:basis-1/2 space-y-6">
             <p class="text-xl font-semibold tracking-tight">
               Pricing
             </p>
