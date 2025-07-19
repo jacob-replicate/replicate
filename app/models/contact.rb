@@ -11,17 +11,6 @@ class Contact < ApplicationRecord
   validates :company_domain, presence: true, format: { with: /\A[a-z0-9.-]+\.[a-z]{2,}\z/i }
   validate :company_domain_not_on_blocklist
 
-  def relevant_metadata
-    @relevant_metadata ||= begin
-      query = "(category = 'company' AND identifier = ?) OR (category = 'contact' AND identifier = ?)"
-      records = Metadata.where(query, company_domain, email).where.not(content: nil).pluck(:content)
-
-      records.reduce({}) do |summary, json|
-        summary.deep_merge(json) rescue summary
-      end.to_json
-    end
-  end
-
   def last_system_message
     messages.where(user_generated: false).order(created_at: :desc).first
   end
