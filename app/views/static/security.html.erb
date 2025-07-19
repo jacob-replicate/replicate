@@ -1,8 +1,11 @@
 <div class="max-w-3xl mx-auto py-10">
   <h1 class="text-3xl font-semibold mb-4">Security & IT Readiness</h1>
 
+  <p class="mb-4">
+    <%= link_to 'replicate.info', root_path, class: "text-blue-600 font-semibold" %> is email-based by design. No dashboards, no logins, no integrations. The architecture minimizes risk and follows modern security practices without unnecessary complexity.
+  </p>
+
   <p class="mb-6">
-    <%= link_to 'replicate.info', root_path, class: "text-blue-600 font-semibold" %> is email-based by design — no dashboards, no logins, no integrations. The architecture minimizes risk and follows modern security practices without unnecessary complexity.
     For a DPA, security docs, or procurement review, contact
     <%= mail_to 'jacob@replicate.info', 'jacob@replicate.info', class: "text-blue-600 font-medium hover:text-blue-700 hover:underline transition" %>.
   </p>
@@ -16,13 +19,10 @@
       <p>All infrastructure runs in isolated worker dynos with encrypted storage and enforced HTTPS.</p>
 
       <h3 class="font-semibold mt-4 mb-1">Data encrypted in transit and at rest</h3>
-      <p>No bring-your-own-key or client-side encryption support at this time.</p>
+      <p>All data is encrypted at rest using AES-256, managed by Heroku's infrastructure.</p>
 
-      <h3 class="font-semibold mt-4 mb-1">Minimal data collection</h3>
-      <p>We only store team email addresses and conversation history (for personalized coaching insights).</p>
-
-      <h3 class="font-semibold mt-4 mb-1">No persistent syncing</h3>
-      <p>No background jobs, inbox access, or client-side storage inside customer systems.</p>
+      <h3 class="font-semibold mt-4 mb-1">No customer data stored</h3>
+      <p>We persist your team's email addresses and conversation history (for personalized coaching insights).</p>
     </div>
 
     <div>
@@ -32,16 +32,13 @@
       <p>Coaching is delivered by email. No sessions, passwords, or user-managed devices.</p>
 
       <h3 class="font-semibold mt-4 mb-1">No integrations required</h3>
-      <p>replicate.info does not connect to GitHub, Jira, Slack, or other internal tools.</p>
+      <p>We do not connect to GitHub, Jira, Slack, SMTP servers, or any other internal tool.</p>
 
       <h3 class="font-semibold mt-4 mb-1">You own your data</h3>
       <p>Content can be exported or permanently deleted on request. Nothing is used for AI training.</p>
 
-      <h3 class="font-semibold mt-4 mb-1">Strict access control</h3>
-      <p>Only authorized staff can access internal tools — and only when needed for billing or access management.</p>
-
       <h3 class="font-semibold mt-4 mb-1">SCIM not yet available</h3>
-      <p>Account owners can manage employee access using the <a href="/admin" class="text-blue-600 font-medium hover:text-blue-700 hover:underline transition">administrator web portal</a>.</p>
+      <p>Account owners can manage employee access by emailing <a href="mailto:jacob@replicate.info" class="text-blue-600 font-medium hover:text-blue-700 hover:underline transition">jacob@replicate.info</a></p>
     </div>
 
     <div>

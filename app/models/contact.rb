@@ -88,6 +88,43 @@ class Contact < ApplicationRecord
     end
   end
 
+  def self.fetch_all
+    titles = [
+      "Cloud Engineer",
+      "Infrastructure Engineer",
+      "Lead Engineer",
+      "Lead Software Engineer",
+      "Platform Engineer",
+      "Principal Backend Engineer",
+      "Principal Backend Software Engineer",
+      "Principal Engineer",
+      "Principal Software Engineer",
+      "Reliability Engineer",
+      "Senior Backend Engineer",
+      "Senior Staff Engineer",
+      "Senior Staff Software Engineer",
+      "Site Reliability Engineer",
+      "Staff Backend Engineer",
+      "Staff Cloud Engineer",
+      "Staff DevOps Engineer",
+      "Staff Engineer",
+      "Staff Infrastructure Engineer",
+      "Staff Platform Engineer",
+      "Staff Site Reliability Engineer",
+      "Staff Software Engineer"
+    ]
+
+    titles.map(&:downcase).each_with_index do |title, i|
+      title_offset = (i * 2).minutes
+
+      page_count = FetchContactsWorker.new.perform(title, 1, true)["total_pages"]
+
+      1.upto(page_count) do |page|
+        FetchContactsWorker.perform_in(((page * 5).seconds + title_offset), title, page)
+      end
+    end
+  end
+
   private
 
   def set_company_domain
