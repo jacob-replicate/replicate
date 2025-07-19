@@ -1,0 +1,61 @@
+class FetchContactsWorker
+  include Sidekiq::Worker
+
+  def perform(title, page, pagination_only = false)
+    params = {
+      "person_titles[]" => title,
+      "include_similar_titles" => "false",
+      "person_locations[]" => "United States",
+      "organization_num_employees_ranges[]" => "150,750",
+      "contact_email_status[]" => "verified",
+      "per_page" => "100",
+      "page" => page.to_s
+    }
+
+    url = URI("https://api.apollo.io/api/v1/mixed_people/search?#{URI.encode_www_form(params)}")
+
+
+    http = Net::HTTP.new(url.host, url.port)
+    http.use_ssl = true
+
+    request = Net::HTTP::Post.new(url)
+    request["Accept"] = "application/json"
+    request["Cache-Control"] = "no-cache"
+    request["Content-Type"] = "application/json"
+    request["x-api-key"] = ENV["APOLLO_TOKEN"]
+
+    response = http.request(request)
+    return unless response.code.to_i == 200
+
+    json = JSON.parse(response.body)
+
+    if pagination_only
+      return json["pagination"]
+    end
+
+    people = (json["contacts"] + json["people"]).uniq { |p| p["id"] }
+
+    people.each do |person|
+      source = "apollo"
+      external_id = person["id"]
+      next if Contact.exists?(source: source, external_id: external_id)
+
+      begin
+        Contact.create!(
+          name: person["name"],
+          email: person["email"],
+          location: person["present_raw_address"] || [person["city"], person["state"], person["country"]].compact.join(", "),
+          company_domain: person.dig("account", "primary_domain"),
+          state: person["state"],
+          source: source,
+          external_id: external_id,
+          metadata: person.deep_stringify_keys
+        )
+      rescue => e
+        Rails.logger.error "[FetchContactsWorker] Failed to create contact #{external_id} (#{person['email']}): #{e.class} - #{e.message}"
+        Rails.logger.error e.backtrace.join("\n") if Rails.env.development? || Rails.env.test?
+        next
+      end
+    end
+  end
+end

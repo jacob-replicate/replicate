@@ -55,7 +55,8 @@ CREATE TABLE public.contacts (
     external_id text,
     score integer DEFAULT 0,
     score_reason text,
-    metadata jsonb DEFAULT '{}'::jsonb
+    metadata jsonb DEFAULT '{}'::jsonb,
+    name text
 );
 
 
@@ -387,6 +388,7 @@ ALTER TABLE ONLY public.employees
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250719161016'),
 ('20250718033219'),
 ('20250716033556'),
 ('20250711035414'),
