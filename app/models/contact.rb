@@ -56,6 +56,14 @@ class Contact < ApplicationRecord
     }
   end
 
+  def self.fetch(title)
+    page_count = FetchContactsWorker.new.perform(title, 1, true)["total_pages"]
+
+    1.upto(page_count) do |page|
+      FetchContactsWorker.perform_async(title, page)
+    end
+  end
+
   private
 
   def set_company_domain
