@@ -3,7 +3,6 @@ class StaticController < ApplicationController
   end
 
   def terms
-    redirect_to "https://docs.google.com/document/d/1C0zn0671Wg4czBThwsL6bT7Db3btpAsfJepTAMclnuU", allow_other_host: true
   end
 
   def privacy

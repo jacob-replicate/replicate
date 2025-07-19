@@ -1,19 +1,17 @@
 class FetchContactsWorker
   include Sidekiq::Worker
 
-  def perform(title, page, pagination_only = false)
+  def perform(title_keyword, page, pagination_only = false)
     params = {
-      "person_titles[]" => title,
-      "include_similar_titles" => "false",
+      "q_keywords" => title_keyword,
       "person_locations[]" => "United States",
       "organization_num_employees_ranges[]" => "150,750",
       "contact_email_status[]" => "verified",
-      "per_page" => "50",
+      "per_page" => "100",
       "page" => page.to_s
     }
 
     url = URI("https://api.apollo.io/api/v1/mixed_people/search?#{URI.encode_www_form(params)}")
-
 
     http = Net::HTTP.new(url.host, url.port)
     http.use_ssl = true
@@ -25,27 +23,37 @@ class FetchContactsWorker
     request["x-api-key"] = ENV["APOLLO_TOKEN"]
 
     response = http.request(request)
-    return unless response.code.to_i == 200
+    case response.code.to_i
+      when 429
+        Rails.logger.warn "[FetchContactsWorker] Rate limited (429) — retrying in 60s"
+        FetchContactsWorker.perform_in(60.seconds, title_keyword, page, pagination_only)
+        return
+      when 500..599
+        Rails.logger.warn "[FetchContactsWorker] Server error (#{response.code}) — retrying in 2m"
+        FetchContactsWorker.perform_in(2.minutes, title_keyword, page, pagination_only)
+        return
+      when 200
+        json = JSON.parse(response.body)
+        return json["pagination"] if pagination_only
+      else
+        Rails.logger.error "[FetchContactsWorker] Unexpected response #{response.code}: #{response.body}"
+        return
+    end
 
     json = JSON.parse(response.body)
 
-    if pagination_only
-      return json["pagination"]
-    end
+    return json["pagination"] if pagination_only
 
     people = (json["contacts"] + json["people"]).uniq { |p| p["id"] }
 
     people.each do |person|
       source = "apollo"
       external_id = person["id"]
-      if Contact.exists?(source: source, external_id: external_id)
-        Rails.logger.info "[FetchContactsWorker] Contact already exists: #{external_id} (#{person['email']})"
-        return
-      end
+      next if Contact.exists?(source: source, external_id: external_id)
 
       begin
         contact = Contact.create!(
-          cohort: title,
+          cohort: title_keyword.downcase,
           name: person["name"],
           email: person["email"],
           location: person["present_raw_address"] || [person["city"], person["state"], person["country"]].compact.join(", "),

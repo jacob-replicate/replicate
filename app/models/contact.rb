@@ -89,38 +89,37 @@ class Contact < ApplicationRecord
   end
 
   def self.fetch_all
-    titles = [
-      "Cloud Engineer",
-      "Infrastructure Engineer",
-      "Lead Engineer",
-      "Lead Software Engineer",
-      "Platform Engineer",
-      "Principal Backend Engineer",
-      "Principal Backend Software Engineer",
-      "Principal Engineer",
-      "Principal Software Engineer",
-      "Reliability Engineer",
-      "Senior Backend Engineer",
-      "Senior Staff Engineer",
-      "Senior Staff Software Engineer",
-      "Site Reliability Engineer",
-      "Staff Backend Engineer",
-      "Staff Cloud Engineer",
-      "Staff DevOps Engineer",
-      "Staff Engineer",
-      "Staff Infrastructure Engineer",
-      "Staff Platform Engineer",
-      "Staff Site Reliability Engineer",
-      "Staff Software Engineer"
+    keywords = [
+      "application security",
+      "backend",
+      "cloud",
+      "infrastructure",
+      "internal tools",
+      "lead",
+      "software",
+      "observability",
+      "platform",
+      "principal",
+      "security",
+      "senior staff",
+      "site reliability",
+      "sre",
+      "staff",
+      "tooling",
     ]
 
-    titles.map(&:downcase).each_with_index do |title, i|
-      title_offset = (i * 2).minutes
-
-      page_count = FetchContactsWorker.new.perform(title, 1, true)["total_pages"]
+    keywords.uniq.map(&:downcase).each_with_index do |keyword, i|
+      offset = (i * 2).minutes
+      begin
+        pagination = FetchContactsWorker.new.perform(keyword, 1, true)
+        page_count = pagination["total_pages"]
+      rescue => e
+        Rails.logger.error "[Contact.fetch_all] Failed to fetch page count for #{keyword}: #{e.class} - #{e.message}"
+        next
+      end
 
       1.upto(page_count) do |page|
-        FetchContactsWorker.perform_in(((page * 5).seconds + title_offset), title, page)
+        FetchContactsWorker.perform_in((page * 5).seconds + offset, keyword, page)
       end
     end
   end
