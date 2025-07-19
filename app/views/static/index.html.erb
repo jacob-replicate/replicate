@@ -15,7 +15,7 @@
           What did you scramble to fix?
         </label>
         <p class="mt-1 text-[15px] text-gray-600 leading-normal">
-          Let's pair for 5min, and find the pattern that caused it.
+          Let's take 5min, and trace the pattern behind it.
         </p>
 
         <%= text_area_tag :incident, "", class: "mt-4 w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:border-indigo-600 focus:ring-0", rows: 3, placeholder: "e.g., reverted code and corrupted invoices table", tabindex: 1 %>
@@ -29,7 +29,7 @@
       </div>
 
       <div class="text-center mt-6">
-        <%= f.submit 'Uncover the blind spot&nbsp;&nbsp;&rarr;'.html_safe, class: 'cursor-pointer rounded-lg px-5 py-2.5 text-lg font-semibold text-white bg-slate-600 hover:bg-slate-700 active:bg-slate-800 transition shadow-sm hover:shadow-md focus:outline-none', tabindex: 3 %>
+        <%= f.submit 'Start the real postmortem&nbsp;&nbsp;&rarr;'.html_safe, class: 'cursor-pointer rounded-lg px-5 py-2.5 text-lg font-semibold text-white bg-slate-600 hover:bg-slate-700 active:bg-slate-800 transition shadow-sm hover:shadow-md focus:outline-none', tabindex: 3 %>
       </div>
       <div class="mt-4 text-sm text-center text-gray-500">
         No logins. No credit cards.
