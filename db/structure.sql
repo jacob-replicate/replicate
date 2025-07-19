@@ -50,7 +50,12 @@ CREATE TABLE public.contacts (
     company_domain text,
     state text,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    source text,
+    external_id text,
+    score integer DEFAULT 0,
+    score_reason text,
+    metadata jsonb DEFAULT '{}'::jsonb
 );
 
 
@@ -113,20 +118,6 @@ CREATE TABLE public.messages (
     content text,
     conversation_id character varying,
     user_generated boolean,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
-);
-
-
---
--- Name: metadata; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.metadata (
-    id uuid DEFAULT gen_random_uuid() NOT NULL,
-    category text,
-    identifier text,
-    content jsonb,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
@@ -294,14 +285,6 @@ ALTER TABLE ONLY public.messages
 
 
 --
--- Name: metadata metadata_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.metadata
-    ADD CONSTRAINT metadata_pkey PRIMARY KEY (id);
-
-
---
 -- Name: organizations organizations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -404,6 +387,7 @@ ALTER TABLE ONLY public.employees
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250718033219'),
 ('20250716033556'),
 ('20250711035414'),
 ('20250711035405'),

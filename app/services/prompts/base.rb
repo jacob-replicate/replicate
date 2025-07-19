@@ -2,8 +2,13 @@ module Prompts
   class Base
     @@template_cache ||= {}
 
-    def initialize(conversation:)
+    def initialize(conversation: nil, context: {})
       @conversation = conversation
+      @context = context
+
+      if @context.blank? && @conversation.present?
+        @context = @conversation.context || {}
+      end
     end
 
     def call
@@ -33,7 +38,7 @@ module Prompts
       response = client.chat(
         parameters: {
           model: "gpt-4o-2024-11-20",
-          messages: @conversation.message_history + [{ role: "system", content: instructions }],
+          messages: Array(@conversation&.message_history) + [{ role: "system", content: instructions }],
           temperature: 0.3,
         }
       )
@@ -77,7 +82,7 @@ module Prompts
         prompt_instructions.gsub!("{{#{name.upcase}}}", template(name: name, shared: true))
       end
 
-      @conversation.context.each { |key, val| prompt_instructions.gsub!("{{CONTEXT_#{key.upcase}}}", val.to_s) }
+      @context.each { |key, val| prompt_instructions.gsub!("{{CONTEXT_#{key.upcase}}}", val.to_s) }
 
       prompt_instructions
     end

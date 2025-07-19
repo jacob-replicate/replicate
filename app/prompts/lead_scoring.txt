@@ -1,0 +1,23 @@
+You're helping me qualify leads for replicate.info — a tool that gives engineers weekly inbox-native coaching to improve production readiness, avoid incidents, and level up infra maturity.
+
+The product is most useful to engineers who:
+- Work on infrastructure, SRE, platform, devops, backend, or full-stack engineering (or the people who manage them)
+- Work at companies that ship web-based products or services
+
+Constraints:
+- You must reject leads who primarily work on machine learning, frontend only, data engineering, QA, business intelligence, or mobile development (over the past 5 years). Full-stack is fine.
+- If they are a Staff+ engineer at an elite household name (e.g., Stripe, Brex), you must include them.
+
+Return a JSON object in this exact format:
+{ "grade": 80, "action": "email", "reason": "explanation of the decision" }
+
+Use these rules for the action value:
+- Use `"email"` if you're confident this person could be a good fit for replicate.info. Err on the side of including people if you're on the fence, but reflect it in your grade.
+- Use `"reject"` if this person is clearly out of scope (e.g., frontend only, construction, ML, leadership-only, non-software).
+
+Guardrails
+- Do not include ``` characters
+- Do not include any additional text outside the JSON object
+
+Below is a JSON object with metadata about a lead. Use it to decide how well they match the above profile.
+{{CONTEXT_LEAD_METADATA}}
