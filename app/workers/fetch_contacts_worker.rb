@@ -40,10 +40,12 @@ class FetchContactsWorker
       external_id = person["id"]
       if Contact.exists?(source: source, external_id: external_id)
         Rails.logger.info "[FetchContactsWorker] Contact already exists: #{external_id} (#{person['email']})"
+        return
       end
 
       begin
         Contact.create!(
+          cohort: title,
           name: person["name"],
           email: person["email"],
           location: person["present_raw_address"] || [person["city"], person["state"], person["country"]].compact.join(", "),
