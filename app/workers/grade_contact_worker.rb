@@ -10,13 +10,9 @@ class GradeContactWorker
 
     result = Prompts::LeadScoring.new(context: { lead_metadata: metadata }).call rescue {}
 
-    score = result["score"]&.to_i
-    reason = result["reason"] || result["score_reason"]
+    score = result["score"]
+    reason = result["reason"]
 
-    contact.update(
-      score: score || 0,
-      score_reason: reason.presence,
-      metadata: contact.metadata.merge("scoring_output" => result)
-    )
+    contact.update!(score: score, score_reason: reason.presence)
   end
 end

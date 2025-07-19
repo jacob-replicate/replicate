@@ -38,7 +38,9 @@ class FetchContactsWorker
     people.each do |person|
       source = "apollo"
       external_id = person["id"]
-      next if Contact.exists?(source: source, external_id: external_id)
+      if Contact.exists?(source: source, external_id: external_id)
+        Rails.logger.info "[FetchContactsWorker] Contact already exists: #{external_id} (#{person['email']})"
+      end
 
       begin
         Contact.create!(

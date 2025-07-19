@@ -9,7 +9,7 @@ Constraints:
 - If they are a Staff+ engineer at an elite household name (e.g., Stripe, Brex), you must include them.
 
 Return a JSON object in this exact format:
-{ "grade": 80, "action": "email", "reason": "explanation of the decision" }
+{ "score": 80, "action": "email", "reason": "explanation of the decision" }
 
 Use these rules for the action value:
 - Use `"email"` if you're confident this person could be a good fit for replicate.info. Err on the side of including people if you're on the fence, but reflect it in your grade.

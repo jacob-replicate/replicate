@@ -1,5 +1,4 @@
 class Contact < ApplicationRecord
-  # has_many :metadata, as: :owner, dependent: :destroy
   has_many :conversations, as: :recipient, dependent: :destroy
   has_many :messages, through: :conversations
 
@@ -25,38 +24,36 @@ class Contact < ApplicationRecord
     last_user_message_sent_at.present? && last_system_message_sent_at.present? && last_user_message_sent_at > last_system_message_sent_at
   end
 
-  class Contact < ApplicationRecord
-    def metadata_for_gpt
-      raw = metadata.deep_symbolize_keys
+  def metadata_for_gpt
+    raw = metadata.deep_symbolize_keys
 
-      {
-        id: raw[:person_id] || raw[:id],
-        name: raw[:name],
-        title: raw[:title],
-        email: raw[:email],
-        location: raw[:present_raw_address] || [raw[:city], raw[:state], raw[:country]].compact.join(", "),
-        linkedin: raw[:linkedin_url],
-        headline: raw[:headline],
-        company: {
-          name: raw.dig(:account, :name),
-          domain: raw.dig(:account, :primary_domain),
-          linkedin: raw.dig(:account, :linkedin_url),
-          angellist: raw.dig(:account, :angellist_url),
-          hq_location: raw.dig(:account, :raw_address),
-          founded_year: raw.dig(:account, :founded_year),
-          headcount_growth_6mo: raw.dig(:account, :organization_headcount_six_month_growth),
-          headcount_growth_12mo: raw.dig(:account, :organization_headcount_twelve_month_growth)
-        },
-        employment_history: Array(raw[:employment_history]).map do |job|
-          {
-            title: job["title"],
-            org: job["organization_name"],
-            start: job["start_date"],
-            end: job["end_date"]
-          }
-        end
-      }
-    end
+    {
+      id: raw[:person_id] || raw[:id],
+      name: raw[:name],
+      title: raw[:title],
+      email: raw[:email],
+      location: raw[:present_raw_address] || [raw[:city], raw[:state], raw[:country]].compact.join(", "),
+      linkedin: raw[:linkedin_url],
+      headline: raw[:headline],
+      company: {
+        name: raw.dig(:organization, :name),
+        domain: raw.dig(:organization, :primary_domain),
+        linkedin: raw.dig(:organization, :linkedin_url),
+        angellist: raw.dig(:organization, :angellist_url),
+        hq_location: raw.dig(:organization, :raw_address),
+        founded_year: raw.dig(:organization, :founded_year),
+        headcount_growth_6mo: raw.dig(:organization, :organization_headcount_six_month_growth),
+        headcount_growth_12mo: raw.dig(:organization, :organization_headcount_twelve_month_growth)
+      },
+      employment_history: Array(raw[:employment_history]).map do |job|
+        {
+          title: job[:title],
+          org: job[:organization_name],
+          start: job[:start_date],
+          end: job[:end_date]
+        }
+      end
+    }
   end
 
   private

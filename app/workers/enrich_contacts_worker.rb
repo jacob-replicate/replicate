@@ -15,7 +15,7 @@ class EnrichContactsWorker
       request["x-api-key"] = ENV["APOLLO_TOKEN"]
 
       payload = {
-        details: batch.map { |contact| { id: contact.apollo_id } }
+        details: batch.map { |contact| { id: contact.external_id } }
       }
 
       request.body = payload.to_json
@@ -24,13 +24,17 @@ class EnrichContactsWorker
       next unless response.code.to_i == 200
 
       parsed = JSON.parse(response.body)
-      results = parsed["people"] || []
+      puts parsed
+      puts "---------"
+      results = parsed["matches"] || []
 
       results.each do |person|
         enriched_email = person["email"]
         apollo_id = person["id"]
 
-        contact = batch.find { |c| c.apollo_id == apollo_id }
+
+
+        contact = batch.find { |c| c.external_id == apollo_id }
         next unless contact
         next if enriched_email.blank? || enriched_email == contact.email
 
