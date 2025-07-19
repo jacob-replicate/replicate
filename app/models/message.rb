@@ -18,7 +18,7 @@ class Message < ApplicationRecord
 
   def deliver_user_message_to_web
     return unless conversation.web? && user_generated && !demo_message?
-    sequence = conversation.next_message_sequence
+    sequence = conversation.next_message_sequence - 2
     ConversationChannel.broadcast_to(conversation, { message: content, user_generated: user_generated, sequence: sequence })
     ConversationChannel.broadcast_to(conversation, { type: "done", sequence: sequence + 1 })
   end

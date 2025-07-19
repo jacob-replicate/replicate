@@ -254,6 +254,8 @@
         sendButton.disabled = !enabled;
         sendButton.classList.toggle("opacity-50", !enabled);
         sendButton.classList.toggle("cursor-not-allowed", !enabled);
+        textarea.focus();
+        scrollToBottomIfWanted();
       }
     }
 
