@@ -41,7 +41,7 @@ Compression Service
 Legal
 - MSA
 - DPA
-- W9
+- W9 /w9.pdf
 - Refund terms
 
 Manager Reports
