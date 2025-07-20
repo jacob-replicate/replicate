@@ -9,14 +9,14 @@
     The platform was designed by <%= link_to 'Jacob Comer', 'https://linkedin.com/in/jacobcomer', class: "text-blue-600 font-medium hover:text-blue-700 hover:underline transition" %>, a Staff Engineer with 15 years of experience. He led IAM for an infra/security market leader, and built enterprise software for regulated environments.
   </p>
 
-  <p>
+  <p class="text-sm bg-neutral-100 p-2 text-center border border-gray-300 rounded-md shadow-sm leading-relaxed">
     Contact <%= mail_to 'security@replicate.info', 'security@replicate.info', class: "text-blue-600 font-medium hover:text-blue-700 hover:underline transition" %> if you have questions, or want to request <%= link_to "our DPA", "/dpa.pdf", class: "text-blue-600 font-medium hover:text-blue-700 hover:underline transition" %> (via DocuSign).
   </p>
 
-  <div class="space-y-10 mt-10">
+  <div class="space-y-10 mt-14">
 
     <div>
-      <h2 class="font-semibold mb-2 text-xl tracking-tight">Architecture & Data</h2>
+      <h2 class="font-semibold mb-2 text-2xl tracking-tight">Architecture</h2>
 
       <h3 class="font-semibold mt-4 mb-1">Hosted on Heroku (AWS)</h3>
       <p>All infrastructure runs on isolated US cloud resources, with encrypted storage and enforced HTTPS.</p>
@@ -29,7 +29,7 @@
     </div>
 
     <div>
-      <h2 class="font-semibold mb-2 text-base">Access & Delivery</h2>
+      <h2 class="font-semibold mb-2 text-2xl tracking-tight">Access & Delivery</h2>
 
       <h3 class="font-semibold mt-4 mb-1">No user accounts or logins</h3>
       <p>Coaching is delivered by email. No sessions, passwords, or user-managed devices.</p>
@@ -48,7 +48,7 @@
     </div>
 
     <div>
-      <h2 class="font-semibold mb-2 text-base">Compliance & Documentation</h2>
+      <h2 class="font-semibold mb-2 text-2xl tracking-tight">Compliance</h2>
 
       <h3 class="font-semibold mt-4 mb-1">DPA available</h3>
       <p>Contact <%= mail_to 'security@replicate.info', 'security@replicate.info', class: "text-blue-600 font-medium hover:text-blue-700 hover:underline transition" %> if you have questions, or want to request <%= link_to "our DPA", "/dpa.pdf", class: "text-blue-600 font-medium hover:text-blue-700 hover:underline transition" %> (via DocuSign).</p>
@@ -58,7 +58,7 @@
     </div>
 
     <div>
-      <h2 class="font-semibold mb-2 text-base">Subprocessors</h2>
+      <h2 class="font-semibold mb-2 text-2xl tracking-tight">Subprocessors</h2>
 
       <h3 class="font-semibold mt-4 mb-1">Heroku (AWS)</h3>
       <p>Used for infrastructure and encrypted storage. All workloads run in isolated dynos with HTTPS enforced and AES-256 encryption at rest.</p>
@@ -78,7 +78,7 @@
 
   </div>
 
-  <p class="text-sm text-gray-500 mt-6">
+  <p class="text-gray-500 mt-10">
     <%= link_to 'Terms of Service', '/terms', class: "text-blue-600 hover:underline" %> &nbsp;&nbsp;•&nbsp;&nbsp;
     <%= link_to 'Privacy Policy', '/privacy', class: "text-blue-600 hover:underline" %>
   </p>
