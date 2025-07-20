@@ -137,7 +137,7 @@
           </div>
         <% end %>
       </div>
-      <div class="mt-10 max-w-[90ch] text-[17px] leading-relaxed text-gray-800">
+      <div class="my-14 max-w-[90ch] text-[17px] leading-relaxed text-gray-800">
         <div class="lg:flex gap-8">
           <div class="lg:basis-1/2 space-y-6">
             <p class="text-xl font-semibold tracking-tight">
@@ -204,6 +204,21 @@
         </div>
       </div>
     </div>
+  </div>
+  <div class="bg-gray-100 p-6 border border-gray-300 rounded-md shadow">
+    <p class="text-xl font-semibold tracking-tight mb-2">
+      Not the right time?
+    </p>
+    <p class="mb-4">
+      I'll send free incident links you can paste into Slack every few weeks. Your team can use the <a href="/coaching" class="text-blue-600 hover:text-blue-700 font-medium hover:underline hover:underline-offset-4 decoration-1 transition">web-based version</a> to solve.
+    </p>
+
+    <form action="/remind" method="POST" class="flex items-center gap-3 max-w-md">
+      <input type="email" name="email" placeholder="you@example.com" required class="border px-3 py-2 rounded w-full border-gray-300 shadow-sm" />
+      <button type="submit" class="bg-slate-600 text-white px-3 py-2.5 text-sm font-semibold rounded-md shadow hover:bg-slate-700 active:bg-slate-800 transition focus:outline-none min-w-[150px]">
+        Send Incidents
+      </button>
+    </form>
   </div>
 </div>
 
