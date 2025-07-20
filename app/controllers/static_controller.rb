@@ -26,9 +26,14 @@ class StaticController < ApplicationController
   end
 
   def coaching
+    name = ["Alex Shaw", "Taylor Morales", "Casey Patel"].sample
+    first_name = name.split.first
+
     return start_conversation(
       context: {
         conversation_type: :coaching,
+        engineer_name: name,
+        first_name: first_name,
         incident: example_incidents.sample
       },
       force_tos: true

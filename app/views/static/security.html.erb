@@ -2,17 +2,21 @@
   <h1 class="text-3xl font-semibold mb-4">Security & IT Readiness</h1>
 
   <p class="mb-4">
-    <%= link_to 'replicate.info', root_path, class: "text-blue-600 font-semibold" %> is email-based by design. No dashboards, no logins, no integrations. The architecture minimizes risk and follows modern security practices without unnecessary complexity.
+    <%= link_to 'replicate.info', root_path, class: "text-blue-600 font-semibold" %> is email-based by design. No dashboards, no logins, no integrations, no SSO. The architecture minimizes risk, and follows modern security practices without any complexity.
   </p>
 
   <p class="mb-6">
+    The platform was designed by <%= link_to 'Jacob Comer', 'https://linkedin.com/in/jacobcomer', class: "text-blue-600 font-medium hover:text-blue-700 hover:underline transition" %>, a Staff Engineer with 15 years of experience. He led IAM for an infra/security market leader, and built enterprise software for regulated environments.
+  </p>
+
+  <p>
     Contact <%= mail_to 'security@replicate.info', 'security@replicate.info', class: "text-blue-600 font-medium hover:text-blue-700 hover:underline transition" %> if you have questions, or want to request <%= link_to "our DPA", "/dpa.pdf", class: "text-blue-600 font-medium hover:text-blue-700 hover:underline transition" %> (via DocuSign).
   </p>
 
-  <div class="space-y-10 text-sm">
+  <div class="space-y-10 mt-10">
 
     <div>
-      <h2 class="font-semibold mb-2 text-base">Architecture & Data</h2>
+      <h2 class="font-semibold mb-2 text-xl tracking-tight">Architecture & Data</h2>
 
       <h3 class="font-semibold mt-4 mb-1">Hosted on Heroku (AWS)</h3>
       <p>All infrastructure runs on isolated US cloud resources, with encrypted storage and enforced HTTPS.</p>
@@ -40,14 +44,14 @@
       <p>In the case of a planned end-of-service, customers would receive advance notice and a downloadable archive of recent coaching history, prompts, and full source code. Support would remain available through the shutdown window.</p>
 
       <h3 class="font-semibold mt-4 mb-1">Provisioning and SCIM</h3>
-      <p>SCIM will be available by Sep 2025. Admins currently manage employee access by emailing <a href="mailto:support@replicate.info" class="text-blue-600 font-medium hover:text-blue-700 hover:underline transition">support@replicate.info</a>
+      <p>SCIM should be live by Oct 2025. Admins currently manage employee access by emailing <a href="mailto:support@replicate.info" class="text-blue-600 font-medium hover:text-blue-700 hover:underline transition">support@replicate.info</a>
     </div>
 
     <div>
       <h2 class="font-semibold mb-2 text-base">Compliance & Documentation</h2>
 
-      <h3 class="font-semibold mt-4 mb-1">DPA available on request</h3>
-      <p>While replicate.info does not process customer-submitted data, a standard agreement is available for internal review.</p>
+      <h3 class="font-semibold mt-4 mb-1">DPA available</h3>
+      <p>Contact <%= mail_to 'security@replicate.info', 'security@replicate.info', class: "text-blue-600 font-medium hover:text-blue-700 hover:underline transition" %> if you have questions, or want to request <%= link_to "our DPA", "/dpa.pdf", class: "text-blue-600 font-medium hover:text-blue-700 hover:underline transition" %> (via DocuSign).</p>
 
       <h3 class="font-semibold mt-4 mb-1">SOC 2 not yet available</h3>
       <p>Documentation is available for teams evaluating vendor readiness.</p>

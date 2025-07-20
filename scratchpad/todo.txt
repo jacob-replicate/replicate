@@ -40,9 +40,8 @@ Compression Service
 
 Legal
 - MSA
-- DPA
+- DPA (tighten up line on Security's "Compliance & Whatever" section -- still says avaialble, doesn't link to template)
 - W9 /w9.pdf
-- Refund terms
 
 Manager Reports
 - Compress the past few weekly emails into a single report. Use prompts for each bullet point of each engineers' report.
