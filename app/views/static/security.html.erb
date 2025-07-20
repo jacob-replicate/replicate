@@ -6,7 +6,7 @@
   </p>
 
   <p class="mb-6">
-    Contact <%= mail_to 'security@replicate.info', 'security@replicate.info', class: "text-blue-600 font-medium hover:text-blue-700 hover:underline transition" %> if you have questions, or want to request a DPA (via DocuSign).
+    Contact <%= mail_to 'security@replicate.info', 'security@replicate.info', class: "text-blue-600 font-medium hover:text-blue-700 hover:underline transition" %> if you have questions, or want to request <%= link_to "our DPA", "/dpa.pdf", class: "text-blue-600 font-medium hover:text-blue-700 hover:underline transition" %> (via DocuSign).
   </p>
 
   <div class="space-y-10 text-sm">
@@ -15,13 +15,13 @@
       <h2 class="font-semibold mb-2 text-base">Architecture & Data</h2>
 
       <h3 class="font-semibold mt-4 mb-1">Hosted on Heroku (AWS)</h3>
-      <p>All infrastructure runs in isolated worker dynos with encrypted storage and enforced HTTPS.</p>
+      <p>All infrastructure runs on isolated US cloud resources, with encrypted storage and enforced HTTPS.</p>
 
       <h3 class="font-semibold mt-4 mb-1">Data encrypted in transit and at rest</h3>
       <p>All data is encrypted at rest using AES-256, managed by Heroku's infrastructure.</p>
 
-      <h3 class="font-semibold mt-4 mb-1">No customer data stored</h3>
-      <p>We persist your team's email addresses and conversation history (for personalized coaching insights).</p>
+      <h3 class="font-semibold mt-4 mb-1">No access to your customers' data</h3>
+      <p>The platform does not integrate with your internal systems. It sends coaching emails to your engineers and helps them think through production risks. We persist your team's conversation history (for personalized coaching insights), and automatically delete that data within 12 months.</p>
     </div>
 
     <div>
@@ -34,13 +34,13 @@
       <p>We do not connect to GitHub, Jira, Slack, SMTP servers, or any other internal tool.</p>
 
       <h3 class="font-semibold mt-4 mb-1">You own your data</h3>
-      <p>You can permanently delete all of your data at any time by emailing <a href="mailto:support@replicate.info" class="text-blue-600 font-medium hover:text-blue-700 hover:underline transition">support@replicate.info</a>. By default, content is retained for up to 12 months to help personalize future coaching sessions.</p>
+      <p>Coaching conversation history is only retained for up to 12 months to personalize future learning sessions. You can permanently delete all of your organization's data at any time by emailing <a href="mailto:support@replicate.info" class="text-blue-600 font-medium hover:text-blue-700 hover:underline transition">support@replicate.info</a>.</p>
 
       <h3 class="font-semibold mt-4 mb-1">Planned shutdowns</h3>
       <p>In the case of a planned end-of-service, customers would receive advance notice and a downloadable archive of recent coaching history, prompts, and full source code. Support would remain available through the shutdown window.</p>
 
       <h3 class="font-semibold mt-4 mb-1">Provisioning and SCIM</h3>
-      <p>SCIM is not yet available. For now, account owners can manage employee access by emailing <a href="mailto:support@replicate.info" class="text-blue-600 font-medium hover:text-blue-700 hover:underline transition">support@replicate.info</a>
+      <p>SCIM will be available by Sep 2025. Admins currently manage employee access by emailing <a href="mailto:support@replicate.info" class="text-blue-600 font-medium hover:text-blue-700 hover:underline transition">support@replicate.info</a>
     </div>
 
     <div>
@@ -60,7 +60,7 @@
       <p>Used for infrastructure and encrypted storage. All workloads run in isolated dynos with HTTPS enforced and AES-256 encryption at rest.</p>
 
       <h3 class="font-semibold mt-4 mb-1">OpenAI</h3>
-      <p>We use OpenAI's API for real-time content generation for coaching emails. None of your data is persisted by OpenAI, and none of it is used to train their models. The prompting is completely ephemeral.</p>
+      <p>We use OpenAI's API for real-time content generation for coaching emails. None of your data is persisted by OpenAI, and none of it is used to train their models. The prompting is completely ephemeral. Enterprise customers may request alternate LLM providers if required by internal policy.</p>
 
       <h3 class="font-semibold mt-4 mb-1">Postmark</h3>
       <p>Used for transactional email delivery. No open or click tracking is enabled.</p>
