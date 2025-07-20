@@ -6,8 +6,7 @@
   </p>
 
   <p class="mb-6">
-    For a DPA, security docs, or procurement review, contact
-    <%= mail_to 'support@replicate.info', 'support@replicate.info', class: "text-blue-600 font-medium hover:text-blue-700 hover:underline transition" %>.
+    Contact <%= mail_to 'security@replicate.info', 'security@replicate.info', class: "text-blue-600 font-medium hover:text-blue-700 hover:underline transition" %> if you have questions, or want to request a DPA (via DocuSign).
   </p>
 
   <div class="space-y-10 text-sm">
@@ -35,13 +34,13 @@
       <p>We do not connect to GitHub, Jira, Slack, SMTP servers, or any other internal tool.</p>
 
       <h3 class="font-semibold mt-4 mb-1">You own your data</h3>
-      <p>Content can be exported or permanently deleted on request. Nothing is used for AI training. We can export your team's coaching history on request for internal auditing or review.</p>
+      <p>You can permanently delete all of your data at any time by emailing <a href="mailto:support@replicate.info" class="text-blue-600 font-medium hover:text-blue-700 hover:underline transition">support@replicate.info</a>. By default, content is retained for up to 12 months to help personalize future coaching sessions.</p>
 
       <h3 class="font-semibold mt-4 mb-1">Planned shutdowns</h3>
       <p>In the case of a planned end-of-service, customers would receive advance notice and a downloadable archive of recent coaching history, prompts, and full source code. Support would remain available through the shutdown window.</p>
 
-      <h3 class="font-semibold mt-4 mb-1">SCIM not yet available</h3>
-      <p>Account owners can manage employee access by emailing <a href="mailto:support@replicate.info" class="text-blue-600 font-medium hover:text-blue-700 hover:underline transition">support@replicate.info</a></p>
+      <h3 class="font-semibold mt-4 mb-1">Provisioning and SCIM</h3>
+      <p>SCIM is not yet available. For now, account owners can manage employee access by emailing <a href="mailto:support@replicate.info" class="text-blue-600 font-medium hover:text-blue-700 hover:underline transition">support@replicate.info</a>
     </div>
 
     <div>
@@ -55,16 +54,22 @@
     </div>
 
     <div>
-      <h2 class="font-semibold mt-6 mb-1 text-base">Subprocessors</h2>
+      <h2 class="font-semibold mb-2 text-base">Subprocessors</h2>
 
-      <ul class="list-disc list-inside text-sm mt-4 space-y-1">
-        <li>Heroku (AWS) — Infrastructure and encrypted storage</li>
-        <li>OpenAI — Language generation. Data is sent for one-time processing only. Nothing is stored or retained.</li>
-        <li>Postmark — Transactional email delivery (no click/open tracking)</li>
-        <li>Stripe — Payment processing</li>
-        <li>Google Analytics — Measuring basic marketing website traffic</li>
-      </ul>
+      <h3 class="font-semibold mt-4 mb-1">Heroku (AWS)</h3>
+      <p>Used for infrastructure and encrypted storage. All workloads run in isolated dynos with HTTPS enforced and AES-256 encryption at rest.</p>
 
+      <h3 class="font-semibold mt-4 mb-1">OpenAI</h3>
+      <p>We use OpenAI's API for real-time content generation for coaching emails. None of your data is persisted by OpenAI, and none of it is used to train their models. The prompting is completely ephemeral.</p>
+
+      <h3 class="font-semibold mt-4 mb-1">Postmark</h3>
+      <p>Used for transactional email delivery. No open or click tracking is enabled.</p>
+
+      <h3 class="font-semibold mt-4 mb-1">Stripe</h3>
+      <p>Used for payment processing and invoicing.</p>
+
+      <h3 class="font-semibold mt-4 mb-1">Google Analytics</h3>
+      <p>Used to measure basic marketing website traffic. No tracking occurs inside coaching flows or emails.</p>
     </div>
 
   </div>
