@@ -1,3 +1,37 @@
+Trial -> Paid Transition
+- Just manually send an email with an invoice link, about a week before.
+
+Tech
+- Postmark webhooks for coaching loop
+- Marketing newsletter - initial email puzzle (e.g., /incidents/corrupted-invoices)
+  - Do you really need to ship this in V1? "Thanks, you'll get your first email next Monday!" -> manually send? Just capture the email?
+- Cold email sends
+
+Legal
+- Terms (look for blind spots + tighten up design)
+- Privacy policy (get onto site)
+- DPA
+- W9
+
+
+Nice to have:
+- Download PDF links (Terms, Privacy Policy, DPA, eventually to share coaching threads)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-------------
+
 5 inboxes.
 
 1. jacob@try-replicate.info
@@ -29,29 +63,3 @@ Thursday:
 - Total Emails: 90 * 2 = 180 emails
 
 Week (3 days): 450 + 270 + 180 = 900 emails/week
-
-Trial -> Paid Transition
-- Just send a fixed ActionMailer template to the EM. No need to get fancy. You have 10 engineers. It'll cost $300/mo. Do you want to proceed?
-- If they say yes to that thread (by clicking a link), mark them as active, send an invoice next month.
-- Send a reminder email if they get closer to deadline, and have active users, but no action.
-
-Compression Service
-- Compress message threads into usable, concise summaries (3-5 sentences), with grading
-
-Legal
-- MSA
-- DPA (tighten up line on Security's "Compliance & Whatever" section -- still says avaialble, doesn't link to template)
-- W9 /w9.pdf
-
-Manager Reports
-- Compress the past few weekly emails into a single report. Use prompts for each bullet point of each engineers' report.
-    - Need your team's signup link again? Click here to share it.
-    - Reply to this email anytime with questions or if you'd like to adjust your plan.
-
-Topic Selector
-- Take in past message history. Most recent thread gets full fidelity, older threads get decreasingly large summaries.
-- Make sure to analyze not just the subject line, but also the content of the email to determine the topic. They'll engage + change topics. Don't cover that new topic next week.
-- Include their current level summary
-
-Eventually
-- Dataclips to track engagement (reply rates, open rates, etc)
