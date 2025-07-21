@@ -6,16 +6,18 @@ Tech
 - Marketing newsletter - initial email puzzle (e.g., /incidents/corrupted-invoices)
   - Do you really need to ship this in V1? "Thanks, you'll get your first email next Monday!" -> manually send? Just capture the email?
 - Cold email sends
+- :coaching_should_continue prompt -- uncomment guard clause in coaching message generator
 
 Legal
-- Terms (look for blind spots + tighten up design)
-- Privacy policy (get onto site)
+- Terms (look for blind spots + tighten up design + add a PDF download)
+    - You don't need to ship WickedPDF or whatever. Just "Print it" in your browser, and upload.
+- Privacy policy (get onto site + add a PDF download)
 - DPA
 - W9
 
 
 Nice to have:
-- Download PDF links (Terms, Privacy Policy, DPA, eventually to share coaching threads)
+- Attach PDF's + inline JPG's once they close the loop
 
 
 

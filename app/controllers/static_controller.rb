@@ -65,7 +65,7 @@ class StaticController < ApplicationController
       "A caching layer upgrade dropped all write-through logic — production data diverged within minutes.",
       "Rate limits were enforced globally, not per user — and a single customer blocked the entire API.",
       "A misconfigured health check caused a node rotation storm that degraded performance company-wide.",
-      "A timezone bug in a cron expression delayed invoice generation by 30 hours.",
+      "A timezone bug in a cron expression delayed invoice generation by 12 hours, causing them to be off by one day.",
       "A read replica lag masked write failures — the team celebrated green dashboards for a week.",
       "Two teams renamed the same protobuf field in different services. Rollbacks didn't help.",
       "An observability agent upgrade exposed internal metadata over a public endpoint.",
