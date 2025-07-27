@@ -246,3 +246,67 @@
     });
   });
 </script>
+
+<script type="text/javascript">
+  document.addEventListener("DOMContentLoaded", () => {
+    const form = document.querySelector('form[action="/remind"]');
+    const emailInput = form.querySelector('input[name="email"]');
+    const submitBtn = form.querySelector('button[type="submit"]');
+
+    // Inline error and success containers
+    const errorMsg = document.createElement("div");
+    errorMsg.className = "text-red-600 text-sm mt-2";
+    form.appendChild(errorMsg);
+
+    const successMsg = document.createElement("div");
+    successMsg.className = "text-md";
+    successMsg.innerHTML = `
+  <div>
+    <span class="font-medium">Subscribed!</span> Expect high-signal incidents every few weeks.
+  </div>
+  <div class="mt-4">
+    Try the
+    <a href="/coaching" class="text-blue-600 hover:text-blue-700 font-medium hover:underline hover:underline-offset-4 decoration-1 transition">
+      web-based version
+    </a> if you want to level up in the meantime.
+  </div>
+`;
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      errorMsg.textContent = "";
+
+      const email = emailInput.value.trim();
+      const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+      if (!isValid) {
+        errorMsg.textContent = "Please enter a valid email address.";
+        return;
+      }
+
+      try {
+        const response = await fetch("/subscribers", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').content,
+          },
+          body: JSON.stringify({ subscriber: { email } }),
+        });
+
+        if (response.ok) {
+          const heading = form.closest("div").querySelector("p.text-xl");
+          const description = heading?.nextElementSibling;
+
+          if (heading) heading.style.display = "none";
+          if (description) description.style.display = "none";
+          form.replaceWith(successMsg);
+        } else {
+          errorMsg.textContent = "Something went wrong. Please try again later.";
+        }
+      } catch (err) {
+        errorMsg.textContent = "Network error. Please try again.";
+      }
+    });
+  });
+</script>

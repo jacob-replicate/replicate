@@ -198,6 +198,19 @@ CREATE TABLE public.schema_migrations (
 
 
 --
+-- Name: subscribers; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.subscribers (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    email text,
+    subscribed boolean,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
 -- Name: users; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -311,6 +324,14 @@ ALTER TABLE ONLY public.schema_migrations
 
 
 --
+-- Name: subscribers subscribers_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.subscribers
+    ADD CONSTRAINT subscribers_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -389,6 +410,7 @@ ALTER TABLE ONLY public.employees
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250727223433'),
 ('20250719171253'),
 ('20250719161016'),
 ('20250718033219'),
