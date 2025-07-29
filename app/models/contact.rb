@@ -10,6 +10,15 @@ class Contact < ApplicationRecord
   # validates :company_domain, presence: true, format: { with: /\A[a-z0-9.-]+\.[a-z]{2,}\z/i }
   # validate :company_domain_not_on_blocklist
 
+  def first_name
+    return nil unless name.present?
+
+    names = name.split(' ')
+    return nil unless names.size == 2
+
+    names.first
+  end
+
   def last_system_message
     messages.where(user_generated: false).order(created_at: :desc).first
   end

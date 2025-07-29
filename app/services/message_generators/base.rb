@@ -47,13 +47,9 @@ module MessageGenerators
       @conversation.messages.create!(content: full_response, user_generated: user_generated)
 
       if @conversation.web?
-      broadcast_to_web(type: "done")
+        broadcast_to_web(type: "done")
+        @message_sequence = @conversation.next_message_sequence
       elsif @conversation.email?
-      end
-
-      @message_sequence = @conversation.next_message_sequence
-
-      if @conversation.email?
         # TODO: Send it via another DeliverEmailWorker.perform_async(@conversation.id)
       end
     end

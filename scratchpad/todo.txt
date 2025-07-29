@@ -21,47 +21,5 @@ Nice to have:
 
 
 
-
-
-
-
-
-
-
-
-
-
-
--------------
-
-5 inboxes.
-
-1. jacob@try-replicate.info
-2. jcomer@try-replicate.info
-3. jacob.comer@try-replicate.info
-4. jacobc@try-replicate.info
-5. j.comer@try-replicate.info
-
-
-Tuesday:
-
-9:00am ET -> 6:00pm ET
-- Inboxes: 1, 2, 3, 4, 5
-- Rate: 10 emails (per inbox) every hour, staggered by a few minutes
-- Total Emails: 90 * 5 = 450 emails
-
-Wednesday:
-
-9:00am ET -> 6:00pm ET
-- Inboxes: 1, 2, 3
-- Rate: 10 emails (per inbox) every hour, staggered by a few minutes
-- Total Emails: 90 * 3 = 270 emails
-
-Thursday:
-
-9:00am ET -> 6:00pm ET
-- Inboxes: 4, 5
-- Rate: 10 emails (per inbox) every hour, staggered by a few minutes
-- Total Emails: 90 * 2 = 180 emails
-
-Week (3 days): 450 + 270 + 180 = 900 emails/week
+Eventually:
+- Derisk with EU entities (Business in Estonia, Wise for banking, Proton Mail for SMTP, etc)
