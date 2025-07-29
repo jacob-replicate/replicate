@@ -2,9 +2,7 @@ Trial -> Paid Transition
 - Just manually send an email with an invoice link, about a week before.
 
 Tech
-- Postmark webhooks for coaching loop
-- Marketing newsletter - initial email puzzle (e.g., /incidents/corrupted-invoices)
-  - Do you really need to ship this in V1? "Thanks, you'll get your first email next Monday!" -> manually send? Just capture the email?
+- Postmark webhooks for coaching loop - https://account.postmarkapp.com/servers/16407823/streams/inbound/get-started
 - Cold email sends
 - :coaching_should_continue prompt -- uncomment guard clause in coaching message generator
 
@@ -19,6 +17,7 @@ Legal
 
 Nice to have:
 - Attach PDF's + inline JPG's once they close the loop
+- Marketing newsletter - initial email puzzle (e.g., /incidents/corrupted-invoices)
 
 
 
