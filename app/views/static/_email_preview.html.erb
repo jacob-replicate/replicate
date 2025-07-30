@@ -7,17 +7,17 @@
   <div class="text-gray-800">
     <div class="p-3">
       <div>
-        <div class="font-medium text-gray-600">replicate.info</div> Imagine a hotfix gets rushed and only makes things worse. The team tries a rollback... but it doesn't behave like anyone expected. How do you know your rollback logic is actually safe?
+        <div class="font-medium text-gray-600">replicate.info</div> A hotfix gets deployed under pressure and accidentally extends token TTLs. The team rolls back, but a background job continues issuing sessions using the old logic. What's your first move here?
       </div>
     </div>
     <div class="p-3 border-t border-gray-100">
       <div>
-        <div class="font-medium text-gray-600">Alex Shaw</div> ya that definitely happened once. we assumed it was safe to just revert the last commit, but it made the data mismatch worse. didn't catch it til customers complained.
+        <div class="font-medium text-gray-600">Alex Shaw</div> yeah we've been there. we rolled back the token logic and the code looked fine in staging, so we shipped it. that fixed the issue in prod, and the tokens eventually expired.
       </div>
     </div>
     <div class="p-3 border-t border-gray-100">
       <div>
-        <div class="font-medium text-gray-600">replicate.info</div> Have you tested your rollback path? <span class="font-medium">What happens if a background job already ran on the new data, and poisoned your state?</span>
+        <div class="font-medium text-gray-600">replicate.info</div> What other jobs relied on those tokens while they were still alive? <span class="font-medium">Who was still reading from your API like nothing changed?</span>
       </div>
     </div>
   </div>
