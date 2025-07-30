@@ -35,10 +35,8 @@ module MessageGenerators
           ctas: [
             "No follow-ups. Just thought it might resonate.",
             "I'd love to hear your feedback if you have a few minutes.",
-            "I'd be curious how this comes across from your side.",
             "If this sparked anything, I'd love to hear what came up.",
-            "No pressure to respond — just putting it out there.",
-            "Let me know if this reads clean or if something felt off."
+            "No pressure to respond, just putting it out there.",
           ]
         },
         {
@@ -47,6 +45,7 @@ module MessageGenerators
           signature: "- JC",
           ctas: [
             "Would this get traction if someone flagged it internally?",
+            "Might be worth bookmarking for later?",
           ]
         },
         {
