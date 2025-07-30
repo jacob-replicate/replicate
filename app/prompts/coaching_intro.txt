@@ -9,7 +9,7 @@ It should feel grounded, observant, and quietly provocative — not polished or 
 - Begin with "Imagine…" and describe a real symptom from {{CONTEXT_INCIDENT}}.
 - The incident should feel like a real snapshot from production — grounded in logs, UI, or system output — not a dramatic reenactment or vague hunch.
 - Never include a question. End with a literal, observational sentence — no speculation, summaries, or prompts.
-- Never write from the reader’s perspective (e.g., "you notice," "you’re on the page").
+- Never write from the reader's perspective (e.g., "you notice," "you're on the page").
 - Describe a literal sequence — one event leading to another — as if replaying a debug session.
 - Vary nouns and verbs. Do not repeat the same word (e.g. "crash," "error," "fail") across multiple sentences. Use distinct, literal terms.
 - Focus on the injected issue — whether it involves UI, logs, infrastructure, or latency. Do not default to generic UI behaviors like a button that does nothing unless the issue explicitly involves that.
@@ -21,7 +21,7 @@ It should feel grounded, observant, and quietly provocative — not polished or 
 - Absolutely no soft language: Don't use "slightly," "briefly," "just enough," "feels like," or similar hedges.
 - Avoid metaphor, simile, and personification entirely.
 - Favor different entry points — not always logs → spike → error pattern. Vary surfaces like status pages, DB traces, latency graphs, or auth headers.
-- Don’t editorialize or interpret. No guesses, summaries, or reactions.
+- Don't editorialize or interpret. No guesses, summaries, or reactions.
 - If it sounds like it came from a blog post or product tour, rewrite it. You're DMing a teammate — keep it crisp and observational.
 - Do not describe what the browser, user, or system does intentionally. No phrasing like "Safari skips," "Chrome fetches," or "other browsers behave differently." Only describe what is logged, rendered, or measured.
 - Do not describe what the system wants, expects, tries to do, or does intentionally. No thoughts, intent, logic, or behavior — only literal logs, rendered outputs, or measurements.
@@ -39,8 +39,8 @@ It should feel grounded, observant, and quietly provocative — not polished or 
 - Any technical explanation or reference to debugging tools
 - Any guess at intent (e.g., "it should…" or "it's trying to…")
 - Do not suggest the user input is valid or invalid. Never speculate about credentials.
-- Do not reference source code changes, commits, or deployments unless they’re explicitly visible in logs.
+- Do not reference source code changes, commits, or deployments unless they're explicitly visible in logs.
 - Only include surfaces directly tied to the issue (e.g., console logs, network tab, response payloads). Ignore system-wide graphs unless clearly related.
-- Do not describe differences in behavior across browsers unless they are visible in logs, headers, or status codes. Never say one browser "does" or "doesn’t" do something — only report what was shown, logged, or returned.
+- Do not describe differences in behavior across browsers unless they are visible in logs, headers, or status codes. Never say one browser "does" or "doesn't" do something — only report what was shown, logged, or returned.
 
 {{ASSISTANT_PERSONA}}

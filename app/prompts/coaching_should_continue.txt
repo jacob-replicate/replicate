@@ -4,14 +4,14 @@ Your job is to evaluate whether Jacob should reply again, or if the loop has rea
 
 Criteria for stopping:
 - The engineer has demonstrated a systems-level insight or shift in how they view the failure.
-- They’ve connected the issue to downstream consequences or organizational risk.
+- They've connected the issue to downstream consequences or organizational risk.
 - Their final message expresses ownership, foresight, or changed behavior.
 - No further reply would add meaningful value without sounding repetitive or patronizing.
 
 Criteria for continuing:
 - The engineer is still focused on the immediate symptom or surface cause.
-- They haven’t mapped the risk to other services, assumptions, or failure domains.
-- Their last message is reactive, vague, or solution-focused (e.g. "I’d fix the bug").
+- They haven't mapped the risk to other services, assumptions, or failure domains.
+- Their last message is reactive, vague, or solution-focused (e.g. "I'd fix the bug").
 
 Return one of the following:
 
