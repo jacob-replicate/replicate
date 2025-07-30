@@ -1,0 +1,24 @@
+<div class="bg-white border border-gray-150 rounded-md shadow overflow-hidden text-sm">
+  <div class="bg-neutral-700 text-white px-3 py-2 border-b border-neutral-150 font-medium flex justify-between items-center">
+    <span>Re: The rollback didn't work</span>
+    <span class="text-xs text-gray-400 font-normal">Mon, Jul 7 &bull; 9:17am</span>
+  </div>
+
+  <div class="text-gray-800">
+    <div class="p-3">
+      <div>
+        <div class="font-medium text-gray-600">replicate.info</div> Imagine a hotfix gets rushed and only makes things worse. The team tries a rollback... but it doesn't behave like anyone expected. How do you know your rollback logic is actually safe?
+      </div>
+    </div>
+    <div class="p-3 border-t border-gray-100">
+      <div>
+        <div class="font-medium text-gray-600">Alex Shaw</div> ya that definitely happened once. we assumed it was safe to just revert the last commit, but it made the data mismatch worse. didn't catch it til customers complained.
+      </div>
+    </div>
+    <div class="p-3 border-t border-gray-100">
+      <div>
+        <div class="font-medium text-gray-600">replicate.info</div> Have you tested your rollback path? <span class="font-medium">What happens if a background job already ran on the new data, and poisoned your state?</span>
+      </div>
+    </div>
+  </div>
+</div>
