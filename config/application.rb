@@ -24,16 +24,6 @@ module Advance
     config.time_zone = "America/New_York"
     # config.eager_load_paths << Rails.root.join("extras")
 
-    config.action_mailer.smtp_settings = {
-      user_name: 'apikey', # This is the string literal 'apikey', NOT the ID of your API key
-      password: ENV["SENDGRID_API_KEY"],
-      domain: 'replicate.info',
-      address: 'smtp.sendgrid.net',
-      port: 587,
-      authentication: :plain,
-      enable_starttls_auto: true
-    }
-
     config.action_mailer.delivery_method = :postmark
 
     config.action_mailer.postmark_settings = {

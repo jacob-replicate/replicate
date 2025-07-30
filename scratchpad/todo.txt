@@ -1,25 +1,42 @@
-Trial -> Paid Transition
-- Just manually send an email with an invoice link, about a week before.
+Weekly Routine
+- Monitor Mailreach warming signals
+- Monitor Postmark bounces
+- Check in on invoicing tasks
+- Check in on infra metrics
 
 Tech
-- Postmark webhooks for coaching loop - https://account.postmarkapp.com/servers/16407823/streams/inbound/get-started
-- Cold email sends
+- Postmark webhooks for coaching loop replies - https://account.postmarkapp.com/servers/16407823/streams/inbound/get-started
+- cron job to stagger out weekly emails
+- Wire up cold email sends
+    - Skip if name doesn't have 2 words. There's only like 8 of those contacts in prod atm.
 - :coaching_should_continue prompt -- uncomment guard clause in coaching message generator
+- Safeguard to prevent duplicate Sidekiq jobs to send duplicate cold/loop emails
+
+Cold Email Deliverability
+- Verify all leads before sending (NeverBounce or Bouncer)
+- Update Mailreach to only warm on weekdays, and eventually pause during Tues/Wed/Thurs
+- Cap at ~150/day per inbox (cold)
+- Ensure DKIM, SPF, DMARC aligned per domain
+- Monitor inbox placement weekly (Mailreach + seed inboxes)
+
+Transactional Deliverability (coaching loops)
+- Stagger sends over a few hours
 
 Legal
-- Terms (look for blind spots + tighten up design + add a PDF download)
-    - You don't need to ship WickedPDF or whatever. Just "Print it" in your browser, and upload.
+- Terms (look for blind spots + tighten up design + upload a PDF generated from Chrome)
 - Privacy policy (get onto site + add a PDF download)
 - DPA
 - W9
 - Stripe Tax + VAT
 
-
-Nice to have:
-- Attach PDF's + inline JPG's once they close the loop
-- Marketing newsletter - initial email puzzle (e.g., /incidents/corrupted-invoices)
-
-
-
 Eventually:
+- Legal review of docs, fine to just ChatGPT them for now
+- Marketing newsletter - initial email puzzle (e.g., /incidents/corrupted-invoices) -- already tracking emails, don't need to send yet
+- Track bounces via Postmark webhooks
+- Attach PDF's + inline JPG's once they close the loop
+- Calendar reminder 8 weeks post-launch to rotate CTA + subject sets. Don't re-use sets.
 - Derisk with EU entities (Business in Estonia, Wise for banking, Proton Mail for SMTP, etc)
+- Automate billing
+- Add Precedence: auto_reply if Gmail starts collapsing transactional threads
+- Add failover awareness if Postmark is down (hold send, log, retry)
+- Add fallback logic for email failures (e.g. retry via loop@use-replicate.info)

@@ -14,6 +14,10 @@ class Conversation < ApplicationRecord
     messages.where(user_generated: true).order(created_at: :desc).first&.content.to_s
   end
 
+  def latest_system_message
+    messages.where(user_generated: false).order(created_at: :desc).first&.content.to_s
+  end
+
   def latest_author
     return nil if messages.empty?
     messages.order(:created_at).last&.user_generated ? :user : :assistant

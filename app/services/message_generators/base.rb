@@ -50,7 +50,7 @@ module MessageGenerators
         broadcast_to_web(type: "done")
         @message_sequence = @conversation.next_message_sequence
       elsif @conversation.email?
-        # TODO: Send it via another DeliverEmailWorker.perform_async(@conversation.id)
+        ConversationsMailer.drive(@conversation).deliver_now
       end
     end
 
