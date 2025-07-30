@@ -74,7 +74,7 @@
               <img src="/profile-photo-<%= i + 1 %>.jpg" alt="Avatar" class="w-10 h-10 rounded-full overflow-hidden" />
             </div>
 
-            <div class="text-base font-semibold text-gray-900"><%= email[:subject] %></div>
+            <div class="text-base font-semibold text-gray-900"><%= email[:subject].html_safe %></div>
             <div class="text-sm text-gray-700 leading-relaxed"><%= email[:content] %></div>
 
             <div>

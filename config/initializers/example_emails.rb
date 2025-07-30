@@ -13,8 +13,8 @@ EXAMPLE_EMAILS = [
   },
   {
     to: "Taylor Morales",
-    subject: "The rollback didn't work",
-    content: "A late-night deploy broke an invoicing job, and the rollback left customer data in a corrupted state.",
+    subject: "<span style='margin-right: 2px; font-style: italic; color: black; text-decoration: line-through; text-decoration-color: red;'>Double</span> Triple Charged",
+    content: "A late-night deploy corrupted billing state, and kept issuing charges until customers flagged the issue.",
     prompt: "late-night deploy broke an invoicing job, and the rollback left customer data in a corrupted state"
   }
 ]
