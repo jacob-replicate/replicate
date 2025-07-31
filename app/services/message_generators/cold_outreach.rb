@@ -1,10 +1,8 @@
 module MessageGenerators
   class ColdOutreach < MessageGenerators::Base
     def deliver_intro
-      # TODO: Make sure these actually align with Gmail
       inbox = inboxes.find_by { |inbox| @conversation.context["cold_email_inbox"] == inbox[:email] } || inboxes.sample
 
-      # TODO: Make the middle sections dynamic (per inbox) eventually.
       deliver_elements([
         "Hi #{@conversation.recipient.first_name}",
         "I'm a Staff Engineer from VA (currently leading IAM for Terraform), and I built <a href='https://replicate.info'>replicate.info</a> to help engineers sharpen their production instincts.",
@@ -29,7 +27,7 @@ module MessageGenerators
       {
         email: "jacob@try-replicate.info",
         from_name: "Jacob C",
-        signature: "- Jacob",
+        signature: "Cheers,<br/>Jacob",
         ctas: [
           "No follow-ups. Just thought it might resonate.",
           "Most teams only notice patterns like this after something breaks.",
@@ -44,7 +42,7 @@ module MessageGenerators
       {
         email: "jacob.comer@try-replicate.info",
         from_name: "Jacob Comer",
-        signature: "- Jacob Comer",
+        signature: "-- Jacob Comer",
         ctas: [
           "No ask. Just thought it might be worth sharing.",
           "This stuff tends to hide until a SEV gives everyone permission to care.",
@@ -59,8 +57,8 @@ module MessageGenerators
     def jcomer_inbox
       {
         email: "jcomer@try-replicate.info",
-        from_name: "Jacob from Replicate",
-        signature: "- JC",
+        from_name: "Jacob @ Replicate",
+        signature: "~ J",
         ctas: [
           "Most teams don't coach around this stuff until it shows up in a postmortem.",
           "Harder to catch upstream. Easier to regret downstream.",
@@ -74,7 +72,7 @@ module MessageGenerators
       {
         email: "j.comer@try-replicate.info",
         from_name: "Jake Comer",
-        signature: "- Jake",
+        signature: "All the best,<br/>Jake",
         ctas: [
           "Not expecting a reply. Just thought it might be relevant.",
           "Sometimes these sit quiet for months. Then suddenly they matter.",
