@@ -1,6 +1,7 @@
 module MessageGenerators
   class ColdOutreach < MessageGenerators::Base
     def deliver_intro
+      # TODO: Make sure these actually align with Gmail
       inbox = inboxes.find_by { |inbox| @conversation.context["cold_email_inbox"] == inbox[:email] } || inboxes.sample
 
       # TODO: Make the middle sections dynamic (per inbox) eventually.
@@ -27,8 +28,8 @@ module MessageGenerators
     def jacob_inbox
       {
         email: "jacob@try-replicate.info",
-        from_name: "Jacob from replicate.info", # TODO: Change this name
-        signature: "Appreciate ya,<br/>Jacob",
+        from_name: "Jacob C",
+        signature: "- Jacob",
         ctas: [
           "No follow-ups. Just thought it might resonate.",
           "Most teams only notice patterns like this after something breaks.",
@@ -43,7 +44,7 @@ module MessageGenerators
       {
         email: "jacob.comer@try-replicate.info",
         from_name: "Jacob Comer",
-        signature: "- Jacob",
+        signature: "- Jacob Comer",
         ctas: [
           "No ask. Just thought it might be worth sharing.",
           "This stuff tends to hide until a SEV gives everyone permission to care.",
@@ -72,8 +73,8 @@ module MessageGenerators
     def j_comer_inbox
       {
         email: "j.comer@try-replicate.info",
-        from_name: "Jacob C",
-        signature: "All the best,<br/>Jacob",
+        from_name: "Jake Comer",
+        signature: "- Jake",
         ctas: [
           "Not expecting a reply. Just thought it might be relevant.",
           "Sometimes these sit quiet for months. Then suddenly they matter.",
