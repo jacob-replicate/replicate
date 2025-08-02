@@ -17,7 +17,7 @@
     </div>
     <div class="p-3 border-t border-gray-100">
       <div>
-        <div class="font-medium text-gray-600">replicate.info</div> That works until high-fanout <span class="font-medium">DELETE</span>'s grab locks for FK checks, exhausting SLRU and blocking reads/writes across the entire site.
+        <div class="font-medium text-gray-600">replicate.info</div> That works until high-fanout <span class="font-medium">DELETE</span>s grab locks for FK checks, and SLRU exhaustion blocks reads/writes across the site. Let's try again.
       </div>
     </div>
   </div>
