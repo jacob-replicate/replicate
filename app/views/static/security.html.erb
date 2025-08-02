@@ -3,11 +3,11 @@
   <p class="text-sm text-gray-500 mb-6">Last updated: August 2025</p>
 
   <p class="mb-4">
-    <%= link_to 'replicate.info', root_path, class: "text-blue-600 font-semibold" %> is email-based by design. No dashboards, no logins, no integrations, no SSO. The architecture minimizes risk, and follows modern security practices without any complexity.
+    <%= link_to 'replicate.info', root_path, class: "text-blue-600 font-semibold" %> is email-based by design. No dashboards, no logins, no integrations, no SSO. The architecture minimizes risk and follows modern security practices without any complexity.
   </p>
 
   <p>
-    The platform was designed by <%= link_to 'Jacob Comer', 'https://linkedin.com/in/jacobcomer', class: "text-blue-600 font-medium hover:text-blue-700 hover:underline transition" %>, a Staff Engineer with 15 years of experience. He most recently led IAM for an infra/security market leader, and spent over a decade building enterprise software for regulated environments. Email <%= mail_to 'security@replicate.info', 'security@replicate.info', class: "text-blue-600 font-medium hover:text-blue-700 hover:underline transition" %> if you have any questions.
+    The platform was designed by <%= link_to 'Jacob Comer', 'https://linkedin.com/in/jacobcomer', class: "text-blue-600 hover:text-blue-700 hover:underline transition" %>, a Staff Engineer with 15 years of experience. He most recently led IAM for an infra/security market leader and spent over a decade building enterprise software for regulated environments. Email <%= mail_to 'security@replicate.info', 'security@replicate.info', class: "text-blue-600 hover:text-blue-700 hover:underline transition" %> if you have any questions.
   </p>
 
   <div class="space-y-10 mt-10">
@@ -22,7 +22,16 @@
       <p>All data is encrypted at rest using AES-256, managed by Heroku's infrastructure.</p>
 
       <h3 class="font-semibold mt-4 mb-1">No access to your customers' data</h3>
-      <p>The platform does not integrate with your internal systems. It sends coaching emails to your engineers and helps them think through production risks. We persist your team's conversation history (to generate personalized coaching insights), and automatically delete that data every 12 months.</p>
+      <p>The platform does not integrate with your internal systems. It sends coaching emails to your engineers and helps them think through production risks. The platform processes low-sensitivity data: engineer names, work email addresses, and GPT-generated coaching conversation history.</p>
+
+      <h3 class="font-semibold mt-4 mb-1">Audit logging</h3>
+      <p>Administrative actions (e.g., organization deletions) are logged immutably and retained for 12 months in secure, append-only S3 buckets.</p>
+
+      <h3 class="font-semibold mt-4 mb-1">Automated dependency scanning</h3>
+      <p>The codebase is continuously scanned using <a href="https://docs.github.com/en/code-security/getting-started/dependabot-quickstart-guide" class="text-blue-600 hover:text-blue-700 hover:underline transition">GitHub Dependabot</a> to patch vulnerable libraries. Critical vulnernabilities are patched within 7 days of public disclosure.</p>
+
+      <h3 class="font-semibold mt-4 mb-1">Incident response</h3>
+      <p>We operate a 24/7/365 on-call process. In the event of a confirmed incident, a root cause analysis and remediation summary will be sent from <%= mail_to 'security@replicate.info', 'security@replicate.info', class: "text-blue-600 hover:text-blue-700 hover:underline transition" %> to impacted customers within 72 hours.</p>
     </div>
 
     <div>
@@ -32,13 +41,13 @@
       <p>Coaching is delivered by email. No sessions, passwords, or user-managed devices.</p>
 
       <h3 class="font-semibold mt-4 mb-1">User provisioning (SCIM, SSO)</h3>
-      <p>SCIM is planned as an <span class="font-medium">optional</span> enhancement for mid-2026. Administrators currently manage access by emailing personnel changes to <a href="mailto:support@replicate.info" class="text-blue-600 font-medium hover:text-blue-700 hover:underline transition">support@replicate.info</a>. They will soon be able to login to a secure admin portal (via <a href="https://auth0.com" class="text-blue-600 font-medium hover:text-blue-700 hover:underline transition">Auth0 SSO</a>) to manage team members and billing. No user tracking, just logistics.</p>
+      <p>SCIM is planned as an <span class="font-medium">optional</span> enhancement for mid-2026. Administrators currently manage access by emailing personnel changes to <a href="mailto:support@replicate.info" class="text-blue-600 hover:text-blue-700 hover:underline transition">support@replicate.info</a>. They will soon be able to login to a secure admin portal (via <a href="https://auth0.com" class="text-blue-600 hover:text-blue-700 hover:underline transition">Auth0 SSO</a>) to manage team members and billing. No user tracking, just logistics.</p>
 
       <h3 class="font-semibold mt-4 mb-1">You own your data</h3>
-      <p>Conversation history is only retained for up to 12 months to personalize future learning sessions. You can permanently delete all of your organization's data at any time by emailing <a href="mailto:support@replicate.info" class="text-blue-600 font-medium hover:text-blue-700 hover:underline transition">support@replicate.info</a>.</p>
+      <p>Conversation history is retained for up to 12 months to personalize coaching. Customers can request immediate deletion of all data by emailing <a href="mailto:support@replicate.info" class="text-blue-600 hover:text-blue-700 hover:underline transition">support@replicate.info</a>.</p>
 
       <h3 class="font-semibold mt-4 mb-1">Planned shutdowns</h3>
-      <p>In the case of a planned end-of-service, customers would receive advance notice and a downloadable archive of recent coaching history, prompts, and full source code. Support would remain available through the shutdown window.</p>
+      <p>In the case of a planned end-of-service, customers would receive advance notice and a downloadable archive of recent coaching history, prompts, and full source code. Support would remain available throughout the shutdown window.</p>
     </div>
 
     <div>
@@ -48,9 +57,12 @@
       <p>Documentation is available for teams evaluating vendor readiness.</p>
 
       <h3 class="font-semibold mt-4 mb-1">Insurance coverage</h3>
-      <p>Replicate Software, LLC maintains $1M <a href="/coi.pdf" class="text-blue-600 hover:underline">Errors & Omissions</a> and $1M <a href="/coi.pdf" class="text-blue-600 hover:underline">Cyber Liability</a> coverage.
+      <p>Replicate Software, LLC maintains $1M <a href="/coi.pdf" class="text-blue-600 hover:underline">Errors & Omissions</a> and $1M <a href="/coi.pdf" class="text-blue-600 hover:underline">Cyber Liability</a> coverage.</p>
 
-      <h3 class="font-semibold mt-4 mb-1">No redlines, vendor portals, or negotiations.</h3>
+      <h3 class="font-semibold mt-4 mb-1">Vendor due diligence</h3>
+      <p>All subprocessors undergo a documented security review prior to onboarding, including review of GDPR compliance and Standard Contractual Clauses (SCCs) where applicable.</p>
+
+      <h3 class="font-semibold mt-4 mb-1">No redlines, vendor portals, or negotiations</h3>
       <p>
         <a href="/msa.pdf" class="text-blue-600 hover:underline">MSA</a> and
         <a href="/dpa.pdf" class="text-blue-600 hover:underline">DPA</a> are standardized. Email <a href="mailto:procurement@replicate.info" class="text-blue-600 hover:underline">procurement@replicate.info</a> if you need pre-signed versions.
@@ -61,7 +73,7 @@
       <h2 class="font-semibold mb-2 text-2xl tracking-tight">Subprocessors</h2>
 
       <p class="text-sm text-gray-700 mb-2">
-        All vendors below support GDPR compliance and offer Standard Contractual Clauses (SCCs) where required. This is the full list. There are no other subprocessors (e.g., Google Analytics) that interact with your data.
+        All vendors below support GDPR compliance, offer Standard Contractual Clauses (SCCs) where required, and are reviewed annually. This is the full list. There are no other subprocessors (e.g., Google Analytics) that interact with your data.
       </p>
 
       <h3 class="font-semibold mt-4 mb-1">Heroku (AWS)</h3>
