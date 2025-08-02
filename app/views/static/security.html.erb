@@ -30,7 +30,7 @@
       <h3 class="font-semibold mt-4 mb-1">No user accounts or logins for engineers</h3>
       <p>Coaching is delivered by email. No sessions, passwords, or user-managed devices.</p>
 
-      <h3 class="font-semibold mt-4 mb-1">User Provisioning (SCIM, SSO)</h3>
+      <h3 class="font-semibold mt-4 mb-1">User provisioning (SCIM, SSO)</h3>
       <p>SCIM is planned as an <span class="font-medium">optional</span> enhancement for mid-2026. Administrators currently manage access by emailing personnel changes to <a href="mailto:support@replicate.info" class="text-blue-600 font-medium hover:text-blue-700 hover:underline transition">support@replicate.info</a>. They will soon be able to login to a secure admin portal (via <a href="https://auth0.com" class="text-blue-600 font-medium hover:text-blue-700 hover:underline transition">Auth0 SSO</a>) to manage team members and billing. No user tracking, just logistics.</p>
 
       <h3 class="font-semibold mt-4 mb-1">You own your data</h3>
@@ -46,8 +46,11 @@
       <h3 class="font-semibold mt-4 mb-1">SOC 2 Type 1 planned for 2026</h3>
       <p>Documentation is available for teams evaluating vendor readiness.</p>
 
-      <h3 class="font-semibold mt-4 mb-1">No redlines</h3>
-      <p>Our documents (<a href="/w9.pdf" class="text-blue-600 hover:underline">W-9</a>, <a href="/dpa.pdf" class="text-blue-600 hover:underline">DPA</a>, <a href="/msa.pdf" class="text-blue-600 hover:underline">MSA</a>) are standardized and public. No vendor portals, no negotiation loops. Contact <%= mail_to 'security@replicate.info', 'security@replicate.info', class: "text-blue-600 font-medium hover:text-blue-700 hover:underline transition" %> if you have questions, or want to request signable, digital copies.
+      <h3 class="font-semibold mt-4 mb-1">No redlines, vendor portals, or negotiations.</h3>
+      <p>
+        <a href="/msa.pdf" class="text-blue-600 hover:underline">MSA</a> and
+        <a href="/dpa.pdf" class="text-blue-600 hover:underline">DPA</a> are standardized. Email <a href="mailto:procurement@replicate.info" class="text-blue-600 hover:underline">procurement@replicate.info</a> if you need pre-signed versions.
+      </p>
     </div>
 
     <div>
@@ -73,8 +76,17 @@
   </div>
 
   <p class="text-gray-500 mt-10">
-    <%= link_to 'Terms of Service', '/terms', class: "text-blue-600 hover:underline" %> &nbsp;&nbsp;•&nbsp;&nbsp;
-    <%= link_to 'Privacy Policy', '/privacy', class: "text-blue-600 hover:underline" %> &nbsp;&nbsp;•&nbsp;&nbsp;
-    <%= link_to 'Billing & Payment Terms', '/billing', class: "text-blue-600 hover:underline" %>
+    <span class="md:hidden">
+      <%= link_to 'Terms', '/terms', class: "text-blue-600 hover:underline" %> &nbsp;&nbsp;•&nbsp;&nbsp;
+      <%= link_to 'Privacy', '/privacy', class: "text-blue-600 hover:underline" %> &nbsp;&nbsp;•&nbsp;&nbsp;
+      <%= link_to 'Billing', '/billing', class: "text-blue-600 hover:underline" %> &nbsp;&nbsp;•&nbsp;&nbsp;
+    </span>
+    <span class="hidden md:inline">
+      <%= link_to 'Terms of Service', '/terms', class: "text-blue-600 hover:underline" %> &nbsp;&nbsp;•&nbsp;&nbsp;
+      <%= link_to 'Privacy Policy', '/privacy', class: "text-blue-600 hover:underline" %> &nbsp;&nbsp;•&nbsp;&nbsp;
+      <%= link_to 'Billing & Payment Terms', '/billing', class: "text-blue-600 hover:underline" %> &nbsp;&nbsp;•&nbsp;&nbsp;
+    </span>
+    <a href="/w9.pdf" class="text-blue-600 hover:underline">W-9</a> &nbsp;&nbsp;•&nbsp;&nbsp;
+    <a href="/w9.pdf" class="text-blue-600 hover:underline">COI</a>
   </p>
 </div>
