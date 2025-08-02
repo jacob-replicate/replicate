@@ -111,24 +111,14 @@
   </div>
 
   <% if @conversation.context["conversation_type"] == "landing_demo" %>
-    <div class="md:w-2/3 mt-10 <%= @conversation.messages.count == 9 ? "" : "hidden" %>" id="cta">
+    <div class="border border-gray-200 rounded shadow-md bg-white p-6 md:w-2/3 mt-10 <%= @conversation.messages.count == 9 ? "" : "hidden" %>" id="cta">
       <div class="mb-2 font-medium text-2xl tracking-tight">
-        Want to try it out?
+        This is what growth feels like.
       </div>
 
-      <div class="mb-4">
-        Add your emails below. Your first coaching thread arrives Monday.
+      <div class="mb-8">
+        Your first month's free. No credit card, no demos. I'll check in a week before it ends to see if you want to keep going.
       </div>
-
-      <div class="mb-4">
-        Your first month's free. <span class="font-medium">No credit cards. No demos.</span>
-      </div>
-
-      <div class="mb-4">
-        I'll check in a week before your trial ends. If you want to continue, you'll approve one annual invoice. If not, just ignore the email — <span class="font-medium">your data will be wiped automatically after 30 days of inactivity.</span>
-      </div>
-
-      <hr style="padding: 10px 0; margin: 0"/>
 
       <form id="email-upload">
         <div>
@@ -142,7 +132,7 @@
         <div class="mt-6">
           <label for="team-emails-input" class="block font-medium tracking-normal">Team Emails</label>
           <div class="text-sm text-gray-600 mb-2">
-            Optional. You can always change these by emailing <a href="mailto:support@replicate.info" class="text-blue-600 hover:text-blue-700 font-medium hover:underline hover:underline-offset-4 decoration-1 transition">support@replicate.info</a>
+            Optional. You can email <a href="mailto:support@replicate.info" class="text-blue-600 hover:text-blue-700 font-medium hover:underline hover:underline-offset-4 decoration-1 transition">support@replicate.info</a> to change them later.
           </div>
           <textarea id="team-emails-input" rows="4" class="block w-full border border-neutral-300 shadow-sm rounded-md bg-white px-3 py-1.5 text-gray-900 outline-1 -outline-offset-1 outline-indigo-100 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 text-sm" placeholder="(any format works)"></textarea>
         </div>
