@@ -16,10 +16,10 @@ module MessageGenerators
 
     def inboxes
       [
-        jacob_comer_inbox,
         jacob_inbox,
-        jcomer_inbox,
-        j_comer_inbox
+#        jacob_comer_inbox,
+#        jcomer_inbox,
+#        j_comer_inbox
       ]
     end
 
@@ -27,23 +27,31 @@ module MessageGenerators
       {
         email: "jacob@try-replicate.info",
         from_name: "Jacob C",
+        subjects: [
+          "Preventing SEV-1s with weekly emails?",
+          "GPT loops that surface infra/security blind spots",
+          "A quieter way to sharpen production instincts",
+          "Weekly drills to prevent your next postmortem",
+          "Coaching SEV response (without the SEV)",
+        ],
         intro: [
-          "I'm a Staff Engineer from VA (currently leading IAM for Terraform), and I built #{url} to help engineers uncover blind spots before they turn into incidents.",
-          "I built #{url} after too many retros where we said, \"we should've seen this coming.\"",
-          "I've been in a lot of SEVs where judgment broke down under pressure, so I built #{url} to help engineers sharpen their production instincts.",
-          "I built #{url} to simulate postmortem-quality thinking without needing an actual incident to trigger it."
+          "I lead IAM for Terraform. On the side, I shipped #{url} to help teams uncover their infra/security blind spots.",
+          "I've been in lots of SEVs where judgment broke under pressure, so I built #{url} to help engineers sharpen their production instincts.",
+          "I'm a Staff Engineer at HashiCorp, and recently launched #{url} to help developers think clearly during production fires.",
+          "I spent years in incident threads where we all missed the same failure pattern. I launched #{url} recently to help ICs catch that stuff earlier — <i>without</i> needing a SEV to learn it.",
+          "I work at HashiCorp, and recently built a side project called #{url}. It helps surface infra/security risks before shipping to prod.",
         ],
         hook: [
-          "Every Monday, GPT gives you a high-stakes failure scenario, and forces you to reason through it over email.",
-          "Think of it like a weekly pressure test delivered over email. GPT drops you into a SEV1, asks where you'd look first, and pushes back on your thinking.",
+          "Every Monday, GPT emails you a high-stakes production fire, and makes you reason through it. It keeps pushing until you reach failure, and <strong>then</strong> the coaching starts.",
+          "It's a weekly pressure test delivered over email. GPT drops you into a SEV1, asks where you'd look first, and pushes back on your thinking.",
           "It's just a weekly email. GPT throws you into an incident, and forces you to break it down under pressure. Then it points out what you missed.",
         ],
         ctas: [
           "No follow-ups. Just thought it might resonate.",
-          "Most teams only notice patterns like this after something breaks.",
-          "It's easier to coach this stuff before someone's firefighting at 2:00am.",
-          "Flagging in case it saves your team a nasty context switch later.",
-          "This stuff is easy to postpone, but hard to explain after the fact."
+          "I'd love to hear your feedback, but no pressure to respond.",
+          "It should be easier to coach this stuff before the 2:00am firefighting starts.",
+          "Just wanted to flag in case it saves your team a rough PagerDuty alert later.",
+          "This stuff tends to stay invisible until it becomes urgent.",
         ],
         signature: "Cheers,<br/>Jacob"
       }
