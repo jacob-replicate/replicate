@@ -12,15 +12,18 @@ Tech
 - :coaching_should_continue prompt -- uncomment guard clause in coaching message generator
 - Safeguard to prevent duplicate Sidekiq jobs to send duplicate cold/loop emails
 
-Cold Email Deliverability
+Email Deliverability
+- Track bounces via Postmark webhooks. Auto-retry on soft bounces, pause + alert owner on hard bounces.
 - Verify all leads before sending (NeverBounce or Bouncer)
 - Update Mailreach to only warm on weekdays, and eventually pause during Tues/Wed/Thurs
 - Cap at ~150/day per inbox (cold)
 - Ensure DKIM, SPF, DMARC aligned per domain
-- Monitor inbox placement weekly (Mailreach + seed inboxes)
-
-Transactional Deliverability (coaching loops)
 - Stagger sends over a few hours
+- Finish code to fetch unique cold email variants + add data model to support tracking
+
+- Finish DKIM validation setup
+    - replicate https://admin.google.com/u/1/ac/apps/gmail/authenticateemail?pli=1&rapt=AEjHL4PZXttXPLcvcTi6c3LxroO69JgAn0WL2IptG2rY0a5PE03BZo9ucvijeOYkVVAJ-NtedduGs2tBlIddSoBNYFzmutu0Bo1RMeQqU74XjDyrXn1ffqY
+    - try-replicate https://admin.google.com/u/3/ac/apps/gmail/authenticateemail?pli=1&rapt=AEjHL4MQw_u-qYFEjWrulH7oZQTUCU87I1cImnD30p5tS0XtSgwbvVfOnhDXfWakD0LytBS3sug12DihcymqsTEVmsrdaSGG1R3mm5MlZgwkjB6acu6htqU
 
 Legal
 - Terms (look for blind spots + tighten up design + upload a PDF generated from Chrome)
@@ -32,7 +35,6 @@ Legal
 Eventually:
 - Legal review of docs, fine to just ChatGPT them for now
 - Marketing newsletter - initial email puzzle (e.g., /incidents/corrupted-invoices) -- already tracking emails, don't need to send yet
-- Track bounces via Postmark webhooks
 - Attach PDF's + inline JPG's once they close the loop
 - Calendar reminder 8 weeks post-launch to rotate CTA + subject sets. Don't re-use sets.
 - Derisk with EU entities (Business in Estonia, Wise for banking, Proton Mail for SMTP, etc)

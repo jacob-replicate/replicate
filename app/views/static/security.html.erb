@@ -5,15 +5,11 @@
     <%= link_to 'replicate.info', root_path, class: "text-blue-600 font-semibold" %> is email-based by design. No dashboards, no logins, no integrations, no SSO. The architecture minimizes risk, and follows modern security practices without any complexity.
   </p>
 
-  <p class="mb-6">
-    The platform was designed by <%= link_to 'Jacob Comer', 'https://linkedin.com/in/jacobcomer', class: "text-blue-600 font-medium hover:text-blue-700 hover:underline transition" %>, a Staff Engineer with 15 years of experience. He most recently led IAM for an infra/security market leader, and spent over a decade building enterprise software for regulated environments.
+  <p>
+    The platform was designed by <%= link_to 'Jacob Comer', 'https://linkedin.com/in/jacobcomer', class: "text-blue-600 font-medium hover:text-blue-700 hover:underline transition" %>, a Staff Engineer with 15 years of experience. He most recently led IAM for an infra/security market leader, and spent over a decade building enterprise software for regulated environments. Email <%= mail_to 'security@replicate.info', 'security@replicate.info', class: "text-blue-600 font-medium hover:text-blue-700 hover:underline transition" %> if you have any questions.
   </p>
 
-  <p class="text-sm bg-neutral-100 p-2 text-center border border-gray-300 rounded-md shadow-sm leading-relaxed">
-    Contact <%= mail_to 'security@replicate.info', 'security@replicate.info', class: "text-blue-600 font-medium hover:text-blue-700 hover:underline transition" %> if you have questions, or want to request <%= link_to "our DPA", "/dpa.pdf", class: "text-blue-600 font-medium hover:text-blue-700 hover:underline transition" %> (via DocuSign).
-  </p>
-
-  <div class="space-y-10 mt-14">
+  <div class="space-y-10 mt-10">
 
     <div>
       <h2 class="font-semibold mb-2 text-2xl tracking-tight">Architecture</h2>
@@ -25,7 +21,7 @@
       <p>All data is encrypted at rest using AES-256, managed by Heroku's infrastructure.</p>
 
       <h3 class="font-semibold mt-4 mb-1">No access to your customers' data</h3>
-      <p>The platform does not integrate with your internal systems. It sends coaching emails to your engineers and helps them think through production risks. We persist your team's conversation history (for personalized coaching insights), and automatically delete that data within 12 months.</p>
+      <p>The platform does not integrate with your internal systems. It sends coaching emails to your engineers and helps them think through production risks. We persist your team's conversation history (to generate personalized coaching insights), and automatically delete that data every 12 months.</p>
     </div>
 
     <div>
@@ -35,10 +31,7 @@
       <p>Coaching is delivered by email. No sessions, passwords, or user-managed devices.</p>
 
       <h3 class="font-semibold mt-4 mb-1">User Provisioning (SCIM, SSO)</h3>
-      <p>SCIM is planned for early 2026. Admins manage employee access by emailing <a href="mailto:support@replicate.info" class="text-blue-600 font-medium hover:text-blue-700 hover:underline transition">support@replicate.info</a>, but will soon be able to login to an admin portal (via <a href="https://auth0.com" class="text-blue-600 font-medium hover:text-blue-700 hover:underline transition">Auth0 SSO</a>) to manage team members and billing.</p>
-
-      <h3 class="font-semibold mt-4 mb-1">No integrations required</h3>
-      <p>We do not connect to GitHub, Jira, Slack, SMTP servers, or any other internal tool.</p>
+      <p>SCIM is planned as an <span class="font-medium">optional</span> enhancement for mid-2026. Administrators currently manage access by emailing personnel changes to <a href="mailto:support@replicate.info" class="text-blue-600 font-medium hover:text-blue-700 hover:underline transition">support@replicate.info</a>. They will soon be able to login to a secure admin portal (via <a href="https://auth0.com" class="text-blue-600 font-medium hover:text-blue-700 hover:underline transition">Auth0 SSO</a>) to manage team members and billing. No user tracking, just logistics.</p>
 
       <h3 class="font-semibold mt-4 mb-1">You own your data</h3>
       <p>Conversation history is only retained for up to 12 months to personalize future learning sessions. You can permanently delete all of your organization's data at any time by emailing <a href="mailto:support@replicate.info" class="text-blue-600 font-medium hover:text-blue-700 hover:underline transition">support@replicate.info</a>.</p>
@@ -50,21 +43,18 @@
     <div>
       <h2 class="font-semibold mb-2 text-2xl tracking-tight">Compliance</h2>
 
-      <h3 class="font-semibold mt-4 mb-1">DPA available</h3>
-      <p>Contact <%= mail_to 'security@replicate.info', 'security@replicate.info', class: "text-blue-600 font-medium hover:text-blue-700 hover:underline transition" %> if you have questions, or want to request <%= link_to "our DPA", "/dpa.pdf", class: "text-blue-600 font-medium hover:text-blue-700 hover:underline transition" %> (via DocuSign).</p>
-
       <h3 class="font-semibold mt-4 mb-1">SOC 2 Type 1 planned for 2026</h3>
       <p>Documentation is available for teams evaluating vendor readiness.</p>
 
       <h3 class="font-semibold mt-4 mb-1">No redlines</h3>
-      <p>Our documents are standardized and public. No vendor portals, no negotiation loops.</p>
+      <p>Our documents (<a href="/w9.pdf" class="text-blue-600 hover:underline">W-9</a>, <a href="/dpa.pdf" class="text-blue-600 hover:underline">DPA</a>, <a href="/msa.pdf" class="text-blue-600 hover:underline">MSA</a>) are standardized and public. No vendor portals, no negotiation loops. Contact <%= mail_to 'security@replicate.info', 'security@replicate.info', class: "text-blue-600 font-medium hover:text-blue-700 hover:underline transition" %> if you have questions, or want to request signable, digital copies.
     </div>
 
     <div>
       <h2 class="font-semibold mb-2 text-2xl tracking-tight">Subprocessors</h2>
 
       <p class="text-sm text-gray-700 mb-2">
-        All vendors below support GDPR compliance and offer Standard Contractual Clauses (SCCs) where required.
+        All vendors below support GDPR compliance and offer Standard Contractual Clauses (SCCs) where required. This is the full list. There are no other subprocessors (e.g., Google Analytics) that interact with your data.
       </p>
 
       <h3 class="font-semibold mt-4 mb-1">Heroku (AWS)</h3>
@@ -78,9 +68,6 @@
 
       <h3 class="font-semibold mt-4 mb-1">Stripe</h3>
       <p>Used for payment processing and invoicing.</p>
-
-      <h3 class="font-semibold mt-4 mb-1">Google Analytics</h3>
-      <p>Used to measure basic marketing website traffic. No tracking occurs inside coaching flows or emails.</p>
     </div>
 
   </div>
