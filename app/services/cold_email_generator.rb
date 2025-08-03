@@ -24,6 +24,7 @@ class ColdEmailGenerator
           intro:   intros[intro_index % intros.size],
           hook:    hooks[hook_index % hooks.size],
           cta:     ctas[cta_index % ctas.size],
+          footer: "Replicate Software, LLC  - 131 Continental Dr, Suite 305, Newark, DE (19713) - Unsubscribe", # TODO: Make unsubscribe link
           signature: inbox[:signature],
         }
       )

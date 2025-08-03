@@ -205,7 +205,6 @@ BANNED_TERMS = [
   "jiggerboo",
   "jizz",
   "juggs",
-  "kill",
   "kike",
   "kinbaku",
   "kinkster",
