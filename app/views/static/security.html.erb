@@ -3,11 +3,15 @@
   <p class="text-sm text-gray-500 mb-6">Last updated: August 2025</p>
 
   <p class="mb-4">
-    <%= link_to 'replicate.info', root_path, class: "text-blue-600 font-semibold" %> is email-based by design. No dashboards, no logins, no integrations, no SSO. The architecture minimizes risk and follows modern security practices without any complexity.
+    The platform is <span class="font-semibold">email-based</span> by design. No logins, dashboards, integrations, or SSO.
+  </p>
+
+  <p class="mb-4">
+    The codebase receives an email webhook, routes it through GPT, and sends the result to your team.
   </p>
 
   <p>
-    The platform was designed by <%= link_to 'Jacob Comer', 'https://linkedin.com/in/jacobcomer', class: "text-blue-600 hover:text-blue-700 hover:underline transition" %>, a Staff Engineer with 15 years of experience. He most recently led IAM for an infra/security market leader and spent over a decade building enterprise software for regulated environments. Email <%= mail_to 'security@replicate.info', 'security@replicate.info', class: "text-blue-600 hover:text-blue-700 hover:underline transition" %> if you have any questions.
+    I lead IAM for an infra/security market leader, and have spent most of <%= link_to 'my career', 'https://linkedin.com/in/jacobcomer', class: "text-blue-600 hover:text-blue-700 hover:underline transition font-semibold" %> building enterprise software for regulated industries. No SOC 2 yet, although I hope my background gives you confidence.
   </p>
 
   <div class="space-y-10 mt-10">
@@ -31,7 +35,7 @@
       <p>The codebase is continuously scanned using <a href="https://docs.github.com/en/code-security/getting-started/dependabot-quickstart-guide" class="text-blue-600 hover:text-blue-700 hover:underline transition">GitHub Dependabot</a> to patch vulnerable libraries. Critical vulnernabilities are patched within 7 days of public disclosure.</p>
 
       <h3 class="font-semibold mt-4 mb-1">Incident response</h3>
-      <p>We operate a 24/7/365 on-call process. In the event of a confirmed incident, a root cause analysis and remediation summary will be sent from <%= mail_to 'security@replicate.info', 'security@replicate.info', class: "text-blue-600 hover:text-blue-700 hover:underline transition" %> to impacted customers within 72 hours.</p>
+      <p>I run PagerDuty on my phone 24/7. In the event of a confirmed incident, I'll send a root cause analysis and remediation summary (from <%= mail_to 'security@replicate.info', 'security@replicate.info', class: "text-blue-600 hover:text-blue-700 hover:underline transition" %>) to impacted customers within 72 hours.</p>
     </div>
 
     <div>
@@ -44,17 +48,14 @@
       <p>SCIM is planned as an <span class="font-medium">optional</span> enhancement for mid-2026. Administrators currently manage access by emailing personnel changes to <a href="mailto:support@replicate.info" class="text-blue-600 hover:text-blue-700 hover:underline transition">support@replicate.info</a>. They will soon be able to login to a secure admin portal (via <a href="https://auth0.com" class="text-blue-600 hover:text-blue-700 hover:underline transition">Auth0 SSO</a>) to manage team members and billing. No user tracking, just logistics.</p>
 
       <h3 class="font-semibold mt-4 mb-1">You own your data</h3>
-      <p>Conversation history is retained for up to 12 months to personalize coaching. Customers can request immediate deletion of all data by emailing <a href="mailto:support@replicate.info" class="text-blue-600 hover:text-blue-700 hover:underline transition">support@replicate.info</a>.</p>
+      <p>Inactive conversations are automatically deleted after 3 months. I use that data to recreate email history when engineers reply a few weeks later. No AI training. Email <a href="mailto:support@replicate.info" class="text-blue-600 hover:text-blue-700 hover:underline transition">support@replicate.info</a> to request immediate deletion. It won't get stuck in a PostgreSQL backup forever.</p>
 
       <h3 class="font-semibold mt-4 mb-1">Planned shutdowns</h3>
-      <p>In the case of a planned end-of-service, customers would receive advance notice and a downloadable archive of recent coaching history, prompts, and full source code. Support would remain available throughout the shutdown window.</p>
+      <p>In the case of a planned end-of-service, customers will receive advance notice and a downloadable archive of recent coaching history, prompts, and full source code. Support will remain available throughout the shutdown window.</p>
     </div>
 
     <div>
       <h2 class="font-semibold mb-2 text-2xl tracking-tight">Compliance</h2>
-
-      <h3 class="font-semibold mt-4 mb-1">SOC 2 (Type 1) planned for late 2026</h3>
-      <p>Documentation is available for teams evaluating vendor readiness.</p>
 
       <h3 class="font-semibold mt-4 mb-1">Insurance coverage</h3>
       <p>Replicate Software, LLC maintains $1M <a href="/coi.pdf" class="text-blue-600 hover:underline">Errors & Omissions</a> and $1M <a href="/coi.pdf" class="text-blue-600 hover:underline">Cyber Liability</a> coverage via <a href="https://vouch.us" class="text-blue-600 hover:underline">Vouch</a>.</p>
@@ -64,8 +65,8 @@
 
       <h3 class="font-semibold mt-4 mb-1">No redlines, vendor portals, or negotiations</h3>
       <p>
-        <a href="/msa.pdf" class="text-blue-600 hover:underline">MSA</a> and
-        <a href="/dpa.pdf" class="text-blue-600 hover:underline">DPA</a> are standardized. DocuSign versions are delivered via email 1 week before trial end.
+        <a href="/msa.pdf" class="text-blue-600 hover:underline">MSA</a> and (optional)
+        <a href="/dpa.pdf" class="text-blue-600 hover:underline">DPA</a> are standardized. Pre-signed versions are emailed during the <a href="/billing" class="text-blue-600 hover:underline">trial period</a>.
       </p>
     </div>
 
@@ -73,17 +74,17 @@
       <h2 class="font-semibold mb-2 text-2xl tracking-tight">Subprocessors</h2>
 
       <p class="text-sm text-gray-700 mb-2">
-        All vendors below support GDPR compliance, offer Standard Contractual Clauses (SCCs) where required. This is the full list. There are no other subprocessors (e.g., Google Analytics) that interact with your data.
+        All vendors are GDPR compliant, offer Standard Contractual Clauses (SCCs), and underwent security review prior to onboarding. This is the full list. No other subprocessors (e.g., Google Analytics) interact with your data.
       </p>
 
       <h3 class="font-semibold mt-4 mb-1">Heroku (AWS)</h3>
-      <p>Used for infrastructure and encrypted storage. All workloads run in isolated dynos with HTTPS enforced and AES-256 encryption at rest.</p>
+      <p>Used for infrastructure and encrypted storage. All workloads run in isolated containers with HTTPS enforced and AES-256 encryption at rest.
 
       <h3 class="font-semibold mt-4 mb-1">OpenAI</h3>
-      <p>We use OpenAI's API for real-time content generation for coaching emails. None of your data is persisted by OpenAI, and none of it is used to train their models. The prompting is completely ephemeral. Enterprise customers may request alternate LLM providers if required by internal policy.</p>
+      <p>OpenAI's API powers the real-time content generation for coaching emails. None of your data is persisted by OpenAI. None of it is used to train their models. The prompting is ephemeral.</p>
 
       <h3 class="font-semibold mt-4 mb-1">Postmark</h3>
-      <p>Used for transactional email delivery. No open or click tracking is enabled.</p>
+      <p>Used for transactional email delivery. No open/click tracking.</p>
 
       <h3 class="font-semibold mt-4 mb-1">Stripe</h3>
       <p>Used for payment processing and invoicing.</p>

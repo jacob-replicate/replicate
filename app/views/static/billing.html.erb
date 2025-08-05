@@ -1,18 +1,24 @@
 <div class="max-w-3xl mx-auto py-10">
-  <h1 class="text-3xl font-semibold mb-4">Procurement</h1>
+  <h1 class="text-3xl font-semibold mb-4">Billing & Payment Terms</h1>
   <p class="text-sm text-gray-500 mb-6">Last updated: August 2025</p>
 
   <p class="mb-6">
-    <%= link_to 'replicate.info', root_path, class: "text-blue-600 font-semibold" %> is priced annually. One flat invoice based on your team size. No metering. No surprise mid-cycle upgrades. Just clear pricing for mid-market engineering teams who want to level up, fast.
-  </p>
-  <p class="mb-6">
-    Invoices are sent by email via Stripe with full remittance details. Pay by card, ACH, or wire - <span class="font-medium">Net 30</span>.
-  </p>
-  <p class="mb-10">
-    Pre-pay future years for <span class="font-medium">20%</span> off today's prices. Email <a href="mailto:procurement@replicate.info" class="text-blue-600 hover:underline">procurement@replicate.info</a> for an invoice.
+    I send <span class="font-semibold">one flat, annual invoice</span> based on team size. <span class="font-semibold">No metering. No auto-renewal.</span> Try it for a quarter.
   </p>
 
-  <div class="grid gap-2 mb-12 border border-gray-200 rounded-md overflow-hidden text-sm shadow">
+  <p class="mb-6">
+    You will receive a <span class="font-semibold">pre-signed</span> <a href="/msa.pdf" class="text-blue-600 hover:underline font-semibold">MSA</a> (and optional <a href="/dpa.pdf" class="text-blue-600 hover:underline font-semibold">DPA</a>) via DocuSign a month in. <span class="font-semibold">No redlines.</span> I'll backdate your invoice to the start of whatever month you sign. <span class="font-semibold">Net 30</span> payment window.
+  </p>
+
+  <p class="mb-6">
+    Invoices are emailed (via Stripe) with <span class="font-semibold">full remittance details</span>. Pay by <span class="font-semibold">card</span>, <span class="font-semibold">ACH</span>, or <span class="font-semibold">wire</span>.
+  </p>
+
+  <p class="mb-10">
+    Or simply unsubscribe. The emails stop after a quarter, and your data gets wiped automatically.
+  </p>
+
+  <div class="grid gap-2 mb-4 border border-gray-200 rounded-md overflow-hidden text-sm shadow">
     <div class="grid grid-cols-2 bg-gray-100 text-gray-800 border-b border-gray-200">
       <div class="px-4 py-2 font-semibold">Team Size</div>
       <div class="px-4 py-2"><span class="font-semibold">Annual Price</span> (USD)</div>
@@ -27,23 +33,24 @@
     <div class="grid grid-cols-2"><div class="px-4 py-2">Unlimited Usage</div><div class="px-4 py-2">$300,000</div></div>
   </div>
 
-  <p class="mb-1 font-semibold">Your first full calendar month is free</p>
-  <p class="mb-4">No credit cards. No sales demos (unless you want one). 1 week before the end of your trial, you'll receive a standardized <a href="/msa.pdf" class="text-blue-600 hover:underline">MSA</a> via DocuSign, followed by an invoice. If you need an optional <a href="/dpa.pdf" class="text-blue-600 hover:underline">DPA</a>, just ask.</p>
+  <p class="mb-10 text-sm text-center">
+    Pre-pay future years for <span class="font-semibold">20%</span> off today's prices. Email <a href="mailto:procurement@replicate.info" class="text-blue-600 hover:underline">procurement@replicate.info</a> for an invoice.
+  </p>
 
   <p class="mb-1 font-semibold">Your price is fixed for the year</p>
-  <p class="mb-4">Just one fixed, non-refundable annual invoice (Net 30). If the team grows past your current tier, great, they can still use the product. Just renew at a higher tier next year. We trust you. No mid-year surprises.</p>
+  <p class="mb-4">Just one fixed, non-refundable annual invoice (Net 30). If the team grows past your current tier, great, they can still use the product. Just renew at a higher tier next year. No mid-year surprises.</p>
 
   <p class="mb-1 font-semibold">Renewal Process</p>
-  <p class="mb-4">We'll email you 30 days before term end. Renewals require explicit confirmation from an administrator. You will not receive an invoice unless you choose to continue, every year. No exceptions. No tricks.</p>
+  <p class="mb-4">I'll email you 30 days before term end. Renewals require explicit confirmation from an administrator. You will not receive an invoice unless you choose to continue, every year.</p>
 
   <p class="font-medium mb-1">Sales Tax</p>
   <p class="mb-4">
-    Sales tax (e.g., VAT, GST, US state) is calculated at checkout (if applicable) via <a href="https://stripe.com/tax" class="text-blue-600 hover:underline">Stripe Tax</a>. If your organization is tax-exempt, simply email <a href="mailto:procurement@replicate.info" class="text-blue-600 hover:underline">procurement@replicate.info</a> with your exemption certificate, and we'll apply it before sending over your first invoice.
+    Sales tax (e.g., VAT, GST, US state) is calculated at checkout (if applicable) via <a href="https://stripe.com/tax" class="text-blue-600 hover:underline">Stripe Tax</a>. If your organization is tax-exempt, simply email <a href="mailto:procurement@replicate.info" class="text-blue-600 hover:underline">procurement@replicate.info</a> with your exemption certificate, and I'll apply it before sending over your first invoice.
   </p>
 
   <p class="mb-1 font-medium">Refund Policy</p>
   <p class="mb-4">
-    We do not offer refunds once an invoice is paid, even if usage stops. We help fix erroneous payments.
+    I don't offer refunds once an invoice is paid, even if usage stops. Happy to help fix erroneous payments.
   </p>
 
   <p class="mb-1 font-medium">Support</p>
