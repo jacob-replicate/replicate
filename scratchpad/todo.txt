@@ -5,7 +5,6 @@ Weekly Routine
 - Check in on infra metrics
 
 Tech
-- New sharing image, not just your face
 - Postmark webhooks for coaching loop replies - https://account.postmarkapp.com/servers/16407823/streams/inbound/get-started
 - cron job to stagger out weekly emails
 - Wire up cold email sends
@@ -35,6 +34,7 @@ Legal
 
 Eventually:
 - Legal review of docs, fine to just ChatGPT them for now
+- Wire up Zapier + Gmail, so you can auto-label replies in Missive.
 - Marketing newsletter - initial email puzzle (e.g., /incidents/corrupted-invoices) -- already tracking emails, don't need to send yet
 - Attach PDF's + inline JPG's once they close the loop
 - Calendar reminder 8 weeks post-launch to rotate CTA + subject sets. Don't re-use sets.
