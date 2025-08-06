@@ -55,7 +55,7 @@ class ColdEmailGenerator
   def self.hooks
     [
       "Every Monday, GPT emails you a high-stakes production fire, and makes you reason through it. It keeps pushing until you reach failure, and <strong>then</strong> the coaching starts.",
-      "It's a weekly pressure test delivered over email. GPT drops you into a SEV1, asks where you'd look first, and pushes back on your thinking.",
+      "It's a weekly pressure test delivered over email. GPT drops you into a SEV-1, asks where you'd look first, and pushes back on your thinking.",
       "It's just a weekly email. GPT throws you into an incident, and forces you to break it down under pressure. Then it points out what you missed.",
     ]
   end
@@ -67,6 +67,8 @@ class ColdEmailGenerator
       "It's wild how good LLMs are now. They still kinda suck at writing code, but they're great at this stuff.",
       "It took me way too long to learn this stuff — hoping I can help save someone else the time.",
       "It's a little harsh. Uncompromising. Surgical, even. But I think that helps you learn faster.",
+      "SEV thinking, without the actual SEV.",
+      "I built this for myself, and figured the community might find it useful too.",
     ]
   end
 
