@@ -62,36 +62,35 @@ class ColdEmailGenerator
 
   def self.ctas
     [
-      "No follow-ups. Just thought it might resonate.",
-      "I'd love to hear your feedback, but no pressure to respond.",
-      "It should be easier to coach this stuff before the 2:00am firefighting starts.",
-      "Just wanted to flag in case it saves your team a rough PagerDuty alert later.",
-      "This stuff tends to stay invisible until it becomes urgent.",
+      "No ask. Just thought it might resonate.",
+      "Figured I'd send this once and leave it up to you.",
+      "I built this because I always wanted something like it — sharing in case you do too.",
+      "Unsubscribe link's there, but you shouldn't need it. I won't follow up unless you do."
     ]
   end
 
   def self.inboxes
     [
       {
+        email: "jc@try-replicate.info",
+        from_name: "J.C. (Replicate)",
+        signature: "Best,<br/>J.C."
+      },
+      {
         email: "jacob@try-replicate.info",
-        from_name: "Jacob C",
-        signature: "Cheers,<br/>Jacob"
+        from_name: "Jacob C.",
+        signature: "-- Jacob"
       },
       {
-        email: "jacob.comer@try-replicate.info",
-        from_name: "Jacob Comer",
-        signature: "-- Jacob Comer"
-      },
-      {
-        email: "jcomer@try-replicate.info",
-        from_name: "Jacob @ Replicate",
-        signature: "~ J"
-      },
-      {
-        email: "j.comer@try-replicate.info",
-        from_name: "Jake Comer",
+        email: "jake@try-replicate.info",
+        from_name: "Jake from Replicate",
         signature: "All the best,<br/>Jake"
-      }
+      },
+      {
+        email: "comer@try-replicate.info",
+        from_name: "J. Comer",
+        signature: "Appreciate ya!"
+      },
     ]
   end
 end
