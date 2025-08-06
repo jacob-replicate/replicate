@@ -28,7 +28,6 @@ Legal
 - Terms (look for blind spots + tighten up design + upload a PDF generated from Chrome)
 - Privacy policy (get onto site + add a PDF download)
 - DPA
-- W9
 - Upload COI
 - Stripe Tax + VAT
 
