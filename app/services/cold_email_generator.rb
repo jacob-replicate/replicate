@@ -66,9 +66,10 @@ class ColdEmailGenerator
       "Figured I'd send this once and leave it up to you.",
       "It's wild how good LLMs are now. They still kinda suck at writing code, but they're great at this stuff.",
       "It took me way too long to learn this stuff — hoping I can help save someone else the time.",
-      "It's a little harsh. Uncompromising. Surgical, even. But I think that helps you learn faster.",
+      "It's a little harsh. Uncompromising. Surgical, even. But so is production.",
       "SEV thinking, without the actual SEV.",
       "I built this for myself, and figured the community might find it useful too.",
+      "Sparring with GPT is more efficient than reading 300-page books. Failure helps you grow faster.",
     ]
   end
 
