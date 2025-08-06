@@ -11,6 +11,22 @@ class Contact < ApplicationRecord
   # validates :company_domain, presence: true, format: { with: /\A[a-z0-9.-]+\.[a-z]{2,}\z/i }
   # validate :company_domain_not_on_blocklist
 
+  def passed_bounce_check?
+    email = "john@usebouncer.com"
+    api_key = "<your-api-key>"
+
+    uri = URI("https://api.usebouncer.com/v1.1/email/verify?email=#{email}")
+    request = Net::HTTP::Get.new(uri)
+    request['x-api-key'] = api_key
+
+    response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
+      http.request(request)
+    end
+
+    result = JSON.parse(response.body)
+    result["status"] == "deliverable" && result["reason"] == "accepted_email"
+  end
+
   def first_name
     return nil unless name.present?
 

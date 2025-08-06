@@ -1,11 +1,16 @@
 class ColdEmailGenerator
   def self.call(count:)
-    leads = Contact.where(contacted: false).limit(count)
+    leads = Contact.where(contacted: false).where.not(email: nil).where("score >= 80").limit(count)
 
     inbox_pool = inboxes.map { |inbox| inbox.merge(weight: rand(0.8..1.2)) }
                         .flat_map { |inbox| Array.new((inbox[:weight] * 100).to_i, inbox) }
 
     leads.each do |lead|
+      unless lead.passed_bounce_check?
+        contact.update(email: nil, score: -1)
+        next
+      end
+
       inbox = inbox_pool.sample
 
       variant_index = VariantCounter.increment!("cold_outreach_index:#{inbox[:email]}") - 1

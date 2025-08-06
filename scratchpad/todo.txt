@@ -1,11 +1,13 @@
 - Postmark webhooks for coaching loop replies - https://account.postmarkapp.com/servers/16407823/streams/inbound/get-started
 - Cron job to stagger out weekly loop emails + weekly cold emails
     - API keys for Gmail accounts
+    - Make sure to check Contact#state to only email US contacts for now
 - Safeguard to prevent duplicate Sidekiq jobs to send duplicate cold/loop emails
+- Bounce checks
+    - Send owner a confirmation email immediately after signing up.
+    - Wire up Bouncer API keys for cold emails - https://app.usebouncer.com/member/api
+    - Add bounce check to loop email + email owner if failed check, or Postmark eventually flags false positive -- See: contact#passed_bounce_check?
 - Mini PC linux install - xubuntu (Ubuntu with lightweight "XFCE" window manager) - Tailscale (remote desktop)
-- Track bounces via Postmark webhooks. Auto-retry on soft bounces, pause + alert owner on hard bounces.
-- Verify all leads before sending (NeverBounce or Bouncer)
-- Bounce checks. Send owner a confirmation email immediately after signing up. Also email them if their employee bounces.
 
 Legal
 - Terms (look for blind spots + tighten up design + upload a PDF generated from Chrome)
