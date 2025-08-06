@@ -17,7 +17,7 @@ class Contact < ApplicationRecord
 
     uri = URI("https://api.usebouncer.com/v1.1/email/verify?email=#{email}")
     request = Net::HTTP::Get.new(uri)
-    request['x-api-key'] = api_key
+    request['x-api-key'] = ENV["BOUNCER_API_KEY"]
 
     response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
       http.request(request)
