@@ -64,8 +64,9 @@ class ColdEmailGenerator
     [
       "No ask. Just thought it might resonate.",
       "Figured I'd send this once and leave it up to you.",
-      "I built this because I always wanted something like it — sharing in case you do too.",
-      "Unsubscribe link's there, but you shouldn't need it. I won't follow up unless you do."
+      "It's wild how good LLMs are now. They still kinda suck at writing code, but they're great at this stuff.",
+      "It took me way too long to learn this stuff — hoping I can help save someone else the time.",
+      "It's a little harsh. Uncompromising. Surgical, even. But I think that helps you learn faster.",
     ]
   end
 
