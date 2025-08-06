@@ -6,6 +6,7 @@ class Contact < ApplicationRecord
   before_save :downcase_email
 
   validates :name, presence: true
+  validate :name_must_have_at_least_two_words
   # validates :email, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }
   # validates :company_domain, presence: true, format: { with: /\A[a-z0-9.-]+\.[a-z]{2,}\z/i }
   # validate :company_domain_not_on_blocklist
@@ -134,6 +135,11 @@ class Contact < ApplicationRecord
   end
 
   private
+
+  def name_must_have_at_least_two_words
+    word_count = name.to_s.strip.split.size
+    errors.add(:name, "must include at least first and last name") if word_count < 2
+  end
 
   def set_company_domain
     if email.present? && company_domain.blank?
