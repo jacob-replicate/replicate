@@ -59,7 +59,7 @@ class ColdEmailGenerator
 
   def self.hooks
     [
-      "Every Monday, GPT emails you a high-stakes production fire, and makes you reason through it. It keeps pushing until you reach failure, and <strong>then</strong> the coaching starts.",
+      "Every Monday, GPT emails you a high-stakes production fire, makes you reason through it, and keeps pushing until you reach failure. <strong>Then</strong> the coaching starts.",
       "It's a weekly pressure test delivered over email. GPT drops you into a SEV-1, asks where you'd look first, and pushes back on your thinking.",
       "It's just a weekly email. GPT throws you into an incident, and forces you to break it down under pressure. Then it points out what you missed.",
     ]

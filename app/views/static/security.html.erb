@@ -19,11 +19,11 @@
     <div>
       <h2 class="font-semibold mb-2 text-2xl tracking-tight">Architecture</h2>
 
-      <h3 class="font-semibold mt-4 mb-1">Hosted on Heroku (AWS)</h3>
+      <h3 class="font-semibold mt-4 mb-1">Hosted on Heroku + AWS</h3>
       <p>All infrastructure runs on isolated US cloud resources, with encrypted storage and enforced HTTPS.</p>
 
       <h3 class="font-semibold mt-4 mb-1">Data encrypted in transit and at rest</h3>
-      <p>All data is encrypted at rest using AES-256, managed by Heroku's infrastructure.</p>
+      <p>All data is encrypted at rest using AES-256..</p>
 
       <h3 class="font-semibold mt-4 mb-1">No access to your customers' data</h3>
       <p>The platform does not integrate with your internal systems. It sends coaching emails to your engineers and helps them think through production risks. The platform processes low-sensitivity data: engineer names, work email addresses, and GPT-generated coaching conversation history.</p>
@@ -48,7 +48,7 @@
       <p>SCIM is planned as an <span class="font-medium">optional</span> enhancement for mid-2026. Administrators currently manage access by emailing personnel changes to <a href="mailto:support@replicate.info" class="text-blue-600 hover:text-blue-700 hover:underline transition">support@replicate.info</a>. They will soon be able to login to a secure admin portal (via <a href="https://auth0.com" class="text-blue-600 hover:text-blue-700 hover:underline transition">Auth0 SSO</a>) to manage team members and billing. No user tracking, just logistics.</p>
 
       <h3 class="font-semibold mt-4 mb-1">You own your data</h3>
-      <p>Inactive conversations are automatically deleted after 3 months. I use that data to recreate email history when engineers reply a few weeks later. No AI training. Email <a href="mailto:support@replicate.info" class="text-blue-600 hover:text-blue-700 hover:underline transition">support@replicate.info</a> to request immediate deletion. It won't get stuck in a PostgreSQL backup forever.</p>
+      <p>Inactive conversations are automatically deleted after 3 months. I use that data to recreate email history when engineers reply a few weeks later. No AI training. Email <a href="mailto:support@replicate.info" class="text-blue-600 hover:text-blue-700 hover:underline transition">support@replicate.info</a> to request immediate deletion. It won't get stuck in a Postgres backup forever.</p>
 
       <h3 class="font-semibold mt-4 mb-1">Planned shutdowns</h3>
       <p>In the case of a planned end-of-service, customers will receive advance notice and a downloadable archive of recent coaching history, prompts, and full source code. Support will remain available throughout the shutdown window.</p>

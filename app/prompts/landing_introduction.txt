@@ -5,4 +5,4 @@ Meet <span class='font-medium'>{{CONTEXT_FIRST_NAME}}</span>. They [action], and
 
 Make it feel like a postmortem summary about a highly trusted engineer who made a subtle but costly mistake.
 Be specific, grounded, and sharp. No abstractions, no soft language, no hypotheticals. The sentence should sting.
-Keep your reply under 200 characters.
+Keep your reply under 200 characters. Emphasize the blast radius. {{CONTEXT_FIRST_NAME}} is a staff engineer. This wasn't a simple mistake.

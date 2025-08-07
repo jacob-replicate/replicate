@@ -15,6 +15,9 @@
 Legal
 - Terms (look for blind spots + tighten up design + upload a PDF generated from Chrome)
 - Privacy policy (get onto site + add a PDF download)
+
+Optional (eventually):
+- MSA
 - DPA
 - Upload COI - https://account.vouch.us/members/coi?email=jacob%40replicate.info
 
