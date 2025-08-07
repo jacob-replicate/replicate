@@ -1,28 +1,16 @@
 - Postmark webhooks for coaching loop replies - https://account.postmarkapp.com/servers/16407823/streams/inbound/get-started
-    - Only trigger reply if the intended recipient replied -- don't reply on forwards
-
-- Cron job to stagger out weekly loop emails + weekly cold emails
-    - API keys for Gmail accounts
-    - Make sure to check Contact#state to only email US contacts for now
-- Safeguard to prevent duplicate Sidekiq jobs to send duplicate cold/loop emails
-- Bounce checks
-    - Send owner a confirmation email immediately after signing up.
-    - Wire up Bouncer API keys for cold emails - https://app.usebouncer.com/member/api
-    - Add bounce check to loop email + email owner if failed check, or Postmark eventually flags false positive -- See: contact#passed_bounce_check?
-- Set up RDS + spin down dyno count
-- Mini PC linux install - xubuntu (Ubuntu with lightweight "XFCE" window manager) - Tailscale (remote desktop)
-
-Optional (eventually):
+- Cron job to stagger out weekly loop emails + weekly cold emails (assuming Contact#state is in the US)
 
 Eventually:
 - Upload COI - https://account.vouch.us/members/coi?email=jacob%40replicate.info
 - MSA
 - DPA
 - Legal review of docs, fine to just ChatGPT them for now
-- RDS
+- RDS + Mini PC (Xubuntu) + VPN
+- Bounce checks (See: contact#passed_bounce_check?)
+- Safeguard to prevent duplicate Sidekiq jobs to send duplicate cold/loop emails
 - Cron job to filter inbox + draft replies
 - Marketing newsletter - initial email puzzle (e.g., /incidents/corrupted-invoices) -- already tracking emails, don't need to send yet
 - Better error handling if emails fail (e.g., bounce, throttling, etc)
 - :coaching_should_continue prompt -- uncomment guard clause in coaching message generator
 - Attach PDF's + inline JPG's once they close the loop
-- Tailscale VPN while traveling (so you can reuse home IP for cold email replies)
