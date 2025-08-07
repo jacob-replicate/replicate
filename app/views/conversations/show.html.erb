@@ -111,16 +111,16 @@
   </div>
 
   <% if @conversation.context["conversation_type"] == "landing_demo" %>
-    <div class="border border-gray-200 rounded-md shadow bg-white p-6 md:w-2/3 mt-10 <%= @conversation.messages.count == 9 ? "" : "hidden" %>" id="cta">
-      <div class="mb-6 text-xl tracking-tight">
-        Test first, find the blind spot, <span class="font-semibold">then</span> coach.
+    <div class="border border-gray-200 rounded-xl shadow bg-white p-6 md:w-2/3 mt-10 <%= @conversation.messages.count == 9 ? "" : "hidden" %>" id="cta">
+      <div class="mb-4">
+        Your first quarter is free. No credit card, no demos.
       </div>
 
-      <div class="mb-2">
-        Your first month's free. No credit card, no demos. I'll check in a week before it ends to see if you want to keep going.
+      <div class="mb-4">
+        I'll reach out a month in with docs you can sign whenever. Your data will get cleaned up automatically if it doesn't work out.
       </div>
 
-      <div class="mb-6">
+      <div class="mb-8">
         See you next Monday.
       </div>
 
