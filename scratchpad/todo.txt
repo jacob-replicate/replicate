@@ -1,4 +1,6 @@
 - Postmark webhooks for coaching loop replies - https://account.postmarkapp.com/servers/16407823/streams/inbound/get-started
+    - Only trigger reply if the intended recipient replied -- don't reply on forwards
+
 - Cron job to stagger out weekly loop emails + weekly cold emails
     - API keys for Gmail accounts
     - Make sure to check Contact#state to only email US contacts for now
@@ -7,6 +9,7 @@
     - Send owner a confirmation email immediately after signing up.
     - Wire up Bouncer API keys for cold emails - https://app.usebouncer.com/member/api
     - Add bounce check to loop email + email owner if failed check, or Postmark eventually flags false positive -- See: contact#passed_bounce_check?
+- Set up RDS + spin down dyno count
 - Mini PC linux install - xubuntu (Ubuntu with lightweight "XFCE" window manager) - Tailscale (remote desktop)
 
 Legal
