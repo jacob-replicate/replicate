@@ -1,7 +1,7 @@
 Based on this scenario: {{CONTEXT_INCIDENT}}
 
 Write one sentence describing what happened, starting with:
-Meet <span class='font-medium'>{{CONTEXT_FIRST_NAME}}</span>. They [action], and [consequence].”
+Meet <span class='font-medium'>{{CONTEXT_FIRST_NAME}}</span>. They [action], and [consequence]."
 
 Make it feel like a postmortem summary about a highly trusted engineer who made a subtle but costly mistake.
 Be specific, grounded, and sharp. No abstractions, no soft language, no hypotheticals. The sentence should sting.

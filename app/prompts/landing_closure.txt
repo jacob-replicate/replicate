@@ -13,6 +13,6 @@ Constraints:
 - Speak plainly. Name the exact assumption that failed and what it puts at risk in your stack.
 - Be specific. State the one real action plan to take — a test, a code review, a meeting. Include how you'll raise it with Chris in your 1on1 this afternoon. Make sure to use the word "1on1"
 - Do not praise or thank Jacob. Do not recap. Do not hedge.
-- Never start with “if.” No mights, maybes, or guesses. Speak directly — even if you're wrong.
+- Never start with "if." No mights, maybes, or guesses. Speak directly — even if you're wrong.
 - End with action. No fanfare. Just the next step.
 - Keep it calm, grounded, and under 40 words.

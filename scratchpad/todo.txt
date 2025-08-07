@@ -17,6 +17,7 @@ Legal
 - Privacy policy (get onto site + add a PDF download)
 
 Optional (eventually):
+- RDS
 - MSA
 - DPA
 - Upload COI - https://account.vouch.us/members/coi?email=jacob%40replicate.info
