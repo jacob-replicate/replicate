@@ -12,21 +12,17 @@
 - Set up RDS + spin down dyno count
 - Mini PC linux install - xubuntu (Ubuntu with lightweight "XFCE" window manager) - Tailscale (remote desktop)
 
-Legal
-- Terms (look for blind spots + tighten up design + upload a PDF generated from Chrome)
-- Privacy policy (get onto site + add a PDF download)
-
 Optional (eventually):
-- RDS
-- MSA
-- DPA
-- Upload COI - https://account.vouch.us/members/coi?email=jacob%40replicate.info
 
 Eventually:
+- Upload COI - https://account.vouch.us/members/coi?email=jacob%40replicate.info
+- MSA
+- DPA
 - Legal review of docs, fine to just ChatGPT them for now
+- RDS
 - Cron job to filter inbox + draft replies
-- Tailscale VPN while traveling (so you can reuse home IP for cold email replies)
 - Marketing newsletter - initial email puzzle (e.g., /incidents/corrupted-invoices) -- already tracking emails, don't need to send yet
-- Attach PDF's + inline JPG's once they close the loop
 - Better error handling if emails fail (e.g., bounce, throttling, etc)
 - :coaching_should_continue prompt -- uncomment guard clause in coaching message generator
+- Attach PDF's + inline JPG's once they close the loop
+- Tailscale VPN while traveling (so you can reuse home IP for cold email replies)
