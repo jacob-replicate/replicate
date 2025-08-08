@@ -3,15 +3,28 @@
   <p class="text-sm text-gray-500 mb-6">Last updated: August 2025</p>
 
   <p class="mb-4">
-    The platform is <span class="font-semibold">email-based</span> by design. No logins, dashboards, integrations, or SSO.
+    This platform sends <span class="font-semibold">coaching emails</span> to your engineers. <span class="font-semibold">No logins, dashboards, integrations, or SSO.</span>
   </p>
 
   <p class="mb-4">
-    Heroku receives an email webhook, routes it through GPT, and sends the result to your team. That's it.
+    Heroku receives a webhook, routes it through GPT, and emails the result to your team. That's it.
+  </p>
+
+  <p class="mb-4">
+    <span class="font-semibold">No access to customer data.</span> If users type it anyway, I have <span class="font-semibold">$1M E&O</span> / <span class="font-semibold">$1M Cyber Liability</span> coverage.
+  </p>
+
+  <p class="mb-4">
+    I lead IAM for an infra/sec market leader, and spent most of <%= link_to 'my career', 'https://linkedin.com/in/jacobcomer', class: "text-blue-600 hover:text-blue-700 hover:underline transition font-semibold" %> building for regulated industries. Replicate is the opposite of that world. I'll get a SOC 2 eventually, but I'm not sure it derisks much.
+  </p>
+
+  <p class="mb-4">
+    I have <span class="font-semibold">0 employees</span> and the entire backend is automated + locked down. No plans to change that.
   </p>
 
   <p>
-    I lead IAM for an infra/security market leader, and spent most of <%= link_to 'my career', 'https://linkedin.com/in/jacobcomer', class: "text-blue-600 hover:text-blue-700 hover:underline transition font-semibold" %> building enterprise software for regulated industries. I built Replicate to help keep me sharp. It doesn't pretend to be more than it is.
+    Pre-signed versions of the standard <span class="font-semibold">MSA</span> and (optional)
+    <span class="font-semibold">DPA</span> are emailed during the <a href="/billing" class="text-blue-600 hover:underline font-semibold">trial period</a>. I'm happy to negotiate contracts (with a <span class="font-semibold">$20,000 redline fee</span>). I don't fill out RFP's or vendor portals.
   </p>
 
   <div class="space-y-10 mt-10">
@@ -19,14 +32,11 @@
     <div>
       <h2 class="font-semibold mb-2 text-2xl tracking-tight">Architecture</h2>
 
-      <h3 class="font-semibold mt-4 mb-1">Hosted on Heroku + AWS</h3>
-      <p>All infrastructure runs on isolated US cloud resources, with encrypted storage and enforced HTTPS.</p>
+      <h3 class="font-semibold mt-4 mb-1">Hosted on Heroku (AWS)</h3>
+      <p>All infrastructure is provisioned and managed by Heroku (in the <span class="font-semibold">us-east-1</span> AWS region).</p>
 
       <h3 class="font-semibold mt-4 mb-1">Data encrypted in transit and at rest</h3>
-      <p>All data is encrypted at rest using AES-256..</p>
-
-      <h3 class="font-semibold mt-4 mb-1">No access to your customers' data</h3>
-      <p>The platform does not integrate with your internal systems. It sends coaching emails to your engineers and helps them think through production risks. The platform processes low-sensitivity data: engineer names, work email addresses, and GPT-generated coaching conversation history.</p>
+      <p>All data is encrypted at rest using AES-256.</p>
 
       <h3 class="font-semibold mt-4 mb-1">Audit logging</h3>
       <p>Administrative actions (e.g., organization deletions) are logged immutably and retained for 12 months in secure, append-only S3 buckets.</p>
@@ -41,7 +51,7 @@
     <div>
       <h2 class="font-semibold mb-2 text-2xl tracking-tight">Access & Delivery</h2>
 
-      <h3 class="font-semibold mt-4 mb-1">No user accounts or logins for engineers</h3>
+      <h3 class="font-semibold mt-4 mb-1">No user accounts for engineers</h3>
       <p>Coaching is delivered by email. No sessions, passwords, or user-managed devices.</p>
 
       <h3 class="font-semibold mt-4 mb-1">User provisioning (SCIM, SSO)</h3>
@@ -50,24 +60,8 @@
       <h3 class="font-semibold mt-4 mb-1">You own your data</h3>
       <p>Inactive conversations are automatically deleted after 3 months. I use that data to recreate email history when engineers reply a few weeks later. No AI training. Email <a href="mailto:support@replicate.info" class="text-blue-600 hover:text-blue-700 hover:underline transition">support@replicate.info</a> to request immediate deletion. It won't get stuck in a Postgres backup forever.</p>
 
-      <h3 class="font-semibold mt-4 mb-1">Planned shutdowns</h3>
-      <p>In the case of a planned end-of-service, customers will receive advance notice and a downloadable archive of recent coaching history, prompts, and full source code. Support will remain available throughout the shutdown window.</p>
-    </div>
-
-    <div>
-      <h2 class="font-semibold mb-2 text-2xl tracking-tight">Compliance</h2>
-
-      <h3 class="font-semibold mt-4 mb-1">Insurance coverage</h3>
-      <p>Replicate Software, LLC maintains $1M Errors & Omissions and $1M Cyber Liability coverage via <a href="https://vouch.us" class="text-blue-600 hover:underline">Vouch</a>.</p>
-
-      <h3 class="font-semibold mt-4 mb-1">Vendor due diligence</h3>
-      <p>All subprocessors undergo a documented security review prior to onboarding, including review of GDPR compliance and Standard Contractual Clauses (SCCs) where applicable.</p>
-
-      <h3 class="font-semibold mt-4 mb-1">No redlines, vendor portals, or negotiations</h3>
-      <p>
-        <span class="font-semibold">MSA</span> and (optional)
-        <span class="font-semibold">DPA</span> are standardized. Pre-signed versions are emailed during the <a href="/billing" class="text-blue-600 hover:underline">trial period</a>.
-      </p>
+      <h3 class="font-semibold mt-4 mb-1">Planned end-of-service</h3>
+      <p>If I ever spin down the project, you'll receive advance notice, along with recent coaching history, full source code, and next steps. Support will remain available during the shutdown window. This platform costs about <span class="font-semibold">$200/mo</span> to host. Even if I get hit a bus, it'll keep running for years.</p>
     </div>
 
     <div>
@@ -87,7 +81,7 @@
       <p>Used for transactional email delivery. No open/click tracking. No marketing newsletters.</p>
 
       <h3 class="font-semibold mt-4 mb-1">Stripe</h3>
-      <p>Used for payment processing and invoicing.</p>
+      <p>Used for delivering and processing invoices. No auto-renewal. You manually approve every payment.</p>
     </div>
 
   </div>

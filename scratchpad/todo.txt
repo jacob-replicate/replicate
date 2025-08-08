@@ -1,5 +1,6 @@
 - Postmark webhooks for coaching loop replies - https://account.postmarkapp.com/servers/16407823/streams/inbound/get-started
 - Cron job to stagger out weekly loop emails + weekly cold emails (assuming Contact#state is in the US)
+- GPT 5
 
 Eventually:
 - Upload COI - https://account.vouch.us/members/coi?email=jacob%40replicate.info
