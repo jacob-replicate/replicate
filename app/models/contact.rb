@@ -12,6 +12,7 @@ class Contact < ApplicationRecord
   # validate :company_domain_not_on_blocklist
 
   def passed_bounce_check?
+    return true
     email = "john@usebouncer.com"
     api_key = "<your-api-key>"
 

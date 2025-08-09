@@ -12,7 +12,7 @@ gem "bootsnap", require: false
 gem "redis"
 gem "devise"
 gem "sidekiq"
-gem "ruby-openai"
+gem "openai"
 gem "carrierwave"
 gem "aws-sdk-s3", "~> 1"
 gem "stripe", "9.1.0"

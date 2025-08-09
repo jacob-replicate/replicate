@@ -35,16 +35,15 @@ module Prompts
     end
 
     def fetch_raw_output
-      response = client.chat(
-        parameters: {
-          model: "gpt-4o-2024-11-20",
-          messages: Array(@conversation&.message_history) + [{ role: "system", content: instructions }],
-          temperature: 0.3,
-        }
+      response = OpenAI::Client.new.chat.completions.create(
+        messages: Array(@conversation&.message_history) + [{ role: "system", content: instructions }],
+        model: "gpt-4o-2024-11-20"
       )
 
-      response.dig("choices", 0, "message", "content").to_s
+      content = response.choices.first.message[:content]
     end
+
+
 
     private
 
@@ -67,10 +66,6 @@ module Prompts
 
       text = File.read(full_path)
       @@template_cache[cache_key] = text
-    end
-
-    def client
-      OpenAI::Client.new(access_token: ENV["OPENAI_API_KEY"])
     end
 
     def instructions

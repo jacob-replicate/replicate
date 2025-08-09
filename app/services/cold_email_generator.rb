@@ -17,7 +17,7 @@ class ColdEmailGenerator
   def call
     return if @contacts.empty?
 
-    @send_times.each do |send_time|
+    @send_times.each_with_index do |send_time, i|
       inbox = @inboxes.shuffle.find { |inbox| inbox_has_room?(inbox[:email], send_time.hour) }
       next unless inbox
 
@@ -25,8 +25,17 @@ class ColdEmailGenerator
       break unless contact.present?
 
       message = ColdEmailVariants.build(inbox: inbox, contact: contact)
-      SendColdEmailWorker.perform_at(send_time, contact.id, message[:subject], message[:body_html], inbox)
+      # SendColdEmailWorker.perform_at(send_time, contact.id, message[:subject], message[:body_html], inbox)
+      puts [
+        send_time,
+        contact.id,
+        message[:subject],
+        message[:body_html],
+        inbox
+      ].join("\n")
+      puts "-------"
       @per_hour[inbox[:email]][send_time.hour] += 1
+      break if i == 5
     end
   end
 

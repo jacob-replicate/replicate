@@ -1,14 +1,15 @@
 - Postmark webhooks for coaching loop replies - https://account.postmarkapp.com/servers/16407823/streams/inbound/get-started
 - Cron job to stagger out weekly loop emails + weekly cold emails (assuming Contact#state is in the US)
 - Unsubscribe API endpoint
-- GPT 5
+- passed_bounce_check?
 
 Eventually:
 - Upload COI - https://account.vouch.us/members/coi?email=jacob%40replicate.info
+- RDS + Mini PC (Xubuntu) + VPN
 - MSA
 - DPA
 - Legal review of docs, fine to just ChatGPT them for now
-- RDS + Mini PC (Xubuntu) + VPN
+- GPT 5
 - Bounce checks (See: contact#passed_bounce_check?)
 - Safeguard to prevent duplicate Sidekiq jobs to send duplicate cold/loop emails
 - Cron job to filter inbox + draft replies
@@ -16,3 +17,4 @@ Eventually:
 - Better error handling if emails fail (e.g., bounce, throttling, etc)
 - :coaching_should_continue prompt -- uncomment guard clause in coaching message generator
 - Attach PDF's + inline JPG's once they close the loop
+- Protect your S3 credentials from misuse -- spin down old keys
