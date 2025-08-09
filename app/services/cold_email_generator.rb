@@ -1,135 +1,164 @@
 class ColdEmailGenerator
-  WORKDAY_HOURS = (9..17).to_a.freeze # 9 AM – 5 PM
-  MAX_PER_DAY = 30
-  MAX_PER_HOUR = 5
+  MAX_PER_HOUR            = 4
+  DEFAULT_PER_INBOX_RANGE = (20..30)
 
-  def self.call(count:)
-    leads = Contact.where(contacted: false)
-                   .where.not(email: nil)
-                   .where("score >= 80")
-                   .limit(count)
+  def initialize(min_score:, daily_limit: nil)
+    return unless should_run_today?
 
-    inbox_pool = inboxes.map { |inbox| inbox.merge(weight: rand(0.8..1.2)) }
-                        .flat_map { |inbox| Array.new((inbox[:weight] * 100).to_i, inbox) }
+    @min_score          = min_score
+    @inboxes            = inboxes
+    @targets_for_inbox  = per_inbox_targets(daily_limit) # { email => target_count }
+    @contacts           = fetch_contacts(total_message_limit)
+    @sent_total         = 0
+    @inbox_send_counts  = Hash.new { |h, k| h[k] = 0 }
+    @per_hour           = Hash.new { |h, inbox_email| h[inbox_email] = Hash.new { |x, hour_key| x[hour_key] = 0 } }
+  end
 
-    # Build realistic send schedule
-    schedule = build_daily_schedule(leads.size)
+  def call
+    return if @contacts.empty?
 
-    leads.each_with_index do |lead, idx|
-      unless lead.passed_bounce_check?
-        lead.update(email: nil, score: -1)
+    @contacts.each do |contact|
+      break if @sent_total >= total_message_limit
+
+      unless contact.passed_bounce_check?
+        contact.update_columns(email: nil, score: -1)
         next
       end
 
-      inbox = inbox_pool.sample
+      slot_time = next_valid_slot(contact)
+      next unless slot_time
 
-      variant_index = VariantCounter.increment!("cold_outreach_index:#{inbox[:email]}") - 1
+      inbox = pick_inbox_for(slot_time)
+      next unless inbox
+      next unless reserve(contact.id, slot_time)
 
-      subject_index =  variant_index / (intros.size * hooks.size * ctas.size)
-      intro_index   = (variant_index / (hooks.size * ctas.size)) % intros.size
-      hook_index    = (variant_index / ctas.size) % hooks.size
-      cta_index     =  variant_index % ctas.size
+      message = ColdEmailVariants.build(inbox: inbox, contact: contact)
 
-      subject = subjects[subject_index % subjects.size]
-      intro   = intros[intro_index % intros.size]
-      hook    = hooks[hook_index % hooks.size]
-      cta     = ctas[cta_index % ctas.size]
+      SendColdEmailWorker.perform_in(
+        [slot_time - Time.now, 5].max,
+        contact.id,
+        message[:subject],
+        message[:body_html],
+        inbox.merge(job_key: job_id_for(contact))
+      )
 
-      body = <<~HTML
-        #{intro}
-
-        #{hook}
-
-        #{cta}
-
-        #{inbox[:signature]}<br/><br/>
-        <span style="font-size: 14px">Replicate Software, LLC – 131 Continental Dr, Suite 305, Newark, DE (19713) – Unsubscribe</span>
-      HTML
-
-      send_time = schedule[idx]
-      SendColdEmailWorker.perform_in(send_time, lead.email, subject, body)
+      @per_hour[inbox[:email]][hour_key(slot_time)] += 1
+      @inbox_send_counts[inbox[:email]] += 1
+      contact.update_columns(contacted: true, contacted_at: Time.current)
+      @sent_total += 1
     end
   end
 
-  def self.build_daily_schedule(total_emails)
-    emails_per_day = rand((MAX_PER_DAY - 5)..(MAX_PER_DAY + 2))
-    emails_per_day = [emails_per_day, total_emails].min
+  private
 
-    slots = WORKDAY_HOURS.flat_map do |hour|
-      count_this_hour = rand(0..MAX_PER_HOUR)
-      Array.new(count_this_hour) { Time.now.change(hour: hour, min: rand(0..59)) }
+  def total_message_limit
+    @targets_for_inbox.values.sum
+  end
+
+  def should_run_today?
+    (1..4).cover?(Date.today.wday) && Holidays.on(Date.today, :us).empty?
+  end
+
+  def next_valid_slot(contact)
+    allowed_times_today(contact).find { |t| t > Time.now && any_inbox_has_capacity?(t) }
+  end
+
+  def pick_inbox_for(time)
+    eligible = @inboxes.select do |inbox|
+      @inbox_send_counts[inbox[:email]] < @targets_for_inbox[inbox[:email]] &&
+        @per_hour[inbox[:email]][hour_key(time)] < MAX_PER_HOUR
     end
+    eligible.min_by { |inbox| @inbox_send_counts[inbox[:email]] }
+  end
 
-    slots.sort.first(emails_per_day).map do |time|
-      delay_seconds = time - Time.now
-      delay_seconds.positive? ? delay_seconds : rand(60..600) # if already past, push into near future
+  def any_inbox_has_capacity?(time)
+    @inboxes.any? do |inbox|
+      @inbox_send_counts[inbox[:email]] < @targets_for_inbox[inbox[:email]] &&
+        @per_hour[inbox[:email]][hour_key(time)] < MAX_PER_HOUR
     end
   end
 
-  def self.subjects
-    [
-      "Preventing SEV-1s with weekly emails?",
-      "GPT loops that surface infra/security blind spots",
-      "A quieter way to sharpen production instincts",
-      "Weekly drills to prevent your next postmortem",
-      "Coaching SEV response (without the SEV)",
-    ]
+  def allowed_times_today(contact)
+    tz   = contact.timezone.to_s
+    zone = ActiveSupport::TimeZone[tz] || ActiveSupport::TimeZone["America/New_York"]
+    now  = Time.now
+    (9..17).map do |h_local|
+      local = zone.local(now.year, now.month, now.day, h_local, rand(0..59), rand(0..59))
+      Time.at(local.to_i)
+    end
   end
 
-  def self.intros
-    url = "https://replicate.info"
-    [
-      "I lead IAM for Terraform. On the side, I shipped #{url} to help teams uncover their infra/security blind spots.",
-      "I've been in lots of SEVs where judgment broke under pressure, so I built #{url} to help engineers sharpen their production instincts.",
-      "I'm a Staff Engineer at HashiCorp, and recently launched #{url} to help developers think clearly during production fires.",
-      "I spent years in incident threads where we all missed the same failure pattern. I launched #{url} recently to help ICs catch that stuff earlier — <i>without</i> needing a SEV to learn it.",
-      "I work at HashiCorp, and recently built a side project called #{url}. It helps surface infra/security risks before shipping to prod.",
-    ]
+  def fetch_contacts(limit)
+    Contact.where(contacted: false, unsubscribed: [false, nil])
+           .where.not(email: nil)
+           .where("score >= ?", @min_score)
+           .limit((limit * 1.5).ceil)
+           .to_a
+           .sort_by { |c| timezone_sort_key(c) }
+           .first(limit)
   end
 
-  def self.hooks
-    [
-      "Every Monday, GPT emails you a high-stakes production fire, makes you reason through it, and keeps pushing until you reach failure. <strong>Then</strong> the coaching starts.",
-      "It's a weekly pressure test delivered over email. GPT drops you into a SEV-1, asks where you'd look first, and pushes back on your thinking.",
-      "It's just a weekly email. GPT throws you into an incident, and forces you to break it down under pressure. Then it points out what you missed.",
-    ]
+  def timezone_sort_key(contact)
+    tz = ActiveSupport::TimeZone[contact.timezone.to_s]
+    tz ? tz.utc_offset : 0
   end
 
-  def self.ctas
-    [
-      "No ask. Just thought it might resonate.",
-      "Figured I'd send this once and leave it up to you.",
-      "It's wild how good LLMs are now. They still kinda suck at writing code, but they're great at this stuff.",
-      "It took me way too long to learn this stuff — hoping I can help save someone else the time.",
-      "It's a little harsh. Uncompromising. Surgical, even. But so is production.",
-      "SEV thinking, without the actual SEV.",
-      "I built this for myself, and figured the community might find it useful too.",
-      "Sparring with GPT is more efficient than reading 300-page books. Failure helps you grow faster.",
-    ]
+  def per_inbox_targets(daily_limit)
+    # If daily_limit provided, split evenly; otherwise use per-inbox message_target if present, else random 20–30.
+    if daily_limit
+      total = daily_limit.to_i
+      base  = total / @inboxes.size
+      extra = total % @inboxes.size
+      counts = @inboxes.each_index.map { |i| base + (i < extra ? 1 : 0) }
+    else
+      counts = @inboxes.map { |ibox| ibox[:message_target] || rand(DEFAULT_PER_INBOX_RANGE) }
+    end
+    @inboxes.map.with_index { |ibox, i| [ibox[:email], counts[i]] }.to_h
   end
 
-  def self.inboxes
+  def hour_key(time)
+    time.utc.strftime("%Y%m%d%H")
+  end
+
+  def reserve(contact_id, send_time)
+    key = "send:#{send_time.to_date}:#{contact_id}"
+    Sidekiq.redis { |r| r.set(key, 1, nx: true, ex: 172_800) }
+  end
+
+  def job_id_for(contact)
+    "jid:#{contact.id}:#{Date.current}"
+  end
+
+  def inboxes
     [
       {
-        email: "jc@try-replicate.info",
-        from_name: "J.C. (Replicate)",
-        signature: "Best,<br/>J.C."
+        email:         "jc@try-replicate.info",
+        from_name:     "J.C. (Replicate)",
+        signature:     "Best,<br/>J.C.",
+        json_key_path: "/path/to/jc.json",
+        message_target: nil # use default random 20–30 unless you set an integer here
       },
       {
-        email: "jacob@try-replicate.info",
-        from_name: "Jacob C.",
-        signature: "-- Jacob"
+        email:         "jacob@try-replicate.info",
+        from_name:     "Jacob C.",
+        signature:     "-- Jacob",
+        json_key_path: "/path/to/jacob.json",
+        message_target: nil
       },
       {
-        email: "jake@try-replicate.info",
-        from_name: "Jake from Replicate",
-        signature: "All the best,<br/>Jake"
+        email:         "jake@try-replicate.info",
+        from_name:     "Jake from Replicate",
+        signature:     "All the best,<br/>Jake",
+        json_key_path: "/path/to/jake.json",
+        message_target: nil
       },
       {
-        email: "comer@try-replicate.info",
-        from_name: "J. Comer",
-        signature: "Appreciate ya!"
-      },
+        email:         "comer@try-replicate.info",
+        from_name:     "J. Comer",
+        signature:     "Appreciate ya!",
+        json_key_path: "/path/to/comer.json",
+        message_target: nil
+      }
     ]
   end
 end
