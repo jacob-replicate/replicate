@@ -1,11 +1,11 @@
 class SendColdEmailWorker
   include Sidekiq::Worker
-  sidekiq_options queue: :outbound, retry: false, backtrace: false
+  sidekiq_options retry: false
 
   def perform(contact_id, subject, body_html, inbox)
     inbox   = inbox.transform_keys(&:to_sym)
     contact = Contact.find(contact_id)
-    return if contact.contacted?
+    return if contact.contacted? || contact.email.blank?
 
     from_email    = inbox[:email]
     from_name     = inbox[:from_name]
@@ -23,6 +23,7 @@ class SendColdEmailWorker
       "To: #{contact.email}",
       "From: #{from_name} <#{from_email}>",
       "Reply-To: #{from_email}",
+      "Date: #{Time.now.utc.rfc2822}",
       "Subject: #{subject}",
       "MIME-Version: 1.0",
       "Content-Type: text/html; charset=UTF-8",
@@ -33,7 +34,7 @@ class SendColdEmailWorker
     ].join("\r\n")
 
     client.send_user_message("me", Google::Apis::GmailV1::Message.new(raw: rfc822))
-    contact.update_columns(contacted: true, contacted_at: Time.current)
+    contact.update_columns(contacted: true)
   end
 
   def scopes

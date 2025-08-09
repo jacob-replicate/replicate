@@ -57,7 +57,8 @@ CREATE TABLE public.contacts (
     score_reason text,
     metadata jsonb DEFAULT '{}'::jsonb,
     name text,
-    cohort text
+    cohort text,
+    contacted boolean DEFAULT false NOT NULL
 );
 
 
@@ -410,6 +411,7 @@ ALTER TABLE ONLY public.employees
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250809174803'),
 ('20250727223433'),
 ('20250719171253'),
 ('20250719161016'),

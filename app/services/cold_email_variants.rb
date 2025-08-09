@@ -1,6 +1,6 @@
 class ColdEmailVariants
   def self.build(inbox:, contact:)
-    i        = VariantCounter.increment!("cold_outreach_index:#{inbox[:email]}") - 1
+    i        = VariantCounter.increment!("cold_outreach_index") - 1
     subject  = subjects[(i / (intros.size * hooks.size * ctas.size)) % subjects.size]
     intro    = intros[(i / (hooks.size * ctas.size)) % intros.size]
     hook     = hooks[(i / ctas.size) % hooks.size]

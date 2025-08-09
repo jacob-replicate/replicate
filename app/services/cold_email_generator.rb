@@ -4,7 +4,7 @@ class ColdEmailGenerator
   MAX_MESSAGES_PER_DAY = SEND_HOURS.size * MAX_PER_HOUR
 
   def initialize(min_score:)
-    return unless should_run_today?
+    return unless should_run_today? || Rails.env.development?
 
     @min_score = min_score
     @inboxes = INBOXES.dup
@@ -27,7 +27,6 @@ class ColdEmailGenerator
       message = ColdEmailVariants.build(inbox: inbox, contact: contact)
       SendColdEmailWorker.perform_at(send_time, contact.id, message[:subject], message[:body_html], inbox)
       @per_hour[inbox[:email]][send_time.hour] += 1
-      contact.update_columns(contacted: true, contacted_at: Time.current)
     end
   end
 
@@ -43,7 +42,7 @@ class ColdEmailGenerator
   end
 
   def fetch_contacts
-    Contact.where(contacted: false, unsubscribed: [false, nil]).where.not(email: nil).where("score >= ?", @min_score).order(score: :desc).to_s
+    Contact.where(contacted: false).where.not(email: nil).where("score >= ?", @min_score).order(score: :desc).to_a
   end
 
   def fetch_next_contact
