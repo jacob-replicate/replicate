@@ -1,13 +1,23 @@
 class ColdEmailGenerator
+  WORKDAY_HOURS = (9..17).to_a.freeze # 9 AM – 5 PM
+  MAX_PER_DAY = 30
+  MAX_PER_HOUR = 5
+
   def self.call(count:)
-    leads = Contact.where(contacted: false).where.not(email: nil).where("score >= 80").limit(count)
+    leads = Contact.where(contacted: false)
+                   .where.not(email: nil)
+                   .where("score >= 80")
+                   .limit(count)
 
     inbox_pool = inboxes.map { |inbox| inbox.merge(weight: rand(0.8..1.2)) }
                         .flat_map { |inbox| Array.new((inbox[:weight] * 100).to_i, inbox) }
 
-    leads.each do |lead|
+    # Build realistic send schedule
+    schedule = build_daily_schedule(leads.size)
+
+    leads.each_with_index do |lead, idx|
       unless lead.passed_bounce_check?
-        contact.update(email: nil, score: -1)
+        lead.update(email: nil, score: -1)
         next
       end
 
@@ -20,19 +30,39 @@ class ColdEmailGenerator
       hook_index    = (variant_index / ctas.size) % hooks.size
       cta_index     =  variant_index % ctas.size
 
-      lead.conversations.create!(
-        context: {
-          conversation_type: "cold_outreach",
-          from_name: inbox[:from_name],
-          email: inbox[:email],
-          subject: subjects[subject_index % subjects.size],
-          intro:   intros[intro_index % intros.size],
-          hook:    hooks[hook_index % hooks.size],
-          cta:     ctas[cta_index % ctas.size],
-          footer: "Replicate Software, LLC  - 131 Continental Dr, Suite 305, Newark, DE (19713) - Unsubscribe", # TODO: Make unsubscribe link
-          signature: inbox[:signature],
-        }
-      )
+      subject = subjects[subject_index % subjects.size]
+      intro   = intros[intro_index % intros.size]
+      hook    = hooks[hook_index % hooks.size]
+      cta     = ctas[cta_index % ctas.size]
+
+      body = <<~HTML
+        #{intro}
+
+        #{hook}
+
+        #{cta}
+
+        #{inbox[:signature]}<br/><br/>
+        <span style="font-size: 14px">Replicate Software, LLC – 131 Continental Dr, Suite 305, Newark, DE (19713) – Unsubscribe</span>
+      HTML
+
+      send_time = schedule[idx]
+      SendColdEmailWorker.perform_in(send_time, lead.email, subject, body)
+    end
+  end
+
+  def self.build_daily_schedule(total_emails)
+    emails_per_day = rand((MAX_PER_DAY - 5)..(MAX_PER_DAY + 2))
+    emails_per_day = [emails_per_day, total_emails].min
+
+    slots = WORKDAY_HOURS.flat_map do |hour|
+      count_this_hour = rand(0..MAX_PER_HOUR)
+      Array.new(count_this_hour) { Time.now.change(hour: hour, min: rand(0..59)) }
+    end
+
+    slots.sort.first(emails_per_day).map do |time|
+      delay_seconds = time - Time.now
+      delay_seconds.positive? ? delay_seconds : rand(60..600) # if already past, push into near future
     end
   end
 
