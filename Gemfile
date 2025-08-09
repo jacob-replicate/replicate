@@ -21,6 +21,7 @@ gem "rack-attack"
 gem 'awesome_print'
 gem 'pgvector'
 gem 'postmark-rails'
+gem 'holidays'
 
 group :development, :test do
   gem "dotenv"
