@@ -31,7 +31,6 @@ class ColdEmailGenerator
 
       inbox = pick_inbox_for(slot_time)
       next unless inbox
-      next unless reserve(contact.id, slot_time)
 
       message = ColdEmailVariants.build(inbox: inbox, contact: contact)
       SendColdEmailWorker.perform_in([slot_time - Time.now, 5].max, contact.id, message[:subject], message[:body_html], inbox)
@@ -90,14 +89,5 @@ class ColdEmailGenerator
 
   def hour_key(time)
     time.utc.strftime("%Y%m%d%H")
-  end
-
-  def reserve(contact_id, send_time)
-    key = "send:#{send_time.to_date}:#{contact_id}"
-    Sidekiq.redis { |r| r.set(key, 1, nx: true, ex: 172_800) }
-  end
-
-  def job_id_for(contact)
-    "jid:#{contact.id}:#{Date.current}"
   end
 end
