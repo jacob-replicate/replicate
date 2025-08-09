@@ -64,7 +64,7 @@ class ColdEmailGenerator
     SEND_HOURS.each do |hour|
       per_inbox = 3 + rand(0..1)
       iterations = per_inbox * @inboxes.size
-      spacing = 60.0 / iterations
+      spacing = 60 / iterations
 
       iterations.times do |i|
         base_minute = (i * spacing).floor

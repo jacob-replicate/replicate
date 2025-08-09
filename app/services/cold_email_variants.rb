@@ -1,24 +1,17 @@
 class ColdEmailVariants
   def self.build(inbox:, contact:)
-    i        = VariantCounter.increment!("cold_outreach_index") - 1
-    subject  = subjects[(i / (intros.size * hooks.size * ctas.size)) % subjects.size]
-    intro    = intros[(i / (hooks.size * ctas.size)) % intros.size]
-    hook     = hooks[(i / ctas.size) % hooks.size]
-    cta      = ctas[i % ctas.size]
-
     greeting = "Hi #{contact.first_name},"
-
-    footer = %Q(Replicate Software, LLC – 131 Continental Dr, Suite 305, Newark, DE (19713) – <a href="https://replicate.info/unsub/#{contact.uuid}">Unsubscribe</a>)
+    footer = %Q(Replicate Software, LLC – 131 Continental Dr, Suite 305, Newark, DE (19713) – <a href="https://replicate.info/contacts/#{contact.id}/unsubscribe">Unsubscribe</a>)
 
     body_html = <<~HTML
       <p>#{greeting}</p>
-      <p>#{intro} #{hook}</p>
-      <p>#{cta}</p>
+      <p>#{intros.sample} #{hooks.sample}</p>
+      <p>#{ctas.sample}</p>
       <p>#{inbox[:signature]}</p>
       <p>#{footer}</p>
     HTML
 
-    { subject: subject, body_html: body_html }
+    { subject: subjects.sample, body_html: body_html }
   end
 
   def self.subjects
