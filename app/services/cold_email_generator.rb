@@ -1,7 +1,7 @@
 class ColdEmailGenerator
   MAX_PER_HOUR            = 4
   DEFAULT_PER_INBOX_RANGE = (20..30)
-  SEND_HOURS              = (9..17) # server time
+  SEND_HOURS              = (9..17) # server time; can be Range or Array of hours
 
   def initialize(min_score:)
     return unless should_run_today?
@@ -12,7 +12,9 @@ class ColdEmailGenerator
     @contacts           = fetch_contacts(total_message_limit)
     @sent_total         = 0
     @inbox_send_counts  = Hash.new { |h, k| h[k] = 0 }
-    @per_hour           = Hash.new { |h, email| h[email] = Hash.new { |x, hour_key| x[hour_key] = 0 } }
+    @per_hour           = Hash.new { |h, email| h[email] = Hash.new { |x, hour_key| x[hour] = 0 } }
+
+    @day_slots = build_day_slots # precompute once
   end
 
   def call
@@ -49,14 +51,23 @@ class ColdEmailGenerator
   end
 
   def should_run_today?
-    holidays = Holidays.on(Date.parse"September 1, 2025").select { |x| x[:regions].include?(:us) }
-    (1..4).cover?(Date.today.wday) && holidays.empty?
+    (1..4).cover?(Date.today.wday) && Holidays.on(Date.today, :us).empty?
+  end
+
+  def build_day_slots
+    hours = SEND_HOURS.is_a?(Range) ? SEND_HOURS.to_a : Array(SEND_HOURS)
+    now   = Time.now
+    slots = hours.map { |h| now.change(hour: h, min: rand(0..59), sec: rand(0..59)) }
+    slots.select! { |t| t > now }
+    slots.sort
   end
 
   def next_valid_slot
-    SEND_HOURS.map do |h|
-      Time.now.change(hour: h, min: rand(0..59), sec: rand(0..59))
-    end.find { |t| t > Time.now && any_inbox_has_capacity?(t) }
+    while (t = @day_slots.shift)
+      return t if any_inbox_has_capacity?(t)
+      # if no capacity for that hour, skip it and try the next slot
+    end
+    nil
   end
 
   def pick_inbox_for(time)
