@@ -1,91 +1,80 @@
 class ColdEmailGenerator
-  MAX_PER_HOUR            = 4
-  DEFAULT_PER_INBOX_RANGE = (20..30)
-  SEND_HOURS              = (9..17).to_a
+  MAX_PER_HOUR = 4
+  SEND_HOURS = (10..17).to_a
+  MAX_MESSAGES_PER_DAY = SEND_HOURS.size * MAX_PER_HOUR
 
   def initialize(min_score:)
     return unless should_run_today?
 
-    @min_score         = min_score
-    @inboxes           = INBOXES.dup
-    @targets_for_inbox = @inboxes.map.with_index { |inbox, i| [inbox[:email], rand(DEFAULT_PER_INBOX_RANGE)] }.to_h
-    @contacts          = fetch_contacts
+    @min_score = min_score
+    @inboxes = INBOXES.dup
+    @contacts = fetch_contacts
     @per_hour  = Hash.new { |h, email| h[email] = Hash.new { |x, hour| x[hour] = 0 } }
-    @day_slots = build_day_slots
+    @send_times = build_send_times
+    @contact_index = 0
   end
 
   def call
     return if @contacts.empty?
 
-    @contacts.each do |contact|
-      break if total_sends_so_far >= total_message_limit
+    @send_times.each do |send_time|
+      inbox = @inboxes.shuffle.find { |inbox| inbox_has_room?(inbox[:email], send_time.hour) }
+      next unless inbox
 
-      unless contact.passed_bounce_check?
-        contact.update_columns(email: nil, score: -1)
-        next
-      end
-
-      slot_time, inbox = next_slot_and_inbox
-      break unless slot_time
+      contact = fetch_next_contact
+      break unless contact.present?
 
       message = ColdEmailVariants.build(inbox: inbox, contact: contact)
-      SendColdEmailWorker.perform_in([slot_time - Time.now, 5].max, contact.id, message[:subject], message[:body_html], inbox)
-      @per_hour[inbox[:email]][hour_key(slot_time)] += 1
+      SendColdEmailWorker.perform_at(send_time, contact.id, message[:subject], message[:body_html], inbox)
+      @per_hour[inbox[:email]][send_time.hour] += 1
       contact.update_columns(contacted: true, contacted_at: Time.current)
     end
   end
 
   private
 
-  def inbox_total_sent(email)
-    @per_hour[email].values.sum
-  end
-
-  def total_sends_so_far
-    @per_hour.values.sum { |h| h.values.sum }
-  end
-
-  def inbox_has_daily_room?(email)
-    inbox_total_sent(email) < @targets_for_inbox[email]
-  end
-
-  def inbox_has_hour_room?(email, hour)
-    @per_hour[email][hour] < MAX_PER_HOUR
-  end
-
-  def total_message_limit
-    @targets_for_inbox.values.sum
+  def inbox_has_room?(email, hour)
+    (@per_hour[email].values.sum < MAX_MESSAGES_PER_DAY) && (@per_hour[email][hour] < MAX_PER_HOUR)
   end
 
   def should_run_today?
-    (1..4).cover?(Date.today.wday) && Holidays.on(Date.today, :us).empty?
+    holiday = Holidays.on(Date.today).select { |x| x[:regions].include?(:us) }.any?
+    (1..4).cover?(Date.today.wday) && !(holiday)
   end
 
   def fetch_contacts
-    limit = (total_message_limit * 1.5).ceil
-    Contact.where(contacted: false, unsubscribed: [false, nil]).where.not(email: nil).where("score >= ?", @min_score).limit(limit).to_a
+    Contact.where(contacted: false, unsubscribed: [false, nil]).where.not(email: nil).where("score >= ?", @min_score).order(score: :desc).to_s
   end
 
-  def build_day_slots
-    now = Time.now
-    SEND_HOURS.map { |h| now.change(hour: h, min: rand(0..59), sec: rand(0..59)) }.sort
+  def fetch_next_contact
+    contact = nil
+
+    while @contact_index < @contacts.length && contact.nil?
+      contact = @contacts[@contact_index]
+      @contact_index += 1
+
+      return contact if contact.passed_bounce_check?
+      contact.update_columns(email: nil, score: -1)
+    end
   end
 
-  def next_slot_and_inbox
-    @day_slots.each_with_index do |t, idx|
-      hour = hour_key(t)
-      eligible = @inboxes.select { |inbox| inbox_has_daily_room?(inbox[:email]) && inbox_has_hour_room?(inbox[:email], hour) }
-      next if eligible.empty?
+  def build_send_times
+    send_times = []
+    now = Time.find_zone("America/New_York").now
 
-      inbox = eligible.min_by { |inbox| inbox_total_sent(inbox[:email]) }
-      @day_slots.delete_at(idx)
-      return [t, inbox]
+    SEND_HOURS.each do |hour|
+      per_inbox = 3 + rand(0..1)
+      iterations = per_inbox * @inboxes.size
+      spacing = 60.0 / iterations
+
+      iterations.times do |i|
+        base_minute = (i * spacing).floor
+        minute = base_minute + rand(0...spacing)
+        second = rand(0..59)
+        send_times << now.change(hour: hour, min: minute, sec: second)
+      end
     end
 
-    nil
-  end
-
-  def hour_key(time)
-    time.utc.strftime("%Y%m%d%H")
+    send_times.sort
   end
 end
