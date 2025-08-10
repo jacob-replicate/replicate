@@ -15,11 +15,11 @@
   </p>
 
   <p class="mb-4">
-    I lead IAM for an infra/sec market leader, and spent most of <%= link_to 'my career', 'https://linkedin.com/in/jacobcomer', class: "text-blue-600 hover:text-blue-700 hover:underline transition font-semibold" %> building for regulated industries. Replicate is the opposite of that world. I'll get a SOC 2 eventually, but I'm not sure it derisks much.
+    I lead IAM for an infra/sec market leader, and spent most of <%= link_to 'my career', 'https://linkedin.com/in/jacobcomer', class: "text-blue-600 hover:text-blue-700 hover:underline transition font-semibold" %> building for regulated industries. Replicate is the opposite of that world. I have <span class="font-semibold">0 employees</span> and the entire backend is automated.
   </p>
 
   <p class="mb-4">
-    I have <span class="font-semibold">0 employees</span> and the entire backend is automated + locked down. No plans to change that.
+
   </p>
 
   <p>
@@ -37,6 +37,11 @@
 
       <h3 class="font-semibold mt-4 mb-1">Data encrypted in transit and at rest</h3>
       <p>All data is encrypted at rest using AES-256.</p>
+
+      <h3 class="font-semibold mt-4 mb-1">Backup process</h3>
+      <p>
+        <a href="https://www.heroku.com/postgres" class="text-blue-600 hover:text-blue-700 hover:underline transition">Heroku Postgres</a> maintains rolling application database backups, with old snapshots being automatically pruned over time. Backups can be restored within minutes.
+      </p>
 
       <h3 class="font-semibold mt-4 mb-1">Audit logging</h3>
       <p>Administrative actions (e.g., organization deletions) are logged immutably and retained for 12 months in secure, append-only S3 buckets.</p>
@@ -61,7 +66,7 @@
       <p>Inactive conversations are automatically deleted after 3 months. I use that data to recreate email history when engineers reply a few weeks later. No AI training. Email <a href="mailto:support@replicate.info" class="text-blue-600 hover:text-blue-700 hover:underline transition">support@replicate.info</a> to request immediate deletion. It won't get stuck in a Postgres backup forever.</p>
 
       <h3 class="font-semibold mt-4 mb-1">Planned end-of-service</h3>
-      <p>If I ever spin down the project, you'll receive advance notice, along with recent coaching history, full source code, and next steps. Support will remain available during the shutdown window. This platform costs about <span class="font-semibold">$200/mo</span> to host. Even if I get hit a bus, it'll keep running for years.</p>
+      <p>If I ever spin down the project, you'll receive advance notice, along with recent coaching history, full source code, and next steps. Support will remain available during the shutdown window.
     </div>
 
     <div>
