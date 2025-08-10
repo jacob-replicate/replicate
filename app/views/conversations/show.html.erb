@@ -111,7 +111,7 @@
   </div>
 
   <% if @conversation.context["conversation_type"] == "landing_demo" %>
-    <div class="<%= @conversation.messages.count == 9 ? "" : "hidden mt-10" %>">
+    <div id="cta" class="<%= @conversation.messages.count == 9 ? "" : "hidden mt-10" %>">
       <%= render "static/trial_form" %>
     </div>
   <% else %>
@@ -161,7 +161,7 @@
 
           const formWrapper = document.getElementById("email-upload");
           formWrapper.innerHTML = `
-        <div class="text-center text-md text-gray-800 py-6">
+        <div class="text-center text-md text-gray-800 py-6 mt-8">
           <span class="font-medium">You're in. The first email goes out Monday.</span>
           <div class="mt-2">
             <a href="/coaching" class="text-blue-600 hover:text-blue-700 hover:underline hover:underline-offset-4 decoration-1 transition">Test your production instincts.&nbsp;&rarr;</a>
