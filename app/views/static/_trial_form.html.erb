@@ -1,11 +1,7 @@
 <form id="email-upload" class="flex flex-col items-center">
   <div class="border border-gray-200 rounded-xl shadow bg-white p-6 md:w-2/3" id="cta">
-    <div class="mb-6 text-2xl tracking-tight">
-      <span class="font-medium">Test</span><span class="inline-block mx-2">&#8594;</span><span class="text-red-600 font-medium">Fail</span><span class="inline-block mx-2">&#8594;</span><span class="font-medium">Grow</span>
-    </div>
-
     <div class="mb-4">
-      This is the only form to start your trial. No credit cards. No demos.
+      Fill this out, and the emails start <span class="font-semibold">next Monday</span>. No credit cards. No demos.
     </div>
 
     <div class="mb-4">
@@ -13,11 +9,7 @@
     </div>
 
     <div class="mb-4">
-      I'll reach out a month in with docs you can sign whenever. Your data will get cleaned up automatically if it doesn't work out. No action required from you.
-    </div>
-
-    <div class="mb-6">
-      See you next Monday.
+      I'll reach out next month with docs you can sign whenever. Your data will get cleaned up automatically if it doesn't work out. No action required from you.
     </div>
 
       <div>
@@ -38,11 +30,15 @@
       <div class="text-xs text-gray-500 mt-4">
         By submitting, you agree to the <a href="/terms" class="text-blue-500 hover:underline">Terms</a> and <a href="/privacy" class="text-blue-500 hover:underline">Privacy Policy</a>.
       </div>
-  </div>
-
-  <div class="mt-8 text-center">
-    <button type="submit" class="rounded-lg px-5 py-2.5 text-lg font-semibold text-white bg-slate-600 hover:bg-slate-700 active:bg-slate-800 inline-block transition shadow-sm hover:shadow-md focus:outline-none">
-      Begin Coaching
-    </button>
+    <!-- CTA -->
+    <div class="mt-6 w-full sm:mt-8">
+      <button type="submit"
+              class="inline-flex w-full items-center justify-center rounded-lg bg-slate-700 px-5 py-3 text-lg font-semibold text-white shadow-sm transition hover:bg-slate-800 hover:shadow-md active:bg-slate-900 sm:w-auto focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400">
+        <svg class="mr-2 h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+          <path d="M10.75 3.5l5.75 5.75-5.75 5.75v-3.5H4.5v-4.5h6.25v-3.5z"/>
+        </svg>
+        Begin Coaching
+      </button>
+    </div>
   </div>
 </form>
