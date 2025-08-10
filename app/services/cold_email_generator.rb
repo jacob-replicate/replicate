@@ -25,7 +25,7 @@ class ColdEmailGenerator
       break unless contact.present?
 
       message = ColdEmailVariants.build(inbox: inbox, contact: contact)
-      # SendColdEmailWorker.perform_at(send_time, contact.id, message[:subject], message[:body_html], inbox)
+      SendColdEmailWorker.perform_at(send_time, contact.id, message[:subject], message[:body_html], inbox)
       puts [
         send_time,
         contact.id,
