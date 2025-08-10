@@ -36,11 +36,11 @@
       <p>All infrastructure is provisioned and managed by Heroku (in the <span class="font-semibold">us-east-1</span> AWS region).</p>
 
       <h3 class="font-semibold mt-4 mb-1">Data encrypted in transit and at rest</h3>
-      <p>All data is encrypted at rest using AES-256.</p>
+      <p>All data is encrypted at rest using AES-256, with a minimum of TLS 1.2 in transit.</p>
 
       <h3 class="font-semibold mt-4 mb-1">Backup process</h3>
       <p>
-        <a href="https://www.heroku.com/postgres" class="text-blue-600 hover:text-blue-700 hover:underline transition">Heroku Postgres</a> maintains rolling application database backups, with old snapshots being automatically pruned over time. Backups can be restored within minutes.
+        <a href="https://www.heroku.com/postgres" class="text-blue-600 hover:text-blue-700 hover:underline transition">Heroku Postgres</a> maintains rolling database backups, and prunes old snapshots automatically over time. Backups can be restored in minutes, and are captured at least once every 24 hours.
       </p>
 
       <h3 class="font-semibold mt-4 mb-1">Audit logging</h3>
