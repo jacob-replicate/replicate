@@ -3,6 +3,7 @@
 - SendColdEmailWorker - wire up Gmail API json
 - passed_bounce_check?
 - Unsubscribe API endpoint
+- Make the conversation screenshot in landing footer align with what's highlighted in the IDE.
 
 Eventually:
 - Upload COI - https://account.vouch.us/members/coi?email=jacob%40replicate.info

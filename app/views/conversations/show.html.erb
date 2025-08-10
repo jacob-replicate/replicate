@@ -111,44 +111,8 @@
   </div>
 
   <% if @conversation.context["conversation_type"] == "landing_demo" %>
-    <div class="border border-gray-200 rounded-xl shadow bg-white p-6 md:w-2/3 mt-10 <%= @conversation.messages.count == 9 ? "" : "hidden" %>" id="cta">
-      <div class="mb-4">
-        Your first quarter is free. No credit card, no demos.
-      </div>
-
-      <div class="mb-4">
-        I'll reach out a month in with docs you can sign whenever. Your data will get cleaned up automatically if it doesn't work out.
-      </div>
-
-      <div class="mb-8">
-        See you next Monday.
-      </div>
-
-      <form id="email-upload">
-        <div>
-          <label for="name-input" class="block font-medium mb-1 tracking-normal">Name</label>
-          <input type="text" id="name-input" class="block w-full border border-neutral-300 shadow-sm rounded-md bg-white px-3 py-1.5 text-gray-900 outline-1 -outline-offset-1 outline-indigo-100 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 text-sm" />
-        </div>
-        <div class="mt-6">
-          <label for="email-input" class="block font-medium mb-1 tracking-normal">Email</label>
-          <input type="text" id="email-input" class="block w-full border border-neutral-300 shadow-sm rounded-md bg-white px-3 py-1.5 text-gray-900 outline-1 -outline-offset-1 outline-indigo-100 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 text-sm" />
-        </div>
-        <div class="mt-6">
-          <label for="team-emails-input" class="block font-medium tracking-normal">Team Emails</label>
-          <div class="text-sm text-gray-600 mb-2">
-            Optional. You can email <a href="mailto:support@replicate.info" class="text-blue-600 hover:text-blue-700 font-medium hover:underline hover:underline-offset-4 decoration-1 transition">support@replicate.info</a> to change them later.
-          </div>
-          <textarea id="team-emails-input" rows="4" class="block w-full border border-neutral-300 shadow-sm rounded-md bg-white px-3 py-1.5 text-gray-900 outline-1 -outline-offset-1 outline-indigo-100 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 text-sm" placeholder="(any format works)"></textarea>
-        </div>
-        <div class="text-xs text-gray-500 mt-4">
-          By submitting, you agree to the <a href="/terms" class="text-blue-500 hover:underline">Terms</a> and <a href="/privacy" class="text-blue-500 hover:underline">Privacy Policy</a>.
-        </div>
-        <div class="mt-8 text-center">
-          <button type="submit" class="rounded-lg px-5 py-2.5 text-lg font-semibold text-white bg-slate-600 hover:bg-slate-700 active:bg-slate-800 inline-block transition shadow-sm hover:shadow-md focus:outline-none">
-            Begin Coaching
-          </button>
-        </div>
-      </form>
+    <div class="<%= @conversation.messages.count == 9 ? "" : "hidden mt-10" %>">
+      <%= render "static/trial_form" %>
     </div>
   <% else %>
     <div class="pb-4">
