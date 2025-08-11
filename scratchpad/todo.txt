@@ -5,6 +5,7 @@
 - passed_bounce_check?
 - Unsubscribe API endpoint
 - Make the conversation screenshot in landing footer align with what's highlighted in the IDE.
+- Tailscale Mini PC: curl -fsSL https://tailscale.com/install.sh | sh
 
 Eventually:
 - Upload COI - https://account.vouch.us/members/coi?email=jacob%40replicate.info
