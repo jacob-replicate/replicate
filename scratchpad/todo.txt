@@ -7,6 +7,11 @@
 - Make the conversation screenshot in landing footer align with what's highlighted in the IDE.
 - Tailscale Mini PC: curl -fsSL https://tailscale.com/install.sh | sh
 
+- Disable cookies
+    - config.middleware.delete ActionDispatch::Cookies
+    - config.middleware.delete ActionDispatch::Session::CookieStore
+    - check app/channels/application_cable/connection.rb "current_user" call
+
 Eventually:
 - Upload COI - https://account.vouch.us/members/coi?email=jacob%40replicate.info
 - RDS + Mini PC (Xubuntu) + VPN

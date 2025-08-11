@@ -15,7 +15,7 @@
   </p>
 
   <p class="mb-4">
-    I lead IAM for an infra/sec market leader, and spent most of <%= link_to 'my career', 'https://linkedin.com/in/jacobcomer', class: "text-blue-600 hover:text-blue-700 hover:underline transition font-semibold" %> building for regulated industries. Replicate is the opposite of that world. I have <span class="font-semibold">0 employees</span> and the entire backend is automated.
+    I lead IAM for an infra/sec market leader, and spent most of <%= link_to 'my career', 'https://linkedin.com/in/jacobcomer', class: "text-blue-600 hover:text-blue-700 hover:underline transition font-semibold" %> building for regulated industries. Replicate is the opposite of that world. I have <span class="font-semibold">0 employees</span> and everything's automated. <span class="font-semibold">No SOC 2 yet.</span>
   </p>
 
   <p class="mb-4">
@@ -33,10 +33,13 @@
       <h2 class="font-semibold mb-2 text-2xl tracking-tight">Architecture</h2>
 
       <h3 class="font-semibold mt-4 mb-1">Hosted on Heroku (AWS)</h3>
-      <p>All infrastructure is provisioned and managed by Heroku (in the <span class="font-semibold">us-east-1</span> AWS region).</p>
+      <p>All infra is provisioned/managed by Heroku (in the <span class="font-semibold">us-east-1</span> AWS region, with Heroku's HA failover).</p>
 
       <h3 class="font-semibold mt-4 mb-1">Data encrypted in transit and at rest</h3>
       <p>All data is encrypted at rest using AES-256, with a minimum of TLS 1.2 in transit.</p>
+
+      <h3 class="font-semibold mt-4 mb-1">No cookie policy</h3>
+      <p>I don't store visitor state (via cookies, or any other method). No logins, no GA, no need for a policy for tech that I'm not using on the site.</p>
 
       <h3 class="font-semibold mt-4 mb-1">Backup process</h3>
       <p>
@@ -59,13 +62,14 @@
       <h3 class="font-semibold mt-4 mb-1">No user accounts for engineers</h3>
       <p>Coaching is delivered by email. No sessions, passwords, or user-managed devices.</p>
 
-      <h3 class="font-semibold mt-4 mb-1">User provisioning (SCIM, SSO)</h3>
-      <p>SCIM is planned as an <span class="font-medium">optional</span> enhancement for mid-2026. Administrators currently manage access by emailing personnel changes to <a href="mailto:support@replicate.info" class="text-blue-600 hover:text-blue-700 hover:underline transition">support@replicate.info</a>. They will soon be able to login to a secure admin portal (via <a href="https://auth0.com" class="text-blue-600 hover:text-blue-700 hover:underline transition">Auth0 SSO</a>) to manage team members and billing. No user tracking, just logistics.</p>
+      <h3 class="font-semibold mt-6 mb-1">User provisioning (SCIM, SSO)</h3>
+      <p>SCIM is planned as an <span class="font-medium">optional</span> enhancement for early-2026. Administrators currently manage access by emailing personnel changes to <a href="mailto:support@replicate.info" class="text-blue-600 hover:text-blue-700 hover:underline transition">support@replicate.info</a>. They will soon be able to login to a secure admin portal (via <a href="https://auth0.com" class="text-blue-600 hover:text-blue-700 hover:underline transition">Auth0 SSO</a>) to manage team members and billing. No user tracking, just logistics.</p>
+      <p class="mt-2">If you sign up a few weeks beforehand, it will be an opt-in process. GRC and security teams will have as much time as they need to validate + approve/deny the process change. I don't have all the details yet, but will say that I've spent most of my career focused on enterprise IAM. I think approvals will be quick.</p>
 
-      <h3 class="font-semibold mt-4 mb-1">You own your data</h3>
+      <h3 class="font-semibold mt-6 mb-1">You own your data</h3>
       <p>Inactive conversations are automatically deleted after 3 months. I use that data to recreate email history when engineers reply a few weeks later. No AI training. Email <a href="mailto:support@replicate.info" class="text-blue-600 hover:text-blue-700 hover:underline transition">support@replicate.info</a> to request immediate deletion. It won't get stuck in a Postgres backup forever.</p>
 
-      <h3 class="font-semibold mt-4 mb-1">Planned end-of-service</h3>
+      <h3 class="font-semibold mt-6 mb-1">Planned end-of-service</h3>
       <p>If I ever spin down the business, you'll receive advance notice, full source code, your data, and next steps. Support will remain available during the shutdown window. That said, I built Replicate to keep myself sharp. It's not going away anytime soon. Sparring with GPT is faster than reading books.
     </div>
 

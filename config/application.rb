@@ -35,5 +35,7 @@ module Advance
     end
 
     config.active_record.schema_format = :sql
+    config.middleware.delete ActionDispatch::Cookies
+    config.middleware.delete ActionDispatch::Session::CookieStore
   end
 end
