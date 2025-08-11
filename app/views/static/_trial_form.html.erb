@@ -42,3 +42,49 @@
     </div>
   </div>
 </form>
+
+
+<script type="text/javascript">
+  document.addEventListener("DOMContentLoaded", () => {
+    const coachingForm = document.querySelector("email-upload");
+    if (coachingForm) {
+      coachingForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const name = document.getElementById("name-input")?.value?.trim();
+        const email = document.getElementById("email-input")?.value?.trim();
+        const engineerEmails = document.getElementById("team-emails-input")?.value?.trim();
+
+        if (!name || !email || !engineerEmails) {
+          alert("Please fill out all fields.");
+          return;
+        }
+
+        try {
+          const response = await fetch("/organizations", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]')?.content
+            },
+            body: JSON.stringify({ name, email, engineer_emails: engineerEmails })
+          });
+
+          if (!response.ok) throw new Error("Request failed");
+
+          const formWrapper = document.getElementById("email-upload");
+          formWrapper.innerHTML = `
+          <div class="text-center text-md text-gray-800 py-6 mt-8">
+            <span class="font-medium">You're in. The first email goes out Monday.</span>
+            <div class="mt-2">
+              <a href="/coaching" class="text-blue-600 hover:text-blue-700 hover:underline hover:underline-offset-4 decoration-1 transition">Test your production instincts.&nbsp;&rarr;</a>
+            </div>
+          </div>
+        `;
+        } catch (error) {
+          alert("Something went wrong. Please try again.");
+        }
+      });
+    }
+  });
+</script>
