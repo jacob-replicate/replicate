@@ -1,4 +1,4 @@
-class Employee < ApplicationRecord
+class Member < ApplicationRecord
   belongs_to :organization
 
   ROLES = %w[owner engineer]
