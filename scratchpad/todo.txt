@@ -28,3 +28,12 @@ Eventually:
 - :coaching_should_continue prompt -- uncomment guard clause in coaching message generator
 - Attach PDF's + inline JPG's once they close the loop
 - Protect your S3 credentials from misuse -- spin down old keys
+
+- Move payments to Mercury account, not personal card.
+    - Transfer cash after paycheck
+    - https://drive.google.com/drive/u/1/folders/1G8nwfu3FUkew3KPd7IuhyPkZy3HNZe8W
+    - Verify Google micro-deposits
+    - Do Postmark receipts
+    - Make a new OpenAI account
+    - Reopen Apollo eventually
+    - Double check all of your addresses.
