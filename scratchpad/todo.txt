@@ -15,6 +15,7 @@
 Eventually:
 - Heroku Postgres on Mini PC
 - MSA + DPA
+    - Make sure to indicate you're only charging on subscribed users, not admins.
 - DPA
 - Terms + Privacy review
 - GPT 5
@@ -31,8 +32,6 @@ Eventually:
 - Move payments to Mercury account, not personal card.
     - Transfer cash after paycheck
     - https://drive.google.com/drive/u/1/folders/1G8nwfu3FUkew3KPd7IuhyPkZy3HNZe8W
-    - Verify Google micro-deposits
-    - Do Postmark receipts
     - Make a new OpenAI account
     - Reopen Apollo eventually
     - Double check all of your addresses.

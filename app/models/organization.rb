@@ -1,3 +1,3 @@
 class Organization < ApplicationRecord
-  has_many :employees, dependent: :destroy
+  has_many :members, dependent: :destroy
 end

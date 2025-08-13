@@ -14,7 +14,7 @@ class OrganizationsController < ApplicationController
     ActiveRecord::Base.transaction do
       org = Organization.create!(name: name)
 
-      org.employees.create!(
+      org.members.create!(
         name: name,
         email: email,
         role: "owner",
@@ -22,7 +22,7 @@ class OrganizationsController < ApplicationController
       )
 
       engineer_emails.each do |eng_email|
-        org.employees.create!(
+        org.members.create!(
           email: eng_email,
           role: "engineer",
           should_receive_emails: true

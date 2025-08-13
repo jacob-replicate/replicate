@@ -78,10 +78,10 @@ CREATE TABLE public.conversations (
 
 
 --
--- Name: employees; Type: TABLE; Schema: public; Owner: -
+-- Name: members; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.employees (
+CREATE TABLE public.members (
     id bigint NOT NULL,
     organization_id bigint NOT NULL,
     name character varying,
@@ -89,15 +89,17 @@ CREATE TABLE public.employees (
     role character varying NOT NULL,
     should_receive_emails boolean DEFAULT true NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    email_domain character varying,
+    subscribed boolean DEFAULT true NOT NULL
 );
 
 
 --
--- Name: employees_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: members_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE public.employees_id_seq
+CREATE SEQUENCE public.members_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -106,10 +108,10 @@ CREATE SEQUENCE public.employees_id_seq
 
 
 --
--- Name: employees_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: members_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE public.employees_id_seq OWNED BY public.employees.id;
+ALTER SEQUENCE public.members_id_seq OWNED BY public.members.id;
 
 
 --
@@ -240,10 +242,10 @@ CREATE TABLE public.users (
 
 
 --
--- Name: employees id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: members id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.employees ALTER COLUMN id SET DEFAULT nextval('public.employees_id_seq'::regclass);
+ALTER TABLE ONLY public.members ALTER COLUMN id SET DEFAULT nextval('public.members_id_seq'::regclass);
 
 
 --
@@ -285,11 +287,11 @@ ALTER TABLE ONLY public.conversations
 
 
 --
--- Name: employees employees_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: members members_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.employees
-    ADD CONSTRAINT employees_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY public.members
+    ADD CONSTRAINT members_pkey PRIMARY KEY (id);
 
 
 --
@@ -348,17 +350,17 @@ CREATE INDEX index_conversations_on_recipient ON public.conversations USING btre
 
 
 --
--- Name: index_employees_on_organization_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_members_on_organization_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_employees_on_organization_id ON public.employees USING btree (organization_id);
+CREATE INDEX index_members_on_organization_id ON public.members USING btree (organization_id);
 
 
 --
--- Name: index_employees_on_organization_id_and_email; Type: INDEX; Schema: public; Owner: -
+-- Name: index_members_on_organization_id_and_email; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_employees_on_organization_id_and_email ON public.employees USING btree (organization_id, email);
+CREATE UNIQUE INDEX index_members_on_organization_id_and_email ON public.members USING btree (organization_id, email);
 
 
 --
@@ -397,10 +399,10 @@ CREATE UNIQUE INDEX index_users_on_unlock_token ON public.users USING btree (unl
 
 
 --
--- Name: employees fk_rails_52498fc759; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: members fk_rails_52498fc759; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.employees
+ALTER TABLE ONLY public.members
     ADD CONSTRAINT fk_rails_52498fc759 FOREIGN KEY (organization_id) REFERENCES public.organizations(id);
 
 
@@ -411,6 +413,9 @@ ALTER TABLE ONLY public.employees
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250813215753'),
+('20250813215707'),
+('20250813215545'),
 ('20250809174803'),
 ('20250727223433'),
 ('20250719171253'),
