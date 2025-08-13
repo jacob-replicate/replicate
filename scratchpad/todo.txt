@@ -13,13 +13,10 @@
     - check app/channels/application_cable/connection.rb "current_user" call
 
 Eventually:
-- Upload COI - https://account.vouch.us/members/coi?email=jacob%40replicate.info
-- RDS + Mini PC (Xubuntu) + VPN
-- MSA
+- Heroku Postgres on Mini PC
+- MSA + DPA
 - DPA
-- Legal review of docs, fine to just ChatGPT them for now
-- Terms
-    - Make sure to spell out
+- Terms + Privacy review
 - GPT 5
 - Bounce checks (See: contact#passed_bounce_check?)
 - Swap out Alex avatar
@@ -39,3 +36,4 @@ Eventually:
     - Make a new OpenAI account
     - Reopen Apollo eventually
     - Double check all of your addresses.
+- Audit logging
