@@ -3,78 +3,149 @@
   <p class="text-sm text-gray-500 mb-6">Last updated: August 2025</p>
 
   <p class="mb-6">
-    I send <span class="font-semibold">one flat, annual invoice</span> based on team size. <span class="font-semibold">No metering. No auto-renewal.</span>
+    I send <span class="font-semibold">one flat invoice</span>. Payment is due <span class="font-semibold">up front</span> for the entire term. If you lock in the <span class="font-semibold">20%</span> multi-year discount, you must pay for those additional years in the <span class="font-semibold">same invoice</span> as your first year. You get to skip next year's renewal completely, and I get to pull revenue forward + scale Replicate faster.
   </p>
 
   <p class="mb-6">
-    Try it for a few months and sign when you're ready. I'll send a <span class="font-semibold">pre-signed MSA</span> via DocuSign a month in, along with an optional <span class="font-semibold">DPA</span>. If you do nothing, the emails eventually stop, and your data gets wiped.
+    There is <span class="font-semibold">no metering</span> and <span class="font-semibold">no auto-renewal.</span> You must explicitly request and approve invoices at the end of every term. You will never get hit with surprise overage charges. If you want to upgrade mid-term, I can cancel your old contract early, and roll the unused balance into your new contract.
   </p>
 
   <p class="mb-6">
-    <span class="font-semibold">Redlines</span> cost an additional <span class="font-semibold">$20,000</span> per year if we align on terms.
+    <span class="font-semibold">You get a 3-month free trial</span>. No commitments. I'll send a <a href="/msa.pdf" class="text-blue-600 hover:underline font-semibold">pre-signed MSA</a> via DocuSign a month in, which includes a required <span class="font-semibold">DPA</span>. If you do nothing, the emails eventually stop, and your data gets wiped.
   </p>
 
   <p class="mb-6">
-    Your invoice starts on the 1st of the <span class="font-semibold">following month</span>, based on when you sign. If you sign on <span class="font-semibold">March 17</span>, your billing period is <span class="font-semibold">April 1</span> – <span class="font-semibold">March 31</span>. Happy to prorate your first year to align with budget cycles.
+    Your invoice starts on the 1st of the month <span class="font-semibold">after</span> your free 3-month trial ends, no matter when you sign. For example, if your trial ends on <span class="font-semibold">March 17</span>, I'll eat the cost for the rest of March, set your billing period to <span class="font-semibold">April 1</span> – <span class="font-semibold">March 31</span>, and make sure you never lose access. Happy to prorate to align with budget cycles.
   </p>
 
   <p class="mb-6">
-    Invoices are emailed (via Stripe) with <span class="font-semibold">full remittance details</span>. Pay by <span class="font-semibold">card</span>, <span class="font-semibold">ACH</span>, or <span class="font-semibold">wire</span>. Net 30.
+    Invoices are emailed (via Stripe) with <span class="font-semibold">full remittance details</span>. Pay by <span class="font-semibold">card</span>, <span class="font-semibold">ACH</span>, or <span class="font-semibold">wire</span>. Net 30 only.
   </p>
 
-  <div class="lg:mt-0 lg:basis-1/2">
-    <div class="grid gap-2 mb-4 border border-gray-200 rounded-md overflow-hidden text-sm shadow">
-      <div class="grid grid-cols-2 bg-gray-100 text-gray-800 border-b border-gray-200">
-        <div class="px-4 py-2 font-semibold">Team Size</div>
-        <div class="px-4 py-2"><span class="font-semibold">Annual Price</span> (USD)</div>
+  <!-- Pricing: desktop table (md+), text-left numbers -->
+  <div class="hidden md:block">
+    <div class="overflow-hidden rounded-lg border border-gray-200 shadow-sm">
+      <table class="min-w-full divide-y divide-gray-200 text-sm">
+        <thead class="bg-gray-50 text-gray-700">
+        <tr>
+          <th class="px-5 py-3 text-left font-semibold">Team Size</th>
+          <th class="px-5 py-3 text-left font-semibold">1 Year</th>
+          <th class="px-5 py-3 text-left font-semibold">2 Years</th>
+          <th class="px-5 py-3 text-left font-semibold">3 Years</th>
+        </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-100">
+        <tr class="hover:bg-gray-50/60">
+          <td class="px-5 py-3">Up to <span class="font-semibold">10</span> engineers</td>
+          <td class="px-5 py-3 tabular-nums text-left">$5,000</td>
+          <td class="px-5 py-3 tabular-nums text-left">$8k</td>
+          <td class="px-5 py-3 tabular-nums text-left">$12k</td>
+        </tr>
+        <tr class="hover:bg-gray-50/60">
+          <td class="px-5 py-3">Up to <span class="font-semibold">25</span> engineers</td>
+          <td class="px-5 py-3 tabular-nums text-left">$10,000</td>
+          <td class="px-5 py-3 tabular-nums text-left">$16k</td>
+          <td class="px-5 py-3 tabular-nums text-left">$24k</td>
+        </tr>
+        <tr class="hover:bg-gray-50/60">
+          <td class="px-5 py-3">Up to <span class="font-semibold">75</span> engineers</td>
+          <td class="px-5 py-3 tabular-nums text-left">$20,000</td>
+          <td class="px-5 py-3 tabular-nums text-left">$32k</td>
+          <td class="px-5 py-3 tabular-nums text-left">$48k</td>
+        </tr>
+        <tr class="hover:bg-gray-50/60">
+          <td class="px-5 py-3">Up to <span class="font-semibold">150</span> engineers</td>
+          <td class="px-5 py-3 tabular-nums text-left">$40,000</td>
+          <td class="px-5 py-3 tabular-nums text-left">$64k</td>
+          <td class="px-5 py-3 tabular-nums text-left">$96k</td>
+        </tr>
+        <tr class="hover:bg-gray-50/60">
+          <td class="px-5 py-3">Up to <span class="font-semibold">300</span> engineers</td>
+          <td class="px-5 py-3 tabular-nums text-left">$80,000</td>
+          <td class="px-5 py-3 tabular-nums text-left">$128k</td>
+          <td class="px-5 py-3 tabular-nums text-left">$192k</td>
+        </tr>
+        <tr class="hover:bg-gray-50/60">
+          <td class="px-5 py-3">Up to <span class="font-semibold">1,000</span> engineers</td>
+          <td class="px-5 py-3 tabular-nums text-left">$100,000</td>
+          <td class="px-5 py-3 tabular-nums text-left">$160k</td>
+          <td class="px-5 py-3 tabular-nums text-left">$240k</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Pricing: mobile cards (sm), text-left numbers; hide on md+ -->
+  <div class="md:hidden rounded-md border-2 border-neutral-200" style="max-height: 383px; overflow: auto">
+    <!-- Card: Up to 10 -->
+    <div class="border-b border-gray-200 bg-white p-4">
+      <div class="text-sm text-gray-600">Up to <span class="font-semibold text-gray-900">10</span> engineers</div>
+      <div class="mt-2 grid grid-cols-3 gap-3">
+        <div><div class="text-xs text-gray-500">1 Year</div><div class="tabular-nums text-left font-semibold">$5,000</div></div>
+        <div><div class="text-xs text-gray-500">2 Years</div><div class="tabular-nums text-left font-semibold">$8k</div></div>
+        <div><div class="text-xs text-gray-500">3 Years</div><div class="tabular-nums text-left font-semibold">$12k</div></div>
       </div>
-      <div class="grid grid-cols-2 border-b border-gray-100">
-        <div class="px-4 py-2">Up to <span class="font-semibold">5</span> engineers</div>
-        <div class="px-4 py-2">$3,000</div>
+    </div>
+
+    <!-- Card: Up to 25 -->
+    <div class="border-b border-gray-200 bg-white p-4">
+      <div class="text-sm text-gray-600">Up to <span class="font-semibold text-gray-900">25</span> engineers</div>
+      <div class="mt-2 grid grid-cols-3 gap-3">
+        <div><div class="text-xs text-gray-500">1 Year</div><div class="tabular-nums text-left font-semibold">$10,000</div></div>
+        <div><div class="text-xs text-gray-500">2 Years</div><div class="tabular-nums text-left font-semibold">$16k</div></div>
+        <div><div class="text-xs text-gray-500">3 Years</div><div class="tabular-nums text-left font-semibold">$24k</div></div>
       </div>
-      <div class="grid grid-cols-2 border-b border-gray-100">
-        <div class="px-4 py-2">Up to <span class="font-semibold">10</span> engineers</div>
-        <div class="px-4 py-2">$5,000</div>
+    </div>
+
+    <!-- Card: Up to 75 -->
+    <div class="rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
+      <div class="text-sm text-gray-600">Up to <span class="font-semibold text-gray-900">75</span> engineers</div>
+      <div class="mt-2 grid grid-cols-3 gap-3">
+        <div><div class="text-xs text-gray-500">1 Year</div><div class="tabular-nums text-left font-semibold">$20,000</div></div>
+        <div><div class="text-xs text-gray-500">2 Years</div><div class="tabular-nums text-left font-semibold">$32k</div></div>
+        <div><div class="text-xs text-gray-500">3 Years</div><div class="tabular-nums text-left font-semibold">$48k</div></div>
       </div>
-      <div class="grid grid-cols-2 border-b border-gray-100">
-        <div class="px-4 py-2">Up to <span class="font-semibold">25</span> engineers</div>
-        <div class="px-4 py-2">$10,000</div>
+    </div>
+
+    <!-- Card: Up to 150 -->
+    <div class="rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
+      <div class="text-sm text-gray-600">Up to <span class="font-semibold text-gray-900">150</span> engineers</div>
+      <div class="mt-2 grid grid-cols-3 gap-3">
+        <div><div class="text-xs text-gray-500">1 Year</div><div class="tabular-nums text-left font-semibold">$40,000</div></div>
+        <div><div class="text-xs text-gray-500">2 Years</div><div class="tabular-nums text-left font-semibold">$64k</div></div>
+        <div><div class="text-xs text-gray-500">3 Years</div><div class="tabular-nums text-left font-semibold">$96k</div></div>
       </div>
-      <div class="grid grid-cols-2 border-b border-gray-100">
-        <div class="px-4 py-2">Up to <span class="font-semibold">75</span> engineers</div>
-        <div class="px-4 py-2">$20,000</div>
+    </div>
+
+    <!-- Card: Up to 300 -->
+    <div class="rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
+      <div class="text-sm text-gray-600">Up to <span class="font-semibold text-gray-900">300</span> engineers</div>
+      <div class="mt-2 grid grid-cols-3 gap-3">
+        <div><div class="text-xs text-gray-500">1 Year</div><div class="tabular-nums text-left font-semibold">$80,000</div></div>
+        <div><div class="text-xs text-gray-500">2 Years</div><div class="tabular-nums text-left font-semibold">$128k</div></div>
+        <div><div class="text-xs text-gray-500">3 Years</div><div class="tabular-nums text-left font-semibold">$192k</div></div>
       </div>
-      <div class="grid grid-cols-2 border-b border-gray-100">
-        <div class="px-4 py-2">Up to <span class="font-semibold">150</span> engineers</div>
-        <div class="px-4 py-2">$40,000</div>
-      </div>
-      <div class="grid grid-cols-2 border-b border-gray-100">
-        <div class="px-4 py-2">Up to <span class="font-semibold">300</span> engineers</div>
-        <div class="px-4 py-2">$80,000</div>
-      </div>
-      <div class="grid grid-cols-2 border-b border-gray-100">
-        <div class="px-4 py-2">Up to <span class="font-semibold">1,000</span> engineers</div>
-        <div class="px-4 py-2">$100,000</div>
-      </div>
-      <div class="grid grid-cols-2">
-        <div class="px-4 py-2">Unlimited Usage</div>
-        <div class="px-4 py-2">$200,000</div>
-      </div>
-      <div class="px-4 py-2 text-sm border-t border-gray-200 bg-neutral-100 md:text-center rounded-bl-md rounded-br-md">
-        <span class="font-medium">One fixed invoice per year.</span> <span class="block md:inline md:mt-0">No surprise mid-cycle upgrades.</span>
+    </div>
+
+    <!-- Card: Up to 1,000 -->
+    <div class="rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
+      <div class="text-sm text-gray-600">Up to <span class="font-semibold text-gray-900">1,000</span> engineers</div>
+      <div class="mt-2 grid grid-cols-3 gap-3">
+        <div><div class="text-xs text-gray-500">1 Year</div><div class="tabular-nums text-left font-semibold">$100,000</div></div>
+        <div><div class="text-xs text-gray-500">2 Years</div><div class="tabular-nums text-left font-semibold">$160k</div></div>
+        <div><div class="text-xs text-gray-500">3 Years</div><div class="tabular-nums text-left font-semibold">$240k</div></div>
       </div>
     </div>
   </div>
 
-  <p class="mb-10 text-sm text-center">
-    Pre-pay up to 3 years to lock in <span class="font-semibold">20%</span> off today's prices. Email <a href="mailto:support@replicate.info" class="text-blue-600 hover:underline">support@replicate.info</a> for an invoice.
+  <p class="mt-6 mb-1 font-semibold">Renewal Process</p>
+  <p class="mb-4">I'll email you 30 days before term end. Renewals require explicit confirmation from an administrator.</p>
+
+  <p class="mb-1 font-semibold">Standardized Agreements</p>
+  <p class="mb-4">
+    I do not engage with contract redlines. This is a simple, email-based product with no customer data. Bespoke terms force me to prioritize one client over the broader community.
   </p>
-
-  <p class="mb-1 font-semibold">Your price is fixed for the year</p>
-  <p class="mb-4">Just one fixed, non-refundable annual invoice (Net 30). If the team grows past your current tier, great, they can still use the product. Just renew at a higher tier next year. No surprises. No monthly pricing.</p>
-
-  <p class="mb-1 font-semibold">Renewal Process</p>
-  <p class="mb-4">I'll email you 30 days before term end. Renewals require explicit confirmation from an administrator. You will not receive an invoice unless you choose to continue, every year.</p>
 
   <p class="font-medium mb-1">Sales Tax</p>
   <p class="mb-4">
