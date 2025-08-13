@@ -18,6 +18,8 @@ Eventually:
 - MSA
 - DPA
 - Legal review of docs, fine to just ChatGPT them for now
+- Terms
+    - Make sure to spell out
 - GPT 5
 - Bounce checks (See: contact#passed_bounce_check?)
 - Swap out Alex avatar
