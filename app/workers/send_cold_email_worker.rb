@@ -3,6 +3,8 @@ class SendColdEmailWorker
   sidekiq_options retry: false
 
   def perform(contact_id, subject, body_html, inbox)
+    return
+
     inbox   = inbox.transform_keys(&:to_sym)
     contact = Contact.find(contact_id)
     return if contact.contacted? || contact.email.blank?

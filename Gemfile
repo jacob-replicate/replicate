@@ -22,6 +22,7 @@ gem 'awesome_print'
 gem 'pgvector'
 gem 'postmark-rails'
 gem 'holidays'
+gem 'whenever'
 
 group :development, :test do
   gem "dotenv"
