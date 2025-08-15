@@ -10,11 +10,16 @@ end
 
 every 30.minutes do
   command <<~CMD
-    cd /home/jacob/replicate &&
-    git pull &&
-    sudo -n bundle install &&
-    sudo bundle exec whenever --update-crontab &&
-    sudo pkill -f sidekiq || true &&
-    sudo bundle exec sidekiq -c 15 -d -L log/sidekiq.log -P tmp/pids/sidekiq.pid -e production
+    bash -lc '
+      source /home/jacob/.bashrc &&
+      cd /home/jacob/code/replicate &&
+      git pull &&
+      bundle install &&
+      bundle exec whenever --update-crontab &&
+      pkill -f sidekiq || true &&
+      nohup bundle exec sidekiq -c 15 -e production \
+        -L log/sidekiq.log --pidfile tmp/pids/sidekiq.pid \
+        >/dev/null 2>&1 &
+    '
   CMD
 end
