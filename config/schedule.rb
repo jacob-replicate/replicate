@@ -1,8 +1,4 @@
 set :output, "/home/jacob/cron_log.log"
-set :environment, "production"
-set :job_template, "bash -l -c ':job'"            # login shell => loads your env
-env :PATH, "/usr/local/bin:/usr/bin:/bin"
-
 job_type :sh, 'bash -lc ":task"'
 
 every :monday, at: "6:00am" do
