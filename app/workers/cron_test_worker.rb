@@ -3,7 +3,7 @@ class CronTestWorker
 
   def perform(path = "/home/jacob/cron_test.txt")
     File.open(path, "a") do |file|
-      file.puts Time.now
+      file.puts "#{Time.now} - #{Contact.count}"
     end
   end
 end
