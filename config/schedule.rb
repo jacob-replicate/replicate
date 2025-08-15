@@ -1,4 +1,5 @@
 set :output, "/home/jacob/cron_log.log"
+job_type :sh, 'bash -lc ":task"'
 
 every :monday, at: "6:00am" do
   # runner "ColdEmailGenerator.new(min_score: 90).call"
