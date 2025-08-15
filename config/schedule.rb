@@ -16,6 +16,6 @@ every 1.minutes do
     bundle install && \
     bundle exec whenever --update-crontab && \
     pkill -f sidekiq && \
-    nohup bundle exec sidekiq -c 15 -e production -L log/sidekiq.log --pidfile tmp/pids/sidekiq.pid >/dev/null 2>&1 &
+    nohup bundle exec sidekiq -c 15 -L log/sidekiq.log --pidfile tmp/pids/sidekiq.pid >/dev/null 2>&1 &
   CMD
 end
