@@ -8,12 +8,14 @@ every 1.minutes do
   runner "CronTestWorker.perform_async"
 end
 
-every 30.minutes do
-  command "bash -lc 'source /home/jacob/.bashrc'"
-  command "bash -lc 'cd /home/jacob/code/replicate'"
-  command "bash -lc 'git pull'"
-  command "bash -lc 'bundle install'"
-  command "bash -lc 'bundle exec whenever --update-crontab'"
-  command "bash -lc 'pkill -f sidekiq || true'"
-  command "bash -lc 'nohup bundle exec sidekiq -c 15 -e production -L log/sidekiq.log --pidfile tmp/pids/sidekiq.pid'"
+every 1.minutes do
+  sh <<~'CMD'
+    source /home/jacob/.bashrc
+    cd /home/jacob/code/replicate
+    git pull
+    bundle install
+    bundle exec whenever --update-crontab
+    pkill -f sidekiq
+    nohup bundle exec sidekiq -c 15 -e production -L log/sidekiq.log --pidfile tmp/pids/sidekiq.pid >/dev/null 2>&1 &
+  CMD
 end
