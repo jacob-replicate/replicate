@@ -6,10 +6,6 @@ every :monday, at: "6:00am" do
 end
 
 every 1.minutes do
-  runner "CronTestWorker.perform_async"
-end
-
-every 1.minutes do
   sh <<~'CMD'
     cd /home/jacob/code/replicate && \
     git pull && \
@@ -18,4 +14,6 @@ every 1.minutes do
     pkill -f sidekiq && \
     nohup bundle exec sidekiq -c 15 -L log/sidekiq.log --pidfile tmp/pids/sidekiq.pid >/dev/null 2>&1 &
   CMD
+
+  runner "CronTestWorker.perform_async"
 end
