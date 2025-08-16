@@ -23,6 +23,7 @@ gem 'pgvector'
 gem 'postmark-rails'
 gem 'holidays'
 gem 'whenever'
+gem 'google-apis-gmail_v1', '~> 0.1'
 
 group :development, :test do
   gem "dotenv"
