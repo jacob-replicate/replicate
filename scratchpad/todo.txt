@@ -6,6 +6,7 @@
 - Unsubscribe API endpoint
 - Make the conversation screenshot in landing footer align with what's highlighted in the IDE.
 - Tailscale Mini PC: curl -fsSL https://tailscale.com/install.sh | sh
+- Form is too narrow on show.html.erb, doesn't align with homepage
 
 - Disable cookies
     - config.middleware.delete ActionDispatch::Cookies
