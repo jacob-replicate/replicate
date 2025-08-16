@@ -2,7 +2,7 @@ set :output, "/home/jacob/cron_log.log"
 set :environment, 'production'
 env :PATH, '/home/jacob/.rbenv/shims:/home/jacob/.rbenv/bin:/usr/local/bin:/usr/bin:/bin'
 job_type :sh, "/home/jacob/bin/envwrap bash -lc ':task'"
-job_type :restart_sidekiq, "PATH=/usr/bin:/bin:/usr/sbin:/sbin /bin/systemctl restart replicate-sidekiq.service"
+job_type :restart_sidekiq, "sudo /bin/systemctl restart replicate-sidekiq.service"
 
 every 1.minutes do
   sh <<~CMD
