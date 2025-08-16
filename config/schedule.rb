@@ -12,8 +12,8 @@ every 1.minutes do
   CMD
 end
 
-every :saturday, at: '2:10pm' do
-  sh "cd /home/jacob && touch cron_test_scheduled.txt"
+every :weekday, at: '7:00am' do
+  sh "cd /home/jacob/code/replicate && bin/rails runner 'ColdEmailGenerator.new(min_score: 90).call' >> /home/jacob/cron_log.log 2>&1"
 end
 
 every 1.minutes do

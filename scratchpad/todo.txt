@@ -1,10 +1,8 @@
-- Form submission logic on footer CTA homepage - extract into partial from show.html.erb
 - Postmark webhooks for coaching loop replies - https://account.postmarkapp.com/servers/16407823/streams/inbound/get-started
 - Cron job to stagger out weekly loop emails + weekly cold emails (assuming Contact#state is in the US)
-- SendColdEmailWorker - wire up Gmail API json
 - passed_bounce_check?
 - Unsubscribe API endpoint
-- Make the conversation screenshot in landing footer align with what's highlighted in the IDE.
+- AI grading on form submission - you're gonna get a lot of bullshit responses to grade once public
 
 Eventually:
 - "View GPT Prompt" link in bottom right, below conversation images on homepage.
@@ -12,7 +10,6 @@ Eventually:
 - GPT 5
 - Bounce checks (See: contact#passed_bounce_check?)
 - Swap out Alex avatar
-- Safeguard to prevent duplicate Sidekiq jobs to send duplicate cold/loop emails
 - Cron job to filter inbox + draft replies
 - Marketing newsletter - initial email puzzle (e.g., /incidents/corrupted-invoices) -- already tracking emails, don't need to send yet
 - Better error handling if emails fail (e.g., bounce, throttling, etc)

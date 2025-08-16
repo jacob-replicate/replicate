@@ -15,6 +15,7 @@ class ColdEmailGenerator
   end
 
   def call
+    return
     return if @contacts.empty?
 
     @send_times.each_with_index do |send_time, i|
