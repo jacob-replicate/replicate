@@ -1,6 +1,8 @@
 class ConversationDriverWorker
   include Sidekiq::Worker
 
+  sidekiq_options retry: false, lock: :until_executed
+
   def perform(conversation_id, message_body = nil)
     conversation = Conversation.find_by(id: conversation_id)
     return if conversation.blank?

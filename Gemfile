@@ -24,6 +24,7 @@ gem 'postmark-rails'
 gem 'holidays'
 gem 'whenever'
 gem 'google-apis-gmail_v1', '~> 0.1'
+gem "sidekiq-unique-jobs"
 
 group :development, :test do
   gem "dotenv"

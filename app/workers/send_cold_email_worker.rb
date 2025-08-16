@@ -1,6 +1,7 @@
 class SendColdEmailWorker
   include Sidekiq::Worker
-  sidekiq_options retry: false
+
+  sidekiq_options retry: false, lock: :until_executed
 
   def perform(contact_id, inbox)
     inbox   = inbox.transform_keys(&:to_sym)
