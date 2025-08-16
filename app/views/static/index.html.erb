@@ -103,8 +103,8 @@
           <div class="lg:basis-3/5 space-y-6 order-2 lg:order-1">
             <%= render "trial_form", form_width_class: "" %>
           </div>
-          <div class="lg:basis-2/5 space-y-6 order-1 lg:order-2">
-            <div class="grid gap-2 mb-8 border border-gray-200 rounded-md overflow-hidden text-sm shadow">
+          <div class="lg:basis-2/5 order-1 lg:order-2">
+            <div class="grid gap-2 border border-gray-200 rounded-md overflow-hidden text-sm shadow">
               <div class="grid grid-cols-2 bg-gray-100 text-gray-800 border-b border-gray-200">
                 <div class="px-4 py-2 font-semibold">Team Size</div>
                 <div class="px-4 py-2"><span class="font-semibold">Annual Price</span> (USD)</div>
@@ -140,6 +140,9 @@
               <div class="px-4 py-2 text-sm border-t border-gray-200 bg-neutral-100 rounded-bl-md rounded-br-md">
                 <span class="font-medium">One invoice.</span> No metering or auto-renewal. <span class="block mt-1">Supports partial terms to align with budget cycles.</span>
               </div>
+            </div>
+            <div class="mt-3 hidden lg:block">
+              <%= render "signature" %>
             </div>
           </div>
         </div>
