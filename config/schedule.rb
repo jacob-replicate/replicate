@@ -3,7 +3,7 @@ set :environment, 'production'
 env :PATH, '/home/jacob/.rbenv/shims:/home/jacob/.rbenv/bin:/usr/local/bin:/usr/bin:/bin'
 job_type :sh, "/home/jacob/bin/envwrap bash -lc ':task'"
 
-every 1.minutes do
+every 1.hour do
   sh <<~CMD
     cd /home/jacob/code/replicate && \
     git pull && \
