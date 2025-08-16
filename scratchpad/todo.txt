@@ -1,8 +1,7 @@
 Cold
 - Enrich + bounce check (passed_bounce_check?)
-- Unsubscribe API endpoint
+- Unsubscribe API endpoint (double check in dropdown)
 - Finish testing staggering script
-- Verify Contact#state is in the US
 
 Transactional
 - Postmark webhooks for coaching loop replies - https://account.postmarkapp.com/servers/16407823/streams/inbound/get-started

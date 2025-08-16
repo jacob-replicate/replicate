@@ -22,7 +22,7 @@ class ColdEmailGenerator
       inbox = @inboxes.shuffle.find { |inbox| inbox_has_room?(inbox[:email], send_time.hour) }
       next unless inbox
 
-      contact = fetch_next_contact
+      contact = fetch_next_contact!
       break unless contact.present?
 
       SendColdEmailWorker.perform_at(send_time, contact.id, inbox)
@@ -38,14 +38,14 @@ class ColdEmailGenerator
 
   def should_run_today?
     holiday = Holidays.on(Date.today).select { |x| x[:regions].include?(:us) }.any?
-    (1..4).cover?(Date.today.wday) && !(holiday)
+    (1..5).cover?(Date.today.wday) && !(holiday)
   end
 
   def fetch_contacts
     Contact.us.enriched.where(contacted: false).where("score >= ?", @min_score).order(score: :desc).to_a
   end
 
-  def fetch_next_contact
+  def fetch_next_contact!
     contact = nil
 
     while @contact_index < @contacts.length && contact.nil?
