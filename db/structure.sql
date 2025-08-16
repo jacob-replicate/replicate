@@ -58,7 +58,8 @@ CREATE TABLE public.contacts (
     metadata jsonb DEFAULT '{}'::jsonb,
     name text,
     cohort text,
-    contacted boolean DEFAULT false NOT NULL
+    contacted boolean DEFAULT false NOT NULL,
+    unsubscribed boolean DEFAULT false NOT NULL
 );
 
 
@@ -413,6 +414,7 @@ ALTER TABLE ONLY public.members
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250816212502'),
 ('20250813215753'),
 ('20250813215707'),
 ('20250813215545'),

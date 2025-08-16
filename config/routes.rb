@@ -15,6 +15,7 @@ Rails.application.routes.draw do
   get "/security", to: "static#security"
   get '/knowledge-gaps', to: "static#knowledge_gaps"
   get '/coaching', to: "static#coaching"
+  get '/contacts/:id/unsubscribe', to: "contacts#unsubscribe"
 
   resources :conversations, only: [:create, :show]
   resources :messages, only: [:create]
