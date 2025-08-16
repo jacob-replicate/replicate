@@ -12,10 +12,8 @@ every 1.minutes do
   CMD
 end
 
-every 1.minutes do
-  sh <<~CMD
-    sudo /bin/systemctl restart replicate-sidekiq.service
-  CMD
+every :saturday, at: '2:10pm' do
+  sh "cd /home/jacob && touch cron_test_scheduled.txt"
 end
 
 every 1.minutes do
