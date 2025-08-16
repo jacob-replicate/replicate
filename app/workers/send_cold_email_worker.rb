@@ -29,7 +29,7 @@ class SendColdEmailWorker
       "Subject: #{variant[:subject]}",
       "MIME-Version: 1.0",
       "Content-Type: text/html; charset=UTF-8",
-      "List-Unsubscribe: <https://replicate.info/unsub/#{contact.id}>, <mailto:#{from_email}?subject=unsubscribe>",
+      "List-Unsubscribe: <https://replicate.info/contacts/#{contact.id}/unsubscribe>, <mailto:#{from_email}?subject=unsubscribe>",
       "List-Unsubscribe-Post: List-Unsubscribe=One-Click",
       "",
       variant[:body_html]
