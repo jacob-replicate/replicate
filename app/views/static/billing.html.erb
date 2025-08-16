@@ -12,12 +12,19 @@
 
   <p class="mb-6">
     I'll send a <a href="/replicate-msa-dpa.pdf" class="text-blue-600 hover:underline font-semibold">pre-signed MSA</a> via DocuSign a month in, which includes a required <span class="font-semibold">DPA</span>. If you do nothing, the emails eventually stop, and your data gets wiped.
+    Invoices are emailed (via Stripe) with <span class="font-semibold">full remittance details</span>. Pay by <span class="font-semibold">card</span>, <span class="font-semibold">ACH</span>, or <span class="font-semibold">wire</span>. Net 30 only.
     Here are my <a href="/replicate-w9.pdf" class="text-blue-600 hover:underline font-semibold" target="_blank">W-9</a> and
-    <%= link_to 'COI', '/replicate-coi.pdf', class: "text-blue-600 hover:underline font-semibold", target: "_blank" %> PDF's.
+    <%= link_to 'COI', '/replicate-coi.pdf', class: "text-blue-600 hover:underline font-semibold", target: "_blank" %> docs.
+  </p>
+
+  <p class="flex flex-row items-center mb-6 md:hidden">
+    <img src="/jacob-square.jpg" class="rounded-full w-11 h-11 mr-3 border border-gray-500" />
+    <a href="mailto:jacob@replicate.info" class="text-blue-600 hover:text-blue-700 text-[17px] hover:underline hover:underline-offset-4 decoration-1 transition flex items-center">
+      jacob@replicate.info
+    </a>
   </p>
 
   <p class="mb-6">
-    Invoices are emailed (via Stripe) with <span class="font-semibold">full remittance details</span>. Pay by <span class="font-semibold">card</span>, <span class="font-semibold">ACH</span>, or <span class="font-semibold">wire</span>. Net 30 only.
   </p>
 
   <p class="mb-6">
@@ -28,7 +35,7 @@
     Sign and pay early if you want. Your term starts the 1st of the month after your free trial's end date. You always get the full 3 months. I cover gap days, and support partial terms to align with budget cycles.
   </p>
 
-  <p class="flex flex-row items-center mb-6">
+  <p class="flex-row items-center mb-6 hidden md:flex">
     <img src="/jacob-square.jpg" class="rounded-full w-11 h-11 mr-3 border border-gray-500" />
     <a href="mailto:jacob@replicate.info" class="text-blue-600 hover:text-blue-700 text-[17px] hover:underline hover:underline-offset-4 decoration-1 transition flex items-center">
       jacob@replicate.info

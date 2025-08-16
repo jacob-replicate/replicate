@@ -44,17 +44,17 @@
 
       <h3 class="font-semibold mt-4 mb-1">Backup process</h3>
       <p>
-        <a href="https://www.heroku.com/postgres" class="text-blue-600 hover:text-blue-700 hover:underline transition">Heroku Postgres</a> maintains rolling database backups, and prunes old snapshots automatically over time. Backups can be restored in minutes, and are captured at least once every 24 hours.
+        <a href="https://www.heroku.com/postgres" class="text-blue-600 hover:text-blue-700 hover:underline transition font-semibold">Heroku Postgres</a> maintains rolling database backups, and prunes old snapshots automatically over time. Backups can be restored in minutes, and are captured at least once every 24 hours.
       </p>
 
       <h3 class="font-semibold mt-4 mb-1">Audit logging</h3>
       <p>Administrative actions (e.g., organization deletions) are logged immutably and retained for 12 months in secure, append-only S3 buckets.</p>
 
       <h3 class="font-semibold mt-4 mb-1">Automated dependency scanning</h3>
-      <p>The codebase is continuously scanned using <a href="https://docs.github.com/en/code-security/getting-started/dependabot-quickstart-guide" class="text-blue-600 hover:text-blue-700 hover:underline transition">GitHub Dependabot</a> to patch vulnerable libraries. Critical vulnernabilities are patched within 7 days of public disclosure.</p>
+      <p>The codebase is continuously scanned using <a href="https://docs.github.com/en/code-security/getting-started/dependabot-quickstart-guide" class="text-blue-600 hover:text-blue-700 hover:underline transition font-semibold">GitHub Dependabot</a> to patch vulnerable libraries. Critical vulnernabilities are patched within 7 days of public disclosure.</p>
 
       <h3 class="font-semibold mt-4 mb-1">Incident response</h3>
-      <p>I run PagerDuty on my phone 24/7. In the event of a confirmed incident, I'll send a root cause analysis and remediation summary (from <%= mail_to 'security@replicate.info', 'security@replicate.info', class: "text-blue-600 hover:text-blue-700 hover:underline transition" %>) to impacted customers within 72 hours.</p>
+      <p>I run PagerDuty on my phone 24/7. In the event of a confirmed incident, I'll send a root cause analysis and remediation summary (from <%= mail_to 'security@replicate.info', 'security@replicate.info', class: "text-blue-600 hover:text-blue-700 hover:underline transition font-semibold" %>) to impacted customers within 72 hours.</p>
     </div>
 
     <div>
@@ -64,11 +64,11 @@
       <p>Coaching is delivered by email. No sessions, passwords, or user-managed devices.</p>
 
       <h3 class="font-semibold mt-6 mb-1">User provisioning (SCIM, SSO)</h3>
-      <p>SCIM is planned as an <span class="font-medium">optional</span> enhancement for 2026. Administrators currently manage access by emailing personnel changes to <a href="mailto:support@replicate.info" class="text-blue-600 hover:text-blue-700 hover:underline transition">support@replicate.info</a>. They will soon be able to login to a secure admin portal (via <a href="https://auth0.com" class="text-blue-600 hover:text-blue-700 hover:underline transition">Auth0 SSO</a>) to manage team members and billing. No user tracking, just logistics.</p>
+      <p>SCIM is planned as an <span class="font-medium">optional</span> enhancement for 2026. Administrators currently manage access by emailing personnel changes to <a href="mailto:support@replicate.info" class="text-blue-600 hover:text-blue-700 hover:underline transition font-semibold">support@replicate.info</a>. They will soon be able to login to a secure admin portal (via <a href="https://auth0.com" class="text-blue-600 hover:text-blue-700 hover:underline transition font-semibold">Auth0 SSO</a>) to manage team members and billing. No user tracking, just logistics.</p>
       <p class="mt-2">If you sign up a few weeks beforehand, it will be an opt-in process. GRC and security teams will have as much time as they need to validate + approve/deny the process change. I don't have all the details yet, but will say that I've spent most of my career focused on enterprise IAM. I think approvals will be quick.</p>
 
       <h3 class="font-semibold mt-6 mb-1">You own your data</h3>
-      <p>Inactive conversations are automatically deleted after 3 months. I use that data to recreate email history when engineers reply a few weeks later. No AI training. Email <a href="mailto:support@replicate.info" class="text-blue-600 hover:text-blue-700 hover:underline transition">support@replicate.info</a> to request immediate deletion. It won't get stuck in a Postgres backup forever.</p>
+      <p>Inactive conversations are automatically deleted after 3 months. I use that data to recreate email history when engineers reply a few weeks later. No AI training. Email <a href="mailto:support@replicate.info" class="text-blue-600 hover:text-blue-700 hover:underline transition font-semibold">support@replicate.info</a> to request immediate deletion. It won't get stuck in a Postgres backup forever.</p>
 
       <h3 class="font-semibold mt-6 mb-1">Planned end-of-service</h3>
       <p>If I ever spin down the business, you'll receive advance notice, full source code, your data, and next steps. Support will remain available during the shutdown window. That said, I built Replicate to keep myself sharp. It's not going away anytime soon. Sparring with GPT is faster than reading books.
