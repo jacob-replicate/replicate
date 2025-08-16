@@ -9,8 +9,7 @@ every 1.minutes do
     git pull && \
     (bundle check || bundle install) && \
     bundle exec whenever --update-crontab && \
-    pkill -f sidekiq || true && \
-    nohup bash -lc 'cd /home/jacob/code/replicate && exec bundle exec sidekiq -c 15' >> sidekiq.out 2>&1 &
+    systemctl --user restart replicate-sidekiq
   CMD
 end
 
