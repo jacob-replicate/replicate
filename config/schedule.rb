@@ -9,8 +9,10 @@ every 1.minutes do
     git pull &&
     bundle install &&
     bundle exec whenever --update-crontab &&
-    pkill -f sidekiq || true
-    nohup /home/jacob/bin/envwrap bash -lc 'cd /home/jacob/code/replicate && exec bundle exec sidekiq -e production -c 15 -L log/sidekiq.log --pidfile tmp/pids/sidekiq.pid' > log/sidekiq.out 2>&1 &
+    pkill -TERM -f sidekiq || true
+    rm -f tmp/pids/sidekiq.pid
+    mkdir -p log tmp/pids
+    nohup /home/jacob/bin/envwrap bash -lc 'cd /home/jacob/code/replicate && exec bundle exec sidekiq -e production -c 15 -L log/sidekiq.log --pidfile tmp/pids/sidekiq.pid' >> log/sidekiq.out 2>&1 &
   CMD
 end
 
