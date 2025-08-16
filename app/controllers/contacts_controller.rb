@@ -4,6 +4,8 @@ class ContactsController < ApplicationController
 
     if @contact.present?
       @contact.update(unsubscribed: true)
+    else
+      redirect_to root_path
     end
   end
 end

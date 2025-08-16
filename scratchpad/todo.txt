@@ -9,6 +9,7 @@ Transactional
 - Cron job to start monday email loops
 - Cancel Mailreach
 - AI grading on form submission - you're gonna get a lot of bullshit responses to grade once public
+- Unsubscribe page with confirmation form, to prevent accidental (doesn't matter for cold).
 
 Eventually:
 - Terms + Privacy + MSA/DPA review
