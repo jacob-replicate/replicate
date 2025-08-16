@@ -4,14 +4,16 @@ env :PATH, '/home/jacob/.rbenv/shims:/home/jacob/.rbenv/bin:/usr/local/bin:/usr/
 job_type :sh, "/home/jacob/bin/envwrap bash -lc ':task'"
 
 every 1.minutes do
-  sh <<~CMD
-    cd /home/jacob/code/replicate
-    git pull
-    (bundle check || bundle install)
-    bundle exec whenever --update-crontab
-    pkill -TERM -f sidekiq || true
-    nohup exec bundle exec sidekiq -c 15 >> sidekiq.log 2>&1 &
+  every 1.minutes do
+    sh <<~CMD
+    cd /home/jacob/code/replicate && \
+    git pull && \
+    (bundle check || bundle install) && \
+    bundle exec whenever --update-crontab && \
+    pkill -f sidekiq || true && \
+    nohup bash -lc 'cd /home/jacob/code/replicate && exec bundle exec sidekiq -c 15' >> sidekiq.out 2>&1 &
   CMD
+  end
 end
 
 every 1.minutes do
