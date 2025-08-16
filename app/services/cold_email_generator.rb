@@ -42,7 +42,7 @@ class ColdEmailGenerator
   end
 
   def fetch_contacts
-    Contact.where(contacted: false).where.not(email: nil).where("score >= ?", @min_score).order(score: :desc).to_a
+    Contact.enriched.where(contacted: false).where("score >= ?", @min_score).order(score: :desc).to_a
   end
 
   def fetch_next_contact

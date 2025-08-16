@@ -10,6 +10,7 @@ class Contact < ApplicationRecord
   # validates :email, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }
   # validates :company_domain, presence: true, format: { with: /\A[a-z0-9.-]+\.[a-z]{2,}\z/i }
   # validate :company_domain_not_on_blocklist
+  scope :enriched, -> { where.not(email: "email_not_unlocked@domain.com").where.not(email: nil) }
 
   def passed_bounce_check?
     return true

@@ -1,10 +1,10 @@
 class GradeContactWorker
   include Sidekiq::Worker
 
-  def perform(contact_id)
+  def perform(contact_id, force = false)
     contact = Contact.find_by(id: contact_id)
     return unless contact
-    return if contact.score.present? && contact.score > 0 # already graded
+    return if (contact.score.present? && contact.score > 0) && !force
 
     metadata = contact.metadata.deep_symbolize_keys
 

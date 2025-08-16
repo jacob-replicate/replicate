@@ -5,8 +5,8 @@ class SendColdEmailWorker
 
   def perform(contact_id, inbox)
     inbox   = inbox.transform_keys(&:to_sym)
-    contact = Contact.find(contact_id)
-    return if contact.contacted? || contact.email.blank? || contact.email == "email_not_unlocked@domain.com"
+    contact = Contact.enriched.find_by(id: contact_id)
+    return if contact.blank? || contact.contacted? || contact.email.blank? || contact.email == "email_not_unlocked@domain.com"
 
     from_email    = inbox[:email]
     from_name     = inbox[:from_name]
