@@ -1,7 +1,11 @@
-<% form_id = "email-upload-#{rand(1_000_000)}" %>
+<% form_id  = "email-upload-#{rand(1_000_000)}" %>
+<% box_id   = "#{form_id}-box" %>
+<% name_id  = "#{form_id}-name" %>
+<% email_id = "#{form_id}-email" %>
+<% team_id  = "#{form_id}-team" %>
 
-<form id="<%= form_id %>" class="flex flex-col items-center">
-  <div class="border border-gray-200 rounded-xl shadow bg-white p-6 <%= form_width_class %>">
+<form id="<%= form_id %>" class="flex flex-col items-center" novalidate>
+  <div id="<%= box_id %>" class="border border-gray-200 rounded-xl shadow bg-white p-6 <%= form_width_class %>">
     <div class="text-[16px]">
       <div class="mb-4">
         This is the only form. Your first batch of emails go out <span class="font-semibold">next Monday</span>.
@@ -24,21 +28,25 @@
       </div>
     </div>
 
-      <div>
-        <label for="name-input" class="block font-medium mb-1 tracking-normal">Name</label>
-        <input type="text" id="name-input" class="block w-full border border-neutral-300 shadow-sm rounded-md bg-white px-3 py-1.5 text-gray-900 outline-1 -outline-offset-1 outline-indigo-100 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 text-sm" />
-      </div>
-      <div class="mt-6">
-        <label for="email-input" class="block font-medium mb-1 tracking-normal">Your Email</label>
-        <input type="text" id="email-input" class="block w-full border border-neutral-300 shadow-sm rounded-md bg-white px-3 py-1.5 text-gray-900 outline-1 -outline-offset-1 outline-indigo-100 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 text-sm" />
-      </div>
-      <div class="mt-6">
-        <label for="team-emails-input" class="block font-medium tracking-normal mb-1">Team's Emails</label>
-        <textarea id="team-emails-input" rows="4" class="block w-full border border-neutral-300 shadow-sm rounded-md bg-white px-3 py-1.5 text-gray-900 outline-1 -outline-offset-1 outline-indigo-100 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 text-sm" placeholder="Any format works. Email support@replicate.info to make changes later."></textarea>
-      </div>
-      <div class="text-xs text-gray-500 mt-4">
-        By submitting, you agree to the <a href="/terms" class="text-blue-500 hover:underline">Terms</a> and <a href="/privacy" class="text-blue-500 hover:underline">Privacy Policy</a>.
-      </div>
+    <div>
+      <label for="<%= name_id %>" class="block font-medium mb-1 tracking-normal">Name</label>
+      <input type="text" id="<%= name_id %>" class="block w-full border border-neutral-300 shadow-sm rounded-md bg-white px-3 py-1.5 text-gray-900 outline-1 -outline-offset-1 outline-indigo-100 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 text-sm" />
+    </div>
+
+    <div class="mt-6">
+      <label for="<%= email_id %>" class="block font-medium mb-1 tracking-normal">Your Email</label>
+      <input type="email" id="<%= email_id %>" class="block w-full border border-neutral-300 shadow-sm rounded-md bg-white px-3 py-1.5 text-gray-900 outline-1 -outline-offset-1 outline-indigo-100 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 text-sm" />
+    </div>
+
+    <div class="mt-6">
+      <label for="<%= team_id %>" class="block font-medium tracking-normal mb-1">Team's Emails</label>
+      <textarea id="<%= team_id %>" rows="4" class="block w-full border border-neutral-300 shadow-sm rounded-md bg-white px-3 py-1.5 text-gray-900 outline-1 -outline-offset-1 outline-indigo-100 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 text-sm" placeholder="Any format works. Email support@replicate.info to make changes later."></textarea>
+    </div>
+
+    <div class="text-xs text-gray-500 mt-4">
+      By submitting, you agree to the <a href="/terms" class="text-blue-500 hover:underline">Terms</a> and <a href="/privacy" class="text-blue-500 hover:underline">Privacy Policy</a>.
+    </div>
+
     <!-- CTA -->
     <div class="mt-6 w-full sm:mt-8">
       <button type="submit"
@@ -52,26 +60,31 @@
   </div>
 </form>
 
-
-
 <script type="text/javascript">
   document.addEventListener("DOMContentLoaded", () => {
-    // select the form by its id (needs '#')
-    const coachingForm = document.querySelector("#<%= form_id %>");
-    if (!coachingForm) return;
+    const form = document.querySelector("#<%= form_id %>");
+    if (!form) return;
 
-    coachingForm.addEventListener("submit", async (e) => {
+    const box   = document.getElementById("<%= box_id %>");
+    const nameI = document.getElementById("<%= name_id %>");
+    const mailI = document.getElementById("<%= email_id %>");
+    const teamI = document.getElementById("<%= team_id %>");
+
+    form.addEventListener("submit", async (e) => {
       e.preventDefault();
 
-      // scope to this form; use your existing input IDs
-      const name = coachingForm.querySelector("#name-input")?.value?.trim();
-      const email = coachingForm.querySelector("#email-input")?.value?.trim();
-      const engineerEmails = coachingForm.querySelector("#team-emails-input")?.value?.trim();
+      const name  = nameI?.value?.trim();
+      const email = mailI?.value?.trim();
+      const engineerEmails = teamI?.value?.trim();
 
       if (!name || !email || !engineerEmails) {
         alert("Please fill out all fields.");
         return;
       }
+
+      // Optional: disable button to prevent double submit
+      const btn = form.querySelector('button[type="submit"]');
+      btn?.setAttribute("disabled", "disabled");
 
       try {
         const response = await fetch("/organizations", {
@@ -85,8 +98,9 @@
 
         if (!response.ok) throw new Error("Request failed");
 
-        coachingForm.innerHTML = `
-          <div class="text-center text-md text-gray-800 py-6 mt-8">
+        // Keep the white box container; replace its contents only
+        box.innerHTML = `
+          <div class="text-center text-md text-gray-800 py-6">
             <span class="font-medium">You're in. The first email goes out Monday.</span>
             <div class="mt-4">
               <a href="/coaching" class="text-blue-600 hover:text-blue-700 hover:underline hover:underline-offset-4 decoration-1 transition">
@@ -97,6 +111,7 @@
         `;
       } catch (error) {
         alert("Something went wrong. Please try again.");
+        btn?.removeAttribute("disabled");
       }
     });
   });
