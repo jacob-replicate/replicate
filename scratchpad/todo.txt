@@ -10,9 +10,6 @@ Transactional
 - Cancel Mailreach
 - AI grading on form submission - you're gonna get a lot of bullshit responses to grade once public
 
-Operations
-- Double check how sales tax works. How does Stripe know which state they live in before generating invoice?
-
 Eventually:
 - Terms + Privacy + MSA/DPA review
 - Bounce checks (See: contact#passed_bounce_check?)
