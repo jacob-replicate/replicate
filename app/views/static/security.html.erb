@@ -7,7 +7,7 @@
   </p>
 
   <p class="mb-4">
-    Heroku receives a webhook, routes it through GPT, and emails the result to your team. That's it.
+    A cron job starts email threads (about SEV-1 prevention) on Monday. Heroku gets a webhook when people reply, and orchestrates some <a href="https://gist.github.com/jacob-comer/4dee4c8e5c0123d8aac9c65ea9f03b54" class="text-blue-600 hover:underline font-semibold" target="_blank">GPT calls</a>. Then it sends the result back to your team. That's it.
   </p>
 
   <p class="mb-4">
@@ -23,7 +23,7 @@
   </p>
 
   <p class="mb-4">
-    You will receive a <a href="/replicate-msa-dpa.pdf" class="text-blue-600 hover:underline font-semibold">pre-signed MSA</a> during the <a href="/billing" class="text-blue-600 hover:underline font-semibold">trial period</a>. It includes a required <span class="font-semibold">DPA</span> as well.
+    You will receive a <a href="/replicate-msa-dpa.pdf" class="text-blue-600 hover:underline font-semibold" target="_blank">pre-signed MSA</a> during the <a href="/billing" class="text-blue-600 hover:underline font-semibold">trial period</a>. It includes a required <span class="font-semibold">DPA</span> as well.
   </p>
 
   <p class="mb-4">Liability is capped at <span class="font-semibold">3x the fees</span> paid across your entire contract, even if multi-year. This excludes <span class="font-semibold">serious misconduct</span> liability (e.g., IP infringement), which is uncapped as it should be.</p>
@@ -104,15 +104,12 @@
     <span class="md:hidden">
       <%= link_to 'Terms', '/terms', class: "text-blue-600 hover:underline" %> &nbsp;&nbsp;•&nbsp;&nbsp;
       <%= link_to 'Privacy', '/privacy', class: "text-blue-600 hover:underline" %> &nbsp;&nbsp;•&nbsp;&nbsp;
-      <%= link_to 'Billing', '/billing', class: "text-blue-600 hover:underline" %> &nbsp;&nbsp;•&nbsp;&nbsp;
+      <%= link_to 'Billing', '/billing', class: "text-blue-600 hover:underline" %>
     </span>
     <span class="hidden md:inline">
       <%= link_to 'Terms of Service', '/terms', class: "text-blue-600 hover:underline" %> &nbsp;&nbsp;•&nbsp;&nbsp;
       <%= link_to 'Privacy Policy', '/privacy', class: "text-blue-600 hover:underline" %> &nbsp;&nbsp;•&nbsp;&nbsp;
-      <%= link_to 'Billing & Payment Terms', '/billing', class: "text-blue-600 hover:underline" %> &nbsp;&nbsp;•&nbsp;&nbsp;
+      <%= link_to 'Billing & Payment Terms', '/billing', class: "text-blue-600 hover:underline" %>
     </span>
-    <a href="/replicate-w9.pdf" class="text-blue-600 hover:underline" target="_blank">W-9</a> &nbsp;&nbsp;•&nbsp;&nbsp;
-    <%= link_to 'MSA + DPA', '/replicate-msa-dpa.pdf', class: "text-blue-600 hover:underline", target: "_blank" %> &nbsp;&nbsp;•&nbsp;&nbsp;
-    <%= link_to 'COI', '/replicate-coi.pdf', class: "text-blue-600 hover:underline", target: "_blank" %>
   </p>
 </div>
