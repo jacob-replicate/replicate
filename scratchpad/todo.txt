@@ -5,20 +5,10 @@
 - passed_bounce_check?
 - Unsubscribe API endpoint
 - Make the conversation screenshot in landing footer align with what's highlighted in the IDE.
-- Tailscale Mini PC: curl -fsSL https://tailscale.com/install.sh | sh
-- Form is too narrow on show.html.erb, doesn't align with homepage
-
-- Disable cookies
-    - config.middleware.delete ActionDispatch::Cookies
-    - config.middleware.delete ActionDispatch::Session::CookieStore
-    - check app/channels/application_cable/connection.rb "current_user" call
 
 Eventually:
-- Heroku Postgres on Mini PC
-- MSA + DPA
-    - Make sure to indicate you're only charging on subscribed users, not admins.
-- DPA
-- Terms + Privacy review
+- "View GPT Prompt" link in bottom right, below conversation images on homepage.
+- Terms + Privacy + MSA/DPA review
 - GPT 5
 - Bounce checks (See: contact#passed_bounce_check?)
 - Swap out Alex avatar
