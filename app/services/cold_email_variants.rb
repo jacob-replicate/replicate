@@ -8,7 +8,7 @@ class ColdEmailVariants
       <p>#{intros.sample} #{hooks.sample}</p>
       <p>#{ctas.sample}</p>
       <p>#{inbox[:signature]}</p>
-      <p>#{footer}</p>
+      <p style="font-size: 80%; opacity: 0.6">#{footer}</p>
     HTML
 
     { subject: subjects.sample, body_html: body_html }
@@ -25,7 +25,7 @@ class ColdEmailVariants
   end
 
   def self.intros
-    url = "https://replicate.info"
+    url = "<a href='https://replicate.info' style='font-weight: bold'>replicate.info</a>"
     [
       "I lead IAM for Terraform. On the side, I shipped #{url} to help teams uncover their infra/security blind spots.",
       "I've been in lots of SEVs where judgment broke under pressure, so I built #{url} to help engineers sharpen their production instincts.",

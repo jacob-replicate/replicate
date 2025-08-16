@@ -24,18 +24,8 @@ class ColdEmailGenerator
       contact = fetch_next_contact
       break unless contact.present?
 
-      message = ColdEmailVariants.build(inbox: inbox, contact: contact)
-      SendColdEmailWorker.perform_at(send_time, contact.id, message[:subject], message[:body_html], inbox)
-      puts [
-        send_time,
-        contact.id,
-        message[:subject],
-        message[:body_html],
-        inbox
-      ].join("\n")
-      puts "-------"
+      SendColdEmailWorker.perform_at(send_time, contact.id, inbox)
       @per_hour[inbox[:email]][send_time.hour] += 1
-      break if i == 5
     end
   end
 
