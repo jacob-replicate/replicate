@@ -1,13 +1,20 @@
-- Postmark webhooks for coaching loop replies - https://account.postmarkapp.com/servers/16407823/streams/inbound/get-started
-- Cron job to stagger out weekly loop emails + weekly cold emails (assuming Contact#state is in the US)
-- passed_bounce_check?
+Cold
+- Enrich + bounce check (passed_bounce_check?)
 - Unsubscribe API endpoint
+- Finish testing staggering script
+- Verify Contact#state is in the US
+
+Transactional
+- Postmark webhooks for coaching loop replies - https://account.postmarkapp.com/servers/16407823/streams/inbound/get-started
+- Cron job to start monday email loops
+- Cancel Mailreach
 - AI grading on form submission - you're gonna get a lot of bullshit responses to grade once public
 
+Operations
+- Double check how sales tax works. How does Stripe know which state they live in before generating invoice?
+
 Eventually:
-- "View GPT Prompt" link in bottom right, below conversation images on homepage.
 - Terms + Privacy + MSA/DPA review
-- GPT 5
 - Bounce checks (See: contact#passed_bounce_check?)
 - Swap out Alex avatar
 - Cron job to filter inbox + draft replies
@@ -16,11 +23,11 @@ Eventually:
 - :coaching_should_continue prompt -- uncomment guard clause in coaching message generator
 - Attach PDF's + inline JPG's once they close the loop
 - Protect your S3 credentials from misuse -- spin down old keys
+- GPT 5
 
 - Move payments to Mercury account, not personal card.
-    - Transfer cash after paycheck
     - https://drive.google.com/drive/u/1/folders/1G8nwfu3FUkew3KPd7IuhyPkZy3HNZe8W
-    - Make a new OpenAI account
     - Reopen Apollo eventually
     - Double check all of your addresses.
+
 - Audit logging
