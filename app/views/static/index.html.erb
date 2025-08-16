@@ -51,7 +51,7 @@
   </div>
 </div>
 
-<div class="pb-6">
+<div class="mb-8">
   <div class="text-md leading-relaxed tracking-[0.008em]">
     <div class="text-[17px]">
 
@@ -61,7 +61,7 @@
         </p>
 
         <p>
-          <a href="https://gist.github.com/jacob-comer/4dee4c8e5c0123d8aac9c65ea9f03b54" class="text-blue-600 hover:text-blue-700 font-medium hover:underline hover:underline-offset-4 decoration-1 transition">Sparring with GPT</a> is more efficient than reading books. It drops you into the middle of a SEV-1, asks where you'd look first, and challenges your thinking until you fail. <span class="block mt-6 lg:inline lg:mt-0">Test first, find the blind spot that will eventually crash prod, <span class="font-semibold">then</span> coach.</span>
+          <a href="https://gist.github.com/jacob-comer/4dee4c8e5c0123d8aac9c65ea9f03b54" class="text-blue-600 hover:text-blue-700 font-medium hover:underline hover:underline-offset-4 decoration-1 transition" target="_blank">Sparring with GPT</a> is more efficient than reading books. It drops you into the middle of a SEV-1, asks where you'd look first, and challenges your thinking until you fail. <span class="block mt-6 lg:inline lg:mt-0">Test first, find the blind spot that will eventually crash prod, <span class="font-semibold">then</span> coach.</span>
         </p>
 
         <p>
@@ -72,7 +72,7 @@
           It'll surface a few fatal judgment gaps every month, and make your team more precise when talking about ops readiness.
         </p>
       </div>
-      <div class="mb-4 md:mb-8 flex gap-6">
+      <div class="mb-8 flex gap-6">
         <% EXAMPLE_EMAILS.each_with_index do |email, i| %>
           <div class="md:basis/1-2 lg:basis-1/3 bg-white border border-gray-100 shadow rounded-xl p-5 space-y-4 <%= i == 0 ? "hidden md:block" : "" %> <%= i == 1 ? "hidden lg:block" : "" %> <%= i == 2 ? "md:block" : "" %>">
             <div class="flex items-center justify-between align-middle">
@@ -98,35 +98,12 @@
       <div class="md:hidden">
         <%= render "signature" %>
       </div>
-      <div class="mt-14 max-w-[90ch] text-[17px] leading-relaxed text-gray-800">
-        <div class="lg:flex gap-8">
-          <div class="lg:basis-1/2 space-y-6">
-            <p class="text-xl font-semibold tracking-tight">
-              Next Steps
-            </p>
-            <p>
-              Add your emails <a href="/demo" class="text-blue-600 hover:text-blue-700 font-medium hover:underline hover:underline-offset-4 decoration-1 transition">here</a> to start next Monday.
-            </p>
-            <p>
-              Everyone gets the same incident each week, and a private email thread to brainstorm how to prevent your next SEV-1.
-            </p>
-            <p>
-              <span class="font-semibold">Your first 3 months are free.</span> No <span class="hidden md:inline">credit </span>cards. No demos.
-            </p>
-            <p>
-              Longer trials are better for both parties. You get time to coordinate a huge win for your team. I get customers happily locking in multi-year contracts for 30% off. 😉
-            </p>
-            <p>
-              It takes 5min to roll out across your team. Here are the docs for <a href="/security" target="_blank" class="text-blue-600 hover:text-blue-700 font-medium hover:underline hover:underline-offset-4 decoration-1 transition">security</a> and <a href="/billing" target="_blank" class="text-blue-600 hover:text-blue-700 font-medium hover:underline hover:underline-offset-4 decoration-1 transition">billing</a>. Approvals will be quick.
-            </p>
-            <p class="flex flex-row items-center">
-              <img src="/jacob-square.jpg" class="rounded-full w-11 h-11 mr-3 border border-gray-500" />
-              <a href="mailto:jacob@replicate.info" class="text-blue-600 hover:text-blue-700 text-[17px] hover:underline hover:underline-offset-4 decoration-1 transition flex items-center">
-                jacob@replicate.info
-              </a>
-            </p>
+      <div class="mt-12 max-w-[90ch] text-[17px] leading-relaxed text-gray-800">
+        <div class="flex flex-col lg:flex-row gap-2 lg:gap-8">
+          <div class="lg:basis-3/5 space-y-6 order-2 lg:order-1">
+            <%= render "trial_form", form_width_class: "" %>
           </div>
-          <div class="mt-6 lg:basis-1/2 space-y-6">
+          <div class="lg:basis-2/5 space-y-6 order-1 lg:order-2">
             <div class="grid gap-2 mb-8 border border-gray-200 rounded-md overflow-hidden text-sm shadow">
               <div class="grid grid-cols-2 bg-gray-100 text-gray-800 border-b border-gray-200">
                 <div class="px-4 py-2 font-semibold">Team Size</div>
@@ -156,12 +133,12 @@
                 <div class="px-4 py-2">Up to <span class="font-semibold">300</span> engineers</div>
                 <div class="px-4 py-2">$80,000</div>
               </div>
-                <div class="grid grid-cols-2 border-b border-gray-100">
+                <div class="grid grid-cols-2">
                 <div class="px-4 py-2">Up to <span class="font-semibold">1,000</span> engineers</div>
                 <div class="px-4 py-2">$160,000</div>
               </div>
-              <div class="px-4 py-2 text-sm border-t border-gray-200 bg-neutral-100 md:text-center rounded-bl-md rounded-br-md">
-                <span class="font-medium">One fixed invoice.</span> <span class="block md:inline md:mt-0">Prorated to align with your budget cycle.</span>
+              <div class="px-4 py-2 text-sm border-t border-gray-200 bg-neutral-100 rounded-bl-md rounded-br-md">
+                <span class="font-medium">One invoice.</span> No metering or auto-renewal. <span class="block mt-1">Prorated to align with your budget cycle.</span>
               </div>
             </div>
           </div>
@@ -169,7 +146,7 @@
       </div>
     </div>
   </div>
-  <div class="bg-gray-100 p-6 border border-gray-300 rounded-md shadow mt-10">
+  <div class="bg-gray-100 p-6 border border-gray-300 rounded-md shadow mt-8">
     <p class="text-xl font-semibold tracking-tight mb-2">
       Not the right time?
     </p>

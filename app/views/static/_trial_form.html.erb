@@ -1,15 +1,27 @@
-<form id="email-upload" class="flex flex-col items-center">
+<% form_id = "email-upload-#{rand(1_000_000)}" %>
+
+<form id="<%= form_id %>" class="flex flex-col items-center">
   <div class="border border-gray-200 rounded-xl shadow bg-white p-6 <%= form_width_class %>">
-    <div class="mb-4">
-      Your first batch of emails start <span class="font-semibold">next Monday</span>. No cards. No demos.
-    </div>
+    <div class="text-[16px]">
+      <div class="mb-4">
+        This is the only form. Your first batch of emails go out <span class="font-semibold">next Monday</span>.
+      </div>
 
-    <div class="mb-4">
-      <span class="font-semibold">Your first 3 months are free.</span> Here are the docs for <a href="/security" target="_blank" class="text-blue-600 hover:text-blue-700 font-medium hover:underline hover:underline-offset-4 decoration-1 transition">security</a> and <a href="/billing" target="_blank" class="text-blue-600 hover:text-blue-700 font-medium hover:underline hover:underline-offset-4 decoration-1 transition">billing</a>.
-    </div>
+      <div class="mb-4">
+        <span class="font-semibold">3-month free trial</span>. No cards, demos, or marketing spam.
+      </div>
 
-    <div class="mb-4">
-      I'll check in next month if your team is engaging with the tool. Your data gets cleaned up automatically if it doesn't work out. No action required from you.
+      <div class="mb-4">
+        Copy/paste your whole org once. If an engineer stops replying for a few weeks, their weekly drills get paused automatically (with an invite to re-engage).
+      </div>
+
+      <div class="mb-4">
+        You'll know how many seats you need by the end. I'll only reach out if your team's engaging with the <a href="https://gist.github.com/jacob-comer/4dee4c8e5c0123d8aac9c65ea9f03b54" class="text-blue-600 hover:text-blue-700 font-medium hover:underline hover:underline-offset-4 decoration-1 transition" target="_blank">GPT loop</a>. Otherwise it just fades away and wipes your data.
+      </div>
+
+      <div class="mb-8">
+        Here are the docs for <a href="/security" target="_blank" class="text-blue-600 hover:text-blue-700 font-medium hover:underline hover:underline-offset-4 decoration-1 transition">security</a> and <a href="/billing" target="_blank" class="text-blue-600 hover:text-blue-700 font-medium hover:underline hover:underline-offset-4 decoration-1 transition">billing</a>. Approvals will be quick.
+      </div>
     </div>
 
       <div>
@@ -17,15 +29,12 @@
         <input type="text" id="name-input" class="block w-full border border-neutral-300 shadow-sm rounded-md bg-white px-3 py-1.5 text-gray-900 outline-1 -outline-offset-1 outline-indigo-100 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 text-sm" />
       </div>
       <div class="mt-6">
-        <label for="email-input" class="block font-medium mb-1 tracking-normal">Email</label>
+        <label for="email-input" class="block font-medium mb-1 tracking-normal">Your Email</label>
         <input type="text" id="email-input" class="block w-full border border-neutral-300 shadow-sm rounded-md bg-white px-3 py-1.5 text-gray-900 outline-1 -outline-offset-1 outline-indigo-100 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 text-sm" />
       </div>
       <div class="mt-6">
-        <label for="team-emails-input" class="block font-medium tracking-normal">Team Emails</label>
-        <div class="text-sm text-gray-600 mb-2">
-          Optional. Email <a href="mailto:support@replicate.info" class="text-blue-600 hover:text-blue-700 font-medium hover:underline hover:underline-offset-4 decoration-1 transition">support@replicate.info</a> whenever to make changes.
-        </div>
-        <textarea id="team-emails-input" rows="4" class="block w-full border border-neutral-300 shadow-sm rounded-md bg-white px-3 py-1.5 text-gray-900 outline-1 -outline-offset-1 outline-indigo-100 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 text-sm" placeholder="(any format works)"></textarea>
+        <label for="team-emails-input" class="block font-medium tracking-normal mb-1">Team's Emails</label>
+        <textarea id="team-emails-input" rows="4" class="block w-full border border-neutral-300 shadow-sm rounded-md bg-white px-3 py-1.5 text-gray-900 outline-1 -outline-offset-1 outline-indigo-100 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 text-sm" placeholder="Any format works. Email support@replicate.info to make changes later."></textarea>
       </div>
       <div class="text-xs text-gray-500 mt-4">
         By submitting, you agree to the <a href="/terms" class="text-blue-500 hover:underline">Terms</a> and <a href="/privacy" class="text-blue-500 hover:underline">Privacy Policy</a>.
@@ -44,47 +53,51 @@
 </form>
 
 
+
 <script type="text/javascript">
   document.addEventListener("DOMContentLoaded", () => {
-    const coachingForm = document.querySelector("email-upload");
-    if (coachingForm) {
-      coachingForm.addEventListener("submit", async (e) => {
-        e.preventDefault();
+    // select the form by its id (needs '#')
+    const coachingForm = document.querySelector("#<%= form_id %>");
+    if (!coachingForm) return;
 
-        const name = document.getElementById("name-input")?.value?.trim();
-        const email = document.getElementById("email-input")?.value?.trim();
-        const engineerEmails = document.getElementById("team-emails-input")?.value?.trim();
+    coachingForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
 
-        if (!name || !email || !engineerEmails) {
-          alert("Please fill out all fields.");
-          return;
-        }
+      // scope to this form; use your existing input IDs
+      const name = coachingForm.querySelector("#name-input")?.value?.trim();
+      const email = coachingForm.querySelector("#email-input")?.value?.trim();
+      const engineerEmails = coachingForm.querySelector("#team-emails-input")?.value?.trim();
 
-        try {
-          const response = await fetch("/organizations", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]')?.content
-            },
-            body: JSON.stringify({ name, email, engineer_emails: engineerEmails })
-          });
+      if (!name || !email || !engineerEmails) {
+        alert("Please fill out all fields.");
+        return;
+      }
 
-          if (!response.ok) throw new Error("Request failed");
+      try {
+        const response = await fetch("/organizations", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]')?.content
+          },
+          body: JSON.stringify({ name, email, engineer_emails: engineerEmails })
+        });
 
-          const formWrapper = document.getElementById("email-upload");
-          formWrapper.innerHTML = `
+        if (!response.ok) throw new Error("Request failed");
+
+        coachingForm.innerHTML = `
           <div class="text-center text-md text-gray-800 py-6 mt-8">
             <span class="font-medium">You're in. The first email goes out Monday.</span>
-            <div class="mt-2">
-              <a href="/coaching" class="text-blue-600 hover:text-blue-700 hover:underline hover:underline-offset-4 decoration-1 transition">Test your production instincts.&nbsp;&rarr;</a>
+            <div class="mt-4">
+              <a href="/coaching" class="text-blue-600 hover:text-blue-700 hover:underline hover:underline-offset-4 decoration-1 transition">
+                Test your production instincts.&nbsp;&rarr;
+              </a>
             </div>
           </div>
         `;
-        } catch (error) {
-          alert("Something went wrong. Please try again.");
-        }
-      });
-    }
+      } catch (error) {
+        alert("Something went wrong. Please try again.");
+      }
+    });
   });
 </script>
