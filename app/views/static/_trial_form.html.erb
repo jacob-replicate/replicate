@@ -28,22 +28,22 @@
       </div>
 
       <div class="mb-8">
-        Here are docs for <a href="/security" target="_blank" class="text-blue-600 hover:text-blue-700 font-medium hover:underline hover:underline-offset-4 decoration-1 transition">security</a> + <a href="/billing" target="_blank" class="text-blue-600 hover:text-blue-700 font-medium hover:underline hover:underline-offset-4 decoration-1 transition">billing</a>. We don't need to hop on a call.
+        Here are the <a href="/security" target="_blank" class="text-blue-600 hover:text-blue-700 font-medium hover:underline hover:underline-offset-4 decoration-1 transition">security</a> + <a href="/billing" target="_blank" class="text-blue-600 hover:text-blue-700 font-medium hover:underline hover:underline-offset-4 decoration-1 transition">billing</a> docs. No need to hop on a call.
       </div>
     </div>
 
     <div>
-      <label for="<%= name_id %>" class="block font-medium mb-1 tracking-normal">Name</label>
+      <label for="<%= name_id %>" class="block font-semibold mb-1 tracking-normal text-base">Name</label>
       <input type="text" id="<%= name_id %>" class="block w-full border border-neutral-300 shadow-sm rounded-md bg-white px-3 py-1.5 text-gray-900 outline-1 -outline-offset-1 outline-indigo-100 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 text-sm" />
     </div>
 
     <div class="mt-6">
-      <label for="<%= email_id %>" class="block font-medium mb-1 tracking-normal">Your Email</label>
+      <label for="<%= email_id %>" class="block font-semibold text-base mb-1 tracking-normal">Your Email</label>
       <input type="email" id="<%= email_id %>" class="block w-full border border-neutral-300 shadow-sm rounded-md bg-white px-3 py-1.5 text-gray-900 outline-1 -outline-offset-1 outline-indigo-100 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 text-sm" />
     </div>
 
     <div class="mt-6">
-      <label for="<%= team_id %>" class="block font-medium tracking-normal mb-1">Team's Emails</label>
+      <label for="<%= team_id %>" class="block font-semibold text-base tracking-normal mb-1">Team's Emails</label>
       <textarea id="<%= team_id %>" rows="4" class="block w-full border border-neutral-300 shadow-sm rounded-md bg-white px-3 py-1.5 text-gray-900 outline-1 -outline-offset-1 outline-indigo-100 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 text-sm" placeholder="Any format works. Email support@replicate.info to make changes later."></textarea>
     </div>
 
@@ -53,11 +53,7 @@
 
     <!-- CTA -->
     <div class="mt-6 w-full sm:mt-8">
-      <button type="submit"
-              class="inline-flex w-full items-center justify-center rounded-lg bg-slate-700 px-5 py-3 text-lg font-semibold text-white shadow-sm transition hover:bg-slate-800 hover:shadow-md active:bg-slate-900 sm:w-auto focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400">
-        <svg class="mr-2 h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-          <path d="M10.75 3.5l5.75 5.75-5.75 5.75v-3.5H4.5v-4.5h6.25v-3.5z"/>
-        </svg>
+      <button type="submit" class="shadow-md inline-flex w-full items-center justify-center rounded-lg bg-slate-700 px-5 py-3 text-lg font-semibold text-white transition hover:bg-slate-800 hover:shadow-md active:bg-slate-900 sm:w-auto focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400">
         Begin Coaching
       </button>
     </div>
