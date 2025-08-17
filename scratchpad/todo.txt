@@ -1,8 +1,6 @@
 Cold
 - Enrich + bounce check (passed_bounce_check?)
-- Unsubscribe API endpoint (double check in dropdown)
 - More variants
-- Add company name blocklist
 
 Transactional
 - Postmark webhooks for coaching loop replies - https://account.postmarkapp.com/servers/16407823/streams/inbound/get-started
@@ -14,7 +12,6 @@ Eventually:
 - Upsert metadata, so you can keep track of job changes. DB is going to get stale otherwise.
 - Terms + Privacy + MSA/DPA review
 - Cron job to filter inbox + draft replies
-- Make
 - Marketing newsletter - initial email puzzle (e.g., /incidents/corrupted-invoices) -- already tracking emails, don't need to send yet
 - Better error handling if emails fail (e.g., bounce, throttling, etc)
 - :coaching_should_continue prompt -- uncomment guard clause in coaching message generator

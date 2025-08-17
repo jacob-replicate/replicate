@@ -6,14 +6,15 @@ class Contact < ApplicationRecord
   before_save :downcase_email
 
   validates :name, presence: true
+  validates :email, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }
   validate :name_must_have_at_least_two_words
-  # validates :email, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }
-  # validates :company_domain, presence: true, format: { with: /\A[a-z0-9.-]+\.[a-z]{2,}\z/i }
-  # validate :company_domain_not_on_blocklist
+
   scope :enriched, -> { where.not(email: "email_not_unlocked@domain.com").where.not(email: nil) }
   scope :us, -> { where(state: US_STATES) }
 
   def passed_bounce_check?
+    return false if company_domain_on_blocklist?
+
     uri = URI("https://api.usebouncer.com/v1.1/email/verify?email=#{email}")
     request = Net::HTTP::Get.new(uri)
     request['x-api-key'] = ENV["BOUNCER_API_KEY"]
@@ -162,7 +163,7 @@ class Contact < ApplicationRecord
   end
 
   def set_company_domain
-    if email.present? && company_domain.blank?
+    if email.present?
       self.company_domain = email.split('@').last
     end
   end
@@ -171,15 +172,11 @@ class Contact < ApplicationRecord
     self.email = email.downcase if email.present?
   end
 
-  def company_domain_not_on_blocklist
-    blocked_domains = [
+  def company_domain_on_blocklist?
+    [
       "givecampus.com",
       "hashicorp.com",
       "ibm.com"
-    ]
-
-    if company_domain.present? && blocked_domains.include?(company_domain.downcase)
-      errors.add(:company_domain, "is blocked")
-    end
+    ].include?(company_domain.to_s.downcase)
   end
 end
