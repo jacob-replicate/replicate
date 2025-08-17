@@ -54,7 +54,7 @@ class ColdEmailGenerator
       @contact_index += 1
 
       return contact if contact.passed_bounce_check?
-      contact.update_columns(email: nil, score: -1)
+      contact.update_columns(email: nil, score: contact.score * -1)
     end
   end
 

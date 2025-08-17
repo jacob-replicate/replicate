@@ -14,10 +14,6 @@ class Contact < ApplicationRecord
   scope :us, -> { where(state: US_STATES) }
 
   def passed_bounce_check?
-    return true
-    email = "john@usebouncer.com"
-    api_key = "<your-api-key>"
-
     uri = URI("https://api.usebouncer.com/v1.1/email/verify?email=#{email}")
     request = Net::HTTP::Get.new(uri)
     request['x-api-key'] = ENV["BOUNCER_API_KEY"]

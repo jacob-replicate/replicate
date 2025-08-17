@@ -3,6 +3,7 @@ Cold
 - Unsubscribe API endpoint (double check in dropdown)
 - More variants
 - Bounce check API + paid account
+- Add company name blocklist
 
 Transactional
 - Postmark webhooks for coaching loop replies - https://account.postmarkapp.com/servers/16407823/streams/inbound/get-started
