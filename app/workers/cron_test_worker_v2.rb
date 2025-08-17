@@ -1,9 +1,9 @@
 class CronTestWorkerV2
   include Sidekiq::Worker
 
-  def perform(path = "/home/jacob/cron_new_file_v1.txt")
+  def perform(path = "/home/jacob/cron_new_env.txt")
     File.open(path, "a") do |file|
-      file.puts "#{Time.now} - #{Contact.count}"
+      file.puts "#{Time.now} - #{Contact.count} - #{ENV["BOUNCER_API_KEY"]}"
     end
   end
 end
