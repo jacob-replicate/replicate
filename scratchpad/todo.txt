@@ -2,6 +2,7 @@ Cold
 - Enrich + bounce check (passed_bounce_check?)
 - Unsubscribe API endpoint (double check in dropdown)
 - Finish testing staggering script
+- More variants
 
 Transactional
 - Postmark webhooks for coaching loop replies - https://account.postmarkapp.com/servers/16407823/streams/inbound/get-started
@@ -12,19 +13,17 @@ Transactional
 
 Eventually:
 - Terms + Privacy + MSA/DPA review
-- Bounce checks (See: contact#passed_bounce_check?)
-- Swap out Alex avatar
 - Cron job to filter inbox + draft replies
 - Marketing newsletter - initial email puzzle (e.g., /incidents/corrupted-invoices) -- already tracking emails, don't need to send yet
 - Better error handling if emails fail (e.g., bounce, throttling, etc)
 - :coaching_should_continue prompt -- uncomment guard clause in coaching message generator
 - Attach PDF's + inline JPG's once they close the loop
 - Protect your S3 credentials from misuse -- spin down old keys
+- Audit logging
 - GPT 5
 
 - Move payments to Mercury account, not personal card.
     - https://drive.google.com/drive/u/1/folders/1G8nwfu3FUkew3KPd7IuhyPkZy3HNZe8W
     - Reopen Apollo eventually
     - Double check all of your addresses.
-
-- Audit logging
+    - Double check Mailreach invoices

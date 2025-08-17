@@ -1,6 +1,6 @@
 class ColdEmailGenerator
-  MAX_PER_HOUR = 4
-  SEND_HOURS = (10..17).to_a
+  MAX_PER_HOUR = 3
+  SEND_HOURS = (9..17).to_a
   MAX_MESSAGES_PER_DAY = SEND_HOURS.size * MAX_PER_HOUR
 
   def initialize(min_score:)
@@ -9,31 +9,32 @@ class ColdEmailGenerator
     @min_score = min_score
     @inboxes = INBOXES.dup
     @contacts = fetch_contacts
-    @per_hour  = Hash.new { |h, email| h[email] = Hash.new { |x, hour| x[hour] = 0 } }
+    @per_hour  = Hash.new { |h, email| h[email] = Hash.new { |x, hour| x[hour] = [] } }
     @send_times = build_send_times
     @contact_index = 0
   end
 
   def call
-    return
     return if @contacts.empty?
 
     @send_times.each_with_index do |send_time, i|
-      inbox = @inboxes.shuffle.find { |inbox| inbox_has_room?(inbox[:email], send_time.hour) }
+      inbox = @inboxes.shuffle.find { |inbox| inbox_has_room?(inbox["email"], send_time.hour) }
       next unless inbox
 
       contact = fetch_next_contact!
       break unless contact.present?
 
-      SendColdEmailWorker.perform_at(send_time, contact.id, inbox)
-      @per_hour[inbox[:email]][send_time.hour] += 1
+      # SendColdEmailWorker.perform_at(send_time, contact.id, inbox)
+      @per_hour[inbox["email"]][send_time.hour] << [send_time, contact.id]
     end
+
+    @per_hour
   end
 
   private
 
   def inbox_has_room?(email, hour)
-    (@per_hour[email].values.sum < MAX_MESSAGES_PER_DAY) && (@per_hour[email][hour] < MAX_PER_HOUR)
+    (@per_hour[email].values.sum(&:size) < MAX_MESSAGES_PER_DAY) && (@per_hour[email][hour].size < MAX_PER_HOUR)
   end
 
   def should_run_today?
@@ -42,7 +43,7 @@ class ColdEmailGenerator
   end
 
   def fetch_contacts
-    Contact.us.enriched.where(contacted: false).where("score >= ?", @min_score).order(score: :desc).to_a
+    Contact.us.enriched.where(contacted: false).where("score >= ?", @min_score).order(score: :desc).limit(200).to_a
   end
 
   def fetch_next_contact!
@@ -59,7 +60,7 @@ class ColdEmailGenerator
 
   def build_send_times
     send_times = []
-    now = Time.find_zone("America/New_York").now
+    start_time = Time.find_zone("America/New_York").now.beginning_of_day
 
     SEND_HOURS.each do |hour|
       per_inbox = 3 + rand(0..1)
@@ -70,7 +71,7 @@ class ColdEmailGenerator
         base_minute = (i * spacing).floor
         minute = base_minute + rand(0...spacing)
         second = rand(0..59)
-        send_times << now.change(hour: hour, min: minute, sec: second)
+        send_times << start_time.change(hour: hour, min: minute, sec: second)
       end
     end
 
