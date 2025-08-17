@@ -93,6 +93,11 @@ class Contact < ApplicationRecord
     end
   end
 
+  def self.enrich_top_leads
+    ids = Contact.where("email IS NULL OR email = ?", "email_not_unlocked@domain.com").order(score: :desc).pluck(:id).first(100)
+    EnrichContactsWorker.perform_async(ids)
+  end
+
   def self.report(cohort: nil)
     scope = cohort.present? ? where(cohort: cohort) : all
 

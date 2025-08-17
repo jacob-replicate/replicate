@@ -32,9 +32,12 @@ class EnrichContactsWorker
         apollo_id = person["id"]
         contact = batch.find { |c| c.external_id == apollo_id }
         next unless contact
-        next if enriched_email.blank? || enriched_email == contact.email
 
-        contact.update(email: enriched_email)
+        if enriched_email.blank? || enriched_email == "email_not_unlocked@domain.com"
+          contact.update(score: contact.score * -1)
+        else
+          contact.update(email: enriched_email)
+        end
       end
     end
   end
