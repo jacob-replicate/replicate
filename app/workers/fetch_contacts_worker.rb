@@ -5,7 +5,7 @@ class FetchContactsWorker
     params = {
       "q_keywords" => title_keyword,
       "person_locations[]" => "United States",
-      "organization_num_employees_ranges[]" => "150,750",
+      "organization_num_employees_ranges[]" => "100,1000",
       "contact_email_status[]" => "verified",
       "per_page" => "100",
       "page" => page.to_s
