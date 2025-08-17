@@ -1,17 +1,20 @@
 class ColdEmailVariants
   def self.build(inbox:, contact:)
     greeting = "Hi #{contact.first_name},"
-    footer = "Replicate Software, LLC – 131 Continental Dr, Suite 305, Newark, DE (19713) – <a href='https://replicate.info/contacts/#{contact.id}/unsubscribe'>Unsubscribe</a>"
+    footer = "Replicate Software, LLC - 131 Continental Dr, Suite 305, Newark, DE - <a href='https://replicate.info/contacts/#{contact.id}/unsubscribe'>Unsubscribe</a>"
 
     body_html = <<~HTML
       <p>#{greeting}</p>
       <p>#{intros.sample} #{hooks.sample}</p>
       <p>#{ctas.sample}</p>
-      <p>#{inbox[:signature]}</p>
+      <p>#{inbox["signature"]}</p>
       <p style="font-size: 80%; opacity: 0.6">#{footer}</p>
     HTML
 
-    { subject: subjects.sample, body_html: body_html }
+    {
+      "subject" => subjects.sample,
+      "body_html" => body_html
+    }
   end
 
   def self.subjects
