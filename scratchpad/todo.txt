@@ -4,23 +4,24 @@ Cold
 Transactional
 - Postmark webhooks for coaching loop replies - https://account.postmarkapp.com/servers/16407823/streams/inbound/get-started
 - Cron job to start monday email loops
-- AI grading on form submission - you're gonna get a lot of bullshit responses to grade once public
 - Unsubscribe page with confirmation form, to prevent accidental unsubscribe (doesn't matter for cold, you're never following up).
 
-Misc
-- Fix the prices on mobile multi-year bad math
+------- LAUNCH ----------
+
+Soon
+- AI grading on form submission - you're gonna get a lot of bullshit responses to grade once public
+- Terms + Privacy + MSA/DPA review
+- Cron job to filter inbox + draft replies
+- Protect your S3 credentials from misuse -- spin down old keys
+
 
 Eventually:
 - Upsert metadata, so you can keep track of job changes. DB is going to get stale otherwise.
-- Terms + Privacy + MSA/DPA review
-- Cron job to filter inbox + draft replies
-- Make cold email queue job idempotent by adding a :queued_at column. Don't just filter on "contacted" which can happen hours later.
 - Better error handling if emails fail (e.g., bounce, throttling, etc)
 - :coaching_should_continue prompt -- uncomment guard clause in coaching message generator
 - Set up process for cold email addresses that failed bounce check. Funnel bad data into a CSV that Fiverr can clean up + send back.
 - Attach PDF's + inline JPG's once they close the loop
-- Protect your S3 credentials from misuse -- spin down old keys
-- Audit logging
+- Automated data deletion + audit logging
 - GPT 5
 
 - Marketing newsletter. Just drop them into the typical queue. 3-week pause.

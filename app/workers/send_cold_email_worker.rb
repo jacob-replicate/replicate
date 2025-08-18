@@ -8,6 +8,12 @@ class SendColdEmailWorker
     contact = Contact.us.enriched.find_by(id: contact_id)
     return if contact.blank? || contact.contacted? || contact.email.blank? || contact.email == "email_not_unlocked@domain.com"
 
+    now_et = Time.now.in_time_zone("Eastern Time (US & Canada)")
+    unless now_et.on_weekday? && now_et.hour.between?(9, 17)
+      contact.update_columns(email_queued_at: nil)
+      return
+    end
+
     from_email    = inbox["email"]
     from_name     = inbox["from_name"]
     json_key_path = Rails.root + "try-replicate-gmail.json"
