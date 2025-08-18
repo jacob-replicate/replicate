@@ -17,12 +17,11 @@ class OrganizationsController < ApplicationController
       org.members.create!(
         name: name,
         email: email,
-        role: "owner",
-        should_receive_emails: false
+        role: "owner"
       )
 
       engineer_emails.each do |eng_email|
-        org.members.create(email: eng_email, role: "engineer",should_receive_emails: true)
+        org.members.create(email: eng_email, role: "engineer")
       end
 
       render json: { status: "ok" }, status: :created

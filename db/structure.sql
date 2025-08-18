@@ -88,7 +88,6 @@ CREATE TABLE public.members (
     name character varying,
     email character varying NOT NULL,
     role character varying NOT NULL,
-    should_receive_emails boolean DEFAULT true NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     email_domain character varying,
@@ -137,7 +136,10 @@ CREATE TABLE public.organizations (
     id bigint NOT NULL,
     name character varying,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    access_end_date timestamp(6) without time zone,
+    flagged boolean DEFAULT false,
+    flagged_reason text
 );
 
 
@@ -414,6 +416,7 @@ ALTER TABLE ONLY public.members
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250818012646'),
 ('20250816212502'),
 ('20250813215753'),
 ('20250813215707'),
