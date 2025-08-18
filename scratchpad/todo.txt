@@ -4,6 +4,7 @@ Cold
 Transactional
 - Postmark webhooks for coaching loop replies - https://account.postmarkapp.com/servers/16407823/streams/inbound/get-started
 - Cron job to start monday email loops
+- Email formatting for intro. "Meet Alex, They did somethign"
 - Unsubscribe page with confirmation form, to prevent accidental unsubscribe (doesn't matter for cold, you're never following up).
 
 ------- LAUNCH ----------
