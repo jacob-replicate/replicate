@@ -22,11 +22,7 @@ class OrganizationsController < ApplicationController
       )
 
       engineer_emails.each do |eng_email|
-        org.members.create!(
-          email: eng_email,
-          role: "engineer",
-          should_receive_emails: true
-        )
+        org.members.create(email: eng_email, role: "engineer",should_receive_emails: true)
       end
 
       render json: { status: "ok" }, status: :created
@@ -39,11 +35,6 @@ class OrganizationsController < ApplicationController
 
   def extract_emails(raw)
     return [] if raw.blank?
-
-    raw
-      .split(/[\n, ]+/)
-      .map(&:strip)
-      .reject(&:blank?)
-      .uniq
+    raw.split(/[\n, ]+/).map(&:strip).reject(&:blank?).uniq
   end
 end

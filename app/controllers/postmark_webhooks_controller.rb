@@ -37,10 +37,7 @@ class PostmarkWebhooksController < ApplicationController
     signature = request.headers["X-Postmark-Signature"]
     return false if secret.blank? || signature.blank?
 
-    expected = Base64.strict_encode64(
-      OpenSSL::HMAC.digest("sha256", secret, request.raw_post)
-    )
-
+    expected = Base64.strict_encode64(OpenSSL::HMAC.digest("sha256", secret, request.raw_post))
     ActiveSupport::SecurityUtils.secure_compare(expected, signature)
   end
 
@@ -51,10 +48,7 @@ class PostmarkWebhooksController < ApplicationController
   def find_conversation_from_header
     return nil unless in_reply_to.is_a?(String)
 
-    id = in_reply_to.downcase
-                    .gsub(/.*conversation-/, "")
-                    .gsub(/@replicate\.info.*/, "")
-
+    id = in_reply_to.downcase.gsub(/.*conversation-/, "").gsub(/@replicate\.info.*/, "")
     Conversation.find_by(id: id)
   end
 
@@ -67,7 +61,7 @@ class PostmarkWebhooksController < ApplicationController
 
   def rate_limited?(conversation_id)
     key = "postmark/conversation:#{conversation_id}/rate"
-    limit = 10      # max messages
+    limit = 10
     window = 1.minute
 
     Rails.cache.increment(key, 1, expires_in: window) > limit

@@ -1,24 +1,28 @@
 Cold
-- Enrich + bounce check (passed_bounce_check?)
 - More variants
 
 Transactional
 - Postmark webhooks for coaching loop replies - https://account.postmarkapp.com/servers/16407823/streams/inbound/get-started
 - Cron job to start monday email loops
 - AI grading on form submission - you're gonna get a lot of bullshit responses to grade once public
-- Unsubscribe page with confirmation form, to prevent accidental (doesn't matter for cold).
+- Unsubscribe page with confirmation form, to prevent accidental unsubscribe (doesn't matter for cold, you're never following up).
 
 Eventually:
 - Upsert metadata, so you can keep track of job changes. DB is going to get stale otherwise.
 - Terms + Privacy + MSA/DPA review
 - Cron job to filter inbox + draft replies
-- Marketing newsletter - initial email puzzle (e.g., /incidents/corrupted-invoices) -- already tracking emails, don't need to send yet
+- Make cold email queue job idempotent by adding a :queued_at column. Don't just filter on "contacted" which can happen hours later.
 - Better error handling if emails fail (e.g., bounce, throttling, etc)
 - :coaching_should_continue prompt -- uncomment guard clause in coaching message generator
+- Set up process for cold email addresses that failed bounce check. Funnel bad data into a CSV that Fiverr can clean up + send back.
 - Attach PDF's + inline JPG's once they close the loop
 - Protect your S3 credentials from misuse -- spin down old keys
 - Audit logging
 - GPT 5
+
+- Marketing newsletter. Just drop them into the typical queue. 3-week pause.
+    - Just drop them into the normal rotation for awhile. Then gradually pull it away with a stronger upsell nudge in the footers.
+    - They still have to copy/paste the links in Slack (e.g., replicate.info/retry-storm) to their team.
 
 - Move payments to Mercury account, not personal card.
     - https://drive.google.com/drive/u/1/folders/1G8nwfu3FUkew3KPd7IuhyPkZy3HNZe8W

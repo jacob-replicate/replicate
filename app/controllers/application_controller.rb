@@ -1,4 +1,6 @@
 class ApplicationController < ActionController::Base
+  skip_before_action :verify_authenticity_token
+
   def start_conversation(initial_message: nil, context: {}, force_tos: false)
     if context["engineer_name"].present?
       context["first_name"] = context["engineer_name"].split.first
