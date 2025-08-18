@@ -91,7 +91,8 @@ CREATE TABLE public.members (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     email_domain character varying,
-    subscribed boolean DEFAULT true NOT NULL
+    subscribed boolean DEFAULT true NOT NULL,
+    email_bounced boolean DEFAULT false NOT NULL
 );
 
 
@@ -416,6 +417,7 @@ ALTER TABLE ONLY public.members
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250818014440'),
 ('20250818012646'),
 ('20250816212502'),
 ('20250813215753'),
