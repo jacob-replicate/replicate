@@ -1,6 +1,4 @@
 class PostmarkWebhooksController < ApplicationController
-  skip_before_action :verify_authenticity_token
-
   def create
     return head :ok unless inbound_record?
     return head :unauthorized unless valid_signature?

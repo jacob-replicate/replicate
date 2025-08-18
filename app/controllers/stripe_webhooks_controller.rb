@@ -1,6 +1,4 @@
 class StripeWebhooksController < ApplicationController
-  skip_before_action :verify_authenticity_token
-
   def create
     payload = request.body.read
     signature = request.headers["HTTP_STRIPE_SIGNATURE"]
