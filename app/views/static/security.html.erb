@@ -2,30 +2,33 @@
   <h1 class="text-3xl font-semibold mb-4">Security & IT Readiness</h1>
   <p class="text-sm text-gray-500 mb-6">Last updated: August 2025</p>
 
-  <p class="mb-4">
-    This platform sends <span class="font-semibold">coaching emails</span> to your engineers. <span class="font-semibold">No logins, dashboards, integrations, or SSO.</span>
+  <p class="mb-6">
+    This platform sends <span class="font-semibold">coaching emails</span> to your engineers. <span class="font-semibold">No logins, dashboards, integrations,</span> or <span class="font-semibold">SSO.</span>
   </p>
 
-  <p class="mb-4">
-    Every Monday, cron starts 1-on-1 email threads (about SEV-1 prevention) with your engineers. The Rails app receives a webhook when they reply, and sends back the results of this <a href="https://gist.github.com/jacob-comer/4dee4c8e5c0123d8aac9c65ea9f03b54" class="text-blue-600 hover:underline font-semibold" target="_blank">GPT prompt</a>. That's it.
+  <p class="mb-6">
+    Every Monday, cron starts 1-on-1 email threads (about SEV-1 prevention) with your engineers. The Rails app receives a webhook when they reply, and sends back the results of a few GPT prompts. That's it.
   </p>
 
-  <p class="mb-4">
-    <span class="font-semibold">No access to customer data.</span> If users type it anyway, I have <a href="/replicate-coi.pdf" class="text-blue-600 hover:underline font-semibold" target="_blank">$1M E&O</a> + <a href="/replicate-coi.pdf" class="text-blue-600 hover:underline font-semibold" target="_blank">$1M Cyber Liability</a> coverage.
+  <p class="mb-6">
+    <span class="font-semibold">No customer data.</span> If users type it anyway, the LLC has <a href="/replicate-coi.pdf" class="text-blue-600 hover:underline font-semibold" target="_blank">$1M E&O</a> + <a href="/replicate-coi.pdf" class="text-blue-600 hover:underline font-semibold" target="_blank">$1M Cyber Liability</a> coverage.
   </p>
 
-  <p class="mb-4">
-    I lead IAM for an infra/sec market leader, and spent most of <%= link_to 'my career', 'https://linkedin.com/in/jacobcomer', class: "text-blue-600 hover:text-blue-700 hover:underline transition font-semibold" %> building for regulated industries. Replicate is the opposite of that world. I have <span class="font-semibold">0 employees</span> and everything's automated. <span class="font-semibold">No SOC 2 yet.</span>
-  </p>
-
-  <p class="mb-4">
+  <p class="mb-6">
     You will receive a <a href="/replicate-msa-dpa.pdf" class="text-blue-600 hover:underline font-semibold" target="_blank">pre-signed MSA</a> during the <a href="/billing" class="text-blue-600 hover:underline font-semibold">trial period</a>. It includes a required <span class="font-semibold">DPA</span> as well.
   </p>
 
-  <p class="mb-4">Liability is capped at <span class="font-semibold">5x the fees</span> paid across your entire contract, even if multi-year. This excludes <span class="font-semibold">serious misconduct</span> liability (e.g., IP infringement), which is uncapped as it should be.</p>
+  <p class="mb-6">Liability is capped at <span class="font-semibold">5x the fees</span> paid across your entire contract, even if multi-year. This excludes <span class="font-semibold">serious misconduct</span> liability (e.g., IP infringement), which is uncapped as it should be.</p>
 
-  <p>
-    I don't engage with <span class="font-semibold">RFP's</span>, <span class="font-semibold">redlines</span>, or <span class="font-semibold">vendor portals</span>. I just took all of the changes I used to request as a buyer, and baked them into my standard operating procedures. It's a pretty simple tool.
+  <p class="mb-6">
+    Replicate does not support <span class="font-semibold">RFP's</span>, <span class="font-semibold">redlines</span>, or <span class="font-semibold">vendor portals</span>. All standard buyer requirements are included by default, so you don't have to negotiate. <span class="font-semibold">SOC 2 (Type 1)</span> is planned for late 2026.
+  </p>
+
+  <p class="flex-row items-center mb-6 hidden md:flex">
+    <img src="/logo-white.jpg" class="rounded-full w-9 h-9 mr-3 border border-gray-500" />
+    <a href="mailto:jacob@replicate.info" class="text-blue-600 hover:text-blue-700 text-[16px] hover:underline hover:underline-offset-4 decoration-1 transition flex items-center">
+      support@replicate.info
+    </a>
   </p>
 
   <div class="space-y-10 mt-10">
@@ -40,7 +43,7 @@
       <p>All data is encrypted at rest using AES-256, with a minimum of TLS 1.2 in transit.</p>
 
       <h3 class="font-semibold mt-4 mb-1">No cookie policy</h3>
-      <p>I don't store visitor state. No logins, no Google Analytics, no policy for tech I don't use on the site. When SCIM is released, I'm planning to store a single Ruby on Rails session ID cookie for admins who opt-in.</p>
+      <p>Visitor state is not stored. No logins, no Google Analytics, no cookies, no policy for tech that isn't used. When SCIM is released, admins who opt-in will receive a single Ruby on Rails session ID cookie.</p>
 
       <h3 class="font-semibold mt-4 mb-1">Backup process</h3>
       <p>
@@ -54,7 +57,7 @@
       <p>The codebase is continuously scanned using <a href="https://docs.github.com/en/code-security/getting-started/dependabot-quickstart-guide" class="text-blue-600 hover:text-blue-700 hover:underline transition font-semibold">GitHub Dependabot</a> to patch vulnerable libraries. Critical vulnernabilities are patched within 7 days of public disclosure.</p>
 
       <h3 class="font-semibold mt-4 mb-1">Incident response</h3>
-      <p>I run PagerDuty on my phone 24/7. In the event of a confirmed incident, I'll send a root cause analysis and remediation summary (from <%= mail_to 'security@replicate.info', 'security@replicate.info', class: "text-blue-600 hover:text-blue-700 hover:underline transition font-semibold" %>) to impacted customers within 72 hours.</p>
+      <p>PagerDuty maintains a 24/7 oncall schedule. In the event of a confirmed incident, impacted customers will receive a root cause analysis + remediation summary (from <%= mail_to 'security@replicate.info', 'security@replicate.info', class: "text-blue-600 hover:text-blue-700 hover:underline transition font-semibold" %>) in 72 hours.</p>
     </div>
 
     <div>
@@ -65,13 +68,13 @@
 
       <h3 class="font-semibold mt-6 mb-1">User provisioning (SCIM, SSO)</h3>
       <p>SCIM is planned as an <span class="font-medium">optional</span> enhancement for 2026. Administrators currently manage access by emailing personnel changes to <a href="mailto:support@replicate.info" class="text-blue-600 hover:text-blue-700 hover:underline transition font-semibold">support@replicate.info</a>. They will soon be able to login to a secure admin portal (via <a href="https://auth0.com" class="text-blue-600 hover:text-blue-700 hover:underline transition font-semibold">Auth0 SSO</a>) to manage team members and billing. No user tracking, just logistics.</p>
-      <p class="mt-2">If you sign up a few weeks beforehand, it will be an opt-in process. GRC and security teams will have as much time as they need to validate + approve/deny the process change. I don't have all the details yet, but will say that I've spent most of my career focused on enterprise IAM. I think approvals will be quick.</p>
+      <p class="mt-2">If you sign up a few weeks beforehand, it will be an opt-in process. GRC and security teams will have as much time as they need to validate + approve/deny the process change.</p>
 
       <h3 class="font-semibold mt-6 mb-1">You own your data</h3>
-      <p>Inactive conversations are automatically deleted after 3 months. I use that data to recreate email history when engineers reply a few weeks later. No AI training. Email <a href="mailto:support@replicate.info" class="text-blue-600 hover:text-blue-700 hover:underline transition font-semibold">support@replicate.info</a> to request immediate deletion. It won't get stuck in a Postgres backup forever.</p>
+      <p>Inactive conversations are automatically deleted after 3 months. That data is used to recreate email history when engineers reply a few weeks later. No AI training. Email <a href="mailto:support@replicate.info" class="text-blue-600 hover:text-blue-700 hover:underline transition font-semibold">support@replicate.info</a> to request immediate deletion. It won't get stuck in a Postgres backup forever.</p>
 
       <h3 class="font-semibold mt-6 mb-1">Planned end-of-service</h3>
-      <p>If I ever spin down the business, you'll receive advance notice, full source code, your data, and next steps. Support will remain available during the shutdown window. That said, I built Replicate to keep myself sharp. It's not going away anytime soon. Sparring with GPT is faster than reading books.
+      <p>If the business is ever spun down, you will receive advance notice, full source code, your data, and next steps. Support will remain available during the shutdown window. Current contracts will be fulfilled.
     </div>
 
     <div>
