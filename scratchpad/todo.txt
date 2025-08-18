@@ -7,6 +7,9 @@ Transactional
 - AI grading on form submission - you're gonna get a lot of bullshit responses to grade once public
 - Unsubscribe page with confirmation form, to prevent accidental unsubscribe (doesn't matter for cold, you're never following up).
 
+Misc
+- Fix the prices on mobile multi-year bad math
+
 Eventually:
 - Upsert metadata, so you can keep track of job changes. DB is going to get stale otherwise.
 - Terms + Privacy + MSA/DPA review

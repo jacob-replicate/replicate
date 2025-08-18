@@ -1,4 +1,6 @@
 class StaticController < ApplicationController
+  before_action :set_prices
+
   def index
   end
 
@@ -45,5 +47,15 @@ class StaticController < ApplicationController
 
   def knowledge_gaps
     redirect_to "https://docs.google.com/document/d/1YSmtsZYZ6qJrTOv4raqOUcU2Q1YvrVTzlab9QjUFT50/edit", allow_other_host: true
+  end
+
+  def set_prices
+    @prices = [
+      { seat_count: 25,  price: 10_000 },
+      { seat_count: 75,  price: 25_000 },
+      { seat_count: 150, price: 50_000 },
+      { seat_count: 300, price: 100_000 },
+      { seat_count: 1_000, price: 200_000 }
+    ]
   end
 end

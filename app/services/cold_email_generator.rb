@@ -28,6 +28,7 @@ class ColdEmailGenerator
 
       variant = ColdEmailVariants.build(inbox: inbox, contact: contact)
       # SendColdEmailWorker.perform_at(send_time, contact.id, inbox, variant)
+      contact.update_columns(email_queued_at: Time.now)
       @per_hour[inbox["email"]][send_time.hour] << [inbox["from_name"], inbox["email"], send_time, contact.id, contact.name, contact.email, variant]
     end
 
@@ -46,7 +47,7 @@ class ColdEmailGenerator
   end
 
   def fetch_contacts
-    Contact.us.enriched.where(contacted: false).where("score >= ?", @min_score).order(score: :desc).limit(200).to_a
+    Contact.us.enriched.where(email_queued_at: nil, contacted: false).where("score >= ?", @min_score).order(score: :desc).limit(200).to_a
   end
 
   def fetch_next_contact!
