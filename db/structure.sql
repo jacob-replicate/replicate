@@ -59,7 +59,8 @@ CREATE TABLE public.contacts (
     name text,
     cohort text,
     contacted boolean DEFAULT false NOT NULL,
-    unsubscribed boolean DEFAULT false NOT NULL
+    unsubscribed boolean DEFAULT false NOT NULL,
+    email_queued_at timestamp(6) without time zone DEFAULT NULL::timestamp without time zone
 );
 
 
@@ -417,6 +418,7 @@ ALTER TABLE ONLY public.members
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250818015702'),
 ('20250818014440'),
 ('20250818012646'),
 ('20250816212502'),
