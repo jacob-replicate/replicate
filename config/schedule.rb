@@ -13,7 +13,7 @@ every 1.hour do
 end
 
 every :weekday, at: '7:00am' do
-  sh "cd /home/jacob/code/replicate && bin/rails runner 'Contact.enrich_top_leads' >> /home/jacob/cron_log.log 2>&1"
+  # sh "cd /home/jacob/code/replicate && bin/rails runner 'Contact.enrich_top_leads' >> /home/jacob/cron_log.log 2>&1"
 end
 
 every :weekday, at: '7:00am' do
