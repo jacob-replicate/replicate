@@ -30,7 +30,7 @@ class ColdEmailVariants
   def self.intros
     url = "<a href='https://replicate.info' style='font-weight: bold'>replicate.info</a>"
     [
-      "I lead IAM for Terraform. On the side, I shipped #{url} to help teams uncover their infra/security blind spots.",
+      "I lead IAM projects for Terraform. On the side, I shipped #{url} to help teams uncover their infra/sec blind spots.",
       "I've been in lots of SEVs where judgment broke under pressure, so I built #{url} to help engineers sharpen their production instincts.",
       "I'm a Staff Engineer at HashiCorp, and recently launched #{url} to help developers think clearly during production fires.",
       "I spent years in incident threads where we all missed the same failure pattern. I launched #{url} recently to help ICs catch that stuff earlier — <i>without</i> needing a SEV to learn it.",

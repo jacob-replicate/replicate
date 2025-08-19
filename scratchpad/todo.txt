@@ -6,10 +6,12 @@ Transactional
 - Cron job to start monday email loops
 - Email formatting for intro. "Meet Alex, They did somethign"
 - Unsubscribe page with confirmation form, to prevent accidental unsubscribe (doesn't matter for cold, you're never following up).
+- Subject line generation
 
 ------- LAUNCH ----------
 
 Soon
+- Cut weak/redundant/vague incidents from the list?
 - AI grading on form submission - you're gonna get a lot of bullshit responses to grade once public
 - Terms + Privacy + MSA/DPA review
 - Cron job to filter inbox + draft replies
