@@ -84,7 +84,7 @@ CREATE TABLE public.conversations (
 --
 
 CREATE TABLE public.members (
-    id bigint NOT NULL,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
     organization_id bigint NOT NULL,
     name character varying,
     email character varying NOT NULL,
@@ -95,25 +95,6 @@ CREATE TABLE public.members (
     subscribed boolean DEFAULT true NOT NULL,
     email_bounced boolean DEFAULT false NOT NULL
 );
-
-
---
--- Name: members_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.members_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: members_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.members_id_seq OWNED BY public.members.id;
 
 
 --
@@ -135,7 +116,7 @@ CREATE TABLE public.messages (
 --
 
 CREATE TABLE public.organizations (
-    id bigint NOT NULL,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
     name character varying,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
@@ -143,25 +124,6 @@ CREATE TABLE public.organizations (
     flagged boolean DEFAULT false,
     flagged_reason text
 );
-
-
---
--- Name: organizations_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.organizations_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: organizations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.organizations_id_seq OWNED BY public.organizations.id;
 
 
 --
@@ -244,20 +206,6 @@ CREATE TABLE public.users (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
---
--- Name: members id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.members ALTER COLUMN id SET DEFAULT nextval('public.members_id_seq'::regclass);
-
-
---
--- Name: organizations id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.organizations ALTER COLUMN id SET DEFAULT nextval('public.organizations_id_seq'::regclass);
 
 
 --
@@ -404,20 +352,14 @@ CREATE UNIQUE INDEX index_users_on_unlock_token ON public.users USING btree (unl
 
 
 --
--- Name: members fk_rails_52498fc759; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.members
-    ADD CONSTRAINT fk_rails_52498fc759 FOREIGN KEY (organization_id) REFERENCES public.organizations(id);
-
-
---
 -- PostgreSQL database dump complete
 --
 
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250819000806'),
+('20250819000641'),
 ('20250818015702'),
 ('20250818014440'),
 ('20250818012646'),

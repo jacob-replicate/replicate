@@ -8,6 +8,8 @@ class Member < ApplicationRecord
 
   before_validation :set_email_domain, if: -> { will_save_change_to_email? }
 
+  scope :subscribed, -> { where(subscribed: true) }
+
   def owner?
     role == "owner"
   end
