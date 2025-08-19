@@ -85,7 +85,7 @@ CREATE TABLE public.conversations (
 
 CREATE TABLE public.members (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
-    organization_id bigint NOT NULL,
+    organization_id character varying NOT NULL,
     name character varying,
     email character varying NOT NULL,
     role character varying NOT NULL,
@@ -358,6 +358,7 @@ CREATE UNIQUE INDEX index_users_on_unlock_token ON public.users USING btree (unl
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250819001348'),
 ('20250819000806'),
 ('20250819000641'),
 ('20250818015702'),
