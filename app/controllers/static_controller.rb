@@ -5,9 +5,11 @@ class StaticController < ApplicationController
   end
 
   def terms
+    @title = "Terms of Service"
   end
 
   def privacy
+    @title = "Privacy Policy"
   end
 
   def billing
@@ -51,6 +53,7 @@ class StaticController < ApplicationController
 
   def set_prices
     @prices = [
+      { seat_count: 10,  price: 5_000 },
       { seat_count: 25,  price: 10_000 },
       { seat_count: 75,  price: 25_000 },
       { seat_count: 150, price: 50_000 },
