@@ -120,7 +120,7 @@ class Contact < ApplicationRecord
   end
 
   def self.fetch_all
-    keywords = [
+    ic_keywords = [
       "application security",
       "backend",
       "cloud",
@@ -139,7 +139,41 @@ class Contact < ApplicationRecord
       "tooling",
     ]
 
-    keywords.uniq.map(&:downcase).each_with_index do |keyword, i|
+    director_keywords = [
+      "director of engineering",
+      "engineering director",
+      "director of infrastructure",
+      "director of sre",
+      "director of platform",
+      "director of devops",
+      "director of cloud",
+#      "director of security engineering",
+#      "head of engineering",
+#      "head of infrastructure",
+#      "head of sre",
+#      "head of platform",
+#      "head of devops",
+#      "head of security engineering",
+#      "vp engineering",
+#      "vp of engineering",
+#      "vp platform",
+#      "vp infrastructure",
+#      "vp sre",
+#      "vp devops",
+#      "vp cloud",
+#      "vp security engineering",
+#      "cto",
+#      "chief technology officer",
+#      "chief information officer",
+#      "cio",
+#      "senior engineering manager",
+#      "senior manager infrastructure",
+#      "senior manager sre",
+#      "senior manager platform",
+#      "principal engineering manager"
+    ]
+
+    director_keywords.uniq.map(&:downcase).each_with_index do |keyword, i|
       offset = (i * 2).minutes
       begin
         pagination = FetchContactsWorker.new.perform(keyword, 1, true)
@@ -150,7 +184,7 @@ class Contact < ApplicationRecord
       end
 
       1.upto(page_count) do |page|
-        FetchContactsWorker.perform_in((page * 5).seconds + offset, keyword, page)
+        FetchContactsWorker.perform_in((page * 10).seconds + offset, keyword, page)
       end
     end
   end

@@ -16,7 +16,7 @@ Soon
 - Terms + Privacy + MSA/DPA review
 - Cron job to filter inbox + draft replies
 - Protect your S3 credentials from misuse -- spin down old keys
-
+- Move Missive to Mercury account
 
 Eventually:
 - Upsert metadata, so you can keep track of job changes. DB is going to get stale otherwise.
