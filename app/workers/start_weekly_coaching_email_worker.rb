@@ -11,7 +11,8 @@ class StartWeeklyCoachingEmailWorker
     day_end = day_start + 24.hours
     return if member.conversations.where("created_at >= ? AND created_at <= ?", day_start, day_start + 1.day)
 
-    return
+    subject = Prompts::CoachingSubjectLine.new(context: { incident: incident }).call rescue ""
+    return if subject.blank?
 
     conversation = Conversation.create!(
       channel: "email",
@@ -22,6 +23,6 @@ class StartWeeklyCoachingEmailWorker
       recipient: member
     )
 
-    ConversationDriverWorker.new.perform(conversation.id)
+    # ConversationDriverWorker.new.perform(conversation.id)
   end
 end
