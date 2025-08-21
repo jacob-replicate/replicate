@@ -1,17 +1,20 @@
 Task:
 - You’re generating the subject line for a simulated SEV drill, delivered over email.
-- This weekly ritual helps engineers discover their infra/sec blind spots. You're crafting a subject line that invites them to solve this week's puzzle.
+- This weekly ritual helps engineers discover their infra/sec blind spots. You're crafting a subject line that invites them to solve this week's SEV-1.
+- You must read the full SEV-1 description. This is your grounding data. Make the subject feel urgent. Painful. Real. It's not an online course. It's a knife.
 
-Incident:
-- You are creating a subject line for the following incident: **{{CONTEXT_INCIDENT}}**
+SEV-1 Description:
+- {{CONTEXT_INCIDENT}}.
 
-Subject Formatting Rules:
-- **Every subject must expose a subtle violation of expectation.** Something behaved in a way its config, role, or guardrail said it shouldn’t. The subject must highlight that tension precisely.
-- Output a single subject line. No other content. It must be less than 8 words.
+Constraints:
+- Output a single subject line. No other content.
+- **The subject line must not exceed 6 words, despite the examples below.**
+- Use this format: <Mechanism> <boundary-violating verb> <contradictory object/state>.
+- You must use details from the incident to form the subject line.
+- You must not mask or hide incident details — the subject line should directly reflect the incident behavior.
+- However, you must reframe the incident through the lens of a specific infra/security mechanism. Do not simply restate the incident text.
 - Every verb must expose how the system *violated a boundary* — not merely that it didn’t behave “normally.”
 - The subject must contain a clear contradiction between system role/state and observed behavior.
-- The subject must introduce a hidden actor *not explicitly named in the incident*.
-- The subject must introduce a hidden actor (e.g., “cache,” “queue,” “replica”) not explicitly named in the incident.
 - Ban vagueness completely. Never use em dashes, filler intros (e.g. “Turns out,” “Sometimes”), vague verbs, actor-agnostic prompts, or open-ended questions like “What if X happened?” Subjects must begin with a concrete system behavior or failure state and assert the failure directly.
 - Subjects must start with a sharp, mechanistic hook — not a filler phrase.
 - Ban informal, ambiguous, or unserious phrasing. Tone must be exacting. Use sharp, precise, tense language. You are writing for a Staff+ engineer used to diagnosing real failures.
@@ -24,22 +27,20 @@ Subject Formatting Rules:
 - Favor unexpected pairings over straight descriptions.
 - Ban comparative framing. Never phrase as “one system vs another.” Always anchor to the single failing system.
 - The subject should contain a contrast, inversion, or tension — not just a list of metrics.
-- Use strong verbs that expose a system violating boundaries. Approved families include:
-	•	Bypassing / Ignoring: bypassed, ignored, skipped, overrode, omitted
-	•	Accepting / Trusting: accepted, trusted, honored, acknowledged
-	•	Serving / Returning: served, returned, delivered, exposed
-	•	Replaying / Repeating: replayed, duplicated, retried, reissued
-	•	Leaking / Forwarding: leaked, forwarded, exposed, routed
-	•	Committing / Writing: committed, acknowledged, persisted, stored
-- Banned verbs: hid, failed, stopped, unexpected, unusual, went down, broke.
+- Use strong verbs that expose a system violating boundaries.
 
 
 Examples:
 - Good: The cache served stale inventory as live data.
 - Good: Why did the auth service accept unsigned tokens?
+- Good: Guardrail rebooted live cluster instead of staging.
 - Good: What caused the cache to bypass TTL enforcement?
 - Good: The auth service trusted expired refresh tokens.
+- Good: Session cache ignored expiration, leaking stale tokens.
 - Good: Replica nodes acknowledged writes even though quorum was absent.
+- Good: Metrics pipeline trusted faulty timestamps from a parser.
+- Good: IAM policy rollback rejected valid requests.
+- Good: The alert parser ignored its own outage.
 
 Voice:
 – Tone: calm, grounded, professional. No hype. Plain, confident language. You are speaking to a Staff Engineer. Be precise.
@@ -48,7 +49,3 @@ Voice:
 - Avoid narrative tone. Frame as forensic prompt, not persuasion.
 - Practical over theoretical
 - Avoids hype, corporate jargon, or formal "thought leadership" tone.
-
-Platform Overview:
-- replicate.info helps mid-market engineering teams sharpen their production instincts. It's a weekly fire drill (over email). It drops you into the middle of a SEV-1, asks where you'd look first, and challenges your thinking until you fail. Test first, find the blind spot that will eventually crash prod, then coach. Think of it like a 5min puzzle that nudges you to an "aha!" moment, 52 times per year. It's not an online course. It's a knife.
-- Every Monday, your team faces a new SEV. Everyone starts with the same problem, then pairs with GPT in private threads. It's just email. No UI. It shows up where engineers already live, every week, with a new infra/sec talking point for the org.

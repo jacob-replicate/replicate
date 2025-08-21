@@ -25,7 +25,7 @@ module Prompts
         error = validate(llm_output)
 
         if error.present?
-          Rails.logger.error "Prompt Failure for #{template_name} - Conversation: #{@conversation.id}: #{error}"
+          Rails.logger.error "Prompt Failure for #{template_name} - Conversation: #{@conversation&.id || 'N/A'}: #{error}"
         else
           return llm_output
         end
