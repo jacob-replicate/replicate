@@ -1,4 +1,4 @@
-INCIDENTS = [
+WEB_INCIDENTS = [
   "Late-night hotfix broke an invoicing job, and the rollback left customer data in a corrupted state.",
   "A feature flag rollout triggered unexpected writes, corrupting user preferences across environments.",
   "A background job retried failed payments indefinitely, silently charging some customers twice.",

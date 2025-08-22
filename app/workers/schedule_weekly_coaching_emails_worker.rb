@@ -12,8 +12,8 @@ class ScheduleWeeklyCoachingEmailsWorker
     Organization.active.find_each do |organization|
       seen = Conversation.where(recipient: organization.members).pluck(Arel.sql("context ->> 'incident'")).reject(&:blank?)
 
-      available = INCIDENTS.reject { |i| seen.include?(i) }
-      incident  = (available.presence || INCIDENTS).sample
+      available = WEB_INCIDENTS.reject { |i| seen.include?(i) }
+      incident  = (available.presence || WEB_INCIDENTS).sample
 
       organization.members.subscribed.find_each do |member|
         delay_seconds += rand(10..15)

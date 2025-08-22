@@ -22,7 +22,7 @@ class StaticController < ApplicationController
         conversation_type: :landing_demo,
         engineer_name: "Alex Shaw",
         first_name: "Alex",
-        incident: INCIDENTS.sample
+        incident: WEB_INCIDENTS.sample
       },
       force_tos: true
     )
@@ -37,7 +37,7 @@ class StaticController < ApplicationController
         conversation_type: :coaching,
         engineer_name: name,
         first_name: first_name,
-        incident: INCIDENTS.sample
+        incident: WEB_INCIDENTS.sample
       },
       force_tos: true
     )
