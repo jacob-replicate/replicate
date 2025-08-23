@@ -53,12 +53,11 @@ class StaticController < ApplicationController
 
   def set_prices
     @prices = [
-      { seat_count: 10,  price: 5_000 },
-      { seat_count: 25,  price: 10_000 },
-      { seat_count: 75,  price: 25_000 },
-      { seat_count: 150, price: 50_000 },
-      { seat_count: 300, price: 100_000 },
-      { seat_count: 1_000, price: 200_000 }
+      { seat_count: 25,  price: 20_000 },
+      { seat_count: 75,  price: 40_000 },
+      { seat_count: 150, price: 80_000 },
+      { seat_count: 300, price: 120_000 },
+      { seat_count: 1_000, price: 240_000 }
     ]
   end
 end
