@@ -112,7 +112,7 @@
 
   <% if @conversation.context["conversation_type"] == "landing_demo" %>
     <div id="cta" class="<%= @conversation.messages.count == 9 ? "mt-6" : "hidden mt-10" %>">
-      <%= render "static/trial_form", form_width_class: "md:w-5/6" %>
+      <%= render "static/trial_form", extra_form_container_classes: "md:w-5/6" %>
     </div>
   <% else %>
     <div class="pb-4">

@@ -5,7 +5,7 @@
 <% team_id  = "#{form_id}-team" %>
 
 <form id="<%= form_id %>" class="flex flex-col items-center" novalidate>
-  <div id="<%= box_id %>" class="border border-neutral-300 rounded-xl bg-white <%= form_width_class %>">
+  <div id="<%= box_id %>" class="border rounded-xl bg-white <%= extra_form_container_classes %>">
     <% if defined?(show_next_steps_header) %>
       <div class="bg-neutral-100 border-b border-neutral-200 px-5 pt-4 pb-4 rounded-tl-xl rounded-tr-xl">
         <div class="text-xl font-semibold tracking-tight">Next Steps</div>
@@ -14,15 +14,19 @@
     <div class="p-5">
       <div class="text-[16px]">
         <div class="mb-4">
-          Your first emails go out <span class="font-semibold">next Monday</span>. This is the only form.
+          Your first SEV emails go out <span class="font-semibold">next Monday</span>. This is the only form.
         </div>
 
         <div class="mb-4">
           <span class="font-semibold">3-month free trial</span>. No credit cards, demos, or marketing spam.
         </div>
 
-        <div class="mb-6">
-          I'll reach out if your team is engaging with the product. If not, it fades away and wipes your data. Here are the <a href="/security" target="_blank" class="text-blue-600 hover:text-blue-700 font-medium hover:underline hover:underline-offset-4 decoration-1 transition">security</a> + <a href="/billing" target="_blank" class="text-blue-600 hover:text-blue-700 font-medium hover:underline hover:underline-offset-4 decoration-1 transition">billing</a> docs.
+        <div class="mb-4">
+          Engineers get <span class="font-semibold">auto-unsubscribed</span> after 3 weeks of inactivity, with a link to opt back in. If it sucks, it just fades away and wipes your data.
+        </div>
+
+        <div class="mb-10">
+          You'll get a <a href="/replicate-msa-dpa.pdf" class="text-blue-600 hover:underline font-semibold" target="_blank">pre-signed MSA/DPA</a> in a few weeks if you're still here.
         </div>
       </div>
 
