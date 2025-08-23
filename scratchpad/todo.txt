@@ -19,6 +19,7 @@ Soon
 - Protect your S3 credentials from misuse -- spin down old keys
 - Move Missive to Mercury account
 - Add an example URL to copy/paste in the "Not the right time?" box. Give them the value ASAP.
+- Monthly email report format to Directors. Make it a PDF that Rails renders, which you can attach in Postmark email, that they can forward to VP.
 
 Eventually:
 - Upsert metadata, so you can keep track of job changes. DB is going to get stale otherwise.

@@ -1,4 +1,32 @@
 class Organization
+  has_many :employees, dependent: :destroy
+  has_many :incident_memberships, dependent: :destroy
+end
+
+class Employee
+  has_many :incident_memberships, dependent: :nullify
+end
+
+class Incident
+  has_many :incident_memberships, dependent: :destroy
+end
+
+class IncidentMembership
+  belongs_to :organization
+  belongs_to :employee
+  belongs_to :incident
+end
+
+
+
+
+
+
+
+
+
+
+class Organization
   has_many :employees
   # has_many :invoices
 end
