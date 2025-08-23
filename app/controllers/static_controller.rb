@@ -55,9 +55,9 @@ class StaticController < ApplicationController
     @prices = [
       { seat_count: 25,  price: 20_000 },
       { seat_count: 75,  price: 40_000 },
-      { seat_count: 150, price: 80_000 },
-      { seat_count: 300, price: 120_000 },
-      { seat_count: 1_000, price: 240_000 }
+      { seat_count: 150, price: 60_000 },
+      { seat_count: 300, price: 80_000 },
+      { seat_count: 1_000, price: 100_000 }
     ]
   end
 end
