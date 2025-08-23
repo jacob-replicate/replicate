@@ -5,56 +5,57 @@
 <% team_id  = "#{form_id}-team" %>
 
 <form id="<%= form_id %>" class="flex flex-col items-center" novalidate>
-  <div id="<%= box_id %>" class="border border-gray-200 rounded-xl shadow bg-white p-6 <%= form_width_class %>">
-    <div class="text-[16px]">
-      <div class="mb-6 text-xl tracking-tight font-semibold">
-        Next Steps
+  <div id="<%= box_id %>" class="border border-neutral-300 rounded-xl bg-white <%= form_width_class %>">
+    <div class="bg-neutral-100 border-b border-neutral-200 px-5 pt-4 pb-4 rounded-tl-xl rounded-tr-xl">
+      <div class="text-xl font-semibold tracking-tight">Next Steps</div>
+    </div>
+    <div class="p-5">
+      <div class="text-[16px]">
+        <div class="mb-4">
+          Your first emails go out <span class="font-semibold">next Monday</span>. This is the only form.
+        </div>
+
+        <div class="mb-4">
+          <span class="font-semibold">3-month free trial</span>. No credit cards, demos, or marketing spam.
+        </div>
+
+        <div class="mb-6">
+          I'll reach out if your team is engaging with the product. If not, it fades away and wipes your data. Here are the <a href="/security" target="_blank" class="text-blue-600 hover:text-blue-700 font-medium hover:underline hover:underline-offset-4 decoration-1 transition">security</a> + <a href="/billing" target="_blank" class="text-blue-600 hover:text-blue-700 font-medium hover:underline hover:underline-offset-4 decoration-1 transition">billing</a> docs.
+        </div>
       </div>
 
-      <div class="mb-4">
-        Your first emails go out <span class="font-semibold">next Monday</span>. This is the only form.
+      <div>
+        <label for="<%= name_id %>" class="block font-semibold mb-1 tracking-normal text-base">Name</label>
+        <input type="text" id="<%= name_id %>" class="block w-full border border-neutral-300 shadow-sm rounded-md bg-white px-3 py-1.5 text-gray-900 outline-1 -outline-offset-1 outline-indigo-100 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 text-sm" />
       </div>
 
-      <div class="mb-4">
-        <span class="font-semibold">3-month free trial</span>. No credit cards, demos, or marketing spam.
+      <div class="mt-6">
+        <label for="<%= email_id %>" class="block font-semibold text-base mb-1 tracking-normal">Your Email</label>
+        <input type="email" id="<%= email_id %>" class="block w-full border border-neutral-300 shadow-sm rounded-md bg-white px-3 py-1.5 text-gray-900 outline-1 -outline-offset-1 outline-indigo-100 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 text-sm" />
       </div>
 
-      <div class="mb-6">
-        I'll reach out if your team is engaging with the product. If not, it fades away and wipes your data. Here are the <a href="/security" target="_blank" class="text-blue-600 hover:text-blue-700 font-medium hover:underline hover:underline-offset-4 decoration-1 transition">security</a> + <a href="/billing" target="_blank" class="text-blue-600 hover:text-blue-700 font-medium hover:underline hover:underline-offset-4 decoration-1 transition">billing</a> docs.
+      <div class="mt-6">
+        <label for="<%= team_id %>" class="block font-semibold text-base tracking-normal mb-1">Team's Emails</label>
+        <div class="text-sm mb-2">
+          Email
+          <a href="mailto:support@replicate.info" class="inline text-blue-600 hover:text-blue-700 hover:underline hover:underline-offset-4 decoration-1 transition items-center">
+            support@replicate.info
+          </a>
+          to make changes later.
+        </div>
+        <textarea id="<%= team_id %>" rows="4" class="block w-full border border-neutral-300 shadow-sm rounded-md bg-white px-3 py-1.5 text-gray-900 outline-1 -outline-offset-1 outline-indigo-100 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 text-sm" placeholder="Don't worry about formatting."></textarea>
       </div>
-    </div>
 
-    <div>
-      <label for="<%= name_id %>" class="block font-semibold mb-1 tracking-normal text-base">Name</label>
-      <input type="text" id="<%= name_id %>" class="block w-full border border-neutral-300 shadow-sm rounded-md bg-white px-3 py-1.5 text-gray-900 outline-1 -outline-offset-1 outline-indigo-100 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 text-sm" />
-    </div>
-
-    <div class="mt-6">
-      <label for="<%= email_id %>" class="block font-semibold text-base mb-1 tracking-normal">Your Email</label>
-      <input type="email" id="<%= email_id %>" class="block w-full border border-neutral-300 shadow-sm rounded-md bg-white px-3 py-1.5 text-gray-900 outline-1 -outline-offset-1 outline-indigo-100 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 text-sm" />
-    </div>
-
-    <div class="mt-6">
-      <label for="<%= team_id %>" class="block font-semibold text-base tracking-normal mb-1">Team's Emails</label>
-      <div class="text-sm mb-2">
-        Email
-        <a href="mailto:support@replicate.info" class="inline text-blue-600 hover:text-blue-700 hover:underline hover:underline-offset-4 decoration-1 transition items-center">
-          support@replicate.info
-        </a>
-        to make changes later.
+      <div class="text-xs text-gray-500 mt-4">
+        By submitting, you agree to the <a href="/terms" class="text-blue-500 hover:underline">Terms</a> and <a href="/privacy" class="text-blue-500 hover:underline">Privacy Policy</a>.
       </div>
-      <textarea id="<%= team_id %>" rows="4" class="block w-full border border-neutral-300 shadow-sm rounded-md bg-white px-3 py-1.5 text-gray-900 outline-1 -outline-offset-1 outline-indigo-100 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 text-sm" placeholder="Don't worry about formatting."></textarea>
-    </div>
 
-    <div class="text-xs text-gray-500 mt-4">
-      By submitting, you agree to the <a href="/terms" class="text-blue-500 hover:underline">Terms</a> and <a href="/privacy" class="text-blue-500 hover:underline">Privacy Policy</a>.
-    </div>
-
-    <!-- CTA -->
-    <div class="mt-6 w-full sm:mt-8">
-      <button type="submit" class="shadow-md inline-flex w-full items-center justify-center rounded-lg bg-slate-700 px-5 py-3 text-lg font-semibold text-white transition hover:bg-slate-800 hover:shadow-md active:bg-slate-900 sm:w-auto focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400">
-        Begin Coaching
-      </button>
+      <!-- CTA -->
+      <div class="mt-6 w-full sm:mt-8">
+        <button type="submit" class="shadow-md inline-flex w-full items-center justify-center rounded-lg bg-slate-700 px-5 py-3 text-lg font-semibold text-white transition hover:bg-slate-800 hover:shadow-md active:bg-slate-900 sm:w-auto focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400">
+          Begin Coaching
+        </button>
+      </div>
     </div>
   </div>
 </form>

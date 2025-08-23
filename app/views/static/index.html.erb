@@ -74,7 +74,7 @@
       </div>
       <div class="mb-8 flex gap-6">
         <% EXAMPLE_EMAILS.each_with_index do |email, i| %>
-          <div class="md:basis/1-2 lg:basis-1/3 bg-white border border-gray-100 shadow rounded-xl p-5 space-y-4 <%= i == 0 ? "hidden md:block" : "" %> <%= i == 1 ? "hidden lg:block" : "" %> <%= i == 2 ? "md:block" : "" %>">
+          <div class="md:basis/1-2 lg:basis-1/3 bg-white border border-neutral-100 shadow rounded-xl p-5 space-y-4 <%= i == 0 ? "hidden md:block" : "" %> <%= i == 1 ? "hidden lg:block" : "" %> <%= i == 2 ? "md:block" : "" %>">
             <div class="flex items-center justify-between align-middle">
               <div class="text-sm text-gray-500"><%= email[:to] %></div>
               <img src="/profile-photo-<%= i + 1 %>.jpg" alt="Avatar" class="w-10 h-10 rounded-full overflow-hidden" />
@@ -84,7 +84,7 @@
             <div class="text-sm text-gray-700 leading-relaxed"><%= email[:content] %></div>
 
             <div>
-              <a href="#" data-example="<%= email[:prompt] %>" data-name="<%= email[:to] %>" class="example-btn inline-block rounded-md border border-gray-300 bg-white text-sm text-gray-800 font-medium px-3 py-2 hover:bg-gray-100">
+              <a href="#" data-example="<%= email[:prompt] %>" data-name="<%= email[:to] %>" class="example-btn inline-block rounded-md border border-gray-300 bg-white text-sm text-gray-800 font-medium px-3 py-2 hover:bg-neutral-100">
                 Prevent the fire
               </a>
             </div>
@@ -104,24 +104,24 @@
             <%= render "trial_form", form_width_class: "" %>
           </div>
           <div class="lg:basis-2/5 order-1 lg:order-2 mb-6">
-            <div class="grid border border-gray-200 shadow rounded-md overflow-hidden text-[14px]">
-              <div class="grid grid-cols-2 bg-gray-100 border-b border-gray-200">
+            <div class="grid border border-neutral-300 rounded-md overflow-hidden text-[14px]">
+              <div class="grid grid-cols-2 bg-neutral-100 border-b border-neutral-300">
                 <div class="px-4 py-3 font-semibold">Team Size</div>
                 <div class="px-4 py-3"><span class="font-semibold">Annual Price</span> (USD)</div>
               </div>
-              <div class="grid grid-cols-2 border-b border-gray-100">
+              <div class="grid grid-cols-2 border-b border-neutral-100">
                 <div class="px-4 py-3">Up to <span class="font-semibold">25</span> engineers</div>
                 <div class="px-4 py-3">$20,000</div>
               </div>
-              <div class="grid grid-cols-2 border-b border-gray-100">
+              <div class="grid grid-cols-2 border-b border-neutral-100">
                 <div class="px-4 py-3">Up to <span class="font-semibold">75</span> engineers</div>
                 <div class="px-4 py-3">$40,000</div>
               </div>
-              <div class="grid grid-cols-2 border-b border-gray-100">
+              <div class="grid grid-cols-2 border-b border-neutral-100">
                 <div class="px-4 py-3">Up to <span class="font-semibold">150</span> engineers</div>
                 <div class="px-4 py-3">$80,000</div>
               </div>
-              <div class="grid grid-cols-2 border-b border-gray-100">
+              <div class="grid grid-cols-2 border-b border-neutral-100">
                 <div class="px-4 py-3">Up to <span class="font-semibold">300</span> engineers</div>
                 <div class="px-4 py-3">$120,000</div>
               </div>
@@ -130,12 +130,15 @@
                 <div class="px-4 py-3">$240,000</div>
               </div>
               <div class="px-4 py-3 text-sm border-t border-b border-gray-300 bg-slate-100">
-                <span class="font-semibold">One invoice.</span> No metering or auto-renewal. <span class="block mt-3">Supports <span class="font-semibold">partial terms</span> to align with budget cycles, along with <span class="font-semibold">30%</span> multi-year discounts.</span>
+                <span class="font-semibold">One annual invoice</span> (USD). <span class="font-semibold">No auto-renewal</span>. <span class="block mt-4" style="line-height: 1.4rem">Supports <span class="font-semibold">partial terms</span> to align with budget cycles, along with <span class="font-semibold">30%</span> multi-year discounts.</span>
               </div>
               <div class="px-4 py-3 rounded-bl-md rounded-br-md text-xs" style="line-height: 1.4rem">
-                If you're in a region where these prices don't quite fit, email
+                In a region where these prices don't quite align?
+                <div class="mt-1">
+                Email
                 <a href="mailto:support@replicate.info" class="text-blue-600 hover:underline font-semibold">support@replicate.info</a>
-                a number that works for you.
+                a number that works.
+                </div>
               </div>
             </div>
             <div class="mt-3 hidden lg:block">
@@ -146,12 +149,12 @@
       </div>
     </div>
   </div>
-  <div class="bg-gray-100 p-6 border border-gray-300 rounded-md shadow mt-8">
+  <div class="bg-slate-100 p-6 border border-slate-300 rounded-md mt-8">
     <p class="text-xl font-semibold tracking-tight mb-2">
       Not the right time?
     </p>
     <p class="mb-4">
-      Want free incident links you can paste into Slack every few weeks? Your team can use the <a href="/coaching" class="text-blue-600 hover:text-blue-700 font-medium hover:underline hover:underline-offset-4 decoration-1 transition">web-based version</a> to solve.
+      Sign up for free incident URL's you can paste into Slack every few weeks. Your team can use the <a href="/coaching" class="text-blue-600 hover:text-blue-700 font-medium hover:underline hover:underline-offset-4 decoration-1 transition">web-based version</a> to solve.
     </p>
 
     <form action="/remind" method="POST" class="flex items-center gap-3 max-w-md">
