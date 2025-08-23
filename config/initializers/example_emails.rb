@@ -14,7 +14,7 @@ EXAMPLE_EMAILS = [
   {
     to: "Taylor Morales",
     subject: "<span style='margin-right: 2px; font-style: italic; color: black; text-decoration: line-through; text-decoration-color: red;'>Double</span> Triple Charged",
-    content: "A late-night deploy corrupted billing state, and kept issuing charges until customers flagged the issue.",
+    content: "A late-night deploy corrupted billing state, and kept issuing charges until <span class='hidden md:inline'>customers flagged the issue</span><span class='md:hidden'> the next morning</span>.",
     prompt: "A late-night deploy corrupted billing state, and kept issuing charges until customers flagged the issue. Some customers even got charged 3+ times."
   }
 ]

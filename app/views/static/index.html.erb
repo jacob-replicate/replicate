@@ -81,7 +81,7 @@
             </div>
 
             <div class="text-base font-semibold text-gray-900"><%= email[:subject].html_safe %></div>
-            <div class="text-sm text-gray-700 leading-relaxed"><%= email[:content] %></div>
+            <div class="text-sm text-gray-700 leading-relaxed"><%= email[:content].html_safe %></div>
 
             <div>
               <a href="#" data-example="<%= email[:prompt] %>" data-name="<%= email[:to] %>" class="example-btn inline-block rounded-md border border-gray-300 bg-white text-sm text-gray-800 font-medium px-3 py-2 hover:bg-neutral-100">
