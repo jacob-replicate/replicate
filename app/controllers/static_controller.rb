@@ -47,10 +47,6 @@ class StaticController < ApplicationController
     @title = "Security"
   end
 
-  def knowledge_gaps
-    redirect_to "https://docs.google.com/document/d/1YSmtsZYZ6qJrTOv4raqOUcU2Q1YvrVTzlab9QjUFT50/edit", allow_other_host: true
-  end
-
   def set_prices
     @prices = [
       { seat_count: 25,  price: 20_000 },

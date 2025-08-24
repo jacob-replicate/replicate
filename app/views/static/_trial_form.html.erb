@@ -4,7 +4,7 @@
 <% email_id = "#{form_id}-email" %>
 <% team_id  = "#{form_id}-team" %>
 
-<form id="<%= form_id %>" class="flex flex-col items-center" novalidate>
+<form id="<%= form_id %>" novalidate>
   <div id="<%= box_id %>" class="border rounded-xl bg-white <%= extra_form_container_classes %>">
     <% if defined?(show_next_steps_header) %>
       <div class="bg-neutral-100 border-b border-neutral-200 px-5 pt-4 pb-4 rounded-tl-xl rounded-tr-xl">

@@ -1,0 +1,51 @@
+<div class="leading-relaxed text-gray-800 text-[17px]">
+  <div class="flex flex-col lg:flex-row gap-2 lg:gap-8">
+    <div class="lg:basis-3/5 order-2 lg:order-1">
+      <%= render "static/trial_form", extra_form_container_classes: "shadow" %>
+    </div>
+    <div class="lg:basis-2/5 order-1 lg:order-2 mb-6">
+      <div class="grid border border-neutral-300 rounded-md overflow-hidden text-[14px]">
+        <div class="grid grid-cols-2 bg-neutral-100 border-b border-neutral-300">
+          <div class="px-4 py-3 font-semibold">Team Size</div>
+          <div class="px-4 py-3"><span class="font-semibold">Annual Price</span> (USD)</div>
+        </div>
+        <div class="grid grid-cols-2 border-b border-neutral-100">
+          <div class="px-4 py-3">Up to <span class="font-semibold">25</span> engineers</div>
+          <div class="px-4 py-3">$20,000</div>
+        </div>
+        <div class="grid grid-cols-2 border-b border-neutral-100">
+          <div class="px-4 py-3">Up to <span class="font-semibold">75</span> engineers</div>
+          <div class="px-4 py-3">$40,000</div>
+        </div>
+        <div class="grid grid-cols-2 border-b border-neutral-100">
+          <div class="px-4 py-3">Up to <span class="font-semibold">150</span> engineers</div>
+          <div class="px-4 py-3">$60,000</div>
+        </div>
+        <div class="grid grid-cols-2 border-b border-neutral-100">
+          <div class="px-4 py-3">Up to <span class="font-semibold">300</span> engineers</div>
+          <div class="px-4 py-3">$80,000</div>
+        </div>
+        <div class="grid grid-cols-2">
+          <div class="px-4 py-3">Up to <span class="font-semibold">1000</span> engineers</div>
+          <div class="px-4 py-3">$100,000</div>
+        </div>
+        <div class="px-4 py-3 text-sm border-t border-b border-gray-300 bg-slate-100">
+          <span class="font-semibold">One annual invoice</span> (USD). <span class="font-semibold">No auto-renewal</span>.
+          <div class="block mt-4" style="line-height: 1.4rem">Supports <span class="font-semibold">partial terms</span> to align with budget cycles, along with <span class="font-semibold">30%</span> multi-year discounts.</div>
+          <div class="block mt-4" style="line-height: 1.4rem">Here are the <a href="/security" target="_blank" class="text-blue-600 hover:text-blue-700 font-medium hover:underline hover:underline-offset-4 decoration-1 transition">security</a> and <a href="/billing" target="_blank" class="text-blue-600 hover:text-blue-700 font-medium hover:underline hover:underline-offset-4 decoration-1 transition">billing</a> docs.</div>
+        </div>
+        <div class="px-4 py-3 rounded-bl-md rounded-br-md text-xs" style="line-height: 1.4rem">
+          In a region where these prices don't quite align?
+          <div class="mt-1">
+            Email
+            <a href="mailto:support@replicate.info" class="text-blue-600 hover:underline font-semibold">support@replicate.info</a>
+            a number that works.
+          </div>
+        </div>
+      </div>
+      <div class="mt-3 hidden lg:block">
+        <%= render "static/signature" %>
+      </div>
+    </div>
+  </div>
+</div>
