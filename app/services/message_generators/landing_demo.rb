@@ -8,7 +8,7 @@ module MessageGenerators
       deliver_elements([AvatarService.coach_avatar_row, Prompts::CoachingReply])
       deliver_elements([student_avatar_row, Prompts::LandingConversation], true)
       deliver_elements([AvatarService.coach_avatar_row, Prompts::CoachingReply])
-      deliver_elements([student_avatar_row, Prompts::LandingConversation], true)
+      deliver_elements([student_avatar_row, Prompts::LandingConversationWrong], true)
       deliver_elements([AvatarService.coach_avatar_row, Prompts::CoachingReply])
       deliver_elements([student_avatar_row, Prompts::LandingClosure], true)
       broadcast_to_web(type: "show_cta")
