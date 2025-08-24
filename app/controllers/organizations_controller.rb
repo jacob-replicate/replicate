@@ -12,7 +12,7 @@ class OrganizationsController < ApplicationController
     end
 
     ActiveRecord::Base.transaction do
-      org = Organization.create!(name: name)
+      org = Organization.create!(name: name, access_end_date: 3.months.from_now.end_of_month)
 
       org.members.create!(
         name: name,

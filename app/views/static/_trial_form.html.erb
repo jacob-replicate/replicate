@@ -31,20 +31,20 @@
       </div>
 
       <div>
-        <label for="<%= name_id %>" class="block font-semibold mb-1 tracking-normal text-base">Name</label>
+        <label for="<%= name_id %>" class="block font-semibold mb-1 tracking-normal text-base">Name <span class="text-red-600">*</span></label>
         <input type="text" id="<%= name_id %>" class="block w-full border border-neutral-300 shadow-sm rounded-md bg-white px-3 py-1.5 text-gray-900 outline-1 -outline-offset-1 outline-indigo-100 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 text-sm" />
       </div>
 
       <div class="mt-6">
-        <label for="<%= email_id %>" class="block font-semibold text-base mb-1 tracking-normal">Your Email</label>
+        <label for="<%= email_id %>" class="block font-semibold text-base mb-1 tracking-normal">Your Email <span class="text-red-600">*</span></label>
         <input type="email" id="<%= email_id %>" class="block w-full border border-neutral-300 shadow-sm rounded-md bg-white px-3 py-1.5 text-gray-900 outline-1 -outline-offset-1 outline-indigo-100 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 text-sm" />
       </div>
 
       <div class="mt-6">
         <label for="<%= team_id %>" class="block font-semibold text-base tracking-normal mb-1">Team's Emails</label>
         <div class="text-sm mb-2">
-          Email
-          <a href="mailto:support@replicate.info" class="inline text-blue-600 hover:text-blue-700 hover:underline hover:underline-offset-4 decoration-1 transition items-center">
+          Optional. Email
+          <a href="mailto:support@replicate.info" tabindex="-1" class="inline text-blue-600 hover:text-blue-700 hover:underline hover:underline-offset-4 decoration-1 transition items-center">
             support@replicate.info
           </a>
           to make changes later.
@@ -53,7 +53,7 @@
       </div>
 
       <div class="text-xs text-gray-500 mt-4">
-        By submitting, you agree to the <a href="/terms" class="text-blue-500 hover:underline">Terms</a> and <a href="/privacy" class="text-blue-500 hover:underline">Privacy Policy</a>.
+        By submitting, you agree to the <a href="/terms" tabindex="-1" class="text-blue-500 hover:underline">Terms</a> and <a href="/privacy" tabindex="-1" class="text-blue-500 hover:underline">Privacy Policy</a>.
       </div>
 
       <!-- CTA -->
@@ -83,8 +83,8 @@
       const email = mailI?.value?.trim();
       const engineerEmails = teamI?.value?.trim();
 
-      if (!name || !email || !engineerEmails) {
-        alert("Please fill out all fields.");
+      if (!name || !email) {
+        alert("Please fill out all required fields.");
         return;
       }
 
@@ -105,11 +105,11 @@
         if (!response.ok) throw new Error("Request failed");
 
         box.innerHTML = `
-          <div class="text-center text-md text-gray-800 py-6">
-            <span class="font-medium">You're in. The first email goes out next Monday.</span>
+          <div class="text-center text-md text-gray-800 p-6">
+            <span class="font-medium">You're in. See you next Monday.</span>
             <div class="mt-4">
               <a href="/coaching" class="text-blue-600 hover:text-blue-700 hover:underline hover:underline-offset-4 decoration-1 transition">
-                Test your production instincts.&nbsp;&rarr;
+                Test your production instincts&nbsp;&rarr;
               </a>
             </div>
           </div>
