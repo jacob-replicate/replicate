@@ -1,5 +1,6 @@
 Cold
 - More variants (+ #total_variants message to count?)
+- Uncomment SendColdEmailWorker API call + QA
 - Scrape directors
 
 Transactional

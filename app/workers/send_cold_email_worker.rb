@@ -40,7 +40,7 @@ class SendColdEmailWorker
       variant["body_html"]
     ].join("\r\n")
 
-    client.send_user_message("me", Google::Apis::GmailV1::Message.new(raw: rfc822))
+    # client.send_user_message("me", Google::Apis::GmailV1::Message.new(raw: rfc822))
     contact.update_columns(contacted: true)
   end
 
