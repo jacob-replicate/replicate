@@ -2,8 +2,8 @@ EXAMPLE_EMAILS = [
   {
     to: "Alex Shaw",
     subject: "ENV rotation crashed site",
-    content: "Staging credentials were automatically rotated into production, triggering failures across downstream services.",
-    prompt: "Staging secrets took down production website. Staging secrets were automatically rotated into production at midnight, breaking pipelines and triggering failures across dependent services."
+    content: "Staging credentials were automatically rotated into production, triggering failures in downstream services.",
+    prompt: "Staging secrets took down production website. Staging secrets were automatically rotated into production at midnight, breaking pipelines and triggering failures across downstream services."
   },
   {
     to: "Casey Patel",
