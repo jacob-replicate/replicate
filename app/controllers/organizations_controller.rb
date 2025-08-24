@@ -34,6 +34,6 @@ class OrganizationsController < ApplicationController
 
   def extract_emails(raw)
     return [] if raw.blank?
-    raw.split(/[\n, ]+/).map(&:strip).reject(&:blank?).uniq
+    raw.squish.split(/[\n, \-;]+/).map(&:strip).reject(&:blank?).uniq
   end
 end

@@ -25,8 +25,9 @@
           Engineers get <span class="font-semibold">auto-unsubscribed</span> after 3 weeks of inactivity, with a link to opt back in. If it sucks, it just fades away and wipes your data.
         </div>
 
-        <div class="mb-10">
-          You'll get a <a href="/replicate-msa-dpa.pdf" class="text-blue-600 hover:underline font-semibold" target="_blank">pre-signed MSA/DPA</a> in a few weeks if you're still here.
+        <div class="mb-8">
+          <% msa_month_name = 2.months.from_now.strftime("%B") %>
+          You'll get a pre-signed <a href="/replicate-msa-dpa.pdf" class="text-blue-600 hover:underline font-semibold" target="_blank">MSA + DPA</a> in <%= msa_month_name %> if you're still here.
         </div>
       </div>
 
