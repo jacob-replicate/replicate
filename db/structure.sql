@@ -127,6 +127,21 @@ CREATE TABLE public.organizations (
 
 
 --
+-- Name: postmark_webhooks; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.postmark_webhooks (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    webhook_type character varying,
+    content json,
+    conversation_id uuid,
+    processed_at timestamp(6) without time zone,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
 -- Name: prompt_chunks; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -264,6 +279,14 @@ ALTER TABLE ONLY public.organizations
 
 
 --
+-- Name: postmark_webhooks postmark_webhooks_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.postmark_webhooks
+    ADD CONSTRAINT postmark_webhooks_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: prompt_chunks prompt_chunks_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -358,6 +381,7 @@ CREATE UNIQUE INDEX index_users_on_unlock_token ON public.users USING btree (unl
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250824030354'),
 ('20250819001348'),
 ('20250819000806'),
 ('20250819000641'),

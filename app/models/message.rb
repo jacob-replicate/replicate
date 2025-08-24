@@ -24,7 +24,7 @@ class Message < ApplicationRecord
   end
 
   def schedule_system_reply
-    return unless conversation.web? && user_generated && !demo_message?
+    return unless user_generated && !demo_message?
     ConversationDriverWorker.perform_async(conversation_id)
   end
 end
