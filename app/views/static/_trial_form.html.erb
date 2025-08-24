@@ -5,42 +5,42 @@
 <% team_id  = "#{form_id}-team" %>
 
 <form id="<%= form_id %>" novalidate>
-  <div id="<%= box_id %>" class="border rounded-xl bg-white <%= extra_form_container_classes %>">
-    <% if defined?(show_next_steps_header) %>
-      <div class="bg-neutral-100 border-b border-neutral-200 px-5 pt-4 pb-4 rounded-tl-xl rounded-tr-xl">
-        <div class="text-xl font-semibold tracking-tight">Next Steps</div>
+  <div id="<%= box_id %>" class="border rounded-lg bg-white <%= extra_form_container_classes %>">
+    <% if defined?(show_next_steps_header) && show_next_steps_header %>
+      <div class="bg-neutral-100 border-b border-neutral-200 px-5 pt-4 pb-4 rounded-tl-lg rounded-tr-lg">
+        <div class="text-lg font-semibold tracking-tight">Next Steps</div>
       </div>
     <% end %>
     <div class="p-5">
       <div class="text-[16px]">
         <div class="mb-4">
-          One form. It will invite your team to pair on a SEV <span class="font-semibold">next Monday</span>.
+          <span class="font-semibold">One form</span>. Replicate will invite your team to a SEV <span class="font-semibold">next Monday</span>.
         </div>
 
         <div class="mb-4">
           Private email threads where GPT can cut deep. Not team-wide CC's where you have to perform. Failure is the product, delivered weekly.
         </div>
 
-        <div class="mb-8 text-xs" style="line-height: 1.3rem">
-          You get a <span class="font-semibold">3-month free trial</span>. Engineers get <span class="font-semibold">auto-unsubscribed</span> after 3 weeks of inactivity.
+        <div class="mb-6 text-xs" style="line-height: 1.3rem">
+          You get a <span class="font-semibold">3-month free trial</span>. Engineers are <span class="font-semibold">auto-unsubscribed</span> after 3 weeks of inactivity.
           <% msa_month_name = 2.months.from_now.strftime("%B") %>
-          I'll send you a pre-signed <a href="/replicate-msa-dpa.pdf" class="text-blue-600 hover:underline font-semibold" target="_blank">MSA + DPA</a> in <%= msa_month_name %> if you're still here. No sales calls / RFPs.
+          I'll send you a pre-signed <a href="/replicate-msa-dpa.pdf" class="text-blue-600 hover:underline font-semibold" target="_blank">MSA + DPA</a> in <%= msa_month_name %> if you're still here. No demos. No cards.
         </div>
       </div>
 
       <div>
-        <label for="<%= name_id %>" class="block font-semibold mb-1 tracking-normal text-base">Name <span class="text-red-600">*</span></label>
+        <label for="<%= name_id %>" class="block font-semibold mb-1 tracking-normal text-[16px]">Name <span class="text-red-600">*</span></label>
         <input type="text" id="<%= name_id %>" class="block w-full border border-neutral-300 shadow-sm rounded-md bg-white px-3 py-1.5 text-gray-900 outline-1 -outline-offset-1 outline-indigo-100 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 text-sm" />
       </div>
 
       <div class="mt-6">
-        <label for="<%= email_id %>" class="block font-semibold text-base mb-1 tracking-normal">Your Email <span class="text-red-600">*</span></label>
+        <label for="<%= email_id %>" class="block font-semibold text-[16px] mb-1 tracking-normal">Your Email <span class="text-red-600">*</span></label>
         <input type="email" id="<%= email_id %>" class="block w-full border border-neutral-300 shadow-sm rounded-md bg-white px-3 py-1.5 text-gray-900 outline-1 -outline-offset-1 outline-indigo-100 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 text-sm" />
       </div>
 
       <div class="mt-6">
-        <label for="<%= team_id %>" class="block font-semibold text-base tracking-normal mb-1">Team's Emails</label>
-        <div class="text-sm mb-2">
+        <label for="<%= team_id %>" class="block font-semibold text-[16px] tracking-normal mb-1">Team's Emails</label>
+        <div class="text-xs mb-2">
           Email
           <a href="mailto:support@replicate.info" tabindex="-1" class="inline text-blue-600 hover:text-blue-700 hover:underline hover:underline-offset-4 decoration-1 transition items-center">
             support@replicate.info
@@ -50,15 +50,14 @@
         <textarea id="<%= team_id %>" rows="4" class="block w-full border border-neutral-300 shadow-sm rounded-md bg-white px-3 py-1.5 text-gray-900 outline-1 -outline-offset-1 outline-indigo-100 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 text-sm" placeholder="Don't worry about formatting."></textarea>
       </div>
 
-      <div class="text-xs text-gray-500 mt-4">
-        By submitting, you agree to the <a href="/terms" tabindex="-1" class="text-blue-500 hover:underline">Terms</a> and <a href="/privacy" tabindex="-1" class="text-blue-500 hover:underline">Privacy Policy</a>.
+      <div class="mt-6 w-full">
+        <button type="submit" class="shadow-md inline-flex w-full items-center justify-center rounded-lg bg-slate-700 px-5 py-3 text-lg font-semibold text-white transition hover:bg-slate-800 hover:shadow-md active:bg-slate-900 sm:w-auto focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400">
+          Start Weekly Drills
+        </button>
       </div>
 
-      <!-- CTA -->
-      <div class="mt-6 w-full sm:mt-8">
-        <button type="submit" class="shadow-md inline-flex w-full items-center justify-center rounded-lg bg-slate-700 px-5 py-3 text-lg font-semibold text-white transition hover:bg-slate-800 hover:shadow-md active:bg-slate-900 sm:w-auto focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400">
-          Begin Coaching
-        </button>
+      <div class="text-xs text-gray-400 mt-6">
+        By submitting, you agree to the <a href="/terms" tabindex="-1" class="text-blue-400 hover:underline">Terms</a> and <a href="/privacy" tabindex="-1" class="text-blue-400 hover:underline">Privacy Policy</a>.
       </div>
     </div>
   </div>
