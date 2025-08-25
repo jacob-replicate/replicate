@@ -14,7 +14,7 @@ Rails.application.routes.draw do
   get "/privacy", to: "static#privacy"
   get "/billing", to: "static#billing"
   get "/security", to: "static#security"
-  get '/coaching', to: "static#coaching"
+  get '/sev', to: "static#coaching"
   get '/contacts/:id/unsubscribe', to: "contacts#unsubscribe"
 
   resources :conversations, only: [:create, :show]
