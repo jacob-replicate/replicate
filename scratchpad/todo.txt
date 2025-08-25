@@ -4,38 +4,50 @@ Cold
 - Scrape directors
 
 Transactional
+- Tweak inbound "message stream" once your DNS update TTLs expire -- https://account.postmarkapp.com/servers/16407823/streams/inbound/settings
 - Postmark webhooks for coaching loop replies - https://account.postmarkapp.com/servers/16407823/streams/inbound/get-started
-- QA weekly email worker + rake
 - Cron job to start monday email loops
 - Email formatting for intro. "Meet Alex, They did somethign" - Make sure the name doesn't align with first letter in their email.
 - Unsubscribe page with confirmation form, to prevent accidental unsubscribe (doesn't matter for cold, you're never following up).
 - Manually wire up 2-3 initial incidents + subject lines
 - Email regex validation. AI grading on form submission - you're gonna get a lot of bullshit responses to grade once public.
+- Error handling if emails fail (e.g., bounce, throttling, etc)
+- Verified Emails Logo + Checkmark - https://support.google.com/mail/answer/13130196?hl=en&visit_id=638916888863844319-1709044999&p=bimi_verification&rd=1
+
+Legal
+- Terms + Privacy + MSA/DPA review
 
 ------- LAUNCH ----------
 
-Soon
-- Add auto-unsubscribe logic (check it at runtime to account for last-minute messages)
-- Terms + Privacy + MSA/DPA review
-- Protect your S3 credentials from misuse -- spin down old keys
-- Add an example URL to copy/paste in the "Not the right time?" box. Give them the value ASAP.
-- Monthly email report format to Directors. Make it a PDF that Rails renders, which you can attach in Postmark email, that they can forward to VP.
-- Figure out when bills land in Mercury account, so you can fund the account on time.
-- Automated data deletion + audit logging
+Ops
 - Move Missive to Mercury account
-
-Eventually:
+- Protect your S3 credentials from misuse -- spin down old keys
 - Cron job to filter inbox + draft replies
-- Upsert metadata, so you can keep track of job changes. DB is going to get stale otherwise.
-- Better error handling if emails fail (e.g., bounce, throttling, etc)
-- :coaching_should_continue prompt -- uncomment guard clause in coaching message generator
-- Set up process for cold email addresses that failed bounce check. Funnel bad data into a CSV that Fiverr can clean up + send back.
-- Attach PDF's + inline JPG's once they close the loop
-- GPT 5
+- Figure out when bills land in Mercury account, so you can fund the account on time.
+- Double check Apollo invoicing + Mercury card transition
+- Find Apollo payment receipt.
 
-- Marketing newsletter. Just drop them into the typical queue. 3-week pause.
-    - Just drop them into the normal rotation for awhile. Then gradually pull it away with a stronger upsell nudge in the footers.
-    - They still have to copy/paste the links in Slack (e.g., replicate.info/retry-storm) to their team.
+Sales
+- Upsert contact metadata, so you can keep track of job changes. DB is going to get stale otherwise.
+- Monthly email report format to Directors. Make it a PDF that Rails renders, which you can attach in Postmark email, that they can forward to VP.
+- Add an example URL to copy/paste in the "Not the right time?" box. Give them the value ASAP.
+- Set up process for cold email addresses that failed bounce check. Funnel bad data into a CSV that Fiverr can clean up + send back.
+
+Reliability
+- Add auto-unsubscribe logic (check it at runtime to account for last-minute messages)
+- Bounce webhook reporting
+
+Security
+- Automated data deletion + audit logging
+
+Product
+- Attach PDF's + inline JPG's once they close the loop
+- GPT 5 (in email, at least, not on web where it's slow af)
+- :coaching_should_continue prompt -- uncomment guard clause in coaching message generator
+
+- Marketing newsletter. Just drop them into the typical queue. 3-week pause, with a Slack link for their team.
+  - Just drop them into the normal rotation for awhile. Then gradually pull it away with a stronger upsell nudge in the footers.
+  - They still have to copy/paste the links in Slack (e.g., replicate.info/retry-storm) to their team.
 
 - Move payments to Mercury account, not personal card.
     - https://drive.google.com/drive/u/1/folders/1G8nwfu3FUkew3KPd7IuhyPkZy3HNZe8W
