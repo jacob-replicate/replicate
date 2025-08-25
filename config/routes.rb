@@ -6,7 +6,8 @@ Rails.application.routes.draw do
   end
 
   devise_for :users
-  post "/stripe-webhooks", to: "stripe_webhooks#create"
+  post "/webhooks/stripe", to: "stripe_webhooks#create"
+  post "/webhooks/postmark", to: "postmark_webhooks#create"
 
   get "/demo", to: "static#demo"
   get "/terms", to: "static#terms"
