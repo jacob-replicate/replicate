@@ -7,12 +7,13 @@ Transactional
 - Tweak inbound "message stream" once your DNS update TTLs expire -- https://account.postmarkapp.com/servers/16407823/streams/inbound/settings
 - Postmark webhooks for coaching loop replies - https://account.postmarkapp.com/servers/16407823/streams/inbound/get-started
 - Cron job to start monday email loops
+- Fix the to track conversation + message ID's in ConversationsMailer
 - Email formatting for intro. "Meet Alex, They did somethign" - Make sure the name doesn't align with first letter in their email.
 - Unsubscribe page with confirmation form, to prevent accidental unsubscribe (doesn't matter for cold, you're never following up).
 - Manually wire up 2-3 initial incidents + subject lines
 - Email regex validation. AI grading on form submission - you're gonna get a lot of bullshit responses to grade once public.
 - Error handling if emails fail (e.g., bounce, throttling, etc)
-- Verified Emails Logo + Checkmark - https://support.google.com/mail/answer/13130196?hl=en&visit_id=638916888863844319-1709044999&p=bimi_verification&rd=1
+- Add BIMI DNS record for logo.svg - https://mxtoolbox.com/dmarc/bimi/how-to-create-bimi-record (logo might be blurry)
 
 Legal
 - Terms + Privacy + MSA/DPA review
@@ -25,13 +26,15 @@ Ops
 - Cron job to filter inbox + draft replies
 - Figure out when bills land in Mercury account, so you can fund the account on time.
 - Double check Apollo invoicing + Mercury card transition
-- Find Apollo payment receipt.
+- Find Apollo payment receipt + brainstorm any vendors you missed. Double check for all invoices.
+- Auth0 + SCIM + Self-serve admin UI
 
 Sales
-- Upsert contact metadata, so you can keep track of job changes. DB is going to get stale otherwise.
 - Monthly email report format to Directors. Make it a PDF that Rails renders, which you can attach in Postmark email, that they can forward to VP.
+- Marketing newsletter. Just drop them into the typical queue. 3-week pause, with a Slack link for their team?
 - Add an example URL to copy/paste in the "Not the right time?" box. Give them the value ASAP.
 - Set up process for cold email addresses that failed bounce check. Funnel bad data into a CSV that Fiverr can clean up + send back.
+- Upsert contact metadata, so you can keep track of job changes. DB is going to get stale otherwise.
 
 Reliability
 - Add auto-unsubscribe logic (check it at runtime to account for last-minute messages)
@@ -39,18 +42,9 @@ Reliability
 
 Security
 - Automated data deletion + audit logging
+- After first contract, pay ~$1k for a verified checkmark in Gmail -- VMC - Verified Mark Certificate, like Verisign for logos
 
 Product
 - Attach PDF's + inline JPG's once they close the loop
 - GPT 5 (in email, at least, not on web where it's slow af)
 - :coaching_should_continue prompt -- uncomment guard clause in coaching message generator
-
-- Marketing newsletter. Just drop them into the typical queue. 3-week pause, with a Slack link for their team.
-  - Just drop them into the normal rotation for awhile. Then gradually pull it away with a stronger upsell nudge in the footers.
-  - They still have to copy/paste the links in Slack (e.g., replicate.info/retry-storm) to their team.
-
-- Move payments to Mercury account, not personal card.
-    - https://drive.google.com/drive/u/1/folders/1G8nwfu3FUkew3KPd7IuhyPkZy3HNZe8W
-    - Reopen Apollo eventually
-    - Double check all of your addresses.
-    - Double check Mailreach invoices
