@@ -25,15 +25,6 @@
     Sign whenever. Your term starts the 1st of the month <span class="font-semibold">after</span> your trial's end date. You always get 3 months free, along with any gap days. Partial terms are an option to align with budget cycles.
   </p>
 
-  <div class="hidden md:block">
-    <p class="flex flex-row items-center mb-6">
-      <img src="/logo-white.jpg" class="rounded-full w-9 h-9 mr-3 border border-gray-500" />
-      <a href="mailto:support@replicate.info" class="text-blue-600 hover:text-blue-700 text-[16px] hover:underline hover:underline-offset-4 decoration-1 transition flex items-center">
-        support@replicate.info
-      </a>
-    </p>
-  </div>
-
 <%# ---------- helpers (local to this template) ---------- %>
   <% two_year_total   = ->(p) { (p * 2 * 0.70).round(-2) }   # 30% off entire multi-year
      three_year_total = ->(p) { (p * 3 * 0.70).round(-2) }
