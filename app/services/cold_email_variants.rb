@@ -19,43 +19,39 @@ class ColdEmailVariants
 
   def self.subjects
     [
-      "Preventing SEV-1s with weekly emails?",
-      "GPT loops that surface infra/security blind spots",
-      "A quieter way to sharpen production instincts",
-      "Weekly drills to prevent your next postmortem",
-      "Coaching SEV response (without the SEV)"
+      "SEV-1 prevention without a new tool",
+      "5-minute production outage drills",
+      "Your next outage is avoidable",
+      "One less postmortem to explain",
+      "Fewer 2:00am pages this quarter",
+      "Catch SEV-1s in practice, not prod",
+      "Data corruption that customers notice before you do",
+      "Replica lag that looks harmless... until it's not"
     ]
   end
 
   def self.intros
-    url = "<a href='https://replicate.info' style='font-weight: bold'>replicate.info</a>"
+    url = "<a href='https://replicate.info'>replicate.info</a>"
     [
-      "I lead IAM projects for Terraform. On the side, I shipped #{url} to help teams uncover their infra/sec blind spots.",
-      "I've been in lots of SEVs where judgment broke under pressure, so I built #{url} to help engineers sharpen their production instincts.",
+      "I lead IAM projects for Terraform. I also built #{url} to help teams uncover their infra/sec blind spots.",
       "I'm a Staff Engineer at HashiCorp, and recently launched #{url} to help developers think clearly during production fires.",
-      "I spent years in incident threads where we all missed the same failure pattern. I launched #{url} recently to help ICs catch that stuff earlier — <i>without</i> needing a SEV to learn it.",
-      "I work at HashiCorp, and recently built a side project called #{url}. It helps surface infra/security risks before shipping to prod."
     ]
   end
 
   def self.hooks
     [
-      "GPT emails you a high-stakes production fire every Monday, makes you reason through it, and keeps pushing until you fail. <strong>Then</strong> the coaching starts.",
-      "It's a weekly pressure test delivered over email. GPT drops you into a SEV-1, asks where you'd look first, and pushes back on your thinking.",
-      "It's just a weekly email. GPT throws you into an incident, and forces you to break it down under pressure. Then it points out what you missed."
+      "It's just a weekly email. GPT drops you into a SEV-1, asks for your next move, and applies pressure until you break.",
+      "GPT emails your team a SEV every Monday, and grades their work. It's looking for the blind spots that crash prod.",
     ]
   end
 
   def self.ctas
     [
       "No ask. Just thought it might resonate.",
-      "Figured I'd send this once and leave it up to you.",
-      "It's wild how good LLMs are now. They still kinda suck at writing code, but they're great at this stuff.",
-      "It took me way too long to learn this stuff — hoping I can help save someone else the time.",
+      "Just one send — you'll know if it's useful.",
       "It's a little harsh. Uncompromising. Surgical, even. But so is production.",
       "SEV thinking, without the actual SEV.",
-      "I built this for myself, and figured the community might find it useful too.",
-      "Sparring with GPT is more efficient than reading 300-page books. Failure helps you grow faster."
+      "Sparring with GPT is more efficient than reading SRE books. Failure is the product."
     ]
   end
 end
