@@ -8,17 +8,19 @@ Best-fit leads
 - Security engineering leaders with clear infra adjacency (IAM, auth, secrets, certs, production security controls)
 - Companies that ship web-based products/services
 - Ideally those in leadership positions who can drive top-down engineering/tooling decisions. VP's and CTO’s are fine if the company is small.
-- Think: leaders at midmarket orgs (25–500 engineers). Above 1,000 engineers is too large for our trial model.
+- Think: leaders at midmarket orgs (25–500 engineers). Above ~1,000 engineers is too large for the trial model, though Directors inside those orgs may still score 70–80.
 
 Reject leads if:
 - Their last 5 years are mainly in ML, frontend-only, data eng, QA, BI, or mobile.
 - They're clearly non-technical (sales, HR, product, design, marketing, etc). I want engineering leaders (i.e., VP's and Directors), not PM's or individual contributors.
-- They’re in compliance/GRC-only roles (audit, risk, policy, governance). Infra-adjacent security leaders with ownership of production systems (IAM, auth, secrets, certs, runtime security) can still score 90-100.
+- They-re in compliance/GRC-only roles (audit, risk, policy, governance). Infra-adjacent security leaders with ownership of production systems (IAM, auth, secrets, certs, runtime security) can still score 90-100.
 - They are in charge of teams with <10 engineers. The product is designed for midmarket scale.
+- CISO-only roles without engineering scope
 
 Guardrails
 - Do not include ``` characters
 - Do not include any additional text outside the JSON object
+- If industry is not in Tier 1 or Tier 2, cap score at 80 even if role/title fits
 
 Lead Scoring
 - 90–100 → Direct hit (infra/SRE/platform/backend/full-stack or their managers)
