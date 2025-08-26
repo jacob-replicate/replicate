@@ -1,29 +1,51 @@
 You’re helping me qualify leads for replicate.info — weekly inbox-native coaching that helps engineers improve production readiness, avoid incidents, and level up infra maturity.
 
+You must return a JSON format in this exact format, with no additional content:
+{ "score": 100, "reason": "VP of Engineering at fintech SaaS (team ~200 engineers, high SEV risk)" }
+
 Best-fit leads
-- Engineers in infra, SRE, platform, DevOps, backend, or full-stack (or their managers)
+- Engineering leaders at midmarket companies
 - Security engineering leaders with clear infra adjacency (IAM, auth, secrets, certs, production security controls)
 - Companies that ship web-based products/services
-- Ideally those in leadership positions who can drive top-down engineering/tooling decisions. VP's and CTO’s are fine if the company is small. Think: leaders who manage roughly 50-250 engineers, not 5000+.
+- Ideally those in leadership positions who can drive top-down engineering/tooling decisions. VP's and CTO’s are fine if the company is small.
+- Think: leaders at midmarket orgs (25–500 engineers). Above 1,000 engineers is too large for our trial model.
 
 Reject leads if:
 - Their last 5 years are mainly in ML, frontend-only, data eng, QA, BI, or mobile.
-- They’re clearly non-technical (sales, HR, product, design, marketing, etc.).
-- They’re in compliance/GRC-only security roles (audit, risk, policy, governance) with no infra/production overlap.
-- Full-stack + software engineering managers are fine.
-
-Scoring
-- 90–100 → Direct hit (infra/SRE/platform/backend/full-stack or their managers)
-- 70–89 → Good fit, not perfect
-- 40–69 → Weak or tangential fit
-- 0–39 → Reject
-
-Return a JSON object in this exact format:
-{ "score": 80, "reason": "explanation of the decision" }
+- They're clearly non-technical (sales, HR, product, design, marketing, etc). I want engineering leaders (i.e., VP's and Directors), not PM's or individual contributors.
+- They’re in compliance/GRC-only roles (audit, risk, policy, governance). Infra-adjacent security leaders with ownership of production systems (IAM, auth, secrets, certs, runtime security) can still score 90-100.
+- They are in charge of teams with <10 engineers. The product is designed for midmarket scale.
 
 Guardrails
 - Do not include ``` characters
 - Do not include any additional text outside the JSON object
 
-Below is a JSON object with metadata about a lead. Use it to decide how well they match the above profile.
+Lead Scoring
+- 90–100 → Direct hit (infra/SRE/platform/backend/full-stack or their managers)
+- 70–89 → Good fit, not perfect
+- 40–69 → Weak or tangential fit
+- 0–39 → Reject
+
+Relevant Industries
+- I prefer leads working in industries where SEV-1s are an existential risk, where VP's jobs are on the line if things blow up.
+
+Tier 1 Industries - If a lead is in a Tier 1 industry and otherwise fits, default to 90–100
+- Fintech / Trading Platforms
+- Payments / Compliance SaaS
+- SaaS Infrastructure / Developer Platforms
+- Cloud-native API providers
+- Healthcare Tech (EHR, Telemedicine)
+- High-Volume E-commerce
+- Cybersecurity / Identity Platforms
+- Travel / Booking Platforms
+- Marketplaces
+- AdTech / Marketing Automation
+
+Tier 2 Industries - Tier 2 leads should rarely score above 85 unless everything else is a direct hit.
+- Communications / CPaaS (Messaging, Voice, Video APIs)
+- Logistics / Supply Chain Tech
+- EdTech (Scaled Online Platforms)
+- Telecom SaaS (Collaboration, Video)
+
+Below is a JSON object with metadata about the lead. Use it to decide how well they match the above profile.
 {{CONTEXT_LEAD_METADATA}}

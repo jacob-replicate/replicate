@@ -5,7 +5,7 @@ class ColdEmailVariants
 
     body_html = <<~HTML
       <p>#{greeting}</p>
-      <p>#{intros.sample} #{hooks.sample}</p>
+      <p>#{intros.sample} #{tech_explanation.sample}</p>
       <p>#{ctas.sample}</p>
       <p>#{inbox["signature"]}</p>
       <p style="font-size: 80%; opacity: 0.6">#{footer}</p>
@@ -33,12 +33,13 @@ class ColdEmailVariants
   def self.intros
     url = "<a href='https://replicate.info'>replicate.info</a>"
     [
-      "I lead IAM projects for Terraform. I also built #{url} to help teams uncover their infra/sec blind spots.",
+      "I lead IAM projects for Terraform. I also built #{url} to help teams surface infra/sec blind spots before they hit prod.",
       "I'm a Staff Engineer at HashiCorp, and recently launched #{url} to help developers think clearly during production fires.",
+      "I lead infra/sec work at IBM, and shipped #{url} to pressure-test engineers before production does."
     ]
   end
 
-  def self.hooks
+  def self.tech_explanation
     [
       "It's just a weekly email. GPT drops you into a SEV-1, asks for your next move, and applies pressure until you break.",
       "GPT emails your team a SEV every Monday, and grades their work. It's looking for the blind spots that crash prod.",
