@@ -139,28 +139,28 @@ class Contact < ApplicationRecord
       "tooling",
     ]
 
-    director_keywords = [
-      "director of engineering",
-      "engineering director",
-      "director of infrastructure",
-      "director of sre",
-      "director of platform",
-      "director of devops",
-      "director of cloud",
+    leadership_keywords = [
+#      "director of engineering",
+#      "engineering director",
+#      "director of infrastructure",
+#      "director of sre",
+#      "director of platform",
+#      "director of devops",
+#      "director of cloud",
 #      "director of security engineering",
-#      "head of engineering",
-#      "head of infrastructure",
-#      "head of sre",
-#      "head of platform",
-#      "head of devops",
+      "head of engineering",
+      "head of infrastructure",
+      "head of sre",
+      "head of platform",
+      "head of devops",
 #      "head of security engineering",
 #      "vp engineering",
 #      "vp of engineering",
-#      "vp platform",
-#      "vp infrastructure",
-#      "vp sre",
-#      "vp devops",
-#      "vp cloud",
+      "vp platform",
+      "vp infrastructure",
+      "vp sre",
+      "vp devops",
+      "vp cloud",
 #      "vp security engineering",
 #      "cto",
 #      "chief technology officer",
@@ -173,7 +173,7 @@ class Contact < ApplicationRecord
 #      "principal engineering manager"
     ]
 
-    director_keywords.uniq.map(&:downcase).each_with_index do |keyword, i|
+    leadership_keywords.uniq.map(&:downcase).each_with_index do |keyword, i|
       offset = (i * 2).minutes
       begin
         pagination = FetchContactsWorker.new.perform(keyword, 1, true)
@@ -208,9 +208,10 @@ class Contact < ApplicationRecord
 
   def company_domain_on_blocklist?
     [
-      "givecampus.com",
-      "hashicorp.com",
-      "ibm.com"
-    ].include?(company_domain.to_s.downcase)
+      "givecampus",
+      "replicate",
+      "hashicorp",
+      "ibm"
+    ].any? { |banned_phrase| company_domain.to_s.downcase.include?(banned_phrase) }
   end
 end
