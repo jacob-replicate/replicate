@@ -27,7 +27,6 @@ Ops
 - Figure out when bills land in Mercury account, so you can fund the account on time.
 - Double check Apollo invoicing + Mercury card transition
 - Find Apollo payment receipt + brainstorm any vendors you missed. Double check for all invoices.
-- Sidekiq admin UI
 - Auth0 + SCIM + Self-serve admin UI
 
 Sales
