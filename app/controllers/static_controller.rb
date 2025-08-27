@@ -53,7 +53,7 @@ class StaticController < ApplicationController
       { seat_count: 75,  price: 40_000 },
       { seat_count: 150, price: 60_000 },
       { seat_count: 300, price: 80_000 },
-      { seat_count: 1_000, price: 100_000 }
+      { seat_count: 500, price: 100_000 }
     ]
   end
 end

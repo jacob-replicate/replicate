@@ -17,8 +17,16 @@ Transactional
 
 Legal
 - Terms + Privacy + MSA/DPA review
+- Add footer links on homepage to terms, private, MSA/DPA/Billing/Security/Support
 
 ------- LAUNCH ----------
+
+
+Product
+- Scrape company website to figure out careers page + tech stack (if you can)
+- Attach PDF's + inline JPG's once they close the loop
+- GPT 5 (in email, at least, not on web where it's slow af)
+- :coaching_should_continue prompt -- uncomment guard clause in coaching message generator
 
 Ops
 - Move Missive to Mercury account
@@ -30,6 +38,7 @@ Ops
 - Auth0 + SCIM + Self-serve admin UI
 
 Sales
+- "I want the weekly emails too" checkbox on trial form -- lots of VP's won't give a fuck
 - Create a procurement PDF you can link to in your "Welcome to replicate.info!" email?
 - Monthly email report format to Directors. Make it a PDF that Rails renders, which you can attach in Postmark email, that they can forward to VP.
 - Bouncer API call on owner email with loading spinner
@@ -48,8 +57,3 @@ Reliability
 Security
 - Automated data deletion + audit logging
 - After first contract, pay ~$1k for a verified checkmark in Gmail -- VMC - Verified Mark Certificate, like Verisign for logos
-
-Product
-- Attach PDF's + inline JPG's once they close the loop
-- GPT 5 (in email, at least, not on web where it's slow af)
-- :coaching_should_continue prompt -- uncomment guard clause in coaching message generator
