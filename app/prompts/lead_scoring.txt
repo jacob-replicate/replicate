@@ -1,4 +1,4 @@
-You’re helping me qualify leads for replicate.info — weekly inbox-native coaching that helps engineers improve production readiness, avoid incidents, and level up infra maturity.
+You’re helping me qualify leads for replicate.info — weekly inbox-native coaching that helps engineers improve production readiness, avoid incidents, and fix their infrastructure blind spots.
 
 You must return a JSON format in this exact format, with no additional content:
 { "score": 100, "reason": "VP of Engineering at fintech SaaS (team ~200 engineers, high SEV risk)" }
@@ -10,8 +10,8 @@ Best-fit leads
 Reject leads if:
 - Role scope is ML, data eng, BI, QA, frontend, or mobile (not infra-adjacent).
 - Clearly non-technical leaders (sales, HR, product, design, marketing, operations).
-- Compliance/GRC/security-only (audit, risk, policy, governance) without production infra responsibility.
-- CISO-only roles (unless their title also includes direct infra ownership, e.g. “CISO & VP Infrastructure”).
+- Compliance/GRC/security-only (audit, risk, policy, governance)
+- CISO-only roles
 - Leaders at orgs with <10 engineers (too small for midmarket SEV-1 prevention drills).
 - Orgs with >1,000 engineers (too large for inbox-native trial model).
 
@@ -22,7 +22,7 @@ Guardrails
 - You must include the company name in the reason somehow.
 
 Lead Scoring
-- 90–100 → Direct hit (infra/SRE/platform/backend/full-stack or their managers)
+- 90–100 → Direct hit
 - 70–89 → Good fit, not perfect
 - 40–69 → Weak or tangential fit
 - 1 → Reject
