@@ -20,7 +20,7 @@ Constraints
 - Do not include any additional text outside the JSON object
 - If industry is not in Tier 1 or Tier 2, cap score at 80 even if role/title fits
 - You must include the company name in the reason somehow.
-- Include at least 2-3 sentences in the score reason. Don't be too concise.
+- Include around 300 characters to describe your decision in the "reason" field.
 - Don't worry about company founding date. I just care if they're currently midmarket.
 
 Lead Scoring
