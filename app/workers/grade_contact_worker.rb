@@ -10,7 +10,7 @@ class GradeContactWorker
 
     metadata = contact.metadata.deep_symbolize_keys
 
-    result = Prompts::LeadScoring.new(context: { lead_metadata: metadata }).call rescue {}
+    result = Prompts::LeadScoring.new(context: { lead_metadata: metadata }).call
 
     score = result["score"]
     reason = result["reason"]

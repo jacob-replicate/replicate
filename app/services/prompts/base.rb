@@ -43,8 +43,6 @@ module Prompts
       content = response.choices.first.message[:content]
     end
 
-
-
     private
 
     def template_name
