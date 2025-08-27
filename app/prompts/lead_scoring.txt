@@ -1,6 +1,6 @@
 You’re helping me qualify leads for replicate.info — weekly inbox-native coaching that helps engineers improve production readiness, avoid incidents, and fix their infrastructure blind spots.
 
-You must return a JSON format in this exact format, with no additional content:
+You must return a JSON format in this exact format, with no additional content outside of the JSON:
 { "score": 100, "reason": "VP of Engineering at fintech SaaS (team ~200 engineers, high SEV risk)" }
 
 Best-fit leads
@@ -8,27 +8,31 @@ Best-fit leads
 - Company must ship web-based products/services where downtime = revenue or compliance risk.
 
 Reject leads if:
-- Role scope is ML, data eng, BI, QA, frontend, or mobile (not infra-adjacent).
+- Role scope is ML, data eng, BI, QA, frontend, or mobile
 - Clearly non-technical leaders (sales, HR, product, design, marketing, operations).
 - Compliance/GRC/security-only (audit, risk, policy, governance)
 - CISO-only roles
 - Leaders at orgs with <10 engineers (too small for midmarket SEV-1 prevention drills).
-- Orgs with >1,000 engineers (too large for inbox-native trial model).
+- Orgs with >1,000 engineers (too large for product right now).
 
-Guardrails
+Constraints
+- Think very hard. Give me a 10/10 A+ analysis. Don't rush.
 - Do not include ``` characters
 - Do not include any additional text outside the JSON object
 - If industry is not in Tier 1 or Tier 2, cap score at 80 even if role/title fits
 - You must include the company name in the reason somehow.
+- Include at least 2-3 sentences in the score reason. Don't be too concise.
 
 Lead Scoring
-- 90–100 → Direct hit
-- 70–89 → Good fit, not perfect
-- 40–69 → Weak or tangential fit
-- 1 → Reject
+- 90–100 → Amazing fit
+- 80–89 → Good fit, not perfect
+- 0–79 → Weak or tangential fit
 
-Relevant Industries - If the contact is in a Tier 1 industry and otherwise fits, default to 90–100. If they're in another industry, cap at 80. If they're not bleeding during a SEV, I'm not interested.
-- Fintech / Trading Platforms – brokerage, wealth, exchanges, trading APIs, where every minute of downtime = money lost.
+Potentiallly Relevant Industries
+- If the contact is in a Tier 1 industry and otherwise fits, default to 90–100. If they're in another industry, they can still score that high if it's obvious that they're bleeding money and reputation during a SEV.
+- Think: Real-time financial trading platforms that lose millions of dollars every second the platform is down. That's the gold standard. Here are the other similar industries to paint a picture. Don't be rigid, but also make sure to understand where I'm coming from.
+- If the downtime risk is severe, I don't care if the company is on this list of specific industries. When in doubt, grade them very high. This is just to give you a sense of what I'm looking for.
+- Real-time Fintech Trading Platforms – brokerage, wealth, exchanges, trading APIs, where every minute of downtime = money lost.
 - Payments / Compliance SaaS – fraud detection, KYC/AML, PCI compliance, tax reporting, payments infrastructure.
 - Payment Processors / Platforms – companies that directly process or move money at scale (Stripe, Adyen-level, or niche equivalents).
 - SaaS Infrastructure / Developer Platforms – infra tools used by engineers to build/ship/run software (CI/CD, monitoring, logging, hosting, DBaaS, cloud infra, etc).
