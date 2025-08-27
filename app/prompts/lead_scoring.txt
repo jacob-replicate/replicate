@@ -19,6 +19,7 @@ Guardrails
 - Do not include ``` characters
 - Do not include any additional text outside the JSON object
 - If industry is not in Tier 1 or Tier 2, cap score at 80 even if role/title fits
+- You must include the company name in the reason somehow.
 
 Lead Scoring
 - 90–100 → Direct hit (infra/SRE/platform/backend/full-stack or their managers)
