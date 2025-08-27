@@ -1,6 +1,8 @@
 class GradeContactWorker
   include Sidekiq::Worker
 
+  sidekiq_options retry: false, lock: :until_executed
+
   def perform(contact_id, force = false)
     contact = Contact.find_by(id: contact_id)
     return unless contact
