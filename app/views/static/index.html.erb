@@ -106,10 +106,110 @@
       <div class="md:hidden mt-4">
         <%= render "signature" %>
       </div>
-      <div class="mt-12">
-        <%= render "extended_cta" %>
+    </div>
+  </div>
+  <div class="mt-16 md:mt-20 w-full lg:max-w-[780px] rounded-xl shadow-md border border-gray-100 bg-white p-6 mx-auto">
+    <h2 class="font-medium tracking-tight text-red-500 mb-1">
+      Weekly SEV Drills
+    </h2>
+    <h3 class="text-2xl font-semibold text-gray-900 mb-8">
+      Raise the bar, before it breaks.
+    </h3>
+    <p class="mb-4">
+      Replicate invites your team to a SEV-1 every Monday. Private emails where GPT can cut deep, not team-wide CC's where you have to perform.
+      <span class="font-semibold">Failure is the product.</span> Everyone starts with the same incident, but stumbles to the fix in their own unique way.
+    </p>
+
+    <p class="mb-10">
+      It's not rocket surgery. Just a cron job to send emails + an
+      <a href="/sev" class="text-blue-600 hover:text-blue-700 font-medium underline underline-offset-4 hover:underline hover:underline-offset-4 decoration-1 transition" target="_blank">AI loop</a> that generates pressure.
+    </p>
+
+    <div class="text-[16px]">
+      <div class="space-y-8 leading-[1.6]">
+        <div class="flex justify-start">
+          <div class="break-words message-body">
+            <div class="font-medium flex items-center gap-2 mb-2 mt-2">
+              <img src="/logo.png" alt="Jacob Comer" class="w-6 h-6 rounded-full" />
+              replicate.info
+            </div>
+            <div class="mt-1">
+              Imagine a read replica's monitoring page shows consistent query times under 50ms. Meanwhile, production logs from the primary DB contain intermittent duplicate key errors on inserts. Even with <strong>hot_standby_feedback</strong> on, the replica's lag graph stays flat at 0 seconds. What's your first move?
+            </div>
+          </div>
+        </div>
+
+        <div class="flex justify-end">
+          <div class="bg-neutral-100 rounded-2xl shadow px-4 py-3 max-w-2xl md:max-w-xl break-words message-body">
+            <div class="font-semibold mb-1">Jordan Kim</div>
+            Lag staying flat at 0 seconds smells off. I'd treat that monitoring as false.<br>
+            Replica config drift feels likely. It's probably querying the wrong instance.<br>
+            I'd verify the replica is actually replicating.
+          </div>
+        </div>
+
+        <div class="flex justify-start">
+          <div class="break-words message-body">
+            <div class="font-medium flex items-center gap-2 mb-2 mt-2">
+              <img src="/logo.png" alt="Jacob Comer" class="w-6 h-6 rounded-full" />
+              replicate.info
+            </div>
+            <div class="mt-1">
+              Lag pinned at zero when symptoms say otherwise is a fault, but not evidence replication is severed. If replication had halted, the replica couldn't show recent data. Query results would diverge fast. What happens when lag monitoring skips over non-blocking replication issues?
+            </div>
+          </div>
+        </div>
+
+        <div class="flex justify-end">
+          <div class="bg-neutral-100 rounded-2xl shadow px-4 py-3 max-w-2xl md:max-w-xl break-words message-body">
+            <div class="font-semibold mb-1">Jordan Kim</div>
+            A lag metric at 0 doesn't prove forward replication. I'd confirm commits applied match what the primary sends. If monitoring filters non-blocking issues, what's suppressing sync drift visibility?
+          </div>
+        </div>
+
+        <div class="flex justify-start">
+          <div class="break-words message-body">
+            <div class="font-medium flex items-center gap-2 mb-2 mt-2">
+              <img src="/logo.png" alt="Jacob Comer" class="w-6 h-6 rounded-full" />
+              replicate.info
+            </div>
+            <div class="mt-1">
+              If lag monitoring skips over non-blocking issues, the replica might apply changes out of order while reporting "caught up." Think about constraints. Which one guarantees upstream sequences won't break if replication's order is wrong?
+            </div>
+          </div>
+        </div>
+
+        <div class="flex justify-end">
+          <div class="bg-neutral-100 rounded-2xl shadow px-4 py-3 max-w-2xl md:max-w-xl break-words message-body">
+            <div class="font-semibold mb-1">Jordan Kim</div>
+            Replication order breaking constraints means FK's + unique indexes die first. If those hold steady, we aren't seeing drift. Lag reading zero skips what inconsistency? Data integrity guarantees collapse under what?
+          </div>
+        </div>
+
+        <div class="flex justify-start">
+          <div class="break-words message-body">
+            <div class="font-medium flex items-center gap-2 mb-2 mt-2">
+              <img src="/logo.png" alt="Jacob Comer" class="w-6 h-6 rounded-full" />
+              replicate.info
+            </div>
+            <div class="mt-1">
+              If constraints were already breaking, you'd see failures escalate quickly. Applications panicking, user reports pouring in. But you expect integrity guarantees to buckle against what? Silent drift hides upstream until reconciliation or... what else breaches first?
+            </div>
+          </div>
+        </div>
+
+        <div class="flex justify-end">
+          <div class="bg-neutral-100 rounded-2xl shadow px-4 py-3 max-w-2xl md:max-w-xl break-words message-body">
+            <div class="font-semibold mb-1">Jordan Kim</div>
+            Fuck. I didn't realize I assumed our Kafka consumer's offset tracking guarantees message order across partitions. It doesn't. That risks misapplied transactions. I'll flag the issue with Chris in our 1on1.
+          </div>
+        </div>
       </div>
     </div>
+    <!-- End conversation thread -->
+  </div>
+  <div class="mt-8 lg:mt-20">
+    <%= render "extended_cta" %>
   </div>
   <div class="bg-gray-100 p-6 border border-gray-300 rounded-md mt-8 lg:mt-12">
     <p class="text-xl font-semibold tracking-tight mb-2">
@@ -125,16 +225,6 @@
         Subscribe
       </button>
     </form>
-  </div>
-  <div class="mt-8 lg:mt-12 lg:max-w-[78%] mx-auto">
-    <img src="/conversation.png" class="w-full rounded-xl  border border-gray-200 shadow hidden lg:block" />
-    <img src="/conversation-mobile.png" class="w-full rounded-xl  border border-gray-200 shadow lg:hidden" />
-  </div>
-  <div class="mt-8 lg:mt-12">
-    <%= render "trial_form", extra_form_container_classes: "mx-auto lg:w-[57%] shadow border-neutral-200", show_next_steps_header: true %>
-  </div>
-  <div class="mt-4 lg:w-[57%] mx-auto">
-    <%= render "signature" %>
   </div>
 </div>
 
