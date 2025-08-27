@@ -30,14 +30,18 @@ Ops
 - Auth0 + SCIM + Self-serve admin UI
 
 Sales
+- Create a procurement PDF you can link to in your "Welcome to replicate.info!" email?
 - Monthly email report format to Directors. Make it a PDF that Rails renders, which you can attach in Postmark email, that they can forward to VP.
-- bouncer API call on owner email with loading spinner
+- Bouncer API call on owner email with loading spinner
 - Marketing newsletter. Just drop them into the typical queue. 3-week pause, with a Slack link for their team?
 - Add an example URL to copy/paste in the "Not the right time?" box. Give them the value ASAP.
 - Set up process for cold email addresses that failed bounce check. Funnel bad data into a CSV that Fiverr can clean up + send back.
 - Upsert contact metadata, so you can keep track of job changes. DB is going to get stale otherwise.
 
 Reliability
+- Sentry
+- PagerDuty (or alternative, maybe, so you don't mix with Hashi? Sentry app, maybe?)
+- APM? Librato equivalent?
 - Add auto-unsubscribe logic (check it at runtime to account for last-minute messages)
 - Bounce webhook reporting
 

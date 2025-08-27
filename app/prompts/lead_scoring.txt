@@ -4,16 +4,15 @@ You must return a JSON format in this exact format, with no additional content:
 { "score": 100, "reason": "VP of Engineering at fintech SaaS (team ~200 engineers, high SEV risk)" }
 
 Best-fit leads
-- Engineering leaders at midmarket companies
-- Security engineering leaders with clear infra adjacency (IAM, auth, secrets, certs, production security controls)
+- Engineering leaders at midmarket companies, ideally with clear infra adjacency (IAM, auth, secrets, certs, production security controls). If it's obvious they're the head of engineering for an entire Tier 1 company, assume they touch infra too.
 - Companies that ship web-based products/services
 - Ideally those in leadership positions who can drive top-down engineering/tooling decisions. VP's and CTO’s are fine if the company is small.
-- Think: leaders at midmarket orgs (25–500 engineers). Above ~1,000 engineers is too large for the trial model, though Directors inside those orgs may still score 70–80.
+- Think: leaders at midmarket orgs (25–500 engineers). Above ~1,000 engineers is too large for my model.
 
 Reject leads if:
-- Their last 5 years are mainly in ML, frontend-only, data eng, QA, BI, or mobile.
+- Their current role is scoped to ML, frontend-only, data eng, QA, BI, or mobile.
 - They're clearly non-technical (sales, HR, product, design, marketing, etc). I want engineering leaders (i.e., VP's and Directors), not PM's or individual contributors.
-- They-re in compliance/GRC-only roles (audit, risk, policy, governance). Infra-adjacent security leaders with ownership of production systems (IAM, auth, secrets, certs, runtime security) can still score 90-100.
+- They-re in compliance/GRC-only/Security-only roles (audit, risk, policy, governance).
 - They are in charge of teams with <10 engineers. The product is designed for midmarket scale.
 - CISO-only roles without engineering scope
 
@@ -26,12 +25,12 @@ Lead Scoring
 - 90–100 → Direct hit (infra/SRE/platform/backend/full-stack or their managers)
 - 70–89 → Good fit, not perfect
 - 40–69 → Weak or tangential fit
-- 0–39 → Reject
+- 1 → Reject
 
 Relevant Industries
 - I prefer leads working in industries where SEV-1s are an existential risk, where VP's jobs are on the line if things blow up.
 
-Tier 1 Industries - If a lead is in a Tier 1 industry and otherwise fits, default to 90–100
+Tier 1 Industries - If the contact is in a Tier 1 industry and otherwise fits, default to 90–100
 - Fintech / Trading Platforms
 - Payments / Compliance SaaS
 - SaaS Infrastructure / Developer Platforms
@@ -48,6 +47,8 @@ Tier 2 Industries - Tier 2 leads should rarely score above 85 unless everything 
 - Logistics / Supply Chain Tech
 - EdTech (Scaled Online Platforms)
 - Telecom SaaS (Collaboration, Video)
+
+Tier 3 industries and below - Cap score at 80 even if role/title fits
 
 Below is a JSON object with metadata about the lead. Use it to decide how well they match the above profile.
 {{CONTEXT_LEAD_METADATA}}
