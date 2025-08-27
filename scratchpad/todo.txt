@@ -31,6 +31,7 @@ Ops
 
 Sales
 - Monthly email report format to Directors. Make it a PDF that Rails renders, which you can attach in Postmark email, that they can forward to VP.
+- bouncer API call on owner email with loading spinner
 - Marketing newsletter. Just drop them into the typical queue. 3-week pause, with a Slack link for their team?
 - Add an example URL to copy/paste in the "Not the right time?" box. Give them the value ASAP.
 - Set up process for cold email addresses that failed bounce check. Funnel bad data into a CSV that Fiverr can clean up + send back.
