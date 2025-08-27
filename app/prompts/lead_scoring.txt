@@ -31,8 +31,9 @@ Relevant Industries
 - I prefer leads working in industries where SEV-1s are an existential risk, where VP's jobs are on the line if things blow up.
 
 Tier 1 Industries - If the contact is in a Tier 1 industry and otherwise fits, default to 90–100
-- Fintech / Trading Platforms
-- Payments / Compliance SaaS
+- Fintech / Trading Platforms (specifically where downtime = money lost)
+- Compliance SaaS
+- Any platform that accepts a significant amount of online payments, or provides that service to customers
 - SaaS Infrastructure / Developer Platforms
 - Cloud-native API providers
 - Healthcare Tech (EHR, Telemedicine)
