@@ -48,6 +48,7 @@ Sales
 - Add an example URL to copy/paste in the "Not the right time?" box. Give them the value ASAP.
 - Set up process for cold email addresses that failed bounce check. Funnel bad data into a CSV that Fiverr can clean up + send back.
 - Upsert contact metadata, so you can keep track of job changes. DB is going to get stale otherwise.
+- [Maybe] Accordion left/right links floated around the homepage conversation. Nobody clicks that shit though.
 
 Reliability
 - Sentry
