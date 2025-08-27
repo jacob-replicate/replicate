@@ -4,8 +4,8 @@ You must return a JSON format in this exact format, with no additional content:
 { "score": 100, "reason": "VP of Engineering at fintech SaaS (team ~200 engineers, high SEV risk)" }
 
 Best-fit leads
-- Senior engineering leaders (Director/VP/Head/CTO if small company) at midmarket orgs (25–500 engineers) with clear ownership of production infrastructure (platform, SRE, infra, backend).
-- Roles that explicitly cover infrastructure, SRE, platform engineering, or production security controls (IAM, auth, secrets, certs, runtime).
+- Senior engineering leaders (Director/VP/Head/CTO if small company) at midmarket orgs (25–500 engineers).
+- Roles that more than likely cover infrastructure, SRE, platform engineering, or production security controls (IAM, auth, secrets, certs, runtime).
 - If they are head of engineering for a Tier 1 company, assume infra is under their scope.
 - Company must ship web-based products/services where downtime = revenue or compliance risk.
 
