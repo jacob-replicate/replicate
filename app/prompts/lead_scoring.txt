@@ -31,7 +31,7 @@ Lead Scoring
 Potentiallly Relevant Industries
 - If the contact is in a Tier 1 industry and otherwise fits, default to 90–100. If they're in another industry, they can still score that high if it's obvious that they're bleeding money and reputation during a SEV.
 - Think: Real-time financial trading platforms that lose millions of dollars every second the platform is down. That's the gold standard. Here are the other similar industries to paint a picture. Don't be rigid, but also make sure to understand where I'm coming from.
-- If the downtime risk is severe, I don't care if the company is on this list of specific industries. When in doubt, grade them very high. This is just to give you a sense of what I'm looking for.
+- If the downtime risk is severe, I don't care if the company is on the list of specific industries below. When in doubt, grade them very high. This is just to give you a sense of what I'm looking for.
 - Real-time Fintech Trading Platforms – brokerage, wealth, exchanges, trading APIs, where every minute of downtime = money lost.
 - Payments / Compliance SaaS – fraud detection, KYC/AML, PCI compliance, tax reporting, payments infrastructure.
 - Payment Processors / Platforms – companies that directly process or move money at scale (Stripe, Adyen-level, or niche equivalents).
