@@ -1,8 +1,16 @@
 require "sidekiq/web"
 
 Rails.application.routes.draw do
-  authenticate :user, ->(user) { user.admin } do
-    mount Sidekiq::Web => '/sidekiq'
+  Sidekiq::Web.use Rack::Auth::Basic do |username, password|
+    secure_user = ENV.fetch("SIDEKIQ_USERNAME", "admin")
+    secure_pass = ENV.fetch("SIDEKIQ_PASSWORD", "puppies123")
+
+    ActiveSupport::SecurityUtils.secure_compare(username, secure_user) &
+      ActiveSupport::SecurityUtils.secure_compare(password, secure_pass)
+  end
+
+  Rails.application.routes.draw do
+    mount Sidekiq::Web => "/sidekiq"
   end
 
   devise_for :users
