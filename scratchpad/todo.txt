@@ -12,6 +12,7 @@ Transactional
 - Unsubscribe page with confirmation form, to prevent accidental unsubscribe (doesn't matter for cold, you're never following up).
 - Manually wire up 2-3 initial incidents + subject lines
 - Email regex validation. AI grading on form submission - you're gonna get a lot of bullshit responses to grade once public.
+    - Just make it an "email" form input?
 - Error handling if emails fail (e.g., bounce, throttling, etc)
 - Add BIMI DNS record for logo.svg - https://mxtoolbox.com/dmarc/bimi/how-to-create-bimi-record (logo might be blurry)
 
@@ -36,6 +37,7 @@ Ops
 - Double check Apollo invoicing + Mercury card transition
 - Find Apollo payment receipt + brainstorm any vendors you missed. Double check for all invoices.
 - Auth0 + SCIM + Self-serve admin UI
+- How will you know if your Bouncer credits are almost up?
 
 Sales
 - "I want the weekly emails too" checkbox on trial form -- lots of VP's won't give a fuck
