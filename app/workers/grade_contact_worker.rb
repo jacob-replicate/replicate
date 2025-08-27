@@ -4,7 +4,6 @@ class GradeContactWorker
   sidekiq_options retry: false, lock: :until_executed
 
   def perform(contact_id, force = false)
-    return
     contact = Contact.find_by(id: contact_id)
     return unless contact
     return if (contact.score.present? && contact.score > 0) && !force

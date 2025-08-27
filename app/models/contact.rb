@@ -100,7 +100,7 @@ class Contact < ApplicationRecord
 
     score_counts = scope.group(:score).count
     total = scope.count
-    scored = scope.where.not(score: nil).count
+    scored = scope.where.not(score_reason: nil).count
     unscored = total - scored
 
     puts "Lead Quality Report#{cohort ? " (cohort: #{cohort})" : ''}"

@@ -4,17 +4,18 @@ You must return a JSON format in this exact format, with no additional content:
 { "score": 100, "reason": "VP of Engineering at fintech SaaS (team ~200 engineers, high SEV risk)" }
 
 Best-fit leads
-- Engineering leaders at midmarket companies, ideally with clear infra adjacency (IAM, auth, secrets, certs, production security controls). If it's obvious they're the head of engineering for an entire Tier 1 company, assume they touch infra too.
-- Companies that ship web-based products/services
-- Ideally those in leadership positions who can drive top-down engineering/tooling decisions. VP's and CTO’s are fine if the company is small.
-- Think: leaders at midmarket orgs (25–500 engineers). Above ~1,000 engineers is too large for my model.
+- Senior engineering leaders (Director/VP/Head/CTO if small company) at midmarket orgs (25–500 engineers) with clear ownership of production infrastructure (platform, SRE, infra, backend).
+- Roles that explicitly cover infrastructure, SRE, platform engineering, or production security controls (IAM, auth, secrets, certs, runtime).
+- If they are head of engineering for a Tier 1 company, assume infra is under their scope.
+- Company must ship web-based products/services where downtime = revenue or compliance risk.
 
 Reject leads if:
-- Their current role is scoped to ML, frontend-only, data eng, QA, BI, or mobile.
-- They're clearly non-technical (sales, HR, product, design, marketing, etc). I want engineering leaders (i.e., VP's and Directors), not PM's or individual contributors.
-- They-re in compliance/GRC-only/Security-only roles (audit, risk, policy, governance).
-- They are in charge of teams with <10 engineers. The product is designed for midmarket scale.
-- CISO-only roles without engineering scope
+- Role scope is ML, data eng, BI, QA, frontend, or mobile (not infra-adjacent).
+- Clearly non-technical leaders (sales, HR, product, design, marketing, operations).
+- Compliance/GRC/security-only (audit, risk, policy, governance) without production infra responsibility.
+- CISO-only roles (unless their title also includes direct infra ownership, e.g. “CISO & VP Infrastructure”).
+- Leaders at orgs with <10 engineers (too small for midmarket readiness drills).
+- Orgs with >1,000 engineers (too large for inbox-native trial model).
 
 Guardrails
 - Do not include ``` characters
@@ -27,29 +28,18 @@ Lead Scoring
 - 40–69 → Weak or tangential fit
 - 1 → Reject
 
-Relevant Industries
-- I prefer leads working in industries where SEV-1s are an existential risk, where VP's jobs are on the line if things blow up.
-
-Tier 1 Industries - If the contact is in a Tier 1 industry and otherwise fits, default to 90–100
-- Fintech / Trading Platforms (specifically where downtime = money lost)
-- Compliance SaaS
-- Any platform that accepts a significant amount of online payments, or provides that service to customers
-- SaaS Infrastructure / Developer Platforms
-- Cloud-native API providers
-- Healthcare Tech (EHR, Telemedicine)
-- High-Volume E-commerce
-- Cybersecurity / Identity Platforms
-- Travel / Booking Platforms
-- Marketplaces
-- AdTech / Marketing Automation
-
-Tier 2 Industries - Tier 2 leads should rarely score above 85 unless everything else is a direct hit.
-- Communications / CPaaS (Messaging, Voice, Video APIs)
-- Logistics / Supply Chain Tech
-- EdTech (Scaled Online Platforms)
-- Telecom SaaS (Collaboration, Video)
-
-Tier 3 industries and below - Cap score at 80 even if role/title fits
+Relevant Industries - If the contact is in a Tier 1 industry and otherwise fits, default to 90–100. If they're in another industry, cap at 80. If they're not bleeding during a SEV, I'm not interested.
+- Fintech / Trading Platforms – brokerage, wealth, exchanges, trading APIs, where every minute of downtime = money lost.
+- Payments / Compliance SaaS – fraud detection, KYC/AML, PCI compliance, tax reporting, payments infrastructure.
+- Payment Processors / Platforms – companies that directly process or move money at scale (Stripe, Adyen-level, or niche equivalents).
+- SaaS Infrastructure / Developer Platforms – infra tools used by engineers to build/ship/run software (CI/CD, monitoring, logging, hosting, DBaaS, cloud infra, etc).
+- Cloud-native API Providers – APIs that power production systems (auth, comms, billing, logistics, etc).
+- Healthcare Tech – electronic health records (EHR), telemedicine, scheduling, prescribing — anywhere downtime hits compliance and patient care.
+- High-Volume E-commerce – online retailers or marketplaces where downtime = lost carts, lost sales (minutes = millions).
+- Cybersecurity / Identity Platforms – IAM, SSO, secrets, certs, auth, runtime security. Downtime = customer systems exposed.
+- Travel / Booking Platforms – flights, hotels, reservations, ticketing, where downtime = stranded customers.
+- Marketplaces – multi-sided networks (Etsy, Fiverr, DoorDash, etc) where uptime is existential.
+- AdTech / Marketing Automation – programmatic ads, attribution, campaign automation, where downtime = lost ad spend.
 
 Below is a JSON object with metadata about the lead. Use it to decide how well they match the above profile.
 {{CONTEXT_LEAD_METADATA}}
