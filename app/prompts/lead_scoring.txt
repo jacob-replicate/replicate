@@ -4,8 +4,7 @@ You must return a JSON format in this exact format, with no additional content o
 { "score": 100, "reason": "VP of Engineering at fintech SaaS (team ~200 engineers, high SEV risk)" }
 
 Best-fit leads
-- Senior engineering leaders (Director/VP/Head/CTO if small company) at midmarket orgs (25–500 engineers).
-- Company must ship web-based products/services where downtime = revenue or compliance risk.
+- Senior engineering leaders (Director/VP/Head/CTO if small company) at midmarket orgs (25–500 engineers) where SEV-1 incidents are a real risk.
 
 Reject leads if:
 - Role scope is ML, data eng, BI, QA, frontend, or mobile
@@ -22,6 +21,7 @@ Constraints
 - If industry is not in Tier 1 or Tier 2, cap score at 80 even if role/title fits
 - You must include the company name in the reason somehow.
 - Include at least 2-3 sentences in the score reason. Don't be too concise.
+- Don't worry about company founding date. I just care if they're currently midmarket.
 
 Lead Scoring
 - 90–100 → Amazing fit
