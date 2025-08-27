@@ -19,7 +19,7 @@ class AvatarService
     avatar_row(name: engineer_name, photo_path: "profile-photo-#{photo_id}.jpg")
   end
 
-  def self.avatar_row(name: "Jacob Comer", photo_path: "jacob-square.jpg", first: false)
+  def self.avatar_row(name: "replicate.info", photo_path: "logo.png", first: false)
     "<div><div class='flex items-center gap-3'><div style='width: 32px'><img src='/#{photo_path}' class='rounded-full' /></div><div class='font-medium'>#{name}</div></div></div>"
   end
 end
