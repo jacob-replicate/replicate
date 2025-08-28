@@ -25,6 +25,7 @@ class SanitizeAiContent
     response.gsub!("Hey Casey,", "")
     response.gsub!("```html", "")
     response.gsub!("```", "")
+    response.gsub!("**", "")
     response.gsub!("`", "")
 
     strip_tags(response)  # works here because we're in an instance context
