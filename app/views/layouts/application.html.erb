@@ -62,6 +62,8 @@
             <%= yield %>
           </div>
         </div>
+
+        <%= yield :wider_content %>
       </div>
     <% end %>
     <% if Rails.env.production? %>

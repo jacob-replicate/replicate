@@ -111,9 +111,13 @@
   </div>
 
   <% if @conversation.context["conversation_type"] == "landing_demo" %>
-    <div id="cta" class="<%= @conversation.messages.count == 9 ? "mt-10" : "hidden mt-10" %>">
-      <%= render "static/trial_form", extra_form_container_classes: "mx-auto md:w-[72%] shadow border-neutral-200", show_next_steps_header: true %>
-    </div>
+    <% content_for :wider_content do %>
+      <div id="cta" class="<%= @conversation.messages.count == 9 ? "" : "hidden" %>">
+        <div class="px-4 pt-4 pb-8 md:pt-6 md:pb-10 lg:px-[20px] xl:px-[120px] 2xl:px-[280px]">
+          <%= render "static/extended_cta", extra_form_container_classes: "mx-auto md:w-[72%] shadow border-neutral-200", show_next_steps_header: true %>
+        </div>
+      </div>
+    <% end %>
   <% else %>
     <div class="pb-4">
       <div class="flex items-center gap-2">
