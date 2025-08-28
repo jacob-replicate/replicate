@@ -7,7 +7,7 @@ A quiet, high-trust coaching loop for mid-market engineering teams.
 
 ## What It Is
 
-Replicate sends weekly GPT-powered emails that help engineers sharpen their instincts before the fire starts. Every Monday, each engineer receives a realistic infrastructure or security incident — no dashboards, no integrations, no tracking.
+Replicate sends weekly GPT-powered emails that help engineers sharpen their instincts before the fire starts. Every Monday, each engineer receives a realistic infrastructure or security incident - no dashboards, no integrations, no tracking.
 
 It's a visceral, inbox-native drill designed to catch blind spots, raise the bar on production judgment, and make postmortems obsolete.
 
@@ -27,7 +27,7 @@ Replicate closes that gap by:
 
 ## Who It's For
 
-We're built for Staff+ engineers and EMs who want their engineers to level up — fast.
+We're built for Staff+ engineers and EMs who want their engineers to level up - fast.
 
 Typical buyers are:
 

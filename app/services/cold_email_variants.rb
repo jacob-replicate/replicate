@@ -49,7 +49,7 @@ class ColdEmailVariants
   def self.ctas
     [
       "No ask. Just thought it might resonate.",
-      "Just one send — you'll know if it's useful.",
+      "Just one send - you'll know if it's useful.",
       "It's a little harsh. Uncompromising. Surgical, even. But so is production.",
       "SEV thinking, without the actual SEV.",
       "Sparring with GPT is more efficient than reading SRE books. Failure is the product."

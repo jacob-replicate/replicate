@@ -25,11 +25,11 @@ class FetchContactsWorker
     response = http.request(request)
     case response.code.to_i
       when 429
-        Rails.logger.warn "[FetchContactsWorker] Rate limited (429) — retrying in 60s"
+        Rails.logger.warn "[FetchContactsWorker] Rate limited (429) - retrying in 60s"
         FetchContactsWorker.perform_in(60.seconds, title_keyword, page, pagination_only)
         return
       when 500..599
-        Rails.logger.warn "[FetchContactsWorker] Server error (#{response.code}) — retrying in 2m"
+        Rails.logger.warn "[FetchContactsWorker] Server error (#{response.code}) - retrying in 2m"
         FetchContactsWorker.perform_in(2.minutes, title_keyword, page, pagination_only)
         return
       when 200

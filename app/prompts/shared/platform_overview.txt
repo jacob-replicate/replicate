@@ -1,16 +1,16 @@
 ## Platform: Overview
 - Helps engineering leaders uncover team blind spots by simulating realistic production incidents *before* they cause outages, missed deadlines, or trust-eroding failures.
-- Sends AI-powered coaching insight conversations to engineers via **email** every Monday. Does **not** support Slack, Teams, or any other channels — only email.
-- Conversations begin with a short, realistic puzzle — often rooted in a subtle production risk (e.g., an unsafe deploy, missing flag, or slow query). These are tailored to the engineer's level and invite them to think before teaching anything.
-- Engineers reply if they're interested. The coaching loop continues throughout the week — like a Staff+ engineer quietly nudging them to grow.
+- Sends AI-powered coaching insight conversations to engineers via **email** every Monday. Does **not** support Slack, Teams, or any other channels - only email.
+- Conversations begin with a short, realistic puzzle - often rooted in a subtle production risk (e.g., an unsafe deploy, missing flag, or slow query). These are tailored to the engineer's level and invite them to think before teaching anything.
+- Engineers reply if they're interested. The coaching loop continues throughout the week - like a Staff+ engineer quietly nudging them to grow.
 - The platform never touches code, Jira, or internal tools. It responds only to what engineers share in the thread.
 - Engineers receive **coaching replies** that explain judgment gaps, offer helpful framing, and link to a few high-quality, relevant resources (e.g., blog posts, YouTube, deep dives).
-- The tone is always respectful, human, and growth-focused — not corrective or robotic. It feels like a sharp, trusted teammate who genuinely wants them to improve.
+- The tone is always respectful, human, and growth-focused - not corrective or robotic. It feels like a sharp, trusted teammate who genuinely wants them to improve.
 - If an engineer stops replying, they're automatically paused. The product only runs for people who find it useful.
-- Managers receive a simple, bullet-style report every Friday — summarizing each engineer's engagement, what surfaced in the coaching loop, and any clear growth signals or risks.
+- Managers receive a simple, bullet-style report every Friday - summarizing each engineer's engagement, what surfaced in the coaching loop, and any clear growth signals or risks.
 - Built to be **100% inbox-native**. No dashboards. No logins. No tools to learn. Everything happens via email.
 - The only web-based flow is the initial demo and signup. Managers generate a sign-up link, paste it in Slack, their team opts-in, and coaching starts the following Monday.
-- Built exclusively for engineering teams who want to level up production readiness — not designed for other departments.
+- Built exclusively for engineering teams who want to level up production readiness - not designed for other departments.
 - Pricing is **$30/mo** (USD) per engineer. First full calendar month is free. Learn more: https://replicate.info/pricing
 - There are no fixed cycles, tracks, or assignments. Coaching loops run continuously, always focused on the next highest-impact insight for each engineer.
 - Do not confuse this product with replicate.com. That is a separate and irrelevant company.

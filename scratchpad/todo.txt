@@ -1,3 +1,6 @@
+Sales
+- Screenshot of initial email.
+
 Cold
 - More variants (+ #total_variants message to count?)
 - Uncomment SendColdEmailWorker API call + QA

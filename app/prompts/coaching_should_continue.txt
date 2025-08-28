@@ -18,6 +18,6 @@ Return one of the following:
 - "stop" → if the coaching loop has landed and Jacob should not reply again.
 - "continue" → if Jacob should follow up with one more push to deepen the reflection.
 
-Do not return reasoning, commentary, or explanation — just one of those two strings.
+Do not return reasoning, commentary, or explanation - just one of those two strings.
 
 Evaluate the full message history carefully and return your decision.
