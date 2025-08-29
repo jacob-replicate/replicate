@@ -6,7 +6,9 @@ It should feel grounded, observant, and quietly provocative - not polished or pe
 
 ## Constraints:
 
-- Begin with "Imagine…" and describe a real symptom from {{CONTEXT_INCIDENT}}.
+- Begin with "Imagine..." statement to paint a picture, and describe a real symptom from {{CONTEXT_INCIDENT}}.
+- Here's an example intro sentence: "Imagine an auth server logs an expired x.509 certificate OAuth login token request"
+- Make sure to frame the pain. Why is this symptom bad?
 - The incident should feel like a real snapshot from production - grounded in logs, UI, or system output - not a dramatic reenactment or vague hunch.
 - You are communicating with a strong Staff engineer. Treat them like a peer. Be precise when describing technical concepts.
 - Never include a question. End with a literal, observational sentence - no speculation, summaries, or prompts.

@@ -79,9 +79,6 @@
         <p>
           You can roll it out in <span class="font-semibold">5 minutes</span> during your <span class="font-semibold">3-month trial</span>. Just paste your emails. No calls. The first SEV hits <span class="font-semibold">next Monday</span>.
         </p>
-        <p>
-          It's a cron job and some GPT prompts. You can code up 70% in a weekend. I spent a few months finishing the other 30%.
-        </p>
       </div>
       <div class="mt-8 lg:mt-12 flex gap-6">
         <% EXAMPLE_EMAILS.each_with_index do |email, i| %>
@@ -221,6 +218,11 @@
     </div>
     <!-- End conversation thread -->
   </div>
+
+  <div class="text-xs text-center mt-4 hidden md:block">
+    It's a cron job and some GPT prompts. You can code up 70% in a weekend. I spent a few months finishing the other 30%.
+  </div>
+
   <div class="mt-8 lg:mt-20">
     <%= render "extended_cta" %>
   </div>
