@@ -1,19 +1,19 @@
-<div class="flex flex-col lg:flex-row gap-9 pt-4 md:pt-10">
+<div class="flex flex-col lg:flex-row lg:gap-9 pt-4 md:pt-10">
   <!-- Left Column: Headline + Form -->
   <div class="lg:w-1/2 w-full">
     <h1 class="text-2xl md:text-3xl font-semibold tracking-tight mb-2">
       Your next SEV-1 is avoidable.
     </h1>
-    <p class="text-gray-800 mb-4 leading-relaxed text-[17px]">
+    <p class="text-gray-800 mb-6 md:mb-4 leading-relaxed text-[17px]">
       Weekly emails that surface your engineers' infrastructure blind spots. GPT pushes them to failure, <span class="font-semibold">then</span> coaches.
     </p>
 
-    <div class="md:hidden mb-6">
+    <div class="md:hidden mb-8">
       <%= render "email_preview" %>
     </div>
 
 
-    <%= form_for Conversation.new, url: conversations_path, html: { id: "demo-form" } do |f| %>
+    <%= form_for Conversation.new, url: conversations_path, html: { id: "demo-form", class: "hidden lg:block" } do |f| %>
       <div class="rounded-xl border border-neutral-150 bg-neutral-100 p-5 shadow leading-snug">
         <label for="initial_message" class="block font-semibold text-gray-900 leading-snug text-[17px]">
           What broke recently?
@@ -55,7 +55,7 @@
   <div class="text-md leading-relaxed tracking-[0.008em]">
     <div class="text-[17px]">
 
-      <div class="mt-2 md:mt-12 max-w-[90ch] text-[17px] leading-relaxed text-gray-800 space-y-6">
+      <div class="md:mt-12 max-w-[90ch] text-[17px] leading-relaxed text-gray-800 space-y-6">
         <p>
           This product helps <span class="font-semibold">mid-market engineering teams</span> sharpen their production instincts. It's a <span class="font-semibold">weekly fire drill</span>, over email.
         </p>
@@ -80,10 +80,10 @@
           You can roll it out in <span class="font-semibold">5 minutes</span> during your <span class="font-semibold">3-month trial</span>. Just paste your emails. No calls. The first SEV hits <span class="font-semibold">next Monday</span>.
         </p>
         <p>
-          It's a cron job and some <a href="/sev-prompt-example.txt" class="text-blue-600 hover:text-blue-700 font-semibold hover:underline hover:underline-offset-4 decoration-1 transition" target="_blank">GPT prompts</a>. You can code up 70% in a weekend. I spent a few months finishing the other 30%.
+          It's a cron job and some GPT prompts. You can code up 70% in a weekend. I spent a few months finishing the other 30%.
         </p>
       </div>
-      <div class="mt-12 flex gap-6">
+      <div class="mt-8 lg:mt-12 flex gap-6">
         <% EXAMPLE_EMAILS.each_with_index do |email, i| %>
           <div class="md:basis/1-2 lg:basis-1/3 bg-white border border-neutral-100 shadow rounded-xl p-5 space-y-4 <%= i == 0 ? "hidden md:block" : "" %> <%= i == 1 ? "hidden lg:block" : "" %> <%= i == 2 ? "md:block" : "" %>">
             <div class="flex items-center justify-between align-middle">
@@ -114,31 +114,31 @@
       </div>
     </div>
   </div>
-  <div class="mt-16 md:mt-20 w-full lg:max-w-[780px] rounded-xl shadow-md border border-gray-100 bg-white p-6 mx-auto">
-    <h2 class="font-semibold tracking-tight text-[21px] mb-4">
-      Weekly SEV Drills
-    </h2>
-    <p class="mb-4">
-      Replicate drops engineers into a SEV-1 every Monday, and applies pressure until they break.
-    </p>
+  <div class="mt-16 md:mt-20 w-full lg:max-w-[780px] rounded-xl shadow-md border border-gray-100 bg-white mx-auto">
+    <div class="p-6 border-b border-gray-200 rounded-tl-xl rounded-tr-xl">
+      <h2 class="font-semibold tracking-tight text-[21px] mb-4">
+        Weekly SEV Drills
+      </h2>
+      <p class="mb-4">
+        <span class="hidden md:inline">Replicate</span><span class="md:hidden">It</span> drops your team into a SEV-1 every Monday, and applies pressure.
+        <span class="md:block md:mt-4">
+          <span class="font-semibold">Private emails</span> where GPT can cut deep, not team-wide CC's where you have to perform.
+        </span>
+      </p>
 
-    <p class="mb-4">
-      <span class="font-semibold">Private emails</span> where GPT can cut deep, not team-wide CC's where you have to perform.
-    </p>
+      <p class="mb-4">
+        5 engineers, 500 engineers, it doesn't matter. They all start with the same incident, but scramble to fix it in their own unique way. <span class="block mt-4 md:inline md:mt-0">It's a pressure test to surface <span class="font-semibold">core infra blind spots</span>.</span>
+      </p>
 
-    <p class="mb-4">
-      5 engineers, 500 engineers, it doesn't matter. Everyone starts with the same incident, but scrambles to fix it in their own unique way. It's a pressure test to surface core infra blind spots.
-    </p>
+      <p>
+        Account owners get <span class="font-semibold">anonymized monthly report</span> emails to track ROI.<span class="hidden md:inline"> You'll notice sharper reasoning during PR review, and more precise language when talking about ops readiness.</span>
+        <span class="md:block md:mt-4">
+          Try it yourself in the <a href="/sev" class="text-blue-600 hover:text-blue-700 font-medium underline underline-offset-4 hover:underline hover:underline-offset-4 decoration-1 transition" target="_blank">web version</a>. That link drops you straight in. No extra steps. No calls.
+        </span>
+      </p>
+    </div>
 
-    <p class="mb-4">
-      Account owners will receive anonymized monthly report emails to track ROI. You'll notice sharper reasoning during PR review, and more precise language when talking about ops readiness.
-    </p>
-
-    <p class="mb-8">
-      Try it yourself in the <a href="/sev" class="text-blue-600 hover:text-blue-700 font-medium underline underline-offset-4 hover:underline hover:underline-offset-4 decoration-1 transition" target="_blank">web version</a>. That link drops you straight in. No extra steps required.
-    </p>
-
-    <div class="text-[16px]">
+    <div class="text-[16px] p-6">
       <div class="space-y-8 leading-[1.6]">
         <div class="flex justify-start">
           <div class="break-words message-body">

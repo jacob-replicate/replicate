@@ -1,5 +1,6 @@
 Sales
 - Screenshot of initial email.
+- Wire up "Analyze our careers page" checkbox
 
 Cold
 - More variants (+ #total_variants message to count?)

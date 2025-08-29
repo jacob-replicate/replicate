@@ -29,19 +29,17 @@
           <div class="px-4 py-3">Up to <span class="font-semibold">500</span> engineers</div>
           <div class="px-4 py-3">$100,000</div>
         </div>
-        <div class="px-4 py-3 text-sm border-t border-b border-gray-300 bg-slate-100">
-          <span class="font-medium">One annual invoice</span> (USD). <span class="font-medium">No auto-renewal</span>.
-          <div class="block mt-4" style="line-height: 1.4rem">Supports <span class="font-medium">partial terms</span> to align with budget cycles, along with <span class="font-medium">30%</span> multi-year discounts. <span class="font-medium">No demos</span>.</div>
-          <div class="block mt-4" style="line-height: 1.4rem">Here are the <a href="/security" target="_blank" class="text-blue-600 hover:text-blue-700 font-medium hover:underline hover:underline-offset-4 decoration-1 transition">security</a> and <a href="/billing" target="_blank" class="text-blue-600 hover:text-blue-700 font-medium hover:underline hover:underline-offset-4 decoration-1 transition">billing</a> docs.</div>
-        </div>
-        <div class="px-4 py-3 rounded-bl-md rounded-br-md text-xs" style="line-height: 1.4rem">
-          In a region where these prices don't quite align?
-          <div class="mt-1">
-            Email
-            <a href="mailto:support@replicate.info" class="text-blue-600 hover:underline font-semibold">support@replicate.info</a>
-            a number that works.
-          </div>
-        </div>
+      </div>
+      <div class="mt-6 p-4 text-sm border border-gray-300 bg-slate-100">
+        <span class="font-semibold">One annual invoice</span>. Supports <span class="font-semibold">partial terms</span> to align with budget cycles, and <span class="font-semibold">30%</span> multi-year discounts.
+        <div class="block mt-4" style="line-height: 1.4rem"><span class="font-semibold">No auto-renewal</span>, or evergreen clauses.</div>
+      </div>
+      <div class="p-4 text-sm border-l border-r border-b border-gray-300 bg-white-100">
+        <div class="mb-2">&bull;&nbsp;<span class="font-semibold">5x Liability Cap</span> - Uncapped for gross misconduct.</div>
+        <div>&bull;&nbsp;<span class="font-semibold">Email only</span>. No cookies, accounts to manage, etc.</div>
+        <div>&bull;&nbsp;Zero access to <span class="font-semibold">customer data</span>.</div>
+        <div class="font-medium">&bull;&nbsp;<%= link_to '$1M E&O', '/replicate-coi.pdf', class: "text-blue-600 hover:underline font-semibold", target: "_blank" %> + <%= link_to '$1M Cyber', '/replicate-coi.pdf', class: "text-blue-600 hover:underline font-semibold", target: "_blank" %> Coverage</div>
+        <div class="font-medium">&bull;&nbsp;No RFPs, redlines, or vendor portals</div>
       </div>
       <div class="mt-4 hidden lg:block">
         <%= render "static/signature" %>
