@@ -32,6 +32,7 @@ Product
 - Attach PDF's + inline JPG's once they close the loop
 - GPT 5 (in email, at least, not on web where it's slow af)
 - :coaching_should_continue prompt -- uncomment guard clause in coaching message generator
+- Add an email after auto-delete of data, but somebody replies to a super old thread -- "Sorry, I might have auto-deleted that conversation after 3 months of inactivity. <Want to start a new one? Type 1. for secrets management 2. for something else 3. for whatever"
 
 Ops
 - Move Missive to Mercury account
