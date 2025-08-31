@@ -28,7 +28,6 @@ Rails.application.routes.draw do
   resources :conversations, only: [:create, :show]
   resources :messages, only: [:create]
   resources :organizations, only: [:create]
-  resources :subscribers, only: [:create, :edit, :destroy]
 
   root "static#index"
 end

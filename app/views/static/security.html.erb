@@ -18,7 +18,7 @@
     You will receive a <a href="/replicate-msa-dpa.pdf" class="text-blue-600 hover:underline font-semibold" target="_blank">pre-signed MSA</a> during the <a href="/billing" class="text-blue-600 hover:underline font-semibold">trial period</a>. It includes a required <span class="font-semibold">DPA</span> as well.
   </p>
 
-  <p class="mb-6">Liability is capped at <span class="font-semibold">5x the fees</span> paid across your entire contract, even if multi-year. This excludes <span class="font-semibold">gross misconduct</span> liability (e.g., IP infringement), which is uncapped as it should be.</p>
+  <p class="mb-6">Liability is capped at <span class="font-semibold">5x the fees</span> paid across your <span class="font-semibold">entire contract</span>, even if multi-year. Exclusions are uncapped: willful misconduct, gross negligence, IP infringement, and confidentiality breaches.</p>
 
   <p class="mb-6">
     Replicate does not support <span class="font-semibold">RFP's</span>, <span class="font-semibold">redlines</span>, or <span class="font-semibold">vendor portals</span>. It's a simple product, sold as-is.
@@ -50,7 +50,7 @@
       <p>The codebase is continuously scanned using <a href="https://docs.github.com/en/code-security/getting-started/dependabot-quickstart-guide" class="text-blue-600 hover:text-blue-700 hover:underline transition font-semibold">GitHub Dependabot</a> to patch vulnerable libraries. Critical vulnernabilities are patched within 7 days of public disclosure.</p>
 
       <h3 class="font-semibold mt-4 mb-1">Incident response</h3>
-      <p>PagerDuty maintains a 24/7 oncall schedule. In the event of a confirmed incident, impacted customers will receive a root cause analysis + remediation summary (from <%= mail_to 'security@replicate.info', 'security@replicate.info', class: "text-blue-600 hover:text-blue-700 hover:underline transition font-semibold" %>) in 72 hours.</p>
+      <p>PagerDuty maintains a 24/7 oncall schedule. In the event of a confirmed incident, impacted customers will be notified without undue delay, and receive an RCA (from <%= mail_to 'security@replicate.info', 'security@replicate.info', class: "text-blue-600 hover:text-blue-700 hover:underline transition font-semibold" %>) in 72 hours.</p>
     </div>
 
     <div>

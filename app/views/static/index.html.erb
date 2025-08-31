@@ -61,7 +61,7 @@
         </p>
 
         <p>
-          <span class="hidden md:inline">Everyone gets invited to the same SEV-1, then pairs with GPT in private threads. </span><span class="block my-6 lg:inline lg:my-0"> <span class="font-semibold">No UI</span>. It just shows up in your inbox, and applies pressure until you break. Test first, find the infra blind spot that will eventually crash prod, <span class="font-semibold">then</span> coach.</span>
+          GPT drops you into a SEV-1 with some clues, and makes you explain your thoughts until you hit a wall. <span class="block my-6 lg:inline lg:my-0"> No UI. It just shows up in your inbox and applies pressure. Test first, find the infra blind spot that will eventually crash production, <span class="font-semibold">then</span> coach.</span>
         </p>
 
         <p>
@@ -113,21 +113,12 @@
   </div>
   <div class="mt-16 md:mt-20 w-full lg:max-w-[780px] rounded-xl shadow-md border border-gray-100 bg-white mx-auto">
     <div class="p-6 border-b border-gray-200 rounded-tl-xl rounded-tr-xl">
-      <h2 class="font-semibold tracking-tight text-[21px] mb-6">Weekly SEV Drills</h2>
-      <p class="mb-6 leading-relaxed">
-        GPT emails you an incident <span class="font-semibold">every Monday</span>, and asks you to reason your way out of it.
-      </p>
-
-      <p class="mb-6">
-        <span class="font-semibold">Text-based puzzles</span>, with open-ended questions that surface <span class="font-semibold">core infra blind spots</span> every week.
-      </p>
-
-      <p class="mb-6 leading-relaxed">
-        5 engineers, 500 engineers, doesn't matter. They all start with the same SEV, but scramble to fix it in <span class="font-semibold">private email threads</span>. The more they explain their thoughts, the more GPT can course correct.
+      <p class="mb-4 leading-relaxed">
+        5 engineers, 500 engineers, doesn't matter. You all start with the same SEV, but scramble to fix it in <span class="font-semibold">private email threads</span>. The more you explain your thoughts, the more GPT can course correct.
       </p>
 
       <p class="leading-relaxed">
-        Admins get <span class="font-semibold">anonymous monthly report emails</span>. Risky team-wide trends, not specific names.
+        You can try it right now in the <a href="/sev" class="text-blue-600 hover:text-blue-700 font-semibold hover:underline hover:underline-offset-4 decoration-1 transition" target="_blank">web-based version</a>. No extra steps. That link drops you straight in.
       </p>
     </div>
 
@@ -215,27 +206,12 @@
     <!-- End conversation thread -->
   </div>
 
-  <div class="mt-4 w-full lg:max-w-[780px] mx-auto text-right">
-    <a href="/sev" class="text-sm shadow inline-block rounded-lg bg-indigo-700 px-3 py-2 font-semibold text-white transition hover:bg-indigo-800 hover:shadow-md active:bg-indigo-900 sm:w-auto focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400" target="_blank">Try the web-based version</a>.
+  <div class="mt-6 mb-14 md:mb-0 w-full lg:max-w-[780px] mx-auto text-center">
+    <a href="/sev" class="text-md md:text-[17px] tracking-tight shadow inline-block rounded-lg bg-indigo-700 px-5 py-3 font-semibold text-white transition hover:bg-indigo-800 hover:shadow-md active:bg-indigo-900 sm:w-auto focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400" target="_blank">Try the web-based version</a>.
   </div>
 
   <div class="mt-8 lg:mt-20">
     <%= render "extended_cta" %>
-  </div>
-  <div class="bg-gray-100 p-6 border border-gray-300 rounded-md mt-8 lg:mt-12">
-    <p class="text-xl font-semibold tracking-tight mb-2">
-      Not the right time?
-    </p>
-    <p class="mb-4">
-      Sign up for free incident URL's you can paste into Slack every few weeks. Your team can use the <a href="/sev" class="text-blue-600 hover:text-blue-700 font-medium hover:underline hover:underline-offset-4 decoration-1 transition">web-based version</a>.
-    </p>
-
-    <form action="/remind" method="POST" class="flex items-center gap-3 max-w-md">
-      <input type="email" name="email" placeholder="Your Email" required class="border px-3 py-2 rounded w-full border-gray-300 shadow-sm" />
-      <button type="submit" class="bg-neutral-600 text-white px-2 py-2.5 text-sm font-semibold rounded-md shadow hover:bg-neutral-700 active:bg-slate-800 transition focus:outline-none min-w-[120px]">
-        Subscribe
-      </button>
-    </form>
   </div>
 </div>
 
