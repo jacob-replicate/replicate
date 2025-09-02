@@ -40,7 +40,7 @@ Ops
 - Cron job to filter inbox + draft replies
 - Figure out when bills land in Mercury account, so you can fund the account on time.
 - Double check Apollo invoicing + Mercury card transition
-- Find Apollo payment receipt + brainstorm any vendors you missed. Double check for all invoices.
+- Find Apollo payment receipt from late August (~$59) + brainstorm any vendors you missed. Double check for all invoices.
 - Auth0 + SCIM + Self-serve admin UI
 - How will you know if your Bouncer credits are almost up?
 
