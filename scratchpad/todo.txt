@@ -3,36 +3,33 @@ Cold
 - Uncomment SendColdEmailWorker API call + QA
 
 Transactional
+- Cron job to start monday email loops + a handful of initial incidents/subjects
+- Unsubscribe page with confirmation form, to prevent accidental unsubscribe (doesn't matter for cold, you're never following up).
 - Tweak inbound "message stream" once your DNS update TTLs expire -- https://account.postmarkapp.com/servers/16407823/streams/inbound/settings
 - Postmark webhooks for coaching loop replies - https://account.postmarkapp.com/servers/16407823/streams/inbound/get-started
-- Cron job to start monday email loops
-- Fix the to track conversation + message ID's in ConversationsMailer
-- Email formatting for intro. "Meet Alex, They did somethign" - Make sure the name doesn't align with first letter in their email.
-- Unsubscribe page with confirmation form, to prevent accidental unsubscribe (doesn't matter for cold, you're never following up).
-- Manually wire up 2-3 initial incidents + subject lines
+- Fix conversation + message ID tracking/replies in ConversationsMailer
 - Email regex validation. AI grading on form submission - you're gonna get a lot of bullshit responses to grade once public.
-    - Just make it an "email" form input?
-- Error handling if emails fail (e.g., bounce, throttling, etc)
-- Add BIMI DNS record for logo.svg - https://mxtoolbox.com/dmarc/bimi/how-to-create-bimi-record (logo might be blurry)
 
 Legal
 - Terms + Privacy + MSA/DPA review
-- Add footer links on homepage to terms, private, MSA/DPA/Billing/Security/Support
 
 ------- LAUNCH ----------
 
-
 Product
 - Scrape company website to figure out careers page + tech stack (if you can)
+- Add BIMI DNS record for logo.svg - https://mxtoolbox.com/dmarc/bimi/how-to-create-bimi-record (logo might be blurry)
 - Attach PDF's + inline JPG's once they close the loop
 - GPT 5 (in email, at least, not on web where it's slow af)
 - :coaching_should_continue prompt -- uncomment guard clause in coaching message generator
 - Add an email after auto-delete of data, but somebody replies to a super old thread -- "Sorry, I might have auto-deleted that conversation after 3 months of inactivity. <Want to start a new one? Type 1. for secrets management 2. for something else 3. for whatever"
+- Handle email throttling - not a day 1 problem
 
 Ops
+- Figure out how to figure out in Postmark's UI if emails bounced, so you can manually flag + notify the account owner.
 - Move Missive to Mercury account
 - Protect your S3 credentials from misuse -- spin down old keys
 - Cron job to filter inbox + draft replies
+- Automatic postgres backups
 - Figure out when bills land in Mercury account, so you can fund the account on time.
 - Double check Apollo invoicing + Mercury card transition
 - Find Apollo payment receipt from late August (~$59) + brainstorm any vendors you missed. Double check for all invoices.
