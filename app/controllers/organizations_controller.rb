@@ -5,7 +5,7 @@ class OrganizationsController < ApplicationController
   def create
     name = params[:name]
     email = params[:email]
-    tech_stack_scraping_consent = params[:tech_stack_scraping_consent] == "true"
+    tech_stack_scraping_consent = params[:tech_stack_scraping_consent].to_s == "true"
     engineer_emails = extract_emails(params[:engineer_emails])
 
     if name.blank? || email.blank? || engineer_emails.empty?
