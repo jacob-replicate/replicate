@@ -1,11 +1,6 @@
-Sales
-- Screenshot of initial email.
-- Wire up "Analyze our careers page" checkbox
-
 Cold
 - More variants (+ #total_variants message to count?)
 - Uncomment SendColdEmailWorker API call + QA
-- Scrape directors
 
 Transactional
 - Tweak inbound "message stream" once your DNS update TTLs expire -- https://account.postmarkapp.com/servers/16407823/streams/inbound/settings
