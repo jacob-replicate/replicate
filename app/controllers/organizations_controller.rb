@@ -5,6 +5,7 @@ class OrganizationsController < ApplicationController
   def create
     name = params[:name]
     email = params[:email]
+    tech_stack_scraping_consent = params[:tech_stack_scraping_consent] == "true"
     engineer_emails = extract_emails(params[:engineer_emails])
 
     if name.blank? || email.blank? || engineer_emails.empty?
@@ -12,7 +13,7 @@ class OrganizationsController < ApplicationController
     end
 
     ActiveRecord::Base.transaction do
-      org = Organization.create!(access_end_date: 3.months.from_now.end_of_month)
+      org = Organization.create!(access_end_date: 3.months.from_now.end_of_month, tech_stack_scraping_consent: tech_stack_scraping_consent)
 
       org.members.create!(
         name: name,
