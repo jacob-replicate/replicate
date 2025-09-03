@@ -3,17 +3,18 @@
 <% name_id  = "#{form_id}-name" %>
 <% email_id = "#{form_id}-email" %>
 <% team_id  = "#{form_id}-team" %>
+<% next_monday = Date.today.next_occurring(:monday).strftime("%b %-d") %>
 
 <form id="<%= form_id %>" novalidate>
   <div id="<%= box_id %>" class="border rounded-lg bg-white <%= extra_form_container_classes %>">
     <div class="p-5">
       <div class="text-[16px]">
         <div class="mb-4">
-          You'll get the first incident <span class="font-semibold">next Monday</span> at ~12pm ET.
+          You'll get the first incident <span class="font-semibold">next Monday</span> (<%= next_monday %>)<span class="hidden md:inline"> around 12pm ET</span>.
         </div>
 
         <div class="mb-8">
-          It invites everyone to the same SEV <span class="font-semibold">automatically</span>, and they scramble to fix it in <span class="font-semibold">private email threads</span>. <span class="block mt-4 md:inline md:mt-0">The more your team explains their thinking, the more signal GPT has to cut deep and expose blind spots.</span>
+          It invites your team to the same SEV <span class="font-semibold">automatically</span> each week, then you scramble to fix it in <span class="font-semibold">private email threads</span>. <span class="block mt-4 md:inline md:mt-0">The more you explain your thoughts, the more GPT can cut deep and expose blind spots.</span>
         </div>
       </div>
 
