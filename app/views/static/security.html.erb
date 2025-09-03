@@ -3,16 +3,19 @@
   <p class="text-sm text-gray-500 mb-6">Last updated: August 2025</p>
 
   <p class="mb-6">
-    This platform sends <span class="font-semibold">coaching emails</span> to your engineers. <span class="font-semibold">No logins, dashboards, integrations,</span> or <span class="font-semibold">SSO.</span>
+    This tool sends <span class="font-semibold">infra coaching emails</span> to your engineers. <span class="font-semibold">No logins, dashboards,</span> or <span class="font-semibold">SSO.</span>
   </p>
 
   <p class="mb-6">
-    Every Monday, cron starts 1-on-1 email threads (about SEV-1 prevention) with your engineers. The Rails app receives a webhook when they reply, and sends back the results of a few GPT prompts. That's it.
+    Every Monday, a cron job starts private email threads with your engineers about SEV-1 prevention. The Rails app receives a webhook when they reply, and sends back the results of a few GPT prompts.
   </p>
 
   <p class="mb-6">
-    <span class="font-semibold">No customer data.</span> If users type it anyway, the LLC has <a href="/replicate-coi.pdf" class="text-blue-600 hover:underline font-semibold" target="_blank">$1M E&O</a> + <a href="/replicate-coi.pdf" class="text-blue-600 hover:underline font-semibold" target="_blank">$1M Cyber</a> coverage. <span class="font-semibold">No SOC 2</span> yet.
+    <span class="font-semibold">No customer data.</span> If users type it anyway, the LLC has <a href="/replicate-coi.pdf" class="text-blue-600 hover:underline font-semibold" target="_blank">$1M E&O</a> + <a href="/replicate-coi.pdf" class="text-blue-600 hover:underline font-semibold" target="_blank">$1M Cyber</a> coverage.
   </p>
+
+  <div class="mb-6">
+  </div>
 
   <p class="mb-6">
     You will receive a <a href="/replicate-msa-dpa.pdf" class="text-blue-600 hover:underline font-semibold" target="_blank">pre-signed MSA</a> during the <a href="/billing" class="text-blue-600 hover:underline font-semibold">trial period</a>. It includes a required <span class="font-semibold">DPA</span> as well.
@@ -21,7 +24,11 @@
   <p class="mb-6">Liability is capped at <span class="font-semibold">5x the fees</span> paid across your <span class="font-semibold">entire contract</span>, even if multi-year. Exclusions are uncapped: willful misconduct, gross negligence, IP infringement, and confidentiality breaches.</p>
 
   <p class="mb-6">
-    Replicate does not support <span class="font-semibold">RFP's</span>, <span class="font-semibold">redlines</span>, or <span class="font-semibold">vendor portals</span>. It's a simple product, sold as-is.
+    Replicate does not support RFP's, redlines, or vendor portals. <span class="font-semibold">SOC 2 - Type I</span> planned for 2026.
+  </p>
+
+  <p class="mb-6">
+    <%= render "static/signature" %>
   </p>
 
   <div class="space-y-10 mt-10">
@@ -29,27 +36,21 @@
     <div>
       <h2 class="font-semibold mb-2 text-2xl tracking-tight">Architecture</h2>
 
-      <h3 class="font-semibold mt-4 mb-1">Hosted on Heroku (AWS)</h3>
-      <p>All infra is provisioned/managed by Heroku (in the <span class="font-semibold">us-east-1</span> AWS region, with Heroku's HA failover).</p>
+      <p>All infra is provisioned/managed by <span class="font-semibold">Heroku</span> (in the <span class="font-semibold">us-east-1</span> AWS region, with Heroku's HA failover). Data is encrypted at rest using AES-256, with a minimum of TLS 1.2 in transit.</p>
 
-      <h3 class="font-semibold mt-4 mb-1">Data encrypted in transit and at rest</h3>
-      <p>All data is encrypted at rest using AES-256, with a minimum of TLS 1.2 in transit.</p>
+      <h3 class="font-semibold mt-4 mb-1">Audit Logs</h3>
+      <p>Administrative actions (e.g., user deletions) are logged immutably and retained for 12 months in secure, append-only S3 buckets. Available upon request.</p>
 
-      <h3 class="font-semibold mt-4 mb-1">No cookie policy</h3>
-      <p>Visitor state is not stored. No logins, no Google Analytics, no cookies, no policy for tech that isn't used. When SCIM is released, admins who opt-in will receive a single Ruby on Rails session ID cookie.</p>
-
-      <h3 class="font-semibold mt-4 mb-1">Backup process</h3>
-      <p>
-        <a href="https://www.heroku.com/postgres" class="text-blue-600 hover:text-blue-700 hover:underline transition font-semibold">Heroku Postgres</a> maintains rolling database backups, and prunes old snapshots automatically over time. Backups can be restored in minutes, and are captured at least once every 24 hours.
-      </p>
-
-      <h3 class="font-semibold mt-4 mb-1">Audit logging</h3>
-      <p>Administrative actions (e.g., organization deletions) are logged immutably and retained for 12 months in secure, append-only S3 buckets.</p>
-
-      <h3 class="font-semibold mt-4 mb-1">Automated dependency scanning</h3>
+      <h3 class="font-semibold mt-4 mb-1">Automated Dependency Scanning</h3>
       <p>The codebase is continuously scanned using <a href="https://docs.github.com/en/code-security/getting-started/dependabot-quickstart-guide" class="text-blue-600 hover:text-blue-700 hover:underline transition font-semibold">GitHub Dependabot</a> to patch vulnerable libraries. Critical vulnernabilities are patched within 7 days of public disclosure.</p>
 
-      <h3 class="font-semibold mt-4 mb-1">Incident response</h3>
+      <h3 class="font-semibold mt-4 mb-1">Cookie Policy</h3>
+      <p>Visitor state is not stored. No logins, no Google Analytics, no cookies, no policy for tech that isn't used. When SCIM is released, admins who opt-in will receive a single Ruby on Rails session ID cookie.</p>
+
+      <h3 class="font-semibold mt-4 mb-1">Database Backups</h3>
+      <p><a href="https://www.heroku.com/postgres" class="text-blue-600 hover:text-blue-700 hover:underline transition font-semibold">Heroku Postgres</a> maintains rolling database backups, and prunes old snapshots automatically over time. Backups can be restored in minutes, and are captured at least once every 24 hours.</p>
+
+      <h3 class="font-semibold mt-4 mb-1">Incident Response</h3>
       <p>PagerDuty maintains a 24/7 oncall schedule. In the event of a confirmed incident, impacted customers will be notified without undue delay, and receive an RCA (from <%= mail_to 'security@replicate.info', 'security@replicate.info', class: "text-blue-600 hover:text-blue-700 hover:underline transition font-semibold" %>) in 72 hours.</p>
     </div>
 
@@ -60,17 +61,18 @@
       <p>Coaching is delivered by email. No sessions, passwords, or user-managed devices.</p>
 
       <h3 class="font-semibold mt-6 mb-1">User provisioning (SCIM, SSO)</h3>
-      <p>SCIM is planned as an <span class="font-medium">optional</span> enhancement for 2026. Administrators currently manage access by emailing personnel changes to <a href="mailto:support@replicate.info" class="text-blue-600 hover:text-blue-700 hover:underline transition font-semibold">support@replicate.info</a>. They will soon be able to login to a secure admin portal (via <a href="https://auth0.com" class="text-blue-600 hover:text-blue-700 hover:underline transition font-semibold">Auth0 SSO</a>) to manage team members and billing. No user tracking, just logistics.</p>
+      <p>SCIM is planned as an <span class="font-medium">optional</span> enhancement for 2026.</p>
+      <p class="mt-2">Admins manage access by emailing changes to <a href="mailto:support@replicate.info" class="text-blue-600 hover:text-blue-700 hover:underline transition font-semibold">support@replicate.info</a>. They will soon be able to login to a secure admin portal (via <a href="https://auth0.com" class="text-blue-600 hover:text-blue-700 hover:underline transition font-semibold">Auth0 SSO</a>) to manage team members and billing.</p>
       <p class="mt-2">If you sign up a few weeks beforehand, it will be an opt-in process. GRC and security teams will have as much time as they need to validate + approve/deny the process change.</p>
 
       <h3 class="font-semibold mt-6 mb-1">Auto-pause on inactivity</h3>
-      <p>Engineers get automatically unsubscribed after 3 weeks without replies. The final email includes a link to resume coaching. If they're not into it, the product just fades away until they want it back.</p>
+      <p>Engineers get automatically unsubscribed after 3 weeks without replies. The final email includes a link to resume coaching. The product simply fades away until they want it back.</p>
 
       <h3 class="font-semibold mt-6 mb-1">You own your data</h3>
-      <p>Inactive conversations are automatically deleted after 3 months. That data is used to recreate email history when engineers reply a few weeks later. No AI training. Email <a href="mailto:support@replicate.info" class="text-blue-600 hover:text-blue-700 hover:underline transition font-semibold">support@replicate.info</a> to request immediate deletion. It won't get stuck in a Postgres backup forever.</p>
+      <p>Inactive conversations are automatically deleted after 3 months. That data is used to recreate email history when engineers reply a few weeks later. No AI training. <span class="mt-6 md:inline"> Email <a href="mailto:support@replicate.info" class="text-blue-600 hover:text-blue-700 hover:underline transition font-semibold">support@replicate.info</a> to request immediate deletion. It won't get stuck in a Postgres backup forever.</span></p>
 
       <h3 class="font-semibold mt-6 mb-1">Planned end-of-service</h3>
-      <p>If the business is ever spun down, you will receive advance notice, full source code, your data, and next steps. Support will remain available during the shutdown window. Current contracts will be fulfilled. They're annual, and designed for a clean break when this product eventually reaches end of life.
+      <p>If the product is ever sunset, you will receive advance notice, full source code, all your data, and next steps. Current contracts will be fulfilled (including multi-year terms), and support will remain available.
     </div>
 
     <div>
@@ -90,7 +92,7 @@
       <p>Used for transactional email delivery. No open/click tracking. No marketing newsletters.</p>
 
       <h3 class="font-semibold mt-4 mb-1">Stripe</h3>
-      <p>Used for delivering and processing invoices. No auto-renewal. You manually approve every payment.</p>
+      <p>Used for processing invoices. No auto-renewal. You manually approve every payment.</p>
     </div>
 
   </div>

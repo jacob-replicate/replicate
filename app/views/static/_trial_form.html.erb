@@ -6,7 +6,7 @@
 <% next_monday = Date.today.next_occurring(:monday).strftime("%b %-d") %>
 
 <form id="<%= form_id %>" novalidate>
-  <div id="<%= box_id %>" class="border rounded-lg bg-white <%= extra_form_container_classes %>">
+  <div id="<%= box_id %>" class="border-2 rounded-lg bg-white <%= extra_form_container_classes %>">
     <div class="p-5">
       <div class="text-[16px]">
         <div class="mb-4">
@@ -26,11 +26,6 @@
       <div class="mt-8">
         <label for="<%= email_id %>" class="block font-semibold text-[16px] mb-1 tracking-normal">Your Email <span class="text-red-600">*</span></label>
         <input type="email" id="<%= email_id %>" class="block w-full border border-neutral-300 shadow-sm rounded-md bg-white px-3 py-1.5 text-gray-900 outline-1 -outline-offset-1 outline-indigo-100 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 text-sm" />
-      </div>
-
-      <div class="mt-4 flex flex-row items-center text-xs">
-        <div class="mr-2"><input type="checkbox" class="rounded border border-gray-300 block" name="tech_stack_scraping_consent" /></div>
-        <div style="padding-top: 2px">Analyze our careers page, and tailor the weekly drills around our stack.</div>
       </div>
 
       <div class="mt-8">
