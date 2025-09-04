@@ -73,5 +73,20 @@ RSpec.describe ConversationDriverWorker, type: :worker do
         worker.perform(convo.id)
       end
     end
+
+    context "when latest author is :assistant" do
+      it "returns early and does not drive the conversation" do
+        conversation = create(
+          :conversation,
+          recipient: active_org_active_member,
+          channel: "email",
+          context: { "conversation_type" => "coaching" }
+        )
+
+        allow_any_instance_of(Conversation).to receive(:latest_author).and_return(:assistant)
+        expect(MessageGenerators::Coaching).not_to receive(:new)
+        worker.perform(conversation.id)
+      end
+    end
   end
 end
