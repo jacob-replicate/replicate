@@ -1,4 +1,3 @@
-# spec/workers/conversation_driver_worker_spec.rb
 require "rails_helper"
 
 RSpec.describe ConversationDriverWorker, type: :worker do

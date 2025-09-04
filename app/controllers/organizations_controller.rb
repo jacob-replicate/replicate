@@ -1,31 +1,37 @@
 class OrganizationsController < ApplicationController
-  protect_from_forgery with: :null_session # if you're submitting JSON from the frontend without auth tokens
+  protect_from_forgery with: :null_session
 
   def create
-    name = params[:name]
-    email = params[:email]
-    engineer_emails = EmailExtractor.call(params[:engineer_emails])
+    return head(:bad_request) if owner_name.blank? || owner_email.blank?
 
-    if name.blank? || email.blank? || engineer_emails.empty?
-      return render json: { error: "Missing required fields" }, status: :unprocessable_entity
-    end
+    org = Organization.create!(access_end_date: 3.months.from_now.end_of_month)
+    members_to_create.each { |member_info| org.members.create!(name: member_info[:name], email: member_info[:email], role: member_info[:role]) }
 
-    ActiveRecord::Base.transaction do
-      org = Organization.create!(access_end_date: 3.months.from_now.end_of_month)
+    ScheduleWeeklyCoachingEmailsWorker.perform_in(5.seconds, [org.id], Time.current.to_i, Time.current.beginning_of_day.to_i)
 
-      org.members.create!(
-        name: name,
-        email: email,
-        role: "owner"
-      )
+    head :ok
+  rescue => e
+    Rails.logger.error("Error creating organization: #{e.full_message}")
+    org&.destroy if org.present?
 
-      engineer_emails.each { |eng_email| org.members.create(email: eng_email, role: "engineer") }
+    head :bad_request
+  end
 
-      # ScheduleWeeklyCoachingEmailsWorker.perform_async([org.id], 1.minute.from_now.to_i, Time.current.beginning_of_day.to_i)
-    end
+  private
 
-    render json: { status: "ok" }, status: :created
-  rescue ActiveRecord::RecordInvalid => e
-    render json: { error: e.message }, status: :unprocessable_entity
+  def owner_name
+    params[:name]
+  end
+
+  def owner_email
+    EmailExtractor.call(params[:email]).first
+  end
+
+  def engineer_emails
+    EmailExtractor.call(params[:engineer_emails]) - [owner_email]
+  end
+
+  def members_to_create
+    [{ name: owner_name, email: owner_email, role: "owner" }] + engineer_emails.map { |email| { email: email, role: "engineer" }}
   end
 end
