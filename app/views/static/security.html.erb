@@ -79,17 +79,29 @@
       <h2 class="font-semibold mb-2 text-2xl tracking-tight">Subprocessors</h2>
 
       <p class="text-sm text-gray-700 mb-2">
-        All vendors are GDPR compliant, offer Standard Contractual Clauses (SCCs), and underwent security review prior to onboarding. This is the full list. No other products (e.g., Google Analytics) interact with your data.
+        All vendors are GDPR compliant, offer Standard Contractual Clauses (SCCs), and underwent security review prior to onboarding. This is the full list. I didn't sneak in any other products (e.g., Google Analytics) not listed below.
       </p>
 
-      <h3 class="font-semibold mt-4 mb-1">Heroku (AWS)</h3>
-      <p>Used for infrastructure and encrypted storage. All workloads run in isolated containers with HTTPS enforced and AES-256 encryption at rest.
+      <h3 class="font-semibold mt-4 mb-1">Amazon S3</h3>
+      <p>Stores immutable, append-only audits for admin actions (e.g., billing approvals) with AES-256 at rest.</p>
+
+      <h3 class="font-semibold mt-4 mb-1">Heroku</h3>
+      <p>Used for application infra and encrypted storage. All workloads run in isolated containers with TLS 1.2+ enforced, and AES-256 encryption at rest. Includes managed Heroku Postgres + Redis instances.</p>
 
       <h3 class="font-semibold mt-4 mb-1">OpenAI</h3>
       <p>OpenAI's API powers the real-time content generation for coaching emails. None of your data is persisted by OpenAI. None of it is used to train their models. The prompting is ephemeral.</p>
 
+      <h3 class="font-semibold mt-4 mb-1">PagerDuty</h3>
+      <p>Used for incident alerting and on-call scheduling. May store system-level alerts with metadata (e.g., timestamps, service names). No customer-submitted content.</p>
+
+      <h3 class="font-semibold mt-4 mb-1">Papertrail</h3>
+      <p>Used for infrastructure log aggregation and retention. Some logs may include metadata related to coaching email delivery (e.g. timestamps, team IDs).</p>
+
       <h3 class="font-semibold mt-4 mb-1">Postmark</h3>
       <p>Used for transactional email delivery. No open/click tracking. No marketing newsletters.</p>
+
+      <h3 class="font-semibold mt-4 mb-1">Sentry</h3>
+      <p>Used for internal error tracking and debugging. Some error logs may include technical metadata (e.g., error messages, timestamps, team IDs).</p>
 
       <h3 class="font-semibold mt-4 mb-1">Stripe</h3>
       <p>Used for processing invoices. No auto-renewal. You manually approve every payment.</p>

@@ -4,7 +4,7 @@
       <%= render "static/trial_form", extra_form_container_classes: "border-neutral-200", show_next_steps_header: false %>
     </div>
     <div class="lg:basis-2/5 order-1 lg:order-2 mb-6">
-      <div class="grid bg-white border-2 border-gray-200 rounded-md overflow-hidden text-[14px]">
+      <div class="grid bg-white border-2 border-neutral-200 rounded-md overflow-hidden text-[14px]">
         <div class="grid grid-cols-2 bg-neutral-100 border-b border-neutral-200">
           <div class="px-3 py-2 font-semibold">Team Size</div>
           <div class="px-3 py-2"><span class="font-semibold">Annual Price</span> (USD)</div>
@@ -30,7 +30,7 @@
           <div class="px-3 py-2">$100,000</div>
         </div>
       </div>
-      <div class="mt-[11px] p-4 text-sm border-2 border-gray-200 bg-white rounded-md">
+      <div class="mt-[16px] p-4 text-sm border-2 border-neutral-200 bg-white rounded-md">
         <div class="mb-3 text-[17px] tracking-tight">Procurement</div>
         <div class="mb-1">&bull;&nbsp;<span class="font-semibold">One annual invoice</span> after <span class="font-semibold">3-month</span> trial</div>
         <div class="mb-1">&bull;&nbsp;<span class="font-semibold">30%</span> off multi-year terms via one upfront check</div>
@@ -40,7 +40,7 @@
         <div class="mb-3">&bull;&nbsp;Allows partial terms to align with budget cycles</div>
         <%= link_to 'Billing & Payment Details&nbsp;&nbsp;&rarr;'.html_safe, '/billing', class: "text-blue-600 hover:underline font-medium", target: "_blank" %>
       </div>
-      <div class="mt-[11px] p-4 text-sm border-2 border-gray-200 bg-white rounded-md">
+      <div class="mt-8 lg:mt-[17px] p-4 text-sm border-2 border-neutral-200 bg-white rounded-md">
         <div class="mb-3 text-[17px] tracking-tight">Security</div>
         <div class="mb-1">&bull;&nbsp;<span class="font-semibold">Email only</span>. No cookies or accounts to manage.</div>
         <div class="mb-1">&bull;&nbsp;Zero access to <span class="font-semibold">customer data</span></div>
@@ -50,7 +50,7 @@
         <div class="mb-3">&bull;&nbsp;<span class="font-semibold">Ephemeral GPT prompts</span>, no long-term training</div>
         <%= link_to 'Security Posture&nbsp;&rarr;'.html_safe, '/security', class: "text-blue-600 hover:underline font-medium", target: "_blank" %>
       </div>
-      <div class="mt-3 hidden lg:block">
+      <div class="mt-4 hidden lg:block">
         <%= render "static/signature" %>
       </div>
     </div>
