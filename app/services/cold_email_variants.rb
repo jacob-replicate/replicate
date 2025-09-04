@@ -17,6 +17,10 @@ class ColdEmailVariants
     }
   end
 
+  def self.count
+    subjects.count * intros.count * tech_explanation.count * ctas.count
+  end
+
   def self.subjects
     [
       "SEV-1 prevention without a new tool",
@@ -24,8 +28,10 @@ class ColdEmailVariants
       "Your next outage is avoidable",
       "One less postmortem to explain",
       "Fewer 2:00am pages this quarter",
-      "Catch SEV-1s in practice, not prod",
+      "Learn from SEV-1s in practice, not production",
+      "Catch infra failures before PagerDuty does",
       "Data corruption that customers notice before you do",
+      "Prod readiness, one email at a time",
       "Replica lag that looks harmless... until it's not"
     ]
   end
