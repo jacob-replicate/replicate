@@ -6,10 +6,6 @@ module MessageGenerators
       @message_sequence = conversation.next_message_sequence
     end
 
-    def latest_user_message
-      @conversation.latest_user_message
-    end
-
     def deliver
       return if @conversation.latest_author == :assistant
 
@@ -66,7 +62,7 @@ module MessageGenerators
     end
 
     def sanitize_response(message)
-      message.gsub("<pre>", "").gsub("</pre>", "").html_safe
+      message.to_s.gsub("<pre>", "").gsub("</pre>", "").squish.html_safe
     end
   end
 end
