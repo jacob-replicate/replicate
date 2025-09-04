@@ -1,10 +1,32 @@
-Cold
-- More variants (+ #total_variants message to count?)
-- Uncomment SendColdEmailWorker API call + QA
+Tested:
+- Homepage form to paste engineer emails + generate a SEV + join the weekly rotation
+- ScheduleWeeklyCoachingEmailsWorker
+- ConversationDriverWorker
+- NextIncidentSelector
+- MessageGenerators::Base
+- MessageGenerators::Coaching
+
+Untested:
+- P1: CreateIncidentWorker
+- P1: ConversationsMailer
+- P1: ColdEmailScheduler
+- P1: SendColdEmailWorker
+- P1: PostmarkWebhooksController
+- P1: ProcessPostmarkWebhookWorker
+- P1: Models
+    - P2: ColdEmailVariants
+    - P2: Contact fetching + grading
+    - P2: MessageGenerators::LandingDemo
+    - P2: Prompts::Base
+    - P2: Individual prompt classes
+
+Content
+- More cold email variants
+- 2-3 great email incidents
 
 Transactional
-- Cron job to start monday email loops + a handful of initial incidents/subjects
-- Unsubscribe page with confirmation form, to prevent accidental unsubscribe (doesn't matter for cold, you're never following up).
+- Rake task to let Heroku spin up weekly coaching emails
+- Unsubscribe page with confirmation form for members
 - Tweak inbound "message stream" once your DNS update TTLs expire -- https://account.postmarkapp.com/servers/16407823/streams/inbound/settings
 - Fix conversation + message ID tracking/replies in ConversationsMailer
 - Postmark webhooks for coaching loop replies - https://account.postmarkapp.com/servers/16407823/streams/inbound/get-started
@@ -26,6 +48,7 @@ Product
 Ops
 - Figure out how to figure out in Postmark's UI if emails bounced, so you can manually flag + notify the account owner.
 - Move Missive to Mercury account
+- Sentry + Datadog + PagerDuty + that app you can use to send push notifications to yourself
 - Protect your S3 credentials from misuse -- spin down old keys
 - Cron job to filter inbox + draft replies
 - Automatic postgres backups
@@ -36,7 +59,6 @@ Ops
 - How will you know if your Bouncer credits are almost up?
 
 Sales
-- "I want the weekly emails too" checkbox on trial form -- lots of VP's won't give a fuck
 - Create a procurement PDF you can link to in your "Welcome to replicate.info!" email?
 - Monthly email report format to Directors. Make it a PDF that Rails renders, which you can attach in Postmark email, that they can forward to VP.
 - Bouncer API call on owner email with loading spinner

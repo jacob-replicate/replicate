@@ -17,7 +17,7 @@ class ScheduleWeeklyCoachingEmailsWorker
       organization.members.subscribed.find_each do |member|
         delay_seconds += delay_second_increment
         perform_at = (start_time + delay_seconds.seconds).change(usec: 0)
-        StartWeeklyCoachingEmailWorker.perform_at(perform_at, member.id, incident)
+        CreateIncidentWorker.perform_at(perform_at, member.id, incident)
       end
     end
   end

@@ -1,4 +1,4 @@
-class ColdEmailGenerator
+class ColdEmailScheduler
   #  MAX_PER_HOUR = 3
   #  SEND_HOURS = (9..17).to_a
   MAX_PER_HOUR = 1
