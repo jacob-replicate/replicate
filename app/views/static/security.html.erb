@@ -18,13 +18,13 @@
   </div>
 
   <p class="mb-6">
-    You will receive a <a href="/replicate-msa-dpa.pdf" class="text-blue-600 hover:underline font-semibold" target="_blank">pre-signed MSA</a> during the <a href="/billing" class="text-blue-600 hover:underline font-semibold">trial period</a>. It includes a required <span class="font-semibold">DPA</span> as well.
+    You will receive a <a href="/replicate-msa-dpa.pdf" class="text-blue-600 hover:underline font-semibold" target="_blank">pre-signed MSA/DPA</a> during the <a href="/billing" class="text-blue-600 hover:underline font-semibold">trial period</a>. No RFPs, redlines, or vendor portals.
   </p>
 
   <p class="mb-6">Liability is capped at <span class="font-semibold">5x the fees</span> paid across your <span class="font-semibold">entire contract</span>, even if multi-year. Exclusions are uncapped: willful misconduct, gross negligence, IP infringement, and confidentiality breaches.</p>
 
   <p class="mb-6">
-    Replicate does not support RFP's, redlines, or vendor portals. <span class="font-semibold">SOC 2 - Type I</span> planned for 2026.
+    It's likely the simplest mid-market SaaS tool you'll approve/reject. <span class="font-semibold">SOC 2 - Type I</span> planned for 2026.
   </p>
 
   <p class="mb-6">
@@ -44,7 +44,7 @@
     <div>
       <h2 class="font-semibold mb-2 text-2xl tracking-tight">Architecture</h2>
 
-      <p>All infra is provisioned/managed by <span class="font-semibold">Heroku</span> (in US-based AWS regions), and uses their HA failover. Data is encrypted at rest using AES-256, and TLS 1.2+ in transit. The tool is ephemeral, and automatically wipes data older than 3 months. Even if it all went up in smoke, you're back online in a few minutes.</p>
+      <p>All infra is provisioned/managed by <span class="font-semibold">Heroku</span> (in <span class="font-semibold">US-based</span> AWS regions), and uses their HA failover. Data is encrypted at rest using AES-256, and TLS 1.2+ in transit. The tool is ephemeral, and wipes data older than 3 months. It's a cron job + webhook. DR just means your emails arrive a few minutes late.
 
       <h3 class="font-semibold mt-4 mb-1">Audit Logs</h3>
       <p>Administrative actions (e.g., user provisioning) are logged immutably and retained for 12 months in secure, append-only S3 buckets. Available upon request.</p>
