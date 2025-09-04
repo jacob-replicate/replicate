@@ -34,12 +34,20 @@
   <div class="space-y-10 mt-10">
 
     <div>
+      <h2 class="font-semibold mb-2 text-2xl tracking-tight">Access Management</h2>
+
+      <p class="mt-3">Admins manage active users by emailing changes to <a href="mailto:support@replicate.info" class="text-blue-600 hover:text-blue-700 hover:underline transition font-semibold">support@replicate.info</a></p>
+      <p class="mt-3">A simple admin portal to manage Billing + SCIM (via <a href="https://auth0.com" class="text-blue-600 hover:text-blue-700 hover:underline transition font-semibold">Auth0 SSO</a>) will be an <span class="font-semibold">optional</span> enhancement in 2026. GRC and security teams will have time to approve/deny the process change.</p>
+    </div>
+
+
+    <div>
       <h2 class="font-semibold mb-2 text-2xl tracking-tight">Architecture</h2>
 
       <p>All infra is provisioned/managed by <span class="font-semibold">Heroku</span> (in the <span class="font-semibold">us-east-1</span> AWS region, with Heroku's HA failover). Data is encrypted at rest using AES-256, with a minimum of TLS 1.2 in transit.</p>
 
       <h3 class="font-semibold mt-4 mb-1">Audit Logs</h3>
-      <p>Administrative actions (e.g., user deletions) are logged immutably and retained for 12 months in secure, append-only S3 buckets. Available upon request.</p>
+      <p>Administrative actions (e.g., user provisioning) are logged immutably and retained for 12 months in secure, append-only S3 buckets. Available upon request.</p>
 
       <h3 class="font-semibold mt-4 mb-1">Automated Dependency Scanning</h3>
       <p>The codebase is continuously scanned using <a href="https://docs.github.com/en/code-security/getting-started/dependabot-quickstart-guide" class="text-blue-600 hover:text-blue-700 hover:underline transition font-semibold">GitHub Dependabot</a> to patch vulnerable libraries. Critical vulnernabilities are patched within 7 days of public disclosure.</p>
@@ -55,24 +63,16 @@
     </div>
 
     <div>
-      <h2 class="font-semibold mb-2 text-2xl tracking-tight">Access & Delivery</h2>
+      <h2 class="font-semibold mb-2 text-2xl tracking-tight">Data Lifecycle</h2>
 
-      <h3 class="font-semibold mt-4 mb-1">No user accounts for engineers</h3>
-      <p>Coaching is delivered by email. No sessions, passwords, or user-managed devices.</p>
-
-      <h3 class="font-semibold mt-6 mb-1">User provisioning (SCIM, SSO)</h3>
-      <p>SCIM is planned as an <span class="font-medium">optional</span> enhancement for 2026.</p>
-      <p class="mt-2">Admins manage access by emailing changes to <a href="mailto:support@replicate.info" class="text-blue-600 hover:text-blue-700 hover:underline transition font-semibold">support@replicate.info</a>. They will soon be able to login to a secure admin portal (via <a href="https://auth0.com" class="text-blue-600 hover:text-blue-700 hover:underline transition font-semibold">Auth0 SSO</a>) to manage team members and billing.</p>
-      <p class="mt-2">If you sign up a few weeks beforehand, it will be an opt-in process. GRC and security teams will have as much time as they need to validate + approve/deny the process change.</p>
-
-      <h3 class="font-semibold mt-6 mb-1">Auto-pause on inactivity</h3>
-      <p>Engineers get automatically unsubscribed after 3 weeks without replies. The final email includes a link to resume coaching. The product simply fades away until they want it back.</p>
-
-      <h3 class="font-semibold mt-6 mb-1">You own your data</h3>
+      <h3 class="font-semibold mt-6 mb-1">Email Retention</h3>
       <p>Inactive conversations are automatically deleted after 3 months. That data is used to recreate email history when engineers reply a few weeks later. No AI training. <span class="mt-6 md:inline"> Email <a href="mailto:support@replicate.info" class="text-blue-600 hover:text-blue-700 hover:underline transition font-semibold">support@replicate.info</a> to request immediate deletion. It won't get stuck in a Postgres backup forever.</span></p>
 
-      <h3 class="font-semibold mt-6 mb-1">Planned end-of-service</h3>
+      <h3 class="font-semibold mt-6 mb-1">End-of-Service Planning</h3>
       <p>If the product is ever sunset, you will receive advance notice, full source code, all your data, and next steps. Current contracts will be fulfilled (including multi-year terms), and support will remain available.
+
+      <h3 class="font-semibold mt-6 mb-1">Inactivity Handling</h3>
+      <p>Engineers get automatically unsubscribed after 3 weeks without replies. The final email includes a link to resume coaching. The product simply fades away until they want it back.</p>
     </div>
 
     <div>
