@@ -8,12 +8,7 @@ module MessageGenerators
 
     def deliver
       return if @conversation.latest_author == :assistant
-
-      if @conversation.latest_user_message.present?
-        deliver_reply
-      else
-        deliver_intro
-      end
+      @conversation.latest_user_message.present? ? deliver_reply : deliver_intro
     end
 
     def deliver_intro

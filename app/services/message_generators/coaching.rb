@@ -4,13 +4,11 @@ module MessageGenerators
       if @conversation.web?
         deliver_elements([AvatarService.coach_avatar_row, Prompts::CoachingIntro])
       elsif @conversation.email?
-        deliver_elements([Prompts::LandingIntroduction, Prompts::CoachingIntro])
+        deliver_elements([Prompts::CoachingIntro])
       end
     end
 
     def deliver_reply
-      # return unless Prompt::CoachingShouldContinue.new(conversation: @conversation).call == "continue"
-
       if @conversation.web?
         deliver_elements([AvatarService.coach_avatar_row, Prompts::CoachingReply])
       elsif @conversation.email?

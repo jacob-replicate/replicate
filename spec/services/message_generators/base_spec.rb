@@ -85,7 +85,7 @@ RSpec.describe MessageGenerators::Base do
       generator.deliver_elements(["three", "four"])
       generator.deliver_elements(["five"])
 
-      expect(conversation.messages.last.content).to include("one\ntwo")
+      expect(conversation.messages.pluck(:content)).to match_array(["one\ntwo", "three\nfour", "five"])
     end
 
     it "delivers elements to email" do
