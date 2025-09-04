@@ -37,14 +37,14 @@
       <h2 class="font-semibold mb-2 text-2xl tracking-tight">Access Management</h2>
 
       <p class="mt-3">Admins manage active users by emailing changes to <a href="mailto:support@replicate.info" class="text-blue-600 hover:text-blue-700 hover:underline transition font-semibold">support@replicate.info</a></p>
-      <p class="mt-3">A simple admin portal to manage Billing + SCIM (via <a href="https://auth0.com" class="text-blue-600 hover:text-blue-700 hover:underline transition font-semibold">Auth0 SSO</a>) will be an <span class="font-semibold">optional</span> enhancement in 2026. GRC and security teams will have time to approve/deny the process change.</p>
+      <p class="mt-3">A simple admin portal to manage Billing + SCIM (via <a href="https://auth0.com" class="text-blue-600 hover:text-blue-700 hover:underline transition font-semibold">Auth0 SSO</a>) will be an <span class="font-semibold">optional</span> enhancement in 2026. GRC and security teams will have unlimited time to approve/deny the process change. It's opt-in.</p>
     </div>
 
 
     <div>
       <h2 class="font-semibold mb-2 text-2xl tracking-tight">Architecture</h2>
 
-      <p>All infra is provisioned/managed by <span class="font-semibold">Heroku</span> (in the <span class="font-semibold">us-east-1</span> AWS region, with Heroku's HA failover). Data is encrypted at rest using AES-256, with a minimum of TLS 1.2 in transit.</p>
+      <p>All infra is provisioned/managed by <span class="font-semibold">Heroku</span> (in US-based AWS regions), and uses their HA failover. Data is encrypted at rest using AES-256, and TLS 1.2+ in transit. The tool is ephemeral, and automatically wipes data older than 3 months. Even if it all went up in smoke, you're back online in a few minutes.</p>
 
       <h3 class="font-semibold mt-4 mb-1">Audit Logs</h3>
       <p>Administrative actions (e.g., user provisioning) are logged immutably and retained for 12 months in secure, append-only S3 buckets. Available upon request.</p>
