@@ -23,7 +23,7 @@ class EnrichContactsWorker
     request.body = payload.to_json
 
     response = http.request(request)
-    next unless response.code.to_i == 200
+    return unless response.code.to_i == 200
 
     parsed = JSON.parse(response.body)
     results = parsed["matches"] || []
