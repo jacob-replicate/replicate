@@ -20,6 +20,6 @@ class StartWeeklyCoachingEmailWorker
       recipient: member
     )
 
-    # ConversationDriverWorker.new.perform(conversation.id)
+    ConversationDriverWorker.new.perform(conversation.id)
   end
 end
