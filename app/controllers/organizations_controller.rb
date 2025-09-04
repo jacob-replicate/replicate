@@ -1,11 +1,10 @@
-# app/controllers/organizations_controller.rb
 class OrganizationsController < ApplicationController
-  protect_from_forgery with: :null_session # if you're submitting JSON from the frontend without auth tokens
+  protect_from_forgery with: :null_session
 
   def create
     name = params[:name]
     email = params[:email]
-    engineer_emails = extract_emails(params[:engineer_emails])
+    engineer_emails = EmailExtractor.call(params[:engineer_emails])
 
     if name.blank? || email.blank? || engineer_emails.empty?
       return render json: { error: "Missing required fields" }, status: :unprocessable_entity
@@ -28,12 +27,5 @@ class OrganizationsController < ApplicationController
     end
   rescue ActiveRecord::RecordInvalid => e
     render json: { error: e.message }, status: :unprocessable_entity
-  end
-
-  private
-
-  def extract_emails(raw)
-    return [] if raw.blank?
-    raw.squish.split(/[\n, \-;]+/).map(&:strip).reject(&:blank?).uniq
   end
 end
