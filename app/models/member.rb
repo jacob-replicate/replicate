@@ -3,7 +3,7 @@ class Member < ApplicationRecord
 
   ROLES = %w[owner engineer]
 
-  validates :email, presence: true, uniqueness: { scope: :organization_id }
+  validates :email, presence: true, uniqueness: true
   validates :role, presence: true, inclusion: { in: ROLES }
 
   before_validation :set_email_domain, if: -> { will_save_change_to_email? }
