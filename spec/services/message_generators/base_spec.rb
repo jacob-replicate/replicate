@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe MessageGenerators::Base do
-  let(:conversation) { instance_double("Conversation", context: {}, next_message_sequence: 1) }
+  let(:conversation) { create(:conversation) }
   let(:generator)    { described_class.new(conversation) }
 
   describe "#deliver" do
