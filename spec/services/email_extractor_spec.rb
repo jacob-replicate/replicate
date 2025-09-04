@@ -72,7 +72,7 @@ describe EmailExtractor do
   context "with invalid tokens mixed in" do
     let(:input) { "hello, not-an-email, ok@valid.com; also@valid.io world" }
 
-    it "filters out non-email tokens using URI::MailTo::EMAIL_REGEXP" do
+    it "filters out non-email tokens using email regex" do
       expect(extract).to eq(["ok@valid.com", "also@valid.io"])
     end
   end
@@ -93,25 +93,23 @@ describe EmailExtractor do
     let(:input) { "a@example.com\tb@example.com   c@example.com\n\td@example.com" }
 
     it "handles tabs via squish + space splitting" do
-      expect(extract).to eq(%w[a@example.com b@example.com c@example.com d@example.com])
+      expect(extract).to match_array(%w[a@example.com b@example.com c@example.com d@example.com])
     end
   end
 
   context "with punctuation around emails" do
     let(:input) { "(alice@example.com), [bob@example.com]; <carol@example.com>" }
 
-    it "keeps only valid email-looking tokens (brackets cause mismatch and thus removal)" do
-      # Because the extractor splits only on newline/comma/semicolon/space,
-      # tokens like "(alice@example.com)" won't match EMAIL_REGEXP and are dropped.
-      expect(extract).to eq([])
+    it "keeps valid emails" do
+      expect(extract).to match_array(["alice@example.com", "bob@example.com", "carol@example.com"])
     end
   end
 
   context "with emails adjacent to punctuation but separated by allowed delimiters" do
     let(:input) { "alice@example.com, (bob@example.com); carol@example.com" }
 
-    it "keeps valid tokens and drops invalidly wrapped ones" do
-      expect(extract).to eq(["alice@example.com", "carol@example.com"])
+    it "keeps valid emails" do
+      expect(extract).to match_array(["alice@example.com", "bob@example.com", "carol@example.com"])
     end
   end
 
@@ -127,10 +125,11 @@ describe EmailExtractor do
     end
 
     it "returns only the valid emails and ignores surrounding text" do
-      # Note: angle-bracketed tokens won't match and are dropped.
-      expect(extract).to eq([
+      expect(extract).to match_array([
         "alice@example.com",
         "bob@example.com",
+        "carol@example.com",
+        "dave@example.com",
         "eve@example.co.uk",
         "frank@sub.mail.example.com"
       ])

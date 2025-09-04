@@ -1,12 +1,11 @@
 class EmailExtractor
   def self.call(raw_input)
-    raw_input.to_s
-      .squish
+    return [] if raw_input.blank?
+
+    raw_input
+      .to_s
       .downcase
-      .split(/[\n, ;]+/)
-      .map(&:strip)
-      .reject(&:blank?)
-      .select { |e| e.match?(URI::MailTo::EMAIL_REGEXP) }
+      .scan(/\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/i)
       .uniq
   end
 end
