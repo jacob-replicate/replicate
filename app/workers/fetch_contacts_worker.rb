@@ -49,10 +49,12 @@ class FetchContactsWorker
     people.each do |person|
       source = "apollo"
       external_id = person["id"]
-      next if Contact.exists?(source: source, external_id: external_id)
+
+      contact = Contact.find_or_initialize_by(source: source, external_id: external_id)
+      new_contact = contact.new_record?
 
       begin
-        contact = Contact.create!(
+        contact.update!(
           cohort: title_keyword.downcase,
           name: person["name"],
           email: person["email"],
@@ -64,7 +66,7 @@ class FetchContactsWorker
           metadata: person.deep_stringify_keys
         )
 
-        GradeContactWorker.perform_async(contact.id)
+        GradeContactWorker.perform_async(contact.id) if new_contact
       rescue => e
         Rails.logger.error "[FetchContactsWorker] Failed to create contact #{external_id} (#{person['email']}): #{e.class} - #{e.message}"
         Rails.logger.error e.backtrace.join("\n") if Rails.env.development? || Rails.env.test?

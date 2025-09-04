@@ -26,6 +26,7 @@ class EnrichContactsWorker
     return unless response.code.to_i == 200
 
     parsed = JSON.parse(response.body)
+    puts parsed
     results = parsed["matches"] || []
 
     results.each do |person|

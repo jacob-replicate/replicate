@@ -96,6 +96,7 @@ class Contact < ApplicationRecord
     Contact.unenriched.order(score: :desc).find_in_batches(batch_size: 10) do |batch|
       EnrichContactsWorker.perform_in((i * 15).seconds, batch.map(&:id))
       i += 0
+      return if i >= (limit / 10)
     end
   end
 
