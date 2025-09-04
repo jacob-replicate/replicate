@@ -110,5 +110,20 @@ RSpec.describe MessageGenerators::Base do
 
       expect(conversation.messages.last.content).to include("one\ntwo")
     end
+
+    it "delivers elements to email" do
+      conversation = create(:conversation, channel: "email", recipient: create(:member))
+      generator = MessageGenerators::Base.new(conversation)
+
+      mailer_double = double("Mailer", deliver_now: true)
+      expect(ConversationsMailer).to receive(:drive).with(conversation).and_return(mailer_double)
+      expect(mailer_double).to receive(:deliver_now)
+
+      expect(Prompts::CoachingReply).to receive(:new).with(conversation: conversation).and_return(double(call: "GPT reply"))
+      generator.deliver_elements([Prompts::CoachingReply, "hardcoded signature"])
+
+      message = conversation.messages.last
+      expect(message.content).to eq("<p>GPT reply</p>\nhardcoded signature")
+    end
   end
 end

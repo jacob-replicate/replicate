@@ -41,6 +41,7 @@ module MessageGenerators
       end
 
       return if full_response.blank?
+      full_response.gsub!(/\n\z/, "")
       @conversation.messages.create!(content: full_response, user_generated: user_generated)
 
       if @conversation.web?
@@ -55,7 +56,7 @@ module MessageGenerators
       broadcasting_context = { type: type, sequence: @message_sequence, user_generated: user_generated }
 
       if message.present?
-        broadcasting_context[:message] = sanitize_response(message)
+        broadcasting_context[:message] = message
       end
 
       ConversationChannel.broadcast_to(@conversation, broadcasting_context)
