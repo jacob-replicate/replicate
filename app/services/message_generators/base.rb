@@ -29,6 +29,7 @@ module MessageGenerators
 
       elements.each_with_index do |element, i|
         text = element.is_a?(String) ? element.html_safe : "<p>#{element.new(conversation: @conversation).call}</p>"
+        text = sanitize_response(text)
         next if text.blank?
 
         if @conversation.web?
