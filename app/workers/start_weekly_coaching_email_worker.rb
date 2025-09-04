@@ -9,16 +9,14 @@ class StartWeeklyCoachingEmailWorker
     return
     return unless member.present? && member.subscribed? && member.organization.active? && member.conversations.where("created_at >= ?", 24.hours.ago).blank?
 
-    subject = Prompts::CoachingSubjectLine.new(context: { incident: incident }).call rescue ""
-    return if subject.blank?
-
     conversation = Conversation.create!(
       channel: "email",
       context: {
         conversation_type: "coaching",
         incident: incident["prompt"]
       },
-      recipient: member
+      recipient: member,
+      subject_line: incident["subject_lines"].sample,
     )
 
     ConversationDriverWorker.new.perform(conversation.id)

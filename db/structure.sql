@@ -75,7 +75,8 @@ CREATE TABLE public.conversations (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     context jsonb DEFAULT '{}'::jsonb NOT NULL,
-    channel character varying
+    channel character varying,
+    subject_line text
 );
 
 
@@ -381,6 +382,7 @@ CREATE UNIQUE INDEX index_users_on_unlock_token ON public.users USING btree (unl
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250904212124'),
 ('20250903180922'),
 ('20250902160824'),
 ('20250824030354'),

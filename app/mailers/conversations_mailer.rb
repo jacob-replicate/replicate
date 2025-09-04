@@ -1,5 +1,5 @@
 class ConversationsMailer < ApplicationMailer
-  default from: 'loop@replicate.info'
+  default from: 'loop@mail.replicate.info'
   default 'X-TM-MessageType' => 'transactional'
 
   def drive(conversation)
@@ -9,8 +9,7 @@ class ConversationsMailer < ApplicationMailer
     headers['References']  = message_id
     headers['List-Unsubscribe'] = nil
 
-    # Risky. Only do this is Gmail starts collapsing your threads. You're correct to leave it out for now.
-    # headers['Precedence'] = 'auto_reply'
+    raise
 
     mail(
       to: conversation.recipient.email,

@@ -28,13 +28,12 @@ module MessageGenerators
       raise NotImplementedError, "You must implement the deliver_reply method in your subclass"
     end
 
-    # TODO: Add error handling for prompts that failed all retries
     def deliver_elements(elements, user_generated = false)
       full_response = ""
 
       elements.each_with_index do |element, i|
         text = element.is_a?(String) ? element.html_safe : "<p>#{element.new(conversation: @conversation).call}</p>"
-        next if text.blank? # TODO: Add error handling for empty elements
+        next if text.blank?
 
         if @conversation.web?
           broadcast_to_web(message: text, type: "element", user_generated: user_generated)
@@ -44,6 +43,7 @@ module MessageGenerators
         full_response += "#{text}\n"
       end
 
+      return if full_response.blank?
       @conversation.messages.create!(content: full_response, user_generated: user_generated)
 
       if @conversation.web?
