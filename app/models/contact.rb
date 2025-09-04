@@ -10,6 +10,7 @@ class Contact < ApplicationRecord
   validate :name_must_have_at_least_two_words
 
   scope :enriched, -> { where.not(email: "email_not_unlocked@domain.com").where.not(email: nil) }
+  scope :unenriched, -> { where("email IS NULL OR email = ?", "email_not_unlocked@domain.com") }
   scope :us, -> { where(state: US_STATES) }
 
   def passed_bounce_check?
@@ -91,8 +92,11 @@ class Contact < ApplicationRecord
   end
 
   def self.enrich_top_leads(limit: 100)
-    ids = Contact.where("email IS NULL OR email = ?", "email_not_unlocked@domain.com").order(score: :desc).pluck(:id).first(limit)
-    EnrichContactsWorker.perform_async(ids)
+    i = 0
+    Contact.unenriched.order(score: :desc).find_in_batches(batch_size: 10) do |batch|
+      EnrichContactsWorker.perform_in((i * 15).seconds, batch.map(&:id))
+      i += 0
+    end
   end
 
   def self.report(cohort: nil)
@@ -211,6 +215,8 @@ class Contact < ApplicationRecord
       "givecampus",
       "replicate",
       "hashicorp",
+      ".edu",
+      ".gov",
       "ibm"
     ].any? { |banned_phrase| company_domain.to_s.downcase.include?(banned_phrase) }
   end
