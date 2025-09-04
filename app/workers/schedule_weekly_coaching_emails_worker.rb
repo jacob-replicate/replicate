@@ -11,7 +11,8 @@ class ScheduleWeeklyCoachingEmailsWorker
     return if organizations.blank?
 
     organizations.order(:access_end_date).each do |organization|
-      incident = fetch_next_incident(organization)
+      incident = NextIncidentSelector.call(organization)
+      next if incident.blank?
 
       organization.members.subscribed.find_each do |member|
         delay_seconds += delay_second_increment
@@ -25,11 +26,5 @@ class ScheduleWeeklyCoachingEmailsWorker
 
   def delay_second_increment
     rand(10..15)
-  end
-
-  def fetch_next_incident(organization)
-    seen_prompts = Conversation.where(recipient: organization.members).pluck(Arel.sql("context ->> 'incident'")).reject(&:blank?)
-    available = EMAIL_INCIDENTS.reject { |incident| seen_prompts.include?(incident[:prompt]) }
-    (available.presence || EMAIL_INCIDENTS).sample
   end
 end

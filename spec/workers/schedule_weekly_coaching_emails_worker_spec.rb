@@ -28,54 +28,63 @@ RSpec.describe ScheduleWeeklyCoachingEmailsWorker, type: :worker do
     allow_any_instance_of(ScheduleWeeklyCoachingEmailsWorker).to receive(:delay_second_increment).and_return(1)
   end
 
-  describe '#perform' do
-    context 'when no organization_ids are passed' do
-      it 'schedules emails for all subscribed members across active orgs' do
-        Timecop.freeze do
-          allow_any_instance_of(ScheduleWeeklyCoachingEmailsWorker).to receive(:fetch_next_incident).and_return(email_incidents.first)
-          expect(StartWeeklyCoachingEmailWorker).to receive(:perform_at).with((Time.at(start_time) + 1.second).change(usec: 0), active_member_active_org_1.id, email_incidents.first)
-          expect(StartWeeklyCoachingEmailWorker).to receive(:perform_at).with((Time.at(start_time) + 2.second).change(usec: 0), active_member_active_org_2.id, email_incidents.first)
-          expect(StartWeeklyCoachingEmailWorker).not_to receive(:perform_at).with(anything, active_member_inactive_org.id, email_incidents.first)
-          described_class.new.perform(nil, start_time.to_i, current_day_start)
-        end
-      end
-    end
+  context 'when no organization_ids are passed' do
+    it 'schedules emails for all subscribed members across active orgs' do
+      allow(NextIncidentSelector).to receive(:call).and_return(email_incidents.first)
 
-    context 'when specific organization_ids are passed' do
-      it 'only schedules emails for members in those orgs' do
-        Timecop.freeze do
-          allow_any_instance_of(ScheduleWeeklyCoachingEmailsWorker).to receive(:fetch_next_incident).and_return(email_incidents.first)
-          expect(StartWeeklyCoachingEmailWorker).to receive(:perform_at).with((Time.at(start_time) + 1.second).change(usec: 0), active_member_active_org_1.id, email_incidents.first)
-          expect(StartWeeklyCoachingEmailWorker).not_to receive(:perform_at).with(anything, active_member_active_org_2.id, anything)
-          expect(StartWeeklyCoachingEmailWorker).not_to receive(:perform_at).with(anything, inactive_member_active_org_1.id, anything)
-          expect(StartWeeklyCoachingEmailWorker).not_to receive(:perform_at).with(anything, inactive_member_active_org_2.id, anything)
-          expect(StartWeeklyCoachingEmailWorker).not_to receive(:perform_at).with(anything, active_member_inactive_org.id, anything)
-          expect(StartWeeklyCoachingEmailWorker).not_to receive(:perform_at).with(anything, inactive_member_inactive_org.id, anything)
-          described_class.new.perform([active_org_1.id], start_time.to_i, current_day_start)
-        end
-      end
-    end
-
-    it "defaults start_time to noon of current_day_start when start_time is nil" do
       Timecop.freeze do
-        allow_any_instance_of(ScheduleWeeklyCoachingEmailsWorker).to receive(:delay_second_increment).and_return(1)
-        allow_any_instance_of(ScheduleWeeklyCoachingEmailsWorker).to receive(:fetch_next_incident).and_return(email_incidents.first)
-
-        expected_base = (Time.current.beginning_of_day + 12.hours).change(usec: 0)
-
-        expect(StartWeeklyCoachingEmailWorker).to receive(:perform_at).with(expected_base + 1.second, active_member_active_org_1.id, email_incidents.first)
-        expect(StartWeeklyCoachingEmailWorker).to receive(:perform_at).with(expected_base + 2.second, active_member_active_org_2.id, email_incidents.first)
-
-        described_class.new.perform(nil, nil, current_day_start)
+        expect(StartWeeklyCoachingEmailWorker).to receive(:perform_at).with((Time.at(start_time) + 1.second).change(usec: 0), active_member_active_org_1.id, email_incidents.first)
+        expect(StartWeeklyCoachingEmailWorker).to receive(:perform_at).with((Time.at(start_time) + 2.second).change(usec: 0), active_member_active_org_2.id, email_incidents.first)
+        expect(StartWeeklyCoachingEmailWorker).not_to receive(:perform_at).with(anything, active_member_inactive_org.id, email_incidents.first)
+        described_class.new.perform(nil, start_time.to_i, current_day_start)
       end
     end
+  end
 
-    it "fetches a fresh random incident for each organization every week" do
-    end
+  context 'when specific organization_ids are passed' do
+    it 'only schedules emails for members in those orgs' do
+      allow(NextIncidentSelector).to receive(:call).and_return(email_incidents.first)
 
-    context 'when all incidents have been seen' do
-      it "returns early without scheduling anything" do
+      Timecop.freeze do
+        expect(StartWeeklyCoachingEmailWorker).to receive(:perform_at).with((Time.at(start_time) + 1.second).change(usec: 0), active_member_active_org_1.id, email_incidents.first)
+        expect(StartWeeklyCoachingEmailWorker).not_to receive(:perform_at).with(anything, active_member_active_org_2.id, anything)
+        expect(StartWeeklyCoachingEmailWorker).not_to receive(:perform_at).with(anything, inactive_member_active_org_1.id, anything)
+        expect(StartWeeklyCoachingEmailWorker).not_to receive(:perform_at).with(anything, inactive_member_active_org_2.id, anything)
+        expect(StartWeeklyCoachingEmailWorker).not_to receive(:perform_at).with(anything, active_member_inactive_org.id, anything)
+        expect(StartWeeklyCoachingEmailWorker).not_to receive(:perform_at).with(anything, inactive_member_inactive_org.id, anything)
+        described_class.new.perform([active_org_1.id], start_time.to_i, current_day_start)
       end
+    end
+  end
+
+  it "defaults start_time to noon of current_day_start when start_time is nil" do
+    allow(NextIncidentSelector).to receive(:call).and_return(email_incidents.first)
+
+    Timecop.freeze do
+      allow_any_instance_of(ScheduleWeeklyCoachingEmailsWorker).to receive(:delay_second_increment).and_return(1)
+
+      expected_base = (Time.current.beginning_of_day + 12.hours).change(usec: 0)
+
+      expect(StartWeeklyCoachingEmailWorker).to receive(:perform_at).with(expected_base + 1.second, active_member_active_org_1.id, email_incidents.first)
+      expect(StartWeeklyCoachingEmailWorker).to receive(:perform_at).with(expected_base + 2.second, active_member_active_org_2.id, email_incidents.first)
+
+      described_class.new.perform(nil, nil, current_day_start)
+    end
+  end
+
+  context 'when all incidents have been seen' do
+    it "returns early without scheduling anything" do
+      allow(NextIncidentSelector).to receive(:call).with(active_org_1).and_return(nil)
+      allow(NextIncidentSelector).to receive(:call).with(active_org_2).and_return(email_incidents.first)
+
+      expect(StartWeeklyCoachingEmailWorker).to receive(:perform_at).with((Time.at(start_time) + 1.second).change(usec: 0), active_member_active_org_2.id, email_incidents.first)
+      expect(StartWeeklyCoachingEmailWorker).not_to receive(:perform_at).with(anything, active_member_active_org_1.id, anything)
+      expect(StartWeeklyCoachingEmailWorker).not_to receive(:perform_at).with(anything, inactive_member_active_org_1.id, anything)
+      expect(StartWeeklyCoachingEmailWorker).not_to receive(:perform_at).with(anything, inactive_member_active_org_2.id, anything)
+      expect(StartWeeklyCoachingEmailWorker).not_to receive(:perform_at).with(anything, active_member_inactive_org.id, anything)
+      expect(StartWeeklyCoachingEmailWorker).not_to receive(:perform_at).with(anything, inactive_member_inactive_org.id, anything)
+
+      described_class.new.perform(nil, start_time.to_i, current_day_start)
     end
   end
 end
