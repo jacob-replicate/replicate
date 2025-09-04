@@ -8,7 +8,6 @@ Transactional
 - Tweak inbound "message stream" once your DNS update TTLs expire -- https://account.postmarkapp.com/servers/16407823/streams/inbound/settings
 - Postmark webhooks for coaching loop replies - https://account.postmarkapp.com/servers/16407823/streams/inbound/get-started
 - Fix conversation + message ID tracking/replies in ConversationsMailer
-- Email regex validation. AI grading on form submission - you're gonna get a lot of bullshit responses to grade once public.
 
 Legal
 - Terms + Privacy + MSA/DPA review

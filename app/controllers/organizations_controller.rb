@@ -1,5 +1,5 @@
 class OrganizationsController < ApplicationController
-  protect_from_forgery with: :null_session
+  protect_from_forgery with: :null_session # if you're submitting JSON from the frontend without auth tokens
 
   def create
     name = params[:name]
@@ -19,12 +19,12 @@ class OrganizationsController < ApplicationController
         role: "owner"
       )
 
-      engineer_emails.each do |eng_email|
-        org.members.create(email: eng_email, role: "engineer")
-      end
+      engineer_emails.each { |eng_email| org.members.create(email: eng_email, role: "engineer") }
 
-      render json: { status: "ok" }, status: :created
+      # ScheduleWeeklyCoachingEmailsWorker.perform_async([org.id], 1.minute.from_now.to_i, Time.current.beginning_of_day.to_i)
     end
+
+    render json: { status: "ok" }, status: :created
   rescue ActiveRecord::RecordInvalid => e
     render json: { error: e.message }, status: :unprocessable_entity
   end

@@ -90,8 +90,8 @@ class Contact < ApplicationRecord
     end
   end
 
-  def self.enrich_top_leads
-    ids = Contact.where("email IS NULL OR email = ?", "email_not_unlocked@domain.com").order(score: :desc).pluck(:id).first(100)
+  def self.enrich_top_leads(limit: 100)
+    ids = Contact.where("email IS NULL OR email = ?", "email_not_unlocked@domain.com").order(score: :desc).pluck(:id).first(limit)
     EnrichContactsWorker.perform_async(ids)
   end
 

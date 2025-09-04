@@ -106,13 +106,8 @@
         if (!response.ok) throw new Error("Request failed");
 
         box.innerHTML = `
-          <div class="text-center text-md text-gray-800 p-6">
-            <span class="font-medium">You're in.</span> See you next Monday.
-            <div class="mt-4">
-              <a href="/sev" class="text-blue-600 hover:text-blue-700 hover:underline hover:underline-offset-4 decoration-1 transition text-base">
-                Test your production instincts&nbsp;&rarr;
-              </a>
-            </div>
+          <div class="text-center text-base text-gray-800 p-6">
+            <span class="font-medium">You're in.</span> Go check your email for the SEV.
           </div>
         `;
       } catch (error) {
