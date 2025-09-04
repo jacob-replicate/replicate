@@ -2,7 +2,7 @@ EXAMPLE_EMAILS = [
   {
     to: "Alex Shaw",
     subject: "ENV rotation crashed site",
-    subject: "1-line \"fix\"<span style='padding: 0px 10px' class='text-red-600 inline-block'>&rarr;</span>3-day incident",
+    subject: "1-line \"fix\"<span style='padding: 0px 7px' class='text-red-600 inline-block'>&rarr;</span>3-day incident",
     content: "Staging credentials were automatically rotated into production, triggering failures in downstream services.",
     prompt: "An engineer shipped a one-line 'fix' that automatically rotated staging secrets into production, crashed the site, and triggered failures across lots of downstream services. This 1-line fix is going to take days to clean up."
   },
