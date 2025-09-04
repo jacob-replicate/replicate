@@ -7,7 +7,7 @@ class Contact < ApplicationRecord
 
   validates :name, presence: true
   validates :email, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }
-  validate :name_must_have_at_least_two_words
+  validate :name_must_have_two_words
 
   scope :enriched, -> { where.not(email: "email_not_unlocked@domain.com").where.not(email: nil) }
   scope :unenriched, -> { where("email IS NULL OR email = ?", "email_not_unlocked@domain.com") }
@@ -196,9 +196,9 @@ class Contact < ApplicationRecord
 
   private
 
-  def name_must_have_at_least_two_words
+  def name_must_have_two_words
     word_count = name.to_s.strip.split.size
-    errors.add(:name, "must include at least first and last name") if word_count < 2
+    errors.add(:name, "must include at least first and last name") if word_count != 2
   end
 
   def set_company_domain
