@@ -78,8 +78,12 @@ RSpec.describe MessageGenerators::Base do
       expect(ConversationChannel).to receive(:broadcast_to).with(conversation, { type: "element", sequence: initial_seq + 6, user_generated: false, message: "four" }).ordered
       expect(ConversationChannel).to receive(:broadcast_to).with(conversation, { type: "done", sequence: initial_seq + 7, user_generated: false }).ordered
 
+      expect(ConversationChannel).to receive(:broadcast_to).with(conversation, { type: "element", sequence: initial_seq + 8, user_generated: false, message: "five" }).ordered
+      expect(ConversationChannel).to receive(:broadcast_to).with(conversation, { type: "done", sequence: initial_seq + 9, user_generated: false }).ordered
+
       generator.deliver_elements(["<pre>one", "</pre> two"])
       generator.deliver_elements(["three", "four"])
+      generator.deliver_elements(["five"])
 
       expect(conversation.messages.last.content).to include("one\ntwo")
     end
