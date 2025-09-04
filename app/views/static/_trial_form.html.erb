@@ -73,7 +73,6 @@
     const nameI = document.getElementById("<%= name_id %>");
     const mailI = document.getElementById("<%= email_id %>");
     const teamI = document.getElementById("<%= team_id %>");
-    const scrapingConsentCheckbox = form.querySelector('input[name="tech_stack_scraping_consent"]');
 
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
@@ -81,7 +80,6 @@
       const name  = nameI?.value?.trim();
       const email = mailI?.value?.trim();
       const engineerEmails = teamI?.value?.trim();
-      const scrapingConsent = scrapingConsentCheckbox?.checked || false;
 
       if (!name || !email) {
         alert("Please fill out all required fields.");
@@ -99,7 +97,7 @@
             "Content-Type": "application/json",
             "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]')?.content
           },
-          body: JSON.stringify({ name, email, engineer_emails: engineerEmails, tech_stack_scraping_consent: scrapingConsent })
+          body: JSON.stringify({ name, email, engineer_emails: engineerEmails })
         });
 
         if (!response.ok) throw new Error("Request failed");

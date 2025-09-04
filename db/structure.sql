@@ -122,8 +122,7 @@ CREATE TABLE public.organizations (
     updated_at timestamp(6) without time zone NOT NULL,
     access_end_date timestamp(6) without time zone,
     flagged boolean DEFAULT false,
-    flagged_reason text,
-    tech_stack_scraping_consent boolean DEFAULT false NOT NULL
+    flagged_reason text
 );
 
 
@@ -382,6 +381,7 @@ CREATE UNIQUE INDEX index_users_on_unlock_token ON public.users USING btree (unl
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250903180922'),
 ('20250902160824'),
 ('20250824030354'),
 ('20250819001348'),
