@@ -107,6 +107,8 @@ RSpec.describe MessageGenerators::Base do
       ).ordered
 
       generator.deliver_elements(["<pre>one", "</pre> two"])
+
+      expect(conversation.messages.last.content).to include("one\ntwo")
     end
   end
 end
