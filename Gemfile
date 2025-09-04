@@ -25,6 +25,8 @@ gem 'holidays'
 gem 'whenever'
 gem 'google-apis-gmail_v1', '~> 0.1'
 gem "sidekiq-unique-jobs"
+gem "factory_bot_rails"
+gem "timecop"
 
 group :development, :test do
   gem "dotenv"

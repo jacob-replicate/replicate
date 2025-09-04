@@ -140,6 +140,11 @@ GEM
     drb (2.1.1)
       ruby2_keywords
     erubi (1.12.0)
+    factory_bot (6.5.5)
+      activesupport (>= 6.1.0)
+    factory_bot_rails (6.5.0)
+      factory_bot (~> 6.5)
+      railties (>= 6.1.0)
     faraday (2.13.4)
       faraday-net_http (>= 2.0, < 3.5)
       json
@@ -369,6 +374,7 @@ GEM
     tailwindcss-rails (2.0.32-x86_64-linux)
       railties (>= 6.0.0)
     thor (1.3.0)
+    timecop (0.9.10)
     timeout (0.4.0)
     trailblazer-option (0.1.2)
     tzinfo (2.0.6)
@@ -408,6 +414,7 @@ DEPENDENCIES
   devise
   dotenv
   dotenv-rails
+  factory_bot_rails
   google-apis-gmail_v1 (~> 0.1)
   holidays
   jbuilder
@@ -431,6 +438,7 @@ DEPENDENCIES
   stimulus-rails
   stripe (= 9.1.0)
   tailwindcss-rails (~> 2.0)
+  timecop
   web-console
   whenever
 

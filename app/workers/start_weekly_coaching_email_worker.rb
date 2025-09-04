@@ -4,12 +4,9 @@ class StartWeeklyCoachingEmailWorker
   sidekiq_options retry: false, lock: :until_executed
 
   def perform(member_id, incident, current_day_start)
+    return
     member = Member.find_by(id: member_id)
-    return unless member.present? && member.subscribed? && member.organization.active?
-
-    day_start = DateTime.parse(current_day_start)
-    day_end = day_start + 24.hours
-    return if member.conversations.where("created_at >= ? AND created_at <= ?", day_start, day_start + 1.day)
+    return unless member.present? && member.subscribed? && member.organization.active? && member.conversations.where("created_at >= ?", 24.hours.ago).blank?
 
     subject = Prompts::CoachingSubjectLine.new(context: { incident: incident }).call rescue ""
     return if subject.blank?
