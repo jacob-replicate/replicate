@@ -20,7 +20,7 @@ class OrganizationsController < ApplicationController
   private
 
   def owner_name
-    params[:name]
+    params[:name].to_s.squish
   end
 
   def owner_email
