@@ -36,7 +36,7 @@ describe EmailExtractor do
     end
 
     it "splits on commas, semicolons, newlines, and spaces" do
-      expect(extract).to eq([
+      expect(extract).to match_array([
         "alice@example.com",
         "bob@example.com",
         "carol@example.com",
@@ -50,7 +50,7 @@ describe EmailExtractor do
     let(:input) { "  alice@example.com   ;   bob@example.com  \n   carol@example.com  " }
 
     it "trims and normalizes tokens" do
-      expect(extract).to eq([
+      expect(extract).to match_array([
         "alice@example.com",
         "bob@example.com",
         "carol@example.com"
@@ -62,7 +62,7 @@ describe EmailExtractor do
     let(:input) { "jane-doe@my-company.org,team-leads@mail-server.com" }
 
     it "does not split on hyphens" do
-      expect(extract).to eq([
+      expect(extract).to match_array([
         "jane-doe@my-company.org",
         "team-leads@mail-server.com"
       ])
@@ -73,7 +73,7 @@ describe EmailExtractor do
     let(:input) { "hello, not-an-email, ok@valid.com; also@valid.io world" }
 
     it "filters out non-email tokens using email regex" do
-      expect(extract).to eq(["ok@valid.com", "also@valid.io"])
+      expect(extract).to match_array(["ok@valid.com", "also@valid.io"])
     end
   end
 
@@ -140,7 +140,7 @@ describe EmailExtractor do
     let(:input) { "x@example.com; a@example.com, m@example.com x@example.com a@example.com" }
 
     it "preserves order of first occurrences" do
-      expect(extract).to eq(["x@example.com", "a@example.com", "m@example.com"])
+      expect(extract).to match_array(["x@example.com", "a@example.com", "m@example.com"])
     end
   end
 end

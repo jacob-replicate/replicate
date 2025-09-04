@@ -7,5 +7,7 @@ class EmailExtractor
       .downcase
       .scan(/\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/i)
       .uniq
+      .reject(&:blank?)
+      .sort
   end
 end
