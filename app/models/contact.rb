@@ -217,6 +217,8 @@ class Contact < ApplicationRecord
       "replicate",
       "hashicorp",
       ".edu",
+      ".mil",
+      "gov",
       ".gov",
       "ibm"
     ].any? { |banned_phrase| company_domain.to_s.downcase.include?(banned_phrase) }
