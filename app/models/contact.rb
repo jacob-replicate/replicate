@@ -37,20 +37,6 @@ class Contact < ApplicationRecord
     names.first
   end
 
-  def last_system_message
-    messages.where(user_generated: false).order(created_at: :desc).first
-  end
-
-  def last_user_message
-    messages.where(user_generated: true).order(created_at: :desc).first
-  end
-
-  def user_waiting_for_reply?
-    last_user_message_sent_at = last_user_message&.created_at
-    last_system_message_sent_at = last_system_message&.created_at
-    last_user_message_sent_at.present? && last_system_message_sent_at.present? && last_user_message_sent_at > last_system_message_sent_at
-  end
-
   def metadata_for_gpt
     raw = metadata.deep_symbolize_keys
 
