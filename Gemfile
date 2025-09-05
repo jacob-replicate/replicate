@@ -2,34 +2,37 @@ source "https://rubygems.org"
 
 ruby "3.2.2"
 
-gem "rails", "~> 7.1.1"
-gem "sprockets-rails"
-gem "pg"
-gem "puma", ">= 5.0"
-gem "stimulus-rails"
-gem "jbuilder"
-gem "bootsnap", require: false
-gem "redis"
-gem "devise"
-gem "sidekiq"
-gem "openai"
-gem "carrierwave"
+gem "awesome_print"
 gem "aws-sdk-s3", "~> 1"
-gem "stripe", "9.1.0"
-gem 'pry', '~> 0.14.2'
+gem "bootsnap", require: false
+gem "carrierwave"
+gem "cssbundling-rails", "~> 1.3"
+gem "devise"
+gem "google-apis-gmail_v1", "~> 0.1"
+gem "holidays"
+gem "jbuilder"
+gem "jsbundling-rails", "~> 1.2"
+gem "openai"
+gem "pg"
+gem "pgvector"
+gem "postmark-rails"
+gem "pry", "~> 0.14.2"
+gem "puma", ">= 5.0"
 gem "rack-attack"
-gem 'awesome_print'
-gem 'pgvector'
-gem 'postmark-rails'
-gem 'holidays'
-gem 'whenever'
-gem 'google-apis-gmail_v1', '~> 0.1'
+gem "rails", "~> 7.1.1"
+gem "redis"
+gem "sidekiq"
 gem "sidekiq-unique-jobs"
-gem "factory_bot_rails"
-gem "timecop"
-gem 'shoulda-matchers', '~> 6.0'
+gem "sprockets-rails"
+gem "stimulus-rails"
+gem "stripe", "9.1.0"
+gem "tailwindcss-rails", "~> 2.0"
+gem "whenever"
 
 group :development, :test do
+  gem "factory_bot_rails"
+  gem "timecop"
+  gem "shoulda-matchers", "~> 6.0"
   gem "dotenv"
   gem "dotenv-rails"
   gem "rspec-rails"
@@ -45,9 +48,3 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
 end
-
-gem "tailwindcss-rails", "~> 2.0"
-
-gem "jsbundling-rails", "~> 1.2"
-
-gem "cssbundling-rails", "~> 1.3"
