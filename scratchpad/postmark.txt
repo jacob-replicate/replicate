@@ -1,0 +1,107 @@
+{
+  "FromName": "Jacob Comer",
+  "MessageStream": "inbound",
+  "From": "jacob@jacobcomer.com",
+  "FromFull": {
+    "Email": "jacob@jacobcomer.com",
+    "Name": "Jacob Comer",
+    "MailboxHash": ""
+  },
+  "To": "cac0731fa0b48a89b6bb9d12bca81e59+e299d80f98d579355368228586fbe0d6@inbound.postmarkapp.com",
+  "ToFull": [
+    {
+      "Email": "cac0731fa0b48a89b6bb9d12bca81e59+e299d80f98d579355368228586fbe0d6@inbound.postmarkapp.com",
+      "Name": "",
+      "MailboxHash": "e299d80f98d579355368228586fbe0d6"
+    }
+  ],
+  "Cc": "",
+  "CcFull": [],
+  "Bcc": "",
+  "BccFull": [],
+  "OriginalRecipient": "cac0731fa0b48a89b6bb9d12bca81e59+e299d80f98d579355368228586fbe0d6@inbound.postmarkapp.com",
+  "Subject": "Testing 123",
+  "MessageID": "ea21ef09-b1e7-4da9-a278-eab48f80c0d8",
+  "ReplyTo": "",
+  "MailboxHash": "e299d80f98d579355368228586fbe0d6",
+  "Date": "Fri, 5 Sep 2025 09:44:08 -0400",
+  "TextBody": "How does this show up?\n",
+  "HtmlBody": "<div dir=\"ltr\">How does this show up?</div>\n",
+  "StrippedTextReply": "",
+  "Tag": "",
+  "Headers": [
+    {
+      "Name": "Return-Path",
+      "Value": "<jacob@jacobcomer.com>"
+    },
+    {
+      "Name": "Received",
+      "Value": "by p-pm-inboundg03a-aws-useast1a.inbound.postmarkapp.com (Postfix, from userid 996)\tid 6AFB2405115; Fri,  5 Sep 2025 13:44:22 +0000 (UTC)"
+    },
+    {
+      "Name": "X-Spam-Checker-Version",
+      "Value": "SpamAssassin 3.4.0 (2014-02-07) on\tp-pm-inboundg03a-aws-useast1a"
+    },
+    {
+      "Name": "X-Spam-Status",
+      "Value": "No"
+    },
+    {
+      "Name": "X-Spam-Score",
+      "Value": "0.0"
+    },
+    {
+      "Name": "X-Spam-Tests",
+      "Value": "DKIM_SIGNED,DKIM_VALID,HTML_MESSAGE,RCVD_IN_DNSWL_BLOCKED,\tRCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,RCVD_IN_VALIDITY_RPBL_BLOCKED,\tRCVD_IN_VALIDITY_SAFE_BLOCKED,RCVD_IN_ZEN_BLOCKED_OPENDNS,SPF_HELO_NONE,\tSPF_NONE"
+    },
+    {
+      "Name": "Received-SPF",
+      "Value": "none (jacobcomer.com: No applicable sender policy available) receiver=p-pm-inboundg03a-aws-useast1a; identity=mailfrom; envelope-from=\"jacob@jacobcomer.com\"; helo=mail-ot1-f50.google.com; client-ip=209.85.210.50"
+    },
+    {
+      "Name": "Received",
+      "Value": "from mail-ot1-f50.google.com (mail-ot1-f50.google.com [209.85.210.50])\t(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))\t(No client certificate requested)\tby p-pm-inboundg03a-aws-useast1a.inbound.postmarkapp.com (Postfix) with ESMTPS id D6854405119\tfor <cac0731fa0b48a89b6bb9d12bca81e59+e299d80f98d579355368228586fbe0d6@inbound.postmarkapp.com>; Fri,  5 Sep 2025 13:44:20 +0000 (UTC)"
+    },
+    {
+      "Name": "Received",
+      "Value": "by mail-ot1-f50.google.com with SMTP id 46e09a7af769-7452b1964f3so1877587a34.1        for <cac0731fa0b48a89b6bb9d12bca81e59+e299d80f98d579355368228586fbe0d6@inbound.postmarkapp.com>; Fri, 05 Sep 2025 06:44:20 -0700 (PDT)"
+    },
+    {
+      "Name": "DKIM-Signature",
+      "Value": "v=1; a=rsa-sha256; c=relaxed/relaxed;        d=jacobcomer-com.20230601.gappssmtp.com; s=20230601; t=1757079859; x=1757684659; darn=inbound.postmarkapp.com;        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject         :date:message-id:reply-to;        bh=SFllplpPMmSPU04H9vlsxYjtH3uuR2g8lw8ENSMCzw4=;        b=RYMs+dCTDK9YDoP4vlEiO9jvOArWjOKNjvXQcGOvi260JM/3L/rINOjLhpGWUtyUGh         Y8eRc6oZAbDEMrFhjjyfWFmtbrC50W6BrKtBld3CISWHRwNrnpVscnS/MMCGOmPO0z/x         lvG0+RjpjM5XsBQo8SiKIJ//tHR19xb/9/Msp2Tsn0DEUHAYQ0O8LppY2kS6r0I0bnO1         gwWCL6KN6kVhMoYADl0AvecBgf04dsXyUeH9zDdW25vWMGjg/PAC+Pr8xJ3GZU9yCHHK         tw+1tpUCifUke5EMGy8HJ7NWqZrkz9o9ikjPc31iiPTnHidrRBIJJYs40kXbKWA/atOh         8Xig=="
+    },
+    {
+      "Name": "X-Google-DKIM-Signature",
+      "Value": "v=1; a=rsa-sha256; c=relaxed/relaxed;        d=1e100.net; s=20230601; t=1757079859; x=1757684659;        h=to:subject:message-id:date:from:mime-version:x-gm-message-state         :from:to:cc:subject:date:message-id:reply-to;        bh=SFllplpPMmSPU04H9vlsxYjtH3uuR2g8lw8ENSMCzw4=;        b=BoTTUM2i0LuaovQkQwWaU/lRllpLAM1IfLwgJTtGfuGE+xWYLnfeE5PZ1Uib8KfNzZ         0n8aHnBQB8cYR0uiUaMJXD6pAtPQvbMPG2SPNvD6lMHVvseh0DkaD3hy8KGSsrWjb1WB         4DLLLrkfajvoIdWHVXAOeJqCathuzZ1ddSOUN/rNaZlBYR70RQ6o/oCHf1oi0ihxBHmu         Y/D2Q/bylV52teDYwPc+ZsYYfD8Zv8yYKoMgpoHytawp9ZMkfBckfoSKU9xjcvi2d2x4         iG80DwhLmDYegBQE+KAMSU+dmR53uhIFNmkQAvzKFAfkLFnfQ7mG4oZKzVy09mzyaZl2         XDlQ=="
+    },
+    {
+      "Name": "X-Gm-Message-State",
+      "Value": "AOJu0YwhLey0AX5F1K6nRB4jpCQLrWmhLTGvToqCO5K7xW/6KwAH+r9N\tCX5SHv/HXUbUznKSbxvnuDraAgJI4P8yL/UA59e1d+ipd/+5wbJEu//YsdpuHP2whGZmaO7wWwb\t2XUbCBh9WsdKtmFEVepyitR8xLjhCnmEhZZjYO4waPR9HLzLH9z3USU0="
+    },
+    {
+      "Name": "X-Gm-Gg",
+      "Value": "ASbGnctuPeUJGN71S2oFw/NFR26RgfkaFHN18WQE+hqhYbCeLUOGQpgSvdaPRSeh9VA\tDL3k7/eLSYs/YdIicr2rPlw4XQeRULiI4nDBOcXZ3EENbkbb7K8h3WB8lcdad1W1/x/vUc+KQ5o\tBci3odnYydvZd/XK8S49acv4srnlkjwFW1jNmGLNpJ3JvMJuD8kKX3l2CksIufF/VfbwOns37mG\tIwZUhM5nfr/xXlnrdIm/HQyjNSivWvpwgfN"
+    },
+    {
+      "Name": "X-Google-Smtp-Source",
+      "Value": "AGHT+IEzCX48GA47VUo8vS+Puyf3elcfeU1uGzjqrGFrnLQN2PBjJri4rjGNGb1C3nbAQCqcyxhC6QHGR5NandQpdkQ="
+    },
+    {
+      "Name": "X-Received",
+      "Value": "by 2002:a05:6808:219a:b0:439:b298:5056 with SMTP id 5614622812f47-439b2985172mr1050061b6e.13.1757079859475; Fri, 05 Sep 2025 06:44:19 -0700 (PDT)"
+    },
+    {
+      "Name": "MIME-Version",
+      "Value": "1.0"
+    },
+    {
+      "Name": "X-Gm-Features",
+      "Value": "Ac12FXz5dZv8hYqoLzOYFdkqyx-zmcj3d0g-SRx89lH4wOyEWaI8jYkn68JL2DI"
+    },
+    {
+      "Name": "Message-ID",
+      "Value": "<CAAS7M=CdtUQZHa3RAWRvjSc0twkcgWKtpLiDJ4371cnsVG4VfA@mail.gmail.com>"
+    }
+  ],
+  "Attachments": []
+}

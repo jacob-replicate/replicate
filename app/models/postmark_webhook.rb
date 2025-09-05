@@ -4,4 +4,8 @@ class PostmarkWebhook < ApplicationRecord
   def message
     content["TextBody"]
   end
+
+  def message_id
+    content["MessageID"]
+  end
 end

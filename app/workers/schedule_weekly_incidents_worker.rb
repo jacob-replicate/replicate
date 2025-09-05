@@ -14,10 +14,11 @@ class ScheduleWeeklyIncidentsWorker
       incident = NextIncidentSelector.call(organization)
       next if incident.blank?
 
-      organization.members.subscribed.find_each do |member|
-        delay_seconds += delay_second_increment
+      organization.members.subscribed.order(role: :desc).each do |member| # to email owners first during trial submission
         perform_at = (start_time + delay_seconds.seconds).change(usec: 0)
         CreateIncidentWorker.perform_at(perform_at, member.id, incident)
+
+        delay_seconds += delay_second_increment
       end
     end
   end

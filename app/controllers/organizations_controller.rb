@@ -7,7 +7,7 @@ class OrganizationsController < ApplicationController
     org = Organization.create!(access_end_date: 3.months.from_now.end_of_month)
     members_to_create.each { |member_info| org.members.create!(name: member_info[:name], email: member_info[:email], role: member_info[:role]) }
 
-    ScheduleWeeklyIncidentsWorker.perform_in(5.seconds, [org.id], Time.current.to_i, Time.current.beginning_of_day.to_i)
+    ScheduleWeeklyIncidentsWorker.perform_async([org.id], Time.current.to_i, Time.current.beginning_of_day.to_i)
 
     head :ok
   rescue => e
