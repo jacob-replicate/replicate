@@ -11,6 +11,7 @@ Tested:
 - MessageGenerators::Coaching
 - SendColdEmailWorker
 - Model: Conversation
+- Model: Member
 
 Untested:
 - P1: ConversationsMailer (fix thread ID tracking)
@@ -19,7 +20,6 @@ Untested:
 - P1: ProcessPostmarkWebhookWorker
 - Model: Contact
 - Model: Organization
-- Model: Member
 - Model: Message
 - Model: PostmarkWebhook
     - P2: ColdEmailVariants

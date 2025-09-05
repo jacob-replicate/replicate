@@ -36,6 +36,7 @@ group :development, :test do
   gem "dotenv"
   gem "dotenv-rails"
   gem "rspec-rails"
+  gem "simplecov"
 end
 
 group :development do
