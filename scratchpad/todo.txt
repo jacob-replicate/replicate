@@ -48,7 +48,6 @@ Product
 Ops
 - Figure out how to figure out in Postmark's UI if emails bounced, so you can manually flag + notify the account owner.
 - Move Missive to Mercury account
-- Sentry + Datadog + PagerDuty + that app you can use to send push notifications to yourself
 - Protect your S3 credentials from misuse -- spin down old keys
 - Cron job to filter inbox + draft replies
 - Automatic postgres backups

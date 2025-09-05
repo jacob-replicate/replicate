@@ -1,5 +1,6 @@
 class Member < ApplicationRecord
   belongs_to :organization
+  has_many :conversations, as: :recipient, dependent: :destroy
 
   ROLES = %w[owner engineer]
 

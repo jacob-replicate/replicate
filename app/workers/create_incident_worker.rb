@@ -5,8 +5,6 @@ class CreateIncidentWorker
 
   def perform(member_id, incident)
     member = Member.find_by(id: member_id)
-    puts "Member: #{member.name} - #{member.email} - #{incident['prompt']}" if member.present?
-    return
     return unless member.present? && member.subscribed? && member.organization.active? && member.conversations.where("created_at >= ?", 24.hours.ago).blank?
 
     conversation = Conversation.create!(
