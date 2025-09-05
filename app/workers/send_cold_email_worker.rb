@@ -8,7 +8,7 @@ class SendColdEmailWorker
     contact = Contact.us.enriched.find_by(id: contact_id)
     return if contact.blank? || contact.contacted? || contact.email.blank? || contact.email == "email_not_unlocked@domain.com"
 
-    now_et = Time.now.in_time_zone("Eastern Time (US & Canada)")
+    now_et = Time.current.in_time_zone("America/New_York")
     unless now_et.on_weekday? && now_et.hour.between?(9, 17)
       contact.update_columns(email_queued_at: nil)
       return
@@ -40,7 +40,7 @@ class SendColdEmailWorker
       variant["body_html"]
     ].join("\r\n")
 
-    # client.send_user_message("me", Google::Apis::GmailV1::Message.new(raw: rfc822))
+    client.send_user_message("me", Google::Apis::GmailV1::Message.new(raw: rfc822))
     contact.update_columns(contacted: true)
   end
 
