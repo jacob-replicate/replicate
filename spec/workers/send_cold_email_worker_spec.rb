@@ -115,28 +115,19 @@ RSpec.describe SendColdEmailWorker, type: :worker do
             raw
           end
 
-        # RFC822 assertions
-        expect(decoded).to include("To: #{contact.email}")
-        expect(decoded).to include("From: #{inbox['from_name']} <#{inbox['email']}>")
         expect(inbox["from_name"]).to be_present
         expect(inbox["email"]).to be_present
+        expect(variant["body_html"]).to include("Hi #{contact.first_name},")
+        expect(decoded).to include("To: #{contact.email}")
+        expect(decoded).to include("From: #{inbox['from_name']} <#{inbox['email']}>")
         expect(decoded).to include("Reply-To: #{inbox['email']}")
-
-        # Deterministic Date: header (Timecop.freeze controls Time.now in worker)
         expect(decoded).to match(/^Date: .+$/)
-
-        # Subject + MIME headers
         expect(decoded).to include("Subject: #{variant['subject']}")
         expect(decoded).to include("MIME-Version: 1.0")
         expect(decoded).to include("Content-Type: text/html; charset=UTF-8")
-
-        # List-Unsubscribe headers
         expect(decoded).to include("List-Unsubscribe: <https://replicate.info/contacts/#{contact.id}/unsubscribe>, <mailto:#{inbox['email']}?subject=unsubscribe>")
         expect(decoded).to include("List-Unsubscribe-Post: List-Unsubscribe=One-Click")
-
-        # Body
         expect(decoded).to include(variant["body_html"])
-        expect(variant["body_html"]).to include("Hi #{contact.first_name},")
       end
     end
   end
