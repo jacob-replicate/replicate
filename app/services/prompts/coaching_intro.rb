@@ -45,7 +45,7 @@ module Prompts
       intro_paragraph = fetch_valid_response
       return "" if intro_paragraph.nil?
 
-      intro_paragraph + " #{questions.sample}"
+      intro_paragraph + "<br/><br/><b class='font-medium'>#{questions.sample}</b>".html_safe
     end
 
     private
