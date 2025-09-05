@@ -9,4 +9,17 @@ class PostmarkWebhooksController < ApplicationController
 
     head :ok
   end
+
+  private
+
+  def valid_ip_address?
+    valid_ips = [
+      "3.134.147.250",
+      "50.31.156.6",
+      "50.31.156.77",
+      "18.217.206.57"
+    ]
+
+    valid_ips.include?(request.remote_ip)
+  end
 end

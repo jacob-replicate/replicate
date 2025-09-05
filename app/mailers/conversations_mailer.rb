@@ -1,18 +1,18 @@
 class ConversationsMailer < ApplicationMailer
-  default from: 'loop@mail.replicate.info'
   default 'X-TM-MessageType' => 'transactional'
 
   def drive(conversation)
     message_id = "<conversation-#{conversation.id}@replicate.info>"
-    headers['Message-ID'] = message_id
-    headers['In-Reply-To'] = message_id
-    headers['References']  = message_id
-    headers['List-Unsubscribe'] = nil
+    headers['Message-ID'] = message_id # TODO: This needs to be unique?
+    headers['References']  = conversation.id # TODO: Does this need to reference the previous message? Process the webhook for the user's message first?
+    headers['List-Unsubscribe'] = "https://replicate.info/members/#{conversation.recipient_id}/unsubscribe"
 
-    raise
+    # https://stackoverflow.com/a/34097062
 
     mail(
       to: conversation.recipient.email,
+      from: "loop@mail.replicate.info",
+      reply_to: "loop+#{conversation.id}@mail.replicate.info",
       subject: conversation.subject_line,
       message_stream: 'outbound',
       content_type: 'text/html',
