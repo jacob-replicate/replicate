@@ -1,4 +1,3 @@
-# spec/workers/create_incident_worker_spec.rb
 require "rails_helper"
 
 RSpec.describe CreateIncidentWorker, type: :worker do

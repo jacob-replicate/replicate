@@ -5,7 +5,7 @@ class CreateIncidentWorker
 
   def perform(member_id, incident)
     member = Member.find_by(id: member_id)
-    return unless member.present? && member.subscribed? && member.organization.active? && member.conversations.where("created_at >= ?", 24.hours.ago).blank?
+    return unless member.present? && member.subscribed? && member.conversations.where("created_at >= ?", 24.hours.ago).blank?
 
     conversation = Conversation.create!(
       channel: "email",
