@@ -1,5 +1,4 @@
 Transactional
-- Rake task to let Heroku spin up weekly coaching emails
 - Unsubscribe page with confirmation form for members
 
 Tested:
@@ -30,6 +29,7 @@ Untested:
 Content
 - More cold email variants
 - 2-3 great email incidents
+- Tweak the example conversation on the homepage? Did you lose something while tweaking the coaching reply? It's more blog posty. Just revert to a few weeks ago?
 
 Legal
 - Terms + Privacy + MSA/DPA review
