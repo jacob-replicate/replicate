@@ -36,6 +36,9 @@ Content
 - 2-3 great email incidents
 - Tweak the example conversation on the homepage? Did you lose something while tweaking the coaching reply? It's more blog posty. Just revert to a few weeks ago?
 
+Sales
+- Don't email people from the same domain multiple times in the same month
+
 Legal
 - Terms + Privacy + MSA/DPA review
 

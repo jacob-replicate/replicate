@@ -1,8 +1,8 @@
 class Member < ApplicationRecord
+  ROLES = %w[owner engineer]
+
   belongs_to :organization
   has_many :conversations, as: :recipient, dependent: :destroy
-
-  ROLES = %w[owner engineer]
 
   validates :email, presence: true, uniqueness: { case_sensitive: false }
   validates :role, presence: true, inclusion: { in: ROLES }
