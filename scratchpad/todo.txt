@@ -9,9 +9,11 @@ Tested:
 - NextIncidentSelector
 - MessageGenerators::Base
 - MessageGenerators::Coaching
-- SendColdEmailWorker
 - Model: Conversation
 - Model: Member
+- SendColdEmailWorker
+- ColdEmailVariants
+- ConversationChannel
 
 Untested:
 - P1: ConversationsMailer (fix thread ID tracking)
@@ -22,7 +24,6 @@ Untested:
 - Model: Organization
 - Model: Message
 - Model: PostmarkWebhook
-    - P2: ColdEmailVariants
     - P2: Contact fetching + grading
     - P2: MessageGenerators::LandingDemo
     - P2: Prompts::Base
@@ -36,8 +37,9 @@ Content
 - 2-3 great email incidents
 - Tweak the example conversation on the homepage? Did you lose something while tweaking the coaching reply? It's more blog posty. Just revert to a few weeks ago?
 
-Sales
+Misc
 - Don't email people from the same domain multiple times in the same month
+- Don't send weekly emails to people who bounced. Bounce check on cold, not on transactional?
 
 Legal
 - Terms + Privacy + MSA/DPA review
