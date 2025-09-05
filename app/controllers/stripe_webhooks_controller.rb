@@ -1,5 +1,7 @@
 class StripeWebhooksController < ApplicationController
   def create
+    return
+
     payload = request.body.read
     signature = request.headers["HTTP_STRIPE_SIGNATURE"]
     endpoint_secret = ENV["STRIPE_WEBHOOK_SECRET"]

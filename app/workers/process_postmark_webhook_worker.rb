@@ -9,13 +9,6 @@ class ProcessPostmarkWebhookWorker
 
     webhook.update!(processed_at: Time.current)
     return
-#
-#    return head :forbidden unless sender_matches?(conversation)
-#
-##    conversation =
-##    <conversation-#{conversation.id}@replicate.info>
-#
-#    message = conversation.messages.create(content: webhook.message, user_generated: true)
   end
 
   private

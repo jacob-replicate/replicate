@@ -1,94 +1,95 @@
+# spec/requests/postmark_webhooks_spec.rb
 require "rails_helper"
 require "sidekiq/testing"
 
-RSpec.describe "Postmark webhooks", type: :request do
-  Sidekiq::Testing.fake!
+RSpec.describe "Postmark Webhooks", type: :request do
+  let(:path) { "/webhooks/postmark" }
+  let(:valid_ip) { "3.134.147.250" }
+  let(:invalid_ip) { "127.0.0.1" }
 
-  let(:secret) { "super-secret" }
-  let(:headers) { { "CONTENT_TYPE" => "application/json" } }
-
-  # Helper to compute the same signature your controller expects
-  def signature_for(body, key = secret)
-    Base64.strict_encode64(
-      OpenSSL::HMAC.digest("sha256", key, body)
-    )
+  let(:payload) do
+    {
+      "FromName" => "Postmarkapp Support",
+      "MessageStream" => "inbound",
+      "From" => "support@postmarkapp.com",
+      "FromFull" => {
+        "Email" => "support@postmarkapp.com",
+        "Name" => "Postmarkapp Support",
+        "MailboxHash" => ""
+      },
+      "To" => "\"Firstname Lastname\" <yourhash+SampleHash@inbound.postmarkapp.com>",
+      "ToFull" => [
+        {
+          "Email" => "yourhash+SampleHash@inbound.postmarkapp.com",
+          "Name" => "Firstname Lastname",
+          "MailboxHash" => "SampleHash"
+        }
+      ],
+      "Cc" => "\"First Cc\" <firstcc@postmarkapp.com>, secondCc@postmarkapp.com>",
+      "CcFull" => [
+        { "Email" => "firstcc@postmarkapp.com", "Name" => "First Cc", "MailboxHash" => "" },
+        { "Email" => "secondcc@postmarkapp.com", "Name" => "", "MailboxHash" => "" }
+      ],
+      "Bcc" => "\"First Bcc\" <firstbcc@postmarkapp.com>, secondbcc@postmarkapp.com>",
+      "BccFull" => [
+        { "Email" => "firstbcc@postmarkapp.com", "Name" => "First Bcc", "MailboxHash" => "" },
+        { "Email" => "secondbcc@postmarkapp.com", "Name" => "", "MailboxHash" => "" }
+      ],
+      "OriginalRecipient" => "yourhash+SampleHash@inbound.postmarkapp.com",
+      "Subject" => "Test subject",
+      "MessageID" => "73e6d360-66eb-11e1-8e72-a8904824019b",
+      "ReplyTo" => "replyto@postmarkapp.com",
+      "MailboxHash" => "SampleHash",
+      "Date" => "Fri, 1 Aug 2014 16:45:32 -04:00",
+      "TextBody" => "This is a test text body.",
+      "HtmlBody" => "<html><body><p>This is a test html body.</p></body></html>",
+      "StrippedTextReply" => "This is the reply text",
+      "Tag" => "TestTag",
+      "Headers" => [
+        { "Name" => "X-Header-Test", "Value" => "" },
+        { "Name" => "X-Spam-Status", "Value" => "No" },
+        { "Name" => "X-Spam-Score", "Value" => "-0.1" },
+        { "Name" => "X-Spam-Tests", "Value" => "DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,SPF_PASS" }
+      ],
+      "Attachments" => [
+        {
+          "Name" => "test.txt",
+          "Content" => "VGhpcyBpcyBhdHRhY2htZW50IGNvbnRlbnRzLCBiYXNlLTY0IGVuY29kZWQu",
+          "ContentType" => "text/plain",
+          "ContentLength" => "45"
+        }
+      ]
+    }
   end
 
-  before do
-    # Easiest, least invasive way to set the env var just for this spec
-    stub_const("ENV", ENV.to_hash.merge("POSTMARK_WEBHOOK_SECRET" => secret))
+  def post_with_ip(ip, body = payload)
+    post path, params: body, headers: { "REMOTE_ADDR" => ip, "X-Forwarded-For" => ip }
   end
 
-  describe "POST /postmark_webhooks" do
-    let!(:conversation) { create(:conversation) } # UUID id
-    let(:payload_hash) do
-      {
-        "InReplyTo" => "conversation-#{conversation.id}@replicate.info",
-        "From"      => "support@postmarkapp.com",
-        "Subject"   => "Test subject",
-        # …include as much as you want; controller saves params wholesale
-        "TextBody"  => "This is a test text body."
-      }
-    end
-    let(:body)     { payload_hash.to_json }
-    let(:authz)    { { "X-Postmark-Signature" => signature_for(body) } }
+  around do |example|
+    Sidekiq::Testing.inline! { example.run }
+  end
 
-    xit "creates a PostmarkWebhook, associates conversation, enqueues worker, and returns 200" do
-      expect {
-        post "/postmark_webhooks",
-          params: body,
-          headers: headers.merge(authz)
-      }
-        .to change(PostmarkWebhook, :count).by(1)
-                                           .and change { ProcessPostmarkWebhookWorker.jobs.size }.by(1)
-
-      expect(response).to have_http_status(:ok)
-
-      webhook = PostmarkWebhook.last
-      expect(webhook.conversation_id).to eq(conversation.id)
-      expect(webhook.webhook_type).to eq("inbound") # if you set a default; remove if not
-      # controller does `params.to_unsafe_h` so JSON keys should be there verbatim
-      expect(webhook.content).to include(payload_hash)
+  describe "POST /webhooks/postmark" do
+    context "invalid IP" do
+      it "returns 401 and does not create a PostmarkWebhook" do
+        expect { post_with_ip(invalid_ip) }.not_to change { PostmarkWebhook.count }
+        expect(response).to have_http_status(:unauthorized)
+      end
     end
 
-    xit "returns 401 and does nothing when signature is missing" do
-      expect {
-        post "/postmark_webhooks",
-          params: body,
-          headers: headers # no signature
-      }
-        .to not_change(PostmarkWebhook, :count)
-          .and not_change { ProcessPostmarkWebhookWorker.jobs.size }
+    context "valid IP" do
+      it "returns 200, persists payload verbatim, runs processor inline, and sets processed_at" do
+        expect {
+          post_with_ip(valid_ip)
+        }.to change { PostmarkWebhook.count }.by(1)
 
-      expect(response).to have_http_status(:unauthorized)
-    end
+        expect(response).to have_http_status(:ok)
 
-    xit "returns 401 and does nothing when signature is invalid" do
-      bad_authz = { "X-Postmark-Signature" => signature_for(body, "wrong-key") }
-
-      expect {
-        post "/postmark_webhooks",
-          params: body,
-          headers: headers.merge(bad_authz)
-      }
-        .to not_change(PostmarkWebhook, :count)
-          .and not_change { ProcessPostmarkWebhookWorker.jobs.size }
-
-      expect(response).to have_http_status(:unauthorized)
-    end
-
-    xit "still creates a webhook when the conversation id doesn't exist (conversation=nil)" do
-      unknown_id = SecureRandom.uuid
-      body2 = payload_hash.merge("InReplyTo" => "Re: something conversation-#{unknown_id}@replicate.info").to_json
-
-      expect {
-        post "/postmark_webhooks",
-          params: body2,
-          headers: headers.merge("X-Postmark-Signature" => signature_for(body2))
-      }.to change(PostmarkWebhook, :count).by(1)
-
-      expect(PostmarkWebhook.last.conversation).to be_nil
-      expect(response).to have_http_status(:ok)
+        webhook = PostmarkWebhook.last
+        expect(webhook.content).to eq(payload)
+        expect(webhook.processed_at).to be_present
+      end
     end
   end
 end
