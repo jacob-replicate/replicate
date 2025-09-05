@@ -1,4 +1,4 @@
-class ScheduleWeeklyCoachingEmailsWorker
+class ScheduleWeeklyIncidentsWorker
   include Sidekiq::Worker
 
   sidekiq_options retry: false, lock: :until_executed

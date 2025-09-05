@@ -8,7 +8,7 @@ RSpec.describe "OrganizationsController#create", type: :request do
     context "happy path" do
       it "creates org, owner, engineers and enqueues the scheduling job" do
         Timecop.freeze do
-          allow(ScheduleWeeklyCoachingEmailsWorker).to receive(:perform_in)
+          allow(ScheduleWeeklyIncidentsWorker).to receive(:perform_in)
 
           params = {
             name:  "Jane Owner",
@@ -31,7 +31,7 @@ RSpec.describe "OrganizationsController#create", type: :request do
           expect(engineers).to match_array(%w[eng1@example.com eng2@example.com eng3@example.com])
           expect(org.members.pluck(:subscribed).uniq).to eq([true])
 
-          expect(ScheduleWeeklyCoachingEmailsWorker).to have_received(:perform_in).with(5.seconds, [org.id], Time.current.to_i, Time.current.beginning_of_day.to_i)
+          expect(ScheduleWeeklyIncidentsWorker).to have_received(:perform_in).with(5.seconds, [org.id], Time.current.to_i, Time.current.beginning_of_day.to_i)
         end
       end
     end
@@ -59,7 +59,7 @@ RSpec.describe "OrganizationsController#create", type: :request do
     context "rescue path on member creation error" do
       it "returns 400 and destroys the org if a member create! raises" do
         allow(EmailExtractor).to receive(:call).with("owner@example.com").and_return(["owner@example.com"])
-        allow(ScheduleWeeklyCoachingEmailsWorker).to receive(:perform_in)
+        allow(ScheduleWeeklyIncidentsWorker).to receive(:perform_in)
         allow_any_instance_of(OrganizationsController).to receive(:engineer_emails).and_return(["owner@example.com"]) # same as owner → Member uniqueness should raise
 
         post endpoint, params: { name: "Jane Owner", email: "owner@example.com", engineer_emails: "owner@example.com" }, as: :json
@@ -67,7 +67,7 @@ RSpec.describe "OrganizationsController#create", type: :request do
         expect(response).to have_http_status(:bad_request)
         expect(Organization.count).to eq(0)
         expect(Member.count).to eq(0)
-        expect(ScheduleWeeklyCoachingEmailsWorker).not_to have_received(:perform_in)
+        expect(ScheduleWeeklyIncidentsWorker).not_to have_received(:perform_in)
       end
     end
   end

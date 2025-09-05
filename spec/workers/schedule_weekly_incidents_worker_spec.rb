@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe ScheduleWeeklyCoachingEmailsWorker, type: :worker do
+RSpec.describe ScheduleWeeklyIncidentsWorker, type: :worker do
   let(:start_time) { Time.current }
   let(:current_day_start) { Time.current.beginning_of_day.to_i }
 
@@ -17,7 +17,7 @@ RSpec.describe ScheduleWeeklyCoachingEmailsWorker, type: :worker do
   let!(:inactive_member_inactive_org) { create(:member, organization: inactive_org, subscribed: false) }
 
   before do
-    allow_any_instance_of(ScheduleWeeklyCoachingEmailsWorker).to receive(:delay_second_increment).and_return(1)
+    allow_any_instance_of(ScheduleWeeklyIncidentsWorker).to receive(:delay_second_increment).and_return(1)
   end
 
   context 'when no organization_ids are passed' do
