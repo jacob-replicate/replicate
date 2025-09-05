@@ -38,9 +38,9 @@ class SanitizeAiContent
     response.gsub!("```html", "")
     response.gsub!("```", "")
     response.gsub!("“", "\"")
-    response.gsub!(""", "\"")
+    response.gsub!("”", "\"")
     response.gsub!("&#39;", "'")
-    response.gsub!("'", "'")
+    response.gsub!("’", "'")
     response.gsub!("**", "")
     response.gsub!("`", "")
     response = response.squish
