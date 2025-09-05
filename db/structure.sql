@@ -143,56 +143,11 @@ CREATE TABLE public.postmark_webhooks (
 
 
 --
--- Name: prompt_chunks; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.prompt_chunks (
-    id bigint NOT NULL,
-    content text NOT NULL,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL,
-    embedding public.vector(3072)
-);
-
-
---
--- Name: prompt_chunks_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.prompt_chunks_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: prompt_chunks_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.prompt_chunks_id_seq OWNED BY public.prompt_chunks.id;
-
-
---
 -- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.schema_migrations (
     version character varying NOT NULL
-);
-
-
---
--- Name: subscribers; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.subscribers (
-    id uuid DEFAULT gen_random_uuid() NOT NULL,
-    email text,
-    subscribed boolean,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
 );
 
 
@@ -222,13 +177,6 @@ CREATE TABLE public.users (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
-
-
---
--- Name: prompt_chunks id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.prompt_chunks ALTER COLUMN id SET DEFAULT nextval('public.prompt_chunks_id_seq'::regclass);
 
 
 --
@@ -288,27 +236,11 @@ ALTER TABLE ONLY public.postmark_webhooks
 
 
 --
--- Name: prompt_chunks prompt_chunks_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.prompt_chunks
-    ADD CONSTRAINT prompt_chunks_pkey PRIMARY KEY (id);
-
-
---
 -- Name: schema_migrations schema_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.schema_migrations
     ADD CONSTRAINT schema_migrations_pkey PRIMARY KEY (version);
-
-
---
--- Name: subscribers subscribers_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.subscribers
-    ADD CONSTRAINT subscribers_pkey PRIMARY KEY (id);
 
 
 --
@@ -382,6 +314,8 @@ CREATE UNIQUE INDEX index_users_on_unlock_token ON public.users USING btree (unl
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250905012419'),
+('20250905012103'),
 ('20250904212124'),
 ('20250903180922'),
 ('20250902160824'),

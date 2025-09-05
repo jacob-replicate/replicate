@@ -27,6 +27,7 @@ gem 'google-apis-gmail_v1', '~> 0.1'
 gem "sidekiq-unique-jobs"
 gem "factory_bot_rails"
 gem "timecop"
+gem 'shoulda-matchers', '~> 6.0'
 
 group :development, :test do
   gem "dotenv"

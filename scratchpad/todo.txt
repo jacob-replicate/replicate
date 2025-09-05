@@ -10,13 +10,18 @@ Tested:
 - MessageGenerators::Base
 - MessageGenerators::Coaching
 - SendColdEmailWorker
+- Model: Conversation
 
 Untested:
 - P1: ConversationsMailer (fix thread ID tracking)
 - P1: ColdEmailScheduler
 - P1: PostmarkWebhooksController (inbound stream: https://account.postmarkapp.com/servers/16407823/streams/inbound/settings)
 - P1: ProcessPostmarkWebhookWorker
-- P1: Models
+- Model: Contact
+- Model: Organization
+- Model: Member
+- Model: Message
+- Model: PostmarkWebhook
     - P2: ColdEmailVariants
     - P2: Contact fetching + grading
     - P2: MessageGenerators::LandingDemo
