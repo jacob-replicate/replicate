@@ -71,7 +71,7 @@ RSpec.describe NextIncidentSelector do
     end
 
     context "when all incidents were seen by subscribed members" do
-      it "falls back to the full list and returns one (recycles incidents)" do
+      it "returns nothing" do
         email_incidents.each { |inc| see(subscribed_1_org_1, inc[:prompt]) }
         expect(described_class.call(org_1)).to be_blank
       end

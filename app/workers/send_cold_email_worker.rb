@@ -4,7 +4,6 @@ class SendColdEmailWorker
   sidekiq_options retry: false, lock: :until_executed
 
   def perform(contact_id, inbox, variant)
-    inbox   = inbox.transform_keys(&:to_sym)
     contact = Contact.us.enriched.find_by(id: contact_id)
     return if contact.blank? || contact.contacted? || contact.email.blank? || contact.email == "email_not_unlocked@domain.com"
 

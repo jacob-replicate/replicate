@@ -5,9 +5,8 @@ RSpec.describe SendColdEmailWorker, type: :worker do
   subject(:worker) { described_class.new }
 
   let(:contact) { create(:contact, email: "jacob@replicate.info", contacted: false, state: US_STATES.first) }
-  let(:inbox)   { { "email" => "outbound@example.com", "from_name" => "Outbound Bot" } }
-  let(:variant) { { "subject" => "Test Subject", "body_html" => "<p>Hello world</p>" } }
-
+  let(:inbox)   { INBOXES.first }
+  let(:variant) { ColdEmailVariants.build(inbox: inbox, contact: contact) }
   let(:client) { instance_double(Google::Apis::GmailV1::GmailService) }
   let(:authorizer) { instance_double(Google::Auth::ServiceAccountCredentials) }
 
@@ -83,13 +82,61 @@ RSpec.describe SendColdEmailWorker, type: :worker do
     end
 
     context "when valid weekday and business hours" do
-      it "sends the email via Gmail API and marks contact contacted" do
-        time = Time.zone.parse("2025-09-08 16:00:00 UTC") # 10am ET Monday
-        Timecop.freeze(time)  do
+      let(:monday_10am_et_utc) { Time.zone.parse("2025-09-08 14:00:00 UTC") } # 10am ET Monday
+
+      it "sends via Gmail API and marks contact contacted" do
+        Timecop.freeze(monday_10am_et_utc) do
           expect(client).to receive(:send_user_message).with("me", instance_of(Google::Apis::GmailV1::Message))
           worker.perform(contact.id, inbox, variant)
           expect(contact.reload.contacted).to eq(true)
         end
+      end
+
+      it "builds the correct RFC822 message body (headers + body)" do
+        captured_message = nil
+
+        Timecop.freeze(monday_10am_et_utc) do
+          allow(client).to receive(:send_user_message) do |_, msg|
+            captured_message = msg
+          end
+
+          worker.perform(contact.id, inbox, variant)
+        end
+
+        expect(captured_message).to be_a(Google::Apis::GmailV1::Message)
+
+        raw = captured_message.raw
+
+        # Future-proof: decode if it's base64url; otherwise treat as plain text.
+        decoded =
+          begin
+            Base64.urlsafe_decode64(raw)
+          rescue ArgumentError
+            raw
+          end
+
+        # RFC822 assertions
+        expect(decoded).to include("To: #{contact.email}")
+        expect(decoded).to include("From: #{inbox['from_name']} <#{inbox['email']}>")
+        expect(inbox["from_name"]).to be_present
+        expect(inbox["email"]).to be_present
+        expect(decoded).to include("Reply-To: #{inbox['email']}")
+
+        # Deterministic Date: header (Timecop.freeze controls Time.now in worker)
+        expect(decoded).to match(/^Date: .+$/)
+
+        # Subject + MIME headers
+        expect(decoded).to include("Subject: #{variant['subject']}")
+        expect(decoded).to include("MIME-Version: 1.0")
+        expect(decoded).to include("Content-Type: text/html; charset=UTF-8")
+
+        # List-Unsubscribe headers
+        expect(decoded).to include("List-Unsubscribe: <https://replicate.info/contacts/#{contact.id}/unsubscribe>, <mailto:#{inbox['email']}?subject=unsubscribe>")
+        expect(decoded).to include("List-Unsubscribe-Post: List-Unsubscribe=One-Click")
+
+        # Body
+        expect(decoded).to include(variant["body_html"])
+        expect(variant["body_html"]).to include("Hi #{contact.first_name},")
       end
     end
   end
