@@ -25,8 +25,8 @@ RSpec.describe ScheduleWeeklyIncidentsWorker, type: :worker do
       allow(NextIncidentSelector).to receive(:call).and_return(EMAIL_INCIDENTS.first)
 
       Timecop.freeze do
-        expect(CreateIncidentWorker).to receive(:perform_at).with((Time.at(start_time) + 1.second).change(usec: 0), active_member_active_org_1.id, EMAIL_INCIDENTS.first)
-        expect(CreateIncidentWorker).to receive(:perform_at).with((Time.at(start_time) + 2.second).change(usec: 0), active_member_active_org_2.id, EMAIL_INCIDENTS.first)
+        expect(CreateIncidentWorker).to receive(:perform_at).with((Time.at(start_time)).change(usec: 0), active_member_active_org_1.id, EMAIL_INCIDENTS.first)
+        expect(CreateIncidentWorker).to receive(:perform_at).with((Time.at(start_time) + 1.second).change(usec: 0), active_member_active_org_2.id, EMAIL_INCIDENTS.first)
         expect(CreateIncidentWorker).not_to receive(:perform_at).with(anything, active_member_inactive_org.id, EMAIL_INCIDENTS.first)
         described_class.new.perform(nil, start_time.to_i, current_day_start)
       end
@@ -38,7 +38,7 @@ RSpec.describe ScheduleWeeklyIncidentsWorker, type: :worker do
       allow(NextIncidentSelector).to receive(:call).and_return(EMAIL_INCIDENTS.first)
 
       Timecop.freeze do
-        expect(CreateIncidentWorker).to receive(:perform_at).with((Time.at(start_time) + 1.second).change(usec: 0), active_member_active_org_1.id, EMAIL_INCIDENTS.first)
+        expect(CreateIncidentWorker).to receive(:perform_at).with((Time.at(start_time)).change(usec: 0), active_member_active_org_1.id, EMAIL_INCIDENTS.first)
         expect(CreateIncidentWorker).not_to receive(:perform_at).with(anything, active_member_active_org_2.id, anything)
         expect(CreateIncidentWorker).not_to receive(:perform_at).with(anything, inactive_member_active_org_1.id, anything)
         expect(CreateIncidentWorker).not_to receive(:perform_at).with(anything, inactive_member_active_org_2.id, anything)
@@ -55,8 +55,8 @@ RSpec.describe ScheduleWeeklyIncidentsWorker, type: :worker do
     Timecop.freeze do
       expected_base = Time.at(current_day_start).advance(hours: 12).change(usec: 0)
 
-      expect(CreateIncidentWorker).to receive(:perform_at).with(expected_base + 1.second, active_member_active_org_1.id, EMAIL_INCIDENTS.first)
-      expect(CreateIncidentWorker).to receive(:perform_at).with(expected_base + 2.second, active_member_active_org_2.id, EMAIL_INCIDENTS.first)
+      expect(CreateIncidentWorker).to receive(:perform_at).with(expected_base, active_member_active_org_1.id, EMAIL_INCIDENTS.first)
+      expect(CreateIncidentWorker).to receive(:perform_at).with(expected_base + 1.second, active_member_active_org_2.id, EMAIL_INCIDENTS.first)
 
       described_class.new.perform(nil, nil, current_day_start)
     end
@@ -68,7 +68,7 @@ RSpec.describe ScheduleWeeklyIncidentsWorker, type: :worker do
         allow(NextIncidentSelector).to receive(:call).with(active_org_1).and_return(nil)
         allow(NextIncidentSelector).to receive(:call).with(active_org_2).and_return(EMAIL_INCIDENTS.first)
 
-        expect(CreateIncidentWorker).to receive(:perform_at).with((Time.at(start_time) + 1.second).change(usec: 0), active_member_active_org_2.id, EMAIL_INCIDENTS.first)
+        expect(CreateIncidentWorker).to receive(:perform_at).with((Time.at(start_time)).change(usec: 0), active_member_active_org_2.id, EMAIL_INCIDENTS.first)
         expect(CreateIncidentWorker).not_to receive(:perform_at).with(anything, active_member_active_org_1.id, anything)
         expect(CreateIncidentWorker).not_to receive(:perform_at).with(anything, inactive_member_active_org_1.id, anything)
         expect(CreateIncidentWorker).not_to receive(:perform_at).with(anything, inactive_member_active_org_2.id, anything)

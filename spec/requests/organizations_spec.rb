@@ -8,7 +8,7 @@ RSpec.describe "OrganizationsController#create", type: :request do
     context "happy path" do
       it "creates org, owner, engineers and enqueues the scheduling job" do
         Timecop.freeze do
-          allow(ScheduleWeeklyIncidentsWorker).to receive(:perform_in)
+          allow(ScheduleWeeklyIncidentsWorker).to receive(:perform_async)
 
           params = {
             name:  "Jane Owner",
@@ -31,7 +31,7 @@ RSpec.describe "OrganizationsController#create", type: :request do
           expect(engineers).to match_array(%w[eng1@example.com eng2@example.com eng3@example.com])
           expect(org.members.pluck(:subscribed).uniq).to eq([true])
 
-          expect(ScheduleWeeklyIncidentsWorker).to have_received(:perform_in).with(5.seconds, [org.id], Time.current.to_i, Time.current.beginning_of_day.to_i)
+          expect(ScheduleWeeklyIncidentsWorker).to have_received(:perform_async).with([org.id], Time.current.to_i, Time.current.beginning_of_day.to_i)
         end
       end
     end
