@@ -37,10 +37,8 @@ RSpec.describe SanitizeAiContent do
       allow(AvatarService).to receive(:brand_avatar_row).with(first: true).and_return(avatar_tokens[:brand_first])
       allow(AvatarService).to receive(:brand_avatar_row).with(no_args).and_return(avatar_tokens[:brand])
       allow(AvatarService).to receive(:brand_avatar_row).with(name: "Overview").and_return(avatar_tokens[:brand_overview])
-      allow(AvatarService).to receive(:brand_avatar_row).with(name: "Jacob Comer", first: true, photo_path: "jacob-square.jpg")
-                                                        .and_return(avatar_tokens[:brand_jacob])
-      allow(AvatarService).to receive(:brand_avatar_row).with(name: "replicate.info")
-                                                        .and_return(avatar_tokens[:brand_replicate])
+      allow(AvatarService).to receive(:brand_avatar_row).with(name: "Jacob Comer", first: true, photo_path: "jacob-square.jpg").and_return(avatar_tokens[:brand_jacob])
+      allow(AvatarService).to receive(:brand_avatar_row).with(name: "replicate.info").and_return(avatar_tokens[:brand_replicate])
 
       # student avatars
       allow(AvatarService).to receive(:student_avatar_row).with("Taylor Morales").and_return(avatar_tokens[:student_taylor])
@@ -104,7 +102,10 @@ RSpec.describe SanitizeAiContent do
         expect(result).not_to include("<html>")
 
         # smart quotes normalized, apostrophes normalized
-        expect(result).not_to include("“").and not_to include("”").and not_to include("’").and not_to include("&#39;")
+        expect(result).not_to include("“")
+        expect(result).not_to include("”")
+        expect(result).not_to include("’")
+        expect(result).not_to include("&#39;")
         expect(result).to include('"quoted"')
         expect(result).to include("apos'")
 
@@ -116,10 +117,7 @@ RSpec.describe SanitizeAiContent do
     it "removes newlines early and squishes whitespace" do
       raw = "Line 1\n\nLine   2\nLine 3"
       result = sanitize.clean(raw)
-      # Newlines are removed before squish, so no spaces are inserted for \n
-      # but squish collapses any sequences that remain.
-      expect(result).to eq("Line1Line2Line3").or eq("Line1 Line2 Line3")
-      # (Either behavior is acceptable depending on future newline policy—this keeps the spec resilient.)
+      expect(result).to eq("Line 1Line 2Line 3")
     end
 
     it "removes specific greetings for Taylor and Casey as well" do
