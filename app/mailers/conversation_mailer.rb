@@ -11,7 +11,6 @@ class ConversationMailer < ApplicationMailer
 
     mail(
       to: conversation.recipient.email,
-      from: "loop@mail.replicate.info",
       from: '"Replicate Loop" <loop@mail.replicate.info>',
       reply_to: "loop+#{conversation.id}@mail.replicate.info",
       subject: subject,
