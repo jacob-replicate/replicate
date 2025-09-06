@@ -15,7 +15,6 @@ Tested:
 - NextIncidentSelector
 - Organization
 - OrganizationsController
-- SanitizeAiContent
 - PostmarkWebhooksController
 - ScheduleWeeklyIncidentsWorker
 - SendColdEmailWorker
@@ -25,6 +24,7 @@ Untested:
 - ColdEmailScheduler
 - ProcessPostmarkWebhookWorker
 - Contact
+- SanitizeAiContent
 - PostmarkWebhook
     - P2: Contact fetching + grading
     - P2: MessageGenerators::LandingDemo

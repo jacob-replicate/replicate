@@ -4,11 +4,10 @@ module MessageGenerators
       if @conversation.web?
         deliver_elements([AvatarService.coach_avatar_row, Prompts::CoachingIntro])
       elsif @conversation.email?
-        elements = []
+        elements = ["<p>Hey there,</p>"]
 
         recipient = @conversation.recipient
         if recipient&.engineer? && recipient.conversations.count == 1
-          elements << "<p>Hey there,</p>"
           elements << "<p>Taylor Jones signed you up for <a href='http://replicate.info'>Replicate</a>. There's no UI. GPT just shows up in your inbox with an infra puzzle every week. The more you think out loud, the more it can help uncover your blind spots (before production does).</p>"
         end
 

@@ -21,7 +21,7 @@ RSpec.describe MessageGenerators::Coaching do
       allow(conversation).to receive(:web?).and_return(false)
       allow(conversation).to receive(:email?).and_return(true)
 
-      recipient = instance_double("Recipient", conversations: double(count: 1))
+      recipient = instance_double("Recipient", engineer?: true, conversations: double(count: 1))
       allow(conversation).to receive(:recipient).and_return(recipient)
 
       expected_elements = [
@@ -41,10 +41,10 @@ RSpec.describe MessageGenerators::Coaching do
       allow(conversation).to receive(:web?).and_return(false)
       allow(conversation).to receive(:email?).and_return(true)
 
-      recipient = instance_double("Recipient", conversations: double(count: 2))
+      recipient = instance_double("Recipient", engineer?: true, id: 1234, conversations: double(count: 2))
       allow(conversation).to receive(:recipient).and_return(recipient)
 
-      expect(generator).to receive(:deliver_elements).with([Prompts::CoachingIntro])
+      expect(generator).to receive(:deliver_elements).with(["<p>Hey there,</p>", Prompts::CoachingIntro, generator.send(:unsubscribe_footer, recipient)])
       generator.deliver_intro
     end
   end
