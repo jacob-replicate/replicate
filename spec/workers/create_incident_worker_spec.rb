@@ -44,6 +44,75 @@ RSpec.describe CreateIncidentWorker, type: :worker do
       end
     end
 
+    context "3-week inactivity pause" do
+      context "when the member account is older than 3 weeks AND no user-generated messages in last 3 weeks" do
+        it "returns without creating a conversation" do
+          stale_member = create(:member,
+            organization: organization,
+            subscribed: true,
+            created_at: 2.months.ago
+          )
+
+          # Ensure there were conversations/messages, but all older than 3 weeks
+          old_conversation = create(:conversation, recipient: stale_member, created_at: 1.month.ago)
+
+          # If you have a Message factory:
+          # create(:message, conversation: old_conversation, user_generated: true, created_at: 1.month.ago)
+
+          # If not, minimally insert a message that satisfies the query (adjust attrs if your schema differs):
+          Message.create!(
+            conversation: old_conversation,
+            user_generated: true,
+            created_at: 1.month.ago,
+            content: "old reply" # adjust attribute name if needed
+          )
+
+          expect(Conversation).not_to receive(:create!)
+          worker.perform(stale_member.id, incident)
+        end
+      end
+
+      context "when the member account is older than 3 weeks BUT there was a user reply within the last 3 weeks" do
+        it "creates a conversation" do
+          returning_member = create(:member,
+            organization: organization,
+            subscribed: true,
+            created_at: 2.months.ago
+          )
+
+          recent_conversation = create(:conversation, recipient: returning_member, created_at: 2.weeks.ago)
+
+          # If you have a Message factory, prefer it:
+          # create(:message, conversation: recent_conversation, user_generated: true, created_at: 2.weeks.ago)
+
+          Message.create!(
+            conversation: recent_conversation,
+            user_generated: true,
+            created_at: 2.weeks.ago,
+            content: "recent reply" # adjust attribute name if needed
+          )
+
+          expect {
+            worker.perform(returning_member.id, incident)
+          }.to change { Conversation.count }.by(1)
+        end
+      end
+
+      context "when the member account is NEW (created within the last 3 weeks) and has not replied yet" do
+        it "creates a conversation" do
+          new_member = create(:member,
+            organization: organization,
+            subscribed: true,
+            created_at: 2.weeks.ago
+          )
+
+          expect {
+            worker.perform(new_member.id, incident)
+          }.to change { Conversation.count }.by(1)
+        end
+      end
+    end
+
     context "when all preconditions pass" do
       it "creates a conversation with the expected attributes and runs the driver worker" do
         old_conversation = create(:conversation, recipient: member, created_at: 2.days.ago)

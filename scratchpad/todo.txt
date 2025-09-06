@@ -1,5 +1,5 @@
 Transactional
-- Footer business address + working unsubscribe link (with confirmation)
+- Working unsubscribe link (with confirmation)
 
 Tested:
 - ApplicationController
@@ -26,13 +26,11 @@ Untested:
 - ProcessPostmarkWebhookWorker
 - Contact
 - SanitizeAiContent
-    - P2: Contact fetching + grading
-    - P2: MessageGenerators::LandingDemo
-    - P2: Prompts::Base
-    - P2: Individual prompt classes
-    - P3: EnrichContactsWorker
-    - P3: GradeContactWorker
-    - P3: FetchContactsWorker (with email upserts)
+- EnrichContactsWorker
+- FetchContactsWorker (with email upserts)
+- GradeContactWorker
+- Prompts::Base
+- Prompts::CoachingIntro (since it has custom logic -- which you might not even need?)
 
 Content
 - More cold email variants

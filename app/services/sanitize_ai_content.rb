@@ -23,10 +23,9 @@ class SanitizeAiContent
 
     bold_start_placeholder = "___BOLD_START___"
     bold_end_placeholder = "___BOLD_END___"
-    newline_placeholder = "___NEWLINE___"
 
     response.gsub!("\n", "")
-    response.gsub('<b>', bold_start_placeholder)
+    response.gsub!('<b>', bold_start_placeholder)
     response.gsub!("</b>", bold_end_placeholder)
     response.gsub!("<html>", "")
     response = strip_tags(response).squish
@@ -41,12 +40,6 @@ class SanitizeAiContent
     response.gsub!("’", "'")
     response.gsub!("*", "")
     response.gsub!("`", "")
-    response = response.squish
-    response.gsub!(/\A#{newline_placeholder}+/, "")
-    response.gsub!(/#{newline_placeholder}+\z/, "")
-    response.gsub!(newline_placeholder, "<br/>")
-    response.gsub!(/\s*<br\/>\s*/, "<br/>")
-    response.gsub!(/(?<!<br\/>)<br\/>(?!<br\/>)/, "")
     response.gsub!(bold_start_placeholder, "<b class='font-medium'>")
     response.gsub!(bold_end_placeholder, "</b>")
 

@@ -13,9 +13,5 @@ module MessageGenerators
       deliver_elements([student_avatar_row, Prompts::LandingClosure], true)
       broadcast_to_web(type: "show_cta")
     end
-
-    def email_form
-
-    end
   end
 end
