@@ -3,7 +3,6 @@ require "rails_helper"
 RSpec.describe Message, type: :model do
   describe "associations" do
     it { should belong_to(:conversation) }
-    it { should belong_to(:user).optional }
   end
 
   describe "validations" do
@@ -85,6 +84,52 @@ RSpec.describe Message, type: :model do
         expect(ConversationChannel).not_to have_received(:broadcast_to)
         expect(ConversationDriverWorker).not_to have_received(:perform_async)
       end
+    end
+  end
+
+  describe "#plain_text_content" do
+    it "strips HTML tags and returns plain text" do
+      message = create(:message, content: "<p>Hello <b>world</b></p>")
+      expect(message.plain_text_content).to eq("Hello world")
+    end
+
+    it "removes the literal unsubscribe marker '- Unsubscribe'" do
+      message = create(:message, content: "Some text - Unsubscribe")
+      expect(message.plain_text_content).to eq("Some text")
+    end
+
+    it "returns an empty string if content is only the unsubscribe marker" do
+      message = create(:message, content: "- Unsubscribe")
+      expect(message.plain_text_content).to eq("")
+    end
+  end
+
+  describe "after_create :generate_email_message_id_header" do
+    let(:email_conversation) { create(:conversation, channel: "email") }
+    let(:web_conversation)   { create(:conversation, channel: "web") }
+
+    it "sets email_message_id_header for system messages in email conversations" do
+      msg = create(:message, conversation: email_conversation, user_generated: false, content: "system hello")
+      expect(msg.reload.email_message_id_header).to eq("<message-#{msg.id}@mail.replicate.info>")
+    end
+
+    it "does NOT set email_message_id_header for user-generated messages (even in email conversations)" do
+      msg = create(:message, conversation: email_conversation, user_generated: true, content: "user hello")
+      expect(msg.reload.email_message_id_header).to be_nil
+    end
+
+    it "does NOT set email_message_id_header for system messages in non-email conversations" do
+      msg = create(:message, conversation: web_conversation, user_generated: false, content: "system on web")
+      expect(msg.reload.email_message_id_header).to be_nil
+    end
+
+    it "wraps the id in angle brackets and uses the message id" do
+      msg = create(:message, conversation: email_conversation, user_generated: false, content: "check format")
+      header = msg.reload.email_message_id_header
+
+      expect(header).to start_with("<")
+      expect(header).to end_with(">")
+      expect(header).to include("message-#{msg.id}@mail.replicate.info")
     end
   end
 end

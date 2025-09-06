@@ -43,7 +43,6 @@ module MessageGenerators
         broadcast_to_web(type: "done")
         @message_sequence = @conversation.next_message_sequence
       elsif @conversation.email?
-        message.update(email_message_id_header: "<message-#{message.id}@mail.replicate.info>")
         ConversationMailer.drive(@conversation).deliver_now
       end
     end

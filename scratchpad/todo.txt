@@ -1,5 +1,5 @@
 Transactional
-- Working unsubscribe link (with confirmation)
+- Working unsubscribe link (with confirmation? - https://postmarkapp.com/blog/list-unsubscribe-header says one-click enforced?)
 
 Tested:
 - ApplicationController

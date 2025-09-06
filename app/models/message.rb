@@ -1,16 +1,25 @@
 class Message < ApplicationRecord
   belongs_to :conversation
-  belongs_to :user, optional: true
 
   validates :content, presence: true
 
   after_create :deliver_user_message_to_web
   after_create :schedule_system_reply
+  after_create :generate_email_message_id_header
 
   scope :system, -> { where(user_generated: false) }
   scope :user, -> { where(user_generated: true) }
 
+  def plain_text_content
+    ActionView::Base.full_sanitizer.sanitize(content).gsub(/\s*\-\s*Unsubscribe\z/, "")
+  end
+
   private
+
+  def generate_email_message_id_header
+    return unless conversation.email? && !(user_generated)
+    update!(email_message_id_header: "<message-#{id}@mail.replicate.info>")
+  end
 
   def demo_message?
     conversation.context["conversation_type"] == "landing_demo"
