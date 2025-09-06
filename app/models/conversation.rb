@@ -11,11 +11,11 @@ class Conversation < ApplicationRecord
   end
 
   def latest_user_message
-    messages.where(user_generated: true).order(created_at: :desc).first&.content.to_s
+    messages.where(user_generated: true).order(created_at: :desc).first
   end
 
   def latest_system_message
-    messages.where(user_generated: false).order(created_at: :desc).first&.content.to_s
+    messages.where(user_generated: false).order(created_at: :desc).first
   end
 
   def latest_author

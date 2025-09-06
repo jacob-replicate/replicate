@@ -37,12 +37,13 @@ module MessageGenerators
 
       return if full_response.blank?
       full_response.gsub!(/\n\z/, "")
-      @conversation.messages.create!(content: full_response, user_generated: user_generated)
+      message = @conversation.messages.create!(content: full_response, user_generated: user_generated)
 
       if @conversation.web?
         broadcast_to_web(type: "done")
         @message_sequence = @conversation.next_message_sequence
       elsif @conversation.email?
+        message.update(email_message_id_header: "<message-#{message.id}@mail.replicate.info>")
         ConversationMailer.drive(@conversation).deliver_now
       end
     end

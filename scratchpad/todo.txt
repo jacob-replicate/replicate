@@ -16,16 +16,16 @@ Tested:
 - Organization
 - OrganizationsController
 - PostmarkWebhooksController
+- SanitizeAiContent
 - ScheduleWeeklyIncidentsWorker
 - SendColdEmailWorker
 - PostmarkWebhook
 
 Untested:
-- ConversationMailer
-- ColdEmailScheduler
 - ProcessPostmarkWebhookWorker
+- ConversationMailer
+- ColdEmailScheduler (Don't email people from the same domain multiple times in the same month)
 - Contact
-- SanitizeAiContent
 - EnrichContactsWorker
 - FetchContactsWorker (with email upserts)
 - GradeContactWorker
@@ -38,7 +38,6 @@ Content
 - Tweak the example conversation on the homepage? Did you lose something while tweaking the coaching reply? It's more blog posty. Just revert to a few weeks ago?
 
 Misc
-- Don't email people from the same domain multiple times in the same month
 - Don't send weekly emails to people who bounced. Bounce check on cold, not on transactional?
 
 Legal

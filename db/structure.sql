@@ -108,7 +108,8 @@ CREATE TABLE public.messages (
     conversation_id character varying,
     user_generated boolean,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    email_message_id_header text
 );
 
 
@@ -314,6 +315,7 @@ CREATE UNIQUE INDEX index_users_on_unlock_token ON public.users USING btree (unl
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250906162252'),
 ('20250905012419'),
 ('20250905012103'),
 ('20250904212124'),

@@ -46,6 +46,7 @@ RSpec.describe "Postmark Webhooks", type: :request do
       "StrippedTextReply" => "This is the reply text",
       "Tag" => "TestTag",
       "Headers" => [
+        { "Name" => "Message-ID", "Value" => "<CAF12345abc@mail.gmail.com>" },
         { "Name" => "X-Header-Test", "Value" => "" },
         { "Name" => "X-Spam-Status", "Value" => "No" },
         { "Name" => "X-Spam-Score", "Value" => "-0.1" },

@@ -36,15 +36,15 @@ RSpec.describe Conversation, type: :model do
       create(:message, conversation:, user_generated: false, content: "system a", created_at: 1.hour.ago)
       create(:message, conversation:, user_generated: false, content: "system b", created_at: 10.minutes.ago)
 
-      expect(conversation.latest_user_message).to eq("")
+      expect(conversation.latest_user_message).to eq(nil)
     end
 
     it "returns the content of the most recent user message" do
       conversation = create(:conversation)
       create(:message, conversation:, user_generated: true, content: "older user", created_at: 2.hours.ago)
-      create(:message, conversation:, user_generated: true, content: "newer user", created_at: 5.minutes.ago)
+      newer_message = create(:message, conversation:, user_generated: true, content: "newer user", created_at: 5.minutes.ago)
 
-      expect(conversation.latest_user_message).to eq("newer user")
+      expect(conversation.latest_user_message).to eq(newer_message)
     end
   end
 
@@ -53,15 +53,15 @@ RSpec.describe Conversation, type: :model do
       conversation = create(:conversation)
       create(:message, conversation:, user_generated: true, content: "user a", created_at: 30.minutes.ago)
 
-      expect(conversation.latest_system_message).to eq("")
+      expect(conversation.latest_system_message).to eq(nil)
     end
 
     it "returns the content of the most recent system message" do
       conversation = create(:conversation)
       create(:message, conversation:, user_generated: false, content: "older sys", created_at: 1.hour.ago)
-      create(:message, conversation:, user_generated: false, content: "newer sys", created_at: 2.minutes.ago)
+      newer_message = create(:message, conversation:, user_generated: false, content: "newer sys", created_at: 2.minutes.ago)
 
-      expect(conversation.latest_system_message).to eq("newer sys")
+      expect(conversation.latest_system_message).to eq(newer_message)
     end
   end
 
