@@ -80,21 +80,10 @@ module Prompts
       patterns.any? { |r| text =~ r }
     end
 
-    def sentence_count_valid?(text)
-      text.strip.scan(/[^.!?]+[.!?]/).size.between?(2, 4)
-    end
-
     def long_sentence(text)
       text.strip.split(/(?<=[.!?])\s+/).find do |s|
         s.split.size > 20 && !s.strip.end_with?("?")
       end
-    end
-
-    def question_references_first_noun?(lines)
-      first = lines.first
-      last = lines.last
-      noun = UI_NOUNS.find { |n| first =~ /\b#{Regexp.escape(n)}\b/i }
-      noun && last =~ /\b#{Regexp.escape(noun)}\b/i
     end
 
     def redundant_sentences?(text)

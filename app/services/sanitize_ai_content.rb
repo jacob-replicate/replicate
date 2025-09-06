@@ -2,7 +2,7 @@ class SanitizeAiContent
   include ActionView::Helpers::SanitizeHelper
 
   def self.call(response)
-    new.clean(response)
+    new.clean(response.to_s)
   end
 
   def clean(response)
@@ -17,7 +17,7 @@ class SanitizeAiContent
       AvatarService.student_avatar_row("Taylor Morales"),
       AvatarService.student_avatar_row("Casey Patel"),
       AvatarService.student_avatar_row("Alex Shaw")
-    ]
+    ].reject(&:blank?)
 
     avatars.each { |avatar| response.gsub!(avatar, "") }
 
