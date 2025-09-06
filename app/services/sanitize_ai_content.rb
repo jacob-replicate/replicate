@@ -2,13 +2,10 @@ class SanitizeAiContent
   include ActionView::Helpers::SanitizeHelper
 
   def self.call(response)
-    new.clean(response)  # delegate to instance method
+    new.clean(response)
   end
 
   def clean(response)
-    Rails.logger.info "\n\n"
-    Rails.logger.info "Original AI Response: #{response}"
-    Rails.logger.info "\n\n"
     avatars = [
       AvatarService.coach_avatar_row(first: true),
       AvatarService.coach_avatar_row,
@@ -41,7 +38,7 @@ class SanitizeAiContent
     response.gsub!("”", "\"")
     response.gsub!("&#39;", "'")
     response.gsub!("’", "'")
-    response.gsub!("**", "")
+    response.gsub!("*", "")
     response.gsub!("`", "")
     response = response.squish
     response.gsub!(/\A#{newline_placeholder}+/, "")
@@ -51,9 +48,6 @@ class SanitizeAiContent
     response.gsub!(/(?<!<br\/>)<br\/>(?!<br\/>)/, "")
     response.gsub!(bold_start_placeholder, "<b class='font-medium'>")
     response.gsub!(bold_end_placeholder, "</b>")
-
-    puts "Cleaned AI Response: #{response.squish.html_safe}"
-    Rails.logger.info "\n\n"
 
     response.squish.html_safe
   end

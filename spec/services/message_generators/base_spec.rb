@@ -93,7 +93,7 @@ RSpec.describe MessageGenerators::Base do
       generator = MessageGenerators::Base.new(conversation)
 
       mailer_double = double("Mailer", deliver_now: true)
-      expect(ConversationsMailer).to receive(:drive).with(conversation).and_return(mailer_double)
+      expect(ConversationMailer).to receive(:drive).with(conversation).and_return(mailer_double)
       expect(mailer_double).to receive(:deliver_now)
 
       expect(Prompts::CoachingReply).to receive(:new).with(conversation: conversation).and_return(double(call: "GPT reply"))

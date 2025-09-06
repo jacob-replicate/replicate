@@ -21,5 +21,5 @@ every :weekday, at: '7:00am' do
 end
 
 every 1.minutes do
-  sh "cd /home/jacob/code/replicate && bin/rails runner 'CronTestWorkerV2.perform_async' >> /home/jacob/cron_log.log 2>&1"
+  # sh "cd /home/jacob/code/replicate && bin/rails runner 'CronTestWorkerV2.perform_async' >> /home/jacob/cron_log.log 2>&1"
 end

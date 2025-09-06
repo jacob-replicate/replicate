@@ -3,7 +3,7 @@ class ConversationsPreview < ActionMailer::Preview
 
   # Preview this email at http://localhost:3000/rails/mailers/conversations/drive
   def drive
-    ConversationsMailer.drive
+    ConversationMailer.drive
   end
 
 end

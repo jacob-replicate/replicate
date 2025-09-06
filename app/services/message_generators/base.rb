@@ -43,7 +43,7 @@ module MessageGenerators
         broadcast_to_web(type: "done")
         @message_sequence = @conversation.next_message_sequence
       elsif @conversation.email?
-        ConversationsMailer.drive(@conversation).deliver_now
+        ConversationMailer.drive(@conversation).deliver_now
       end
     end
 

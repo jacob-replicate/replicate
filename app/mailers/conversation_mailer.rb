@@ -1,4 +1,4 @@
-class ConversationsMailer < ApplicationMailer
+class ConversationMailer < ApplicationMailer
   default 'X-TM-MessageType' => 'transactional'
 
   def drive(conversation)
