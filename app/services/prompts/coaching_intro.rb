@@ -45,7 +45,8 @@ module Prompts
       intro_paragraph = fetch_valid_response
       return "" if intro_paragraph.nil?
 
-      intro_paragraph + "<br/><br/><b class='font-medium'>#{questions.sample}</b>".html_safe
+      classes = (@conversation.present? && @conversation.web?) ? " class='font-medium'" : ""
+      intro_paragraph + "<p><b#{classes}>#{questions.sample}</b></p>".html_safe
     end
 
     private

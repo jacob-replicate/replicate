@@ -3,8 +3,8 @@ class AvatarService
     avatar_row(first: first)
   end
 
-  def self.brand_avatar_row(first: false, name: "replicate.info")
-    avatar_row(first: first, name: name, photo_path: "logo.png")
+  def self.brand_avatar_row(first: false, name: "replicate.info", photo_path: "logo.png")
+    avatar_row(first: first, name: name, photo_path: photo_path)
   end
 
   def self.student_avatar_row(engineer_name)

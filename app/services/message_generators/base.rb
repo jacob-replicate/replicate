@@ -61,5 +61,12 @@ module MessageGenerators
     def sanitize_response(message)
       message.to_s.gsub("<pre>", "").gsub("</pre>", "").squish.html_safe
     end
+
+    private
+
+    def unsubscribe_footer(member)
+      footer = "Replicate Software, LLC - 131 Continental Dr, Suite 305, Newark, DE - <a href='https://replicate.info/members/#{member.id}/unsubscribe'>Unsubscribe</a>"
+      "<p style=\"font-size: 80%; opacity: 0.6\">#{footer}</p>"
+    end
   end
 end

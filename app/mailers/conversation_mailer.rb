@@ -7,12 +7,14 @@ class ConversationMailer < ApplicationMailer
     headers['References']  = conversation.id # TODO: Does this need to reference the previous message? Process the webhook for the user's message first?
     headers['List-Unsubscribe'] = "https://replicate.info/members/#{conversation.recipient_id}/unsubscribe"
 
+    subject = conversation.recipient.conversations.count == 1 ? "[SEV-1 Training] #{conversation.subject_line}" : conversation.subject_line
+
     mail(
       to: conversation.recipient.email,
       from: "loop@mail.replicate.info",
       from: '"Replicate Loop" <loop@mail.replicate.info>',
       reply_to: "loop+#{conversation.id}@mail.replicate.info",
-      subject: conversation.subject_line,
+      subject: subject,
       message_stream: 'outbound',
       content_type: 'text/html',
       body: conversation.latest_system_message

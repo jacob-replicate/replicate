@@ -12,6 +12,7 @@ class SanitizeAiContent
       AvatarService.brand_avatar_row(first: true),
       AvatarService.brand_avatar_row,
       AvatarService.brand_avatar_row(name: "Overview"),
+      AvatarService.brand_avatar_row(name: "Jacob Comer", first: true, photo_path: "jacob-square.jpg"),
       AvatarService.brand_avatar_row(name: "replicate.info"),
       AvatarService.student_avatar_row("Taylor Morales"),
       AvatarService.student_avatar_row("Casey Patel"),
@@ -24,7 +25,7 @@ class SanitizeAiContent
     bold_end_placeholder = "___BOLD_END___"
     newline_placeholder = "___NEWLINE___"
 
-    response.gsub!("\n", newline_placeholder)
+    response.gsub!("\n", "")
     response.gsub('<b>', bold_start_placeholder)
     response.gsub!("</b>", bold_end_placeholder)
     response.gsub!("<html>", "")

@@ -1,5 +1,5 @@
 Transactional
-- Unsubscribe page with confirmation form for members
+- Footer business address + working unsubscribe link (with confirmation)
 
 Tested:
 - ApplicationController

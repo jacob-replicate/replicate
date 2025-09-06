@@ -17,9 +17,32 @@ RSpec.describe MessageGenerators::Coaching do
       generator.deliver_intro
     end
 
-    it "delivers email intro when conversation is email" do
+    it "delivers full email intro when first conversation for recipient" do
       allow(conversation).to receive(:web?).and_return(false)
       allow(conversation).to receive(:email?).and_return(true)
+
+      recipient = instance_double("Recipient", conversations: double(count: 1))
+      allow(conversation).to receive(:recipient).and_return(recipient)
+
+      expected_elements = [
+        "<p>Hey there,</p>",
+        "<p>Taylor Jones signed you up for <a href='http://replicate.info'>Replicate</a>. There's no UI. GPT just shows up in your inbox with an infra puzzle every week. The more you think out loud, the more it can help uncover your blind spots (before production does).</p>",
+        Prompts::CoachingIntro,
+        instance_of(String) # unsubscribe_footer
+      ]
+
+      expect(generator).to receive(:unsubscribe_footer).with(recipient).and_return(expected_elements.last)
+      expect(generator).to receive(:deliver_elements).with(expected_elements)
+
+      generator.deliver_intro
+    end
+
+    it "delivers minimal email intro when recipient has other conversations" do
+      allow(conversation).to receive(:web?).and_return(false)
+      allow(conversation).to receive(:email?).and_return(true)
+
+      recipient = instance_double("Recipient", conversations: double(count: 2))
+      allow(conversation).to receive(:recipient).and_return(recipient)
 
       expect(generator).to receive(:deliver_elements).with([Prompts::CoachingIntro])
       generator.deliver_intro
