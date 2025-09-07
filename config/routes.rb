@@ -24,6 +24,7 @@ Rails.application.routes.draw do
   get "/security", to: "static#security"
   get '/sev', to: "static#coaching"
   get '/contacts/:id/unsubscribe', to: "contacts#unsubscribe"
+  post '/contacts/:id/unsubscribe', to: "contacts#unsubscribe"
 
   resources :conversations, only: [:create, :show]
   resources :messages, only: [:create]

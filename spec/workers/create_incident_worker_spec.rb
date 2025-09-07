@@ -56,16 +56,7 @@ RSpec.describe CreateIncidentWorker, type: :worker do
           # Ensure there were conversations/messages, but all older than 3 weeks
           old_conversation = create(:conversation, recipient: stale_member, created_at: 1.month.ago)
 
-          # If you have a Message factory:
-          # create(:message, conversation: old_conversation, user_generated: true, created_at: 1.month.ago)
-
-          # If not, minimally insert a message that satisfies the query (adjust attrs if your schema differs):
-          Message.create!(
-            conversation: old_conversation,
-            user_generated: true,
-            created_at: 1.month.ago,
-            content: "old reply" # adjust attribute name if needed
-          )
+          create(:message, conversation: old_conversation, user_generated: true, created_at: 1.month.ago)
 
           expect(Conversation).not_to receive(:create!)
           worker.perform(stale_member.id, incident)
@@ -81,16 +72,9 @@ RSpec.describe CreateIncidentWorker, type: :worker do
           )
 
           recent_conversation = create(:conversation, recipient: returning_member, created_at: 2.weeks.ago)
+          create(:message, conversation: recent_conversation, user_generated: true, created_at: 2.weeks.ago)
 
-          # If you have a Message factory, prefer it:
-          # create(:message, conversation: recent_conversation, user_generated: true, created_at: 2.weeks.ago)
-
-          Message.create!(
-            conversation: recent_conversation,
-            user_generated: true,
-            created_at: 2.weeks.ago,
-            content: "recent reply" # adjust attribute name if needed
-          )
+          expect_any_instance_of(Prompts::Base).to receive(:fetch_raw_output).and_return("Imagine a status page shows read replica lag at 15ms for a week straight. Query durations spike briefly after large write operations, but dashboards for writes, reads, and connection pools all stay green.")
 
           expect {
             worker.perform(returning_member.id, incident)
@@ -105,6 +89,8 @@ RSpec.describe CreateIncidentWorker, type: :worker do
             subscribed: true,
             created_at: 2.weeks.ago
           )
+
+          expect_any_instance_of(Prompts::Base).to receive(:fetch_raw_output).and_return("Imagine a status page shows read replica lag at 15ms for a week straight. Query durations spike briefly after large write operations, but dashboards for writes, reads, and connection pools all stay green.")
 
           expect {
             worker.perform(new_member.id, incident)

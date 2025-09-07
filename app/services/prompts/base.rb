@@ -35,6 +35,8 @@ module Prompts
     end
 
     def fetch_raw_output
+      raise if Rails.env.test?
+
       response = OpenAI::Client.new.chat.completions.create(
         messages: Array(@conversation&.message_history) + [{ role: "system", content: instructions }],
         model: "gpt-4o-2024-11-20"
