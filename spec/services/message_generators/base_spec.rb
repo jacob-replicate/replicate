@@ -100,7 +100,7 @@ RSpec.describe MessageGenerators::Base do
       generator.deliver_elements([Prompts::CoachingReply, "hardcoded signature"])
 
       message = conversation.messages.last
-      expect(message.content).to eq("<p>GPT reply</p>\nhardcoded signature")
+      expect(message.content).to eq("GPT reply\nhardcoded signature")
       expect(message.email_message_id_header).to eq("<message-#{message.id}@mail.replicate.info>")
     end
   end

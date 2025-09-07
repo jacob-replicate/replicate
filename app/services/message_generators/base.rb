@@ -23,7 +23,9 @@ module MessageGenerators
       full_response = ""
 
       elements.each_with_index do |element, i|
-        text = element.is_a?(String) ? element.html_safe : "<p>#{element.new(conversation: @conversation).call}</p>"
+        p_start = @conversation&.web? ? "<p>" : ""
+        p_end = @conversation&.web? ? "</p>" : ""
+        text = element.is_a?(String) ? element.html_safe : "#{p_start}#{element.new(conversation: @conversation).call}#{p_end}"
         text = sanitize_response(text)
         next if text.blank?
 
@@ -66,7 +68,7 @@ module MessageGenerators
 
     def unsubscribe_footer(member)
       footer = "Replicate Software, LLC - 131 Continental Dr, Suite 305, Newark, DE - <a href='https://replicate.info/members/#{member.id}/unsubscribe'>Unsubscribe</a>"
-      "<p style=\"font-size: 80%; opacity: 0.6\">#{footer}</p>"
+      "<br/><div style=\"font-size: 80%; opacity: 0.6\">#{footer}</div>"
     end
   end
 end

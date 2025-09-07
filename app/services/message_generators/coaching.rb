@@ -4,11 +4,12 @@ module MessageGenerators
       if @conversation.web?
         deliver_elements([AvatarService.coach_avatar_row, Prompts::CoachingIntro])
       elsif @conversation.email?
-        elements = ["<p>Hey there,</p>"]
+        elements = ["Hey there,<br/>"]
 
         recipient = @conversation.recipient
         if recipient&.engineer? && recipient.conversations.count == 1
-          elements << "<p>Taylor Jones signed you up for <a href='http://replicate.info'>Replicate</a>. There's no UI. GPT just shows up in your inbox with an infra puzzle every week. The more you think out loud, the more it can help uncover your blind spots (before production does).</p>"
+          owner_name = @conversation.recipient.organization.members.find_by(role: "owner")&.name || "One of your teammates"
+          elements << "#{owner_name} signed you up for <a href='http://replicate.info'>Replicate</a>. There's no UI. GPT just shows up in your inbox with an infra puzzle every week. The more you think out loud, the more it can help uncover your blind spots (before production does).<br/>"
         end
 
         elements << Prompts::CoachingIntro

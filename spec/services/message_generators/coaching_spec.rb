@@ -1,8 +1,11 @@
 require "rails_helper"
 
 RSpec.describe MessageGenerators::Coaching do
-  let(:conversation) { create(:conversation) }
-  let(:generator)    { described_class.new(conversation) }
+  let!(:organization) { create(:organization) }
+  let!(:owner)        { create(:member, role: "owner", organization: organization, name: "Jacob Comer") }
+  let!(:conversation) { create(:conversation, recipient: create(:member, role: "engineer", organization: organization)) }
+  let!(:recipient) { conversation.recipient }
+  let!(:generator)    { described_class.new(conversation) }
 
   describe "#deliver_intro" do
     before do
@@ -21,17 +24,30 @@ RSpec.describe MessageGenerators::Coaching do
       allow(conversation).to receive(:web?).and_return(false)
       allow(conversation).to receive(:email?).and_return(true)
 
-      recipient = instance_double("Recipient", engineer?: true, conversations: double(count: 1))
-      allow(conversation).to receive(:recipient).and_return(recipient)
-
       expected_elements = [
-        "<p>Hey there,</p>",
-        "<p>Taylor Jones signed you up for <a href='http://replicate.info'>Replicate</a>. There's no UI. GPT just shows up in your inbox with an infra puzzle every week. The more you think out loud, the more it can help uncover your blind spots (before production does).</p>",
+        "Hey there,<br/>",
+        "#{owner.name} signed you up for <a href='http://replicate.info'>Replicate</a>. There's no UI. GPT just shows up in your inbox with an infra puzzle every week. The more you think out loud, the more it can help uncover your blind spots (before production does).<br/>",
         Prompts::CoachingIntro,
-        instance_of(String) # unsubscribe_footer
+        generator.send(:unsubscribe_footer, recipient)
       ]
 
-      expect(generator).to receive(:unsubscribe_footer).with(recipient).and_return(expected_elements.last)
+      expect(generator).to receive(:deliver_elements).with(expected_elements)
+
+      generator.deliver_intro
+    end
+
+    it "delivers full email intro when first conversation for recipient (even without owner)" do
+      allow(conversation).to receive(:web?).and_return(false)
+      allow(conversation).to receive(:email?).and_return(true)
+      owner.destroy
+
+      expected_elements = [
+        "Hey there,<br/>",
+        "One of your teammates signed you up for <a href='http://replicate.info'>Replicate</a>. There's no UI. GPT just shows up in your inbox with an infra puzzle every week. The more you think out loud, the more it can help uncover your blind spots (before production does).<br/>",
+        Prompts::CoachingIntro,
+        generator.send(:unsubscribe_footer, recipient)
+      ]
+
       expect(generator).to receive(:deliver_elements).with(expected_elements)
 
       generator.deliver_intro
@@ -44,7 +60,7 @@ RSpec.describe MessageGenerators::Coaching do
       recipient = instance_double("Recipient", engineer?: true, id: 1234, conversations: double(count: 2))
       allow(conversation).to receive(:recipient).and_return(recipient)
 
-      expect(generator).to receive(:deliver_elements).with(["<p>Hey there,</p>", Prompts::CoachingIntro, generator.send(:unsubscribe_footer, recipient)])
+      expect(generator).to receive(:deliver_elements).with(["Hey there,<br/>", Prompts::CoachingIntro, generator.send(:unsubscribe_footer, recipient)])
       generator.deliver_intro
     end
   end
