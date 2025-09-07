@@ -3,6 +3,7 @@ class FetchContactScheduler
     if job_title_keywords.blank?
       job_title_keywords = leadership_keywords
     end
+
     job_title_keywords.map(&:downcase).uniq.each_with_index do |keyword, i|
       ScheduleContactFetchingWorker.perform_in((i * 2).minutes, keyword)
     end
