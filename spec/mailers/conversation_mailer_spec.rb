@@ -12,7 +12,7 @@ RSpec.describe ConversationMailer, type: :mailer do
 
         expect(mail.to).to eq([recipient.email])
         expect(mail.from).to eq(["loop@mail.replicate.info"])
-        expect(mail.reply_to).to eq(["loop+#{conversation.id}@mail.replicate.info"])
+        expect(mail.reply_to).to eq(["loop@mail.replicate.info"])
         expect(recipient.conversations.count).to eq(1)
         expect(mail.subject).to eq("[SEV-1 Training] #{conversation.subject_line}")
         expect(mail.multipart?).to be(true)

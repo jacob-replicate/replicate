@@ -28,7 +28,6 @@ Untested:
 - ColdEmailScheduler (Don't email people from the same domain multiple times in the same month)
 - Contact
 - EnrichContactsWorker
-- FetchContactsWorker (with email upserts)
 - Prompts::Base
 - Prompts::CoachingIntro (since it has custom logic -- which you might not even need?)
 

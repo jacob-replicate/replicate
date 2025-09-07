@@ -1,4 +1,3 @@
-# frozen_string_literal: true
 require "rails_helper"
 
 RSpec.describe PostmarkWebhook, type: :model do
@@ -10,7 +9,7 @@ RSpec.describe PostmarkWebhook, type: :model do
       "To" => "\"Firstname Lastname\" <yourhash+SampleHash@inbound.postmarkapp.com>",
       "Subject" => "Test subject",
       "MessageID" => "73e6d360-66eb-11e1-8e72-a8904824019b",
-      "TextBody" => "This is a test text body.",
+      "StrippedTextReply" => "This is a test text body.",
       "Headers" => [
         { "Name" => "Message-ID", "Value" => "<CAF12345abc@mail.gmail.com>" },
         { "Name" => "X-Spam-Status", "Value" => "No" }
@@ -21,7 +20,7 @@ RSpec.describe PostmarkWebhook, type: :model do
   let(:webhook) { build(:postmark_webhook, content: payload) }
 
   describe "associations" do
-    it { is_expected.to belong_to(:conversation).optional }
+    it { should belong_to(:conversation).optional }
   end
 
   describe "#message" do
