@@ -67,4 +67,59 @@ RSpec.describe PostmarkWebhook, type: :model do
       expect(w.rfc_message_id).to be_nil
     end
   end
+
+  describe "#in_reply_to_message" do
+    let!(:conversation) { create(:conversation) }
+
+    it "finds the message via In-Reply-To header when present" do
+      parent = create(:message, conversation:, content: "parent", email_message_id_header: "<parent@mail.replicate.info>")
+
+      w = build(:postmark_webhook, content: payload.merge(
+        "Headers" => [
+          { "Name" => "In-Reply-To", "Value" => "<parent@mail.replicate.info>" },
+          { "Name" => "Message-ID",  "Value" => "<child@mail.replicate.info>" }
+        ]
+      ))
+
+      expect(w.in_reply_to_message).to eq(parent)
+    end
+
+    it "falls back to References when In-Reply-To is absent/blank" do
+      # Only one of the references actually exists to keep selection deterministic
+      referenced = create(:message, conversation:, content: "in chain", email_message_id_header: "<exists@mail.replicate.info>")
+
+      w = build(:postmark_webhook, content: payload.merge(
+        "Headers" => [
+          { "Name" => "References", "Value" => "<nope@mail.replicate.info> <exists@mail.replicate.info> <alsonope@mail.replicate.info>" },
+          { "Name" => "Message-ID", "Value" => "<child@mail.replicate.info>" }
+        ]
+      ))
+
+      expect(w.in_reply_to_message).to eq(referenced)
+    end
+
+    it "returns nil when neither In-Reply-To nor References is present" do
+      w = build(:postmark_webhook, content: payload.merge("Headers" => []))
+      expect(w.in_reply_to_message).to be_nil
+    end
+
+    it "returns nil when headers are present but empty/blank" do
+      w = build(:postmark_webhook, content: payload.merge(
+        "Headers" => [
+          { "Name" => "In-Reply-To", "Value" => "" },
+          { "Name" => "References",  "Value" => "" }
+        ]
+      ))
+      expect(w.in_reply_to_message).to be_nil
+    end
+
+    it "returns nil when no matching Message exists for the referenced IDs" do
+      w = build(:postmark_webhook, content: payload.merge(
+        "Headers" => [
+          { "Name" => "In-Reply-To", "Value" => "<unknown@mail.replicate.info>" }
+        ]
+      ))
+      expect(w.in_reply_to_message).to be_nil
+    end
+  end
 end
