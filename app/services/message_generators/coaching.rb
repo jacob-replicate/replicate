@@ -4,7 +4,7 @@ module MessageGenerators
       if @conversation.web?
         deliver_elements([AvatarService.coach_avatar_row, Prompts::CoachingIntro])
       elsif @conversation.email?
-        elements = ["Hey there,<br/>"]
+        elements = ["Hey there,"]
 
         recipient = @conversation.recipient
         if recipient&.engineer? && recipient.conversations.count == 1
