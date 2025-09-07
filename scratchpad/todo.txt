@@ -1,3 +1,8 @@
+Product
+- Remove <p> + random padding top at the top of emails. (e.g., "Hey there" lines, initial line of replies)
+- Add a "check your spam folder" message to the homepage after you submit the form
+- Add the monday cron job back to Heroku
+
 Tested:
 - ApplicationController
 - ColdEmailVariants
@@ -22,9 +27,9 @@ Tested:
 - FetchContactsScheduler
 - ScheduleContactFetchingWorker
 - SendColdEmailWorker
+- ProcessPostmarkWebhookWorker
 
 Untested:
-- ProcessPostmarkWebhookWorker
 - ColdEmailScheduler (Don't email people from the same domain multiple times in the same month)
 - Contact
 - EnrichContactsWorker
