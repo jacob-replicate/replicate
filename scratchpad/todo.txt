@@ -18,6 +18,9 @@ Tested:
 - PostmarkWebhooksController
 - SanitizeAiContent
 - ScheduleWeeklyIncidentsWorker
+- FetchContactsWorker
+- FetchContactsScheduler
+- ScheduleContactFetchingWorker
 - SendColdEmailWorker
 
 Untested:

@@ -69,14 +69,6 @@ class Contact < ApplicationRecord
     }
   end
 
-  def self.fetch(title)
-    page_count = FetchContactsWorker.new.perform(title, 1, true)["total_pages"]
-
-    1.upto(page_count) do |page|
-      FetchContactsWorker.perform_in((page * 5).seconds, title, page)
-    end
-  end
-
   def self.enrich_top_leads(limit: 100)
     i = 0
     Contact.unenriched.order(score: :desc).find_in_batches(batch_size: 10) do |batch|
@@ -107,76 +99,6 @@ class Contact < ApplicationRecord
       contacts = scope.where(score: score)
       conversation_count = Conversation.where(recipient_id: contacts.pluck(:id)).count
       puts "Score #{score}: #{contacts.count} contacts, #{conversation_count} conversations"
-    end
-  end
-
-  def self.fetch_all
-    ic_keywords = [
-      "application security",
-      "backend",
-      "cloud",
-      "infrastructure",
-      "internal tools",
-      "lead",
-      "software",
-      "observability",
-      "platform",
-      "principal",
-      "security",
-      "senior staff",
-      "site reliability",
-      "sre",
-      "staff",
-      "tooling",
-    ]
-
-    leadership_keywords = [
-      "director of engineering",
-      "engineering director",
-      "director of infrastructure",
-      "director of sre",
-      "director of platform",
-      "director of devops",
-      "director of cloud",
-#      "director of security engineering",
-      "head of engineering",
-      "head of infrastructure",
-      "head of sre",
-      "head of platform",
-      "head of devops",
-#      "head of security engineering",
-      "vp engineering",
-      "vp of engineering",
-      "vp platform",
-      "vp infrastructure",
-      "vp sre",
-      "vp devops",
-      "vp cloud",
-#      "vp security engineering",
-#      "cto",
-#      "chief technology officer",
-#      "chief information officer",
-#      "cio",
-#      "senior engineering manager",
-#      "senior manager infrastructure",
-#      "senior manager sre",
-#      "senior manager platform",
-#      "principal engineering manager"
-    ]
-
-    leadership_keywords.uniq.map(&:downcase).each_with_index do |keyword, i|
-      offset = (i * 2).minutes
-      begin
-        pagination = FetchContactsWorker.new.perform(keyword, 1, true)
-        page_count = pagination["total_pages"]
-      rescue => e
-        Rails.logger.error "[Contact.fetch_all] Failed to fetch page count for #{keyword}: #{e.class} - #{e.message}"
-        next
-      end
-
-      1.upto(page_count) do |page|
-        FetchContactsWorker.perform_in((page * 10).seconds + offset, keyword, page)
-      end
     end
   end
 

@@ -1,6 +1,8 @@
 class FetchContactsWorker
   include Sidekiq::Worker
 
+  sidekiq_options retry: false, lock: :until_executed
+
   def perform(title_keyword, page, pagination_only = false)
     params = {
       "q_keywords" => title_keyword,
@@ -53,25 +55,19 @@ class FetchContactsWorker
       contact = Contact.find_or_initialize_by(source: source, external_id: external_id)
       new_contact = contact.new_record?
 
-      begin
-        contact.update!(
-          cohort: title_keyword.downcase,
-          name: person["name"],
-          email: person["email"],
-          location: person["present_raw_address"] || [person["city"], person["state"], person["country"]].compact.join(", "),
-          company_domain: person.dig("account", "primary_domain"),
-          state: person["state"],
-          source: source,
-          external_id: external_id,
-          metadata: person.deep_stringify_keys
-        )
+      contact.assign_attributes(
+        cohort: title_keyword.downcase,
+        name: person["name"],
+        email: person["email"],
+        location: person["present_raw_address"] || [person["city"], person["state"], person["country"]].compact.join(", "),
+        company_domain: person.dig("account", "primary_domain"),
+        state: person["state"],
+        source: source,
+        external_id: external_id,
+        metadata: person.deep_stringify_keys
+      )
 
-        GradeContactWorker.perform_async(contact.id) if new_contact
-      rescue => e
-        Rails.logger.error "[FetchContactsWorker] Failed to create contact #{external_id} (#{person['email']}): #{e.class} - #{e.message}"
-        Rails.logger.error e.backtrace.join("\n") if Rails.env.development? || Rails.env.test?
-        next
-      end
+      contact.save!
     end
   end
 end

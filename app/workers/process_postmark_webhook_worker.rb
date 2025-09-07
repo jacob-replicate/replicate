@@ -1,7 +1,7 @@
 class ProcessPostmarkWebhookWorker
   include Sidekiq::Worker
 
-  sidekiq_options queue: :postmark_webhooks, lock: :until_executed, retry: false
+  sidekiq_options retry: false, lock: :until_executed
 
   def perform(webhook_id)
     webhook = PostmarkWebhook.find_by(id: webhook_id)
