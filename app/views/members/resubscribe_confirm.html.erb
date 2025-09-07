@@ -1,0 +1,12 @@
+<div class="max-w-3xl mx-auto py-10">
+  <h1 class="text-2xl font-semibold mb-4">You have resubscribed.</h1>
+
+  <p class="mb-4">
+    <span class="font-semibold"><%= @member.email %></span> will now receive SEV-1 emails from Replicate again.
+  </p>
+
+  <p class="mt-6 text-sm text-gray-500">
+    If this was a mistake, you can
+    <%= link_to "unsubscribe again", "/members/#{@member.id}/unsubscribe", class: "text-blue-600 hover:underline font-semibold" %>.
+  </p>
+</div>
