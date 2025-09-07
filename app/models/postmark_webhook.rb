@@ -9,11 +9,15 @@ class PostmarkWebhook < ApplicationRecord
     content["MessageID"]
   end
 
+  def headers
+    Array(content["Headers"]).reject(&:blank?)
+  end
+
   def in_reply_to_message
-    relevant_ids = content["Headers"].find { |x| x["Name"] == "In-Reply-To" }["Value"] rescue nil
+    relevant_ids = Hash(headers.find { |x| x["Name"] == "In-Reply-To" })["Value"]
 
     if relevant_ids.blank?
-      relevant_ids = content["Headers"].find { |x| x["Name"] == "References" }["Value"].split(" ") rescue nil
+      relevant_ids = Hash(headers.find { |x| x["Name"] == "References" })["Value"].to_s.split(" ")
     end
 
     return nil unless relevant_ids.present?
