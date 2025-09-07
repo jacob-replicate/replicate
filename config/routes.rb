@@ -13,7 +13,6 @@ Rails.application.routes.draw do
     mount Sidekiq::Web => "/sidekiq"
   end
 
-  devise_for :users
   post "/webhooks/stripe", to: "stripe_webhooks#create"
   post "/webhooks/postmark", to: "postmark_webhooks#create"
 
