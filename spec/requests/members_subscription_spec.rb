@@ -1,101 +1,110 @@
-# spec/requests/members_subscriptions_spec.rb
+# spec/requests/members_subscription_flows_spec.rb
 # frozen_string_literal: true
 require "rails_helper"
 
-RSpec.describe "Members subscription flows", type: :request do
+RSpec.describe "Members subscription flows (HTML form clicks)", type: :request do
   let!(:member) { create(:member, email: "alex@example.com", subscribed: true) }
 
-  describe "GET /members/:id/unsubscribe" do
-    it "renders the unsubscribe confirmation form" do
-      get "/members/#{member.id}/unsubscribe"
+  def form_action(html, button_label: nil)
+    doc  = Nokogiri::HTML.parse(html)
+    form = if button_label
+      # find the form that contains a submit with this exact label
+      doc.css("form").find do |f|
+        f.css("input[type=submit],button[type=submit]").any? { |b| b["value"] == button_label || b.text.strip == button_label }
+      end
+    else
+      doc.at_css("form")
+    end
+    raise "Form not found" unless form
+    action = form["action"]
+    method = (form["method"] || "get").downcase
+    [action, method]
+  end
 
+  describe "unsubscribe flow via the GET confirmation page" do
+    it "GET confirm → POST unsubscribe → shows success with a POST resubscribe button, which works" do
+      get "/members/#{member.id}/unsubscribe"
       expect(response).to have_http_status(:ok)
       expect(response.body).to include("Unsubscribe from SEV-1 emails?")
       expect(response.body).to include(member.email)
-      # posts to the confirm route
-      expect(response.body).to include(%Q{action="/members/#{member.id}/unsubscribe"})
-      expect(response.body).to include("Yes, unsubscribe")
-    end
 
-    it "redirects to root when member not found" do
-      get "/members/999999999/unsubscribe"
-      expect(response).to redirect_to(root_path)
-    end
-  end
+      action, method = form_action(response.body, button_label: "Yes, unsubscribe")
+      expect(action).to eq("/members/#{member.id}/unsubscribe")
+      expect(method).to eq("post")
 
-  describe "POST /members/:id/unsubscribe" do
-    it "marks the member unsubscribed and renders the success page" do
-      post "/members/#{member.id}/unsubscribe"
-
+      post action
       expect(response).to have_http_status(:ok)
       expect(member.reload.subscribed).to be(false)
       expect(response.body).to include("You have unsubscribed.")
       expect(response.body).to include(member.email)
-      # offers a resubscribe POST
-      expect(response.body).to include(%Q{action="/members/#{member.id}/resubscribe"})
-      expect(response.body).to include("Resubscribe")
-    end
 
-    it "is idempotent (already unsubscribed still returns 200)" do
-      member.update!(subscribed: false)
+      action2, method2 = form_action(response.body, button_label: "Resubscribe")
+      expect(action2).to eq("/members/#{member.id}/resubscribe")
+      expect(method2).to eq("post")
 
-      post "/members/#{member.id}/unsubscribe"
-
-      expect(response).to have_http_status(:ok)
-      expect(member.reload.subscribed).to be(false)
-    end
-
-    it "redirects to root when member not found" do
-      post "/members/999999999/unsubscribe"
-      expect(response).to redirect_to(root_path)
-    end
-  end
-
-  describe "GET /members/:id/resubscribe" do
-    it "renders the resubscribe confirmation form" do
-      member.update!(subscribed: false)
-
-      get "/members/#{member.id}/resubscribe"
-
-      expect(response).to have_http_status(:ok)
-      expect(response.body).to include("Resubscribe to SEV-1 emails?")
-      expect(response.body).to include(member.email)
-      # posts to the confirm route
-      expect(response.body).to include(%Q{action="/members/#{member.id}/resubscribe"})
-      expect(response.body).to include("Yes, resubscribe")
-    end
-
-    it "redirects to root when member not found" do
-      get "/members/999999999/resubscribe"
-      expect(response).to redirect_to(root_path)
-    end
-  end
-
-  describe "POST /members/:id/resubscribe" do
-    it "marks the member subscribed and renders the success page" do
-      member.update!(subscribed: false)
-
-      post "/members/#{member.id}/resubscribe"
-
+      post action2
       expect(response).to have_http_status(:ok)
       expect(member.reload.subscribed).to be(true)
       expect(response.body).to include("You have resubscribed.")
       expect(response.body).to include(member.email)
-      # offers a way back to unsubscribe again
-      expect(response.body).to include(%Q{href="/members/#{member.id}/unsubscribe"})
-      expect(response.body).to include("unsubscribe again")
     end
+  end
 
-    it "is idempotent (already subscribed still returns 200)" do
-      member.update!(subscribed: true)
+  describe "resubscribe flow via the GET confirmation page" do
+    it "GET confirm → POST resubscribe → shows success with a link back to unsubscribe, which we then confirm" do
+      member.update!(subscribed: false)
 
-      post "/members/#{member.id}/resubscribe"
+      get "/members/#{member.id}/resubscribe"
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to include("Resubscribe to SEV-1 emails?")
+      expect(response.body).to include(member.email)
 
+      action, method = form_action(response.body, button_label: "Yes, resubscribe")
+      expect(action).to eq("/members/#{member.id}/resubscribe")
+      expect(method).to eq("post")
+
+      post action
       expect(response).to have_http_status(:ok)
       expect(member.reload.subscribed).to be(true)
+      expect(response.body).to include("You have resubscribed.")
+      expect(response.body).to include(member.email)
+
+      doc = Nokogiri::HTML.parse(response.body)
+      link = doc.at_css(%Q{a[href="/members/#{member.id}/unsubscribe"]})
+      expect(link).to be_present
+
+      get link["href"]
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to include("Unsubscribe from SEV-1 emails?")
+
+      action2, method2 = form_action(response.body, button_label: "Yes, unsubscribe")
+      expect(action2).to eq("/members/#{member.id}/unsubscribe")
+      expect(method2).to eq("post")
+
+      post action2
+      expect(response).to have_http_status(:ok)
+      expect(member.reload.subscribed).to be(false)
+      expect(response.body).to include("You have unsubscribed.")
+    end
+  end
+
+  describe "missing IDs" do
+    it "GET /members/:id/unsubscribe → redirects to root when not found" do
+      get "/members/999999999/unsubscribe"
+      expect(response).to redirect_to(root_path)
     end
 
-    it "redirects to root when member not found" do
+    it "GET /members/:id/resubscribe → redirects to root when not found" do
+      get "/members/999999999/resubscribe"
+      expect(response).to redirect_to(root_path)
+    end
+
+    it "POST /members/:id/unsubscribe → redirects to root when not found" do
+      post "/members/999999999/unsubscribe"
+      expect(response).to redirect_to(root_path)
+    end
+
+    it "POST /members/:id/resubscribe → redirects to root when not found" do
       post "/members/999999999/resubscribe"
       expect(response).to redirect_to(root_path)
     end
