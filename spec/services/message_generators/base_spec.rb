@@ -96,11 +96,11 @@ RSpec.describe MessageGenerators::Base do
       expect(ConversationMailer).to receive(:drive).with(conversation).and_return(mailer_double)
       expect(mailer_double).to receive(:deliver_now)
 
-      expect(Prompts::CoachingReply).to receive(:new).with(conversation: conversation).and_return(double(call: "GPT reply"))
-      generator.deliver_elements([Prompts::CoachingReply, "hardcoded signature"])
+      allow(Prompts::CoachingReply).to receive(:new).with(conversation: conversation).and_return(double(call: "GPT reply"))
+      generator.deliver_elements([Prompts::CoachingReply, Prompts::CoachingReply, "hardcoded signature"])
 
       message = conversation.messages.last
-      expect(message.content).to eq("GPT reply\nhardcoded signature")
+      expect(message.content).to eq("GPT reply\n<p>GPT reply</p>\nhardcoded signature")
       expect(message.email_message_id_header).to eq("<message-#{message.id}@mail.replicate.info>")
     end
   end

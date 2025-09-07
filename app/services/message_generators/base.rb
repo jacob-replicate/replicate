@@ -69,7 +69,7 @@ module MessageGenerators
 
     def unsubscribe_footer(member)
       footer = "Replicate Software, LLC - 131 Continental Dr, Suite 305, Newark, DE - <a href='https://replicate.info/members/#{member.id}/unsubscribe'>Unsubscribe</a>"
-      "<div style=\"font-size: 80%; opacity: 0.6\">#{footer}</div>"
+      "<p style=\"font-size: 80%; opacity: 0.6\">#{footer}</p>"
     end
   end
 end
