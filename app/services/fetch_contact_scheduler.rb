@@ -10,19 +10,18 @@ class FetchContactScheduler
 
   def self.ic_keywords
      [
-      "application security",
       "backend",
       "cloud",
       "infrastructure",
       "internal tools",
       "lead",
-      "software",
       "observability",
       "platform",
       "principal",
       "security",
       "senior staff",
       "site reliability",
+      "software",
       "sre",
       "staff",
       "tooling",

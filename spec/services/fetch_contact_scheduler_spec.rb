@@ -25,5 +25,13 @@ RSpec.describe FetchContactScheduler do
       # etc.
       expect(ScheduleContactFetchingWorker).to have_received(:perform_in).exactly(20).times
     end
+
+    it "has a default set of IC keywords available" do
+      described_class.call(described_class.ic_keywords)
+      expect(ScheduleContactFetchingWorker).to have_received(:perform_in).with(0.minutes,  "backend").once
+      expect(ScheduleContactFetchingWorker).to have_received(:perform_in).with(2.minutes,  "cloud").once
+      # etc.
+      expect(ScheduleContactFetchingWorker).to have_received(:perform_in).exactly(15).times
+    end
   end
 end
