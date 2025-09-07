@@ -107,4 +107,20 @@ RSpec.describe ScheduleWeeklyIncidentsWorker, type: :worker do
       described_class.new.perform(nil, start_time.to_i, current_day_start)
     end
   end
+
+  describe "#delay_second_increment" do
+    it "returns an integer between 10 and 15 inclusive" do
+      # override the earlier before-hook stub for this example
+      allow_any_instance_of(described_class)
+        .to receive(:delay_second_increment).and_call_original
+
+      worker = described_class.new
+
+      50.times do
+        v = worker.send(:delay_second_increment)  # private method is fine via send in tests
+        expect(v).to be_a(Integer)
+        expect(v).to be_between(10, 15).inclusive
+      end
+    end
+  end
 end

@@ -7,7 +7,6 @@ gem "aws-sdk-s3", "~> 1"
 gem "bootsnap", require: false
 gem "carrierwave"
 gem "cssbundling-rails", "~> 1.3"
-gem "devise"
 gem "google-apis-gmail_v1", "~> 0.1"
 gem "holidays"
 gem "jbuilder"

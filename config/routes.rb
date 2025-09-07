@@ -25,6 +25,9 @@ Rails.application.routes.draw do
   get '/sev', to: "static#coaching"
   get '/contacts/:id/unsubscribe', to: "contacts#unsubscribe"
   post '/contacts/:id/unsubscribe', to: "contacts#unsubscribe"
+  get '/members/:id/unsubscribe', to: "members#unsubscribe"
+  post '/members/:id/unsubscribe', to: "members#unsubscribe_confirm"
+  post '/members/:id/resubscribe', to: "members#resubscribe"
 
   resources :conversations, only: [:create, :show]
   resources :messages, only: [:create]
