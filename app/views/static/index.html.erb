@@ -113,20 +113,20 @@
         <div class="flex justify-start">
           <div class="break-words message-body">
             <div class="font-medium flex items-center gap-2 mb-2">
-              <img src="/logo.png" alt="Jacob Comer" class="w-6 h-6 rounded-full" />
+              <img src="/logo.png" alt="replicate.info" class="w-6 h-6 rounded-full" />
               replicate.info
             </div>
             <div class="mt-1">
               Imagine reviewing an IAM audit log and seeing a service account granted admin privileges within a Kubernetes cluster. The action lists a single API request with no associated approval workflow. The originating user is tagged with an expired session ID.
               <br><br>
-              <strong>What’s your first move here?</strong>
+              <span class="font-semibold">What’s your first move here?</strong>
             </div>
           </div>
         </div>
 
         <div class="flex justify-end">
           <div class="bg-neutral-100 rounded-2xl shadow px-4 py-3 max-w-2xl md:max-w-xl break-words message-body">
-            <div class="font-medium mb-1">Jacob Comer</div>
+            <div class="font-medium mb-1">Jordan Kim</div>
             I’d start by checking how we’re validating the role claim in the token. If we’re trusting it directly from the SSO provider without verifying against internal user records or scopes, that’s probably the gap. Also curious if the token was reused. Maybe no jti or nonce checks?
           </div>
         </div>
@@ -134,7 +134,7 @@
         <div class="flex justify-start">
           <div class="break-words message-body">
             <div class="font-medium flex items-center gap-2 mb-2">
-              <img src="/logo.png" alt="Jacob Comer" class="w-6 h-6 rounded-full" />
+              <img src="/logo.png" alt="replicate.info" class="w-6 h-6 rounded-full" />
               replicate.info
             </div>
             <div class="mt-1">
@@ -160,7 +160,7 @@
         <div class="flex justify-start">
           <div class="break-words message-body">
             <div class="font-medium flex items-center gap-2 mb-2">
-              <img src="/logo.png" alt="Jacob Comer" class="w-6 h-6 rounded-full" />
+              <img src="/logo.png" alt="replicate.info" class="w-6 h-6 rounded-full" />
               replicate.info
             </div>
             <div class="mt-1">
