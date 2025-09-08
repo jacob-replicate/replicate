@@ -64,6 +64,10 @@
           GPT drops you into a SEV-1<span class="hidden md:inline"> with some clues</span>, and makes you explain your thoughts until you hit a wall. <span class="block my-6 lg:inline lg:my-0"> No UI. It just shows up in your inbox and applies pressure. Test first, find the blind spot that will eventually crash prod, <span class="font-semibold">then</span> coach.</span>
         </p>
 
+        <p class="mb-6">
+          Here's the <a href="/intro-email.png" class="text-blue-600 hover:underline font-semibold" target="_blank" tabindex="-1">email format</a>. Roll it out in <span class="font-semibold">5 minutes</span> during your <span class="font-semibold">3-month trial</span>. Fixed pricing. 100% async. No calls. No setup.
+        </p>
+
       </div>
       <div class="mt-8 lg:mt-10 flex gap-6">
         <% EXAMPLE_EMAILS.each_with_index do |email, i| %>
@@ -93,10 +97,11 @@
       </div>
     </div>
   </div>
-  <div class="mt-8 md:mt-16 w-full lg:max-w-[780px] rounded-lg shadow-md border border-gray-100 bg-white mx-auto">
+
+  <div class="mt-8 md:mt-16 w-full lg:max-w-[780px] rounded-lg shadow-md border border-gray-100 bg-white mx-auto md:hidden">
     <div class="md:flex md:flex-row items-center justify-between bg-[#393E46] px-4 py-2.5 rounded-t-lg">
       <div class="text-[15px] text-[#FFFFFF] tracking-tight text-shadow" style="font-family: 'DM Mono'">
-        Replica lag pinned at 0. Writes duplicating.<span class="hidden md:inline"> What's wrong?</span>
+        SEV-1 Training: Admin access granted without explicit intent
       </div>
       <div class="text-[13px] text-zinc-300 hidden md:block ml-2">
         <span class="font-semibold">Sep 8, 2025</span><span class="hidden lg:inline"> - 12:04pm ET</span>
@@ -112,17 +117,17 @@
               replicate.info
             </div>
             <div class="mt-1">
-              Imagine a read replica's monitoring page shows consistent query times under 50ms. Meanwhile, production logs from the primary DB contain intermittent duplicate key errors on inserts. Even with <strong>hot_standby_feedback</strong> on, the replica's lag graph stays flat at 0 seconds. What's your first move?
+              Imagine reviewing an IAM audit log and seeing a service account granted admin privileges within a Kubernetes cluster. The action lists a single API request with no associated approval workflow. The originating user is tagged with an expired session ID.
+              <br><br>
+              <strong>What’s your first move here?</strong>
             </div>
           </div>
         </div>
 
         <div class="flex justify-end">
           <div class="bg-neutral-100 rounded-2xl shadow px-4 py-3 max-w-2xl md:max-w-xl break-words message-body">
-            <div class="font-medium mb-1">Jordan Kim</div>
-            Lag staying flat at 0 seconds smells off. I'd treat that monitoring as false.<br>
-            Replica config drift feels likely. It's probably querying the wrong instance.<br>
-            I'd verify the replica is actually replicating.
+            <div class="font-medium mb-1">Jacob Comer</div>
+            I’d start by checking how we’re validating the role claim in the token. If we’re trusting it directly from the SSO provider without verifying against internal user records or scopes, that’s probably the gap. Also curious if the token was reused. Maybe no jti or nonce checks?
           </div>
         </div>
 
@@ -133,7 +138,7 @@
               replicate.info
             </div>
             <div class="mt-1">
-              Lag pinned at zero when symptoms say otherwise is a fault, but not evidence replication is severed. If replication had halted, the replica couldn't show recent data. Query results would diverge fast. What happens when lag monitoring skips over non-blocking replication issues?
+              Did you address why <strong>"scope"</strong> validation didn’t block admin actions? If the token allows admin operations despite mismatched scopes, <strong>what other payload fields might authorization implicitly trust?</strong> Where else might incomplete validation propagate?
             </div>
           </div>
         </div>
@@ -141,7 +146,14 @@
         <div class="flex justify-end">
           <div class="bg-neutral-100 rounded-2xl shadow px-4 py-3 max-w-2xl md:max-w-xl break-words message-body">
             <div class="font-medium mb-1">Jordan Kim</div>
-            A lag metric at 0 doesn't prove forward replication. I'd confirm commits applied match what the primary sends. If monitoring filters non-blocking issues, what's suppressing sync drift visibility?
+            If scope didn’t block admin actions, we may be over-trusting role=admin without validating scope. I’d check if the authz layer defaults when claims are missing, and whether weak or partial tokens still create valid sessions. Sounds like the system may be failing open.
+          </div>
+        </div>
+
+        <div class="flex justify-end">
+          <div class="bg-neutral-100 rounded-2xl shadow px-4 py-3 max-w-2xl md:max-w-xl break-words message-body">
+            <div class="font-medium mb-1">Jordan Kim</div>
+            I’d also look at what other fields the system implicitly trusts. If the token had missing or malformed claims but still resulted in a valid session, maybe we’re silently defaulting to permissive behavior instead of failing closed. That could mean any weakly-signed or replayed token could slip through if one trusted field is present. Feels like the validation pipeline isn’t strict enough around partial success paths.
           </div>
         </div>
 
@@ -152,38 +164,16 @@
               replicate.info
             </div>
             <div class="mt-1">
-              If lag monitoring skips over non-blocking issues, the replica might apply changes out of order while reporting "caught up." Think about constraints. Which one guarantees upstream sequences won't break if replication's order is wrong?
+              How does the system reconcile scopes with roles during request execution? If scope mismatches don’t block, could partial matches or absent roles escalate privileges elsewhere? Where else do assumptions about claim integrity cascade?
             </div>
-          </div>
-        </div>
-
-        <div class="flex justify-end">
-          <div class="bg-neutral-100 rounded-2xl shadow px-4 py-3 max-w-2xl md:max-w-xl break-words message-body">
-            <div class="font-medium mb-1">Jordan Kim</div>
-            Replication order breaking constraints means FK's + unique indexes die first. If those hold steady, we aren't seeing drift. Lag reading zero skips what inconsistency? Data integrity guarantees collapse under what?
-          </div>
-        </div>
-
-        <div class="flex justify-start">
-          <div class="break-words message-body">
-            <div class="font-medium flex items-center gap-2 mb-2">
-              <img src="/logo.png" alt="Jacob Comer" class="w-6 h-6 rounded-full" />
-              replicate.info
-            </div>
-            <div class="mt-1">
-              If constraints were already breaking, you'd see failures escalate quickly. Applications panicking, user reports pouring in. But you expect integrity guarantees to buckle against what? Silent drift hides upstream until reconciliation or... what else breaches first?
-            </div>
-          </div>
-        </div>
-
-        <div class="flex justify-end">
-          <div class="bg-neutral-100 rounded-2xl shadow px-4 py-3 max-w-2xl md:max-w-xl break-words message-body">
-            <div class="font-medium mb-1">Jordan Kim</div>
-            Ugh. I didn't realize I assumed our Kafka consumer's offset tracking guarantees message order across partitions. It doesn't. That risks misapplied transactions. I'll flag the issue with Chris in our 1on1.
           </div>
         </div>
       </div>
     </div>
+  </div>
+
+  <div class="mt-8 hidden md:block">
+    <img src="/intro-email.png" class="border rounded-lg shadow w-full" />
   </div>
 
   <div class="mt-6 w-full lg:max-w-[780px] mx-auto text-center">
