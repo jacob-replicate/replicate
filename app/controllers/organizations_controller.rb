@@ -9,6 +9,9 @@ class OrganizationsController < ApplicationController
 
     ScheduleWeeklyIncidentsWorker.perform_async([org.id], Time.current.to_i, Time.current.beginning_of_day.to_i)
 
+    engineers = engineer_emails.size == 1 ? "1 engineer" : "#{engineer_emails.size} engineers"
+    SendAdminPushNotification.call("New Trial", "#{owner_name} (#{owner_email}) signed up #{engineers}")
+
     head :ok
   rescue => e
     Rails.logger.error("Error creating organization: #{e.full_message}")

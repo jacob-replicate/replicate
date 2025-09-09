@@ -33,7 +33,7 @@ class EnrichContactsWorker
       next if person.blank?
       enriched_email = person["email"]
       apollo_id = person["id"]
-      contact = batch.find { |c| c.external_id == apollo_id }
+      contact = contacts.find { |c| c.external_id == apollo_id }
       next unless contact
 
       if enriched_email.blank? || enriched_email == "email_not_unlocked@domain.com"

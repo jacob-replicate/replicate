@@ -13,9 +13,10 @@ RSpec.describe "OrganizationsController#create", type: :request do
           params = {
             name:  "Jane Owner",
             email: "owner@example.com",
-            engineer_emails: "eng1@example.com, eng2@example.com ; ENG3@exaMple.com"
+            engineer_emails: "\n\neng1@example.com, eng2@example.com ;\n\n ENG3@exaMple.com "
           }
 
+          expect(SendAdminPushNotification).to receive(:call).with("New Trial", "Jane Owner (owner@example.com) signed up 3 engineers")
           expect {
             post endpoint, params: params, as: :json
           }.to change(Organization, :count).by(1).and change(Member, :count).by(4)
