@@ -26,7 +26,7 @@ RSpec.describe MessageGenerators::Coaching do
 
       expected_elements = [
         "Hey there,",
-        "#{owner.name} signed you up for <a href='http://replicate.info'>Replicate</a>. There's no UI. GPT just shows up in your inbox with an infra puzzle every week. The more you think out loud, the more it can help uncover your blind spots (before production does).<br/>",
+        "<p>#{owner.name} added you to their <a href='https://replicate.info'>replicate.info</a> team. No UI. GPT just shows up in your inbox with an infra puzzle every week. The more you think out loud, the more it can help uncover your blind spots (before production does).</p>",
         Prompts::CoachingIntro,
         generator.send(:unsubscribe_footer, recipient)
       ]
@@ -43,7 +43,7 @@ RSpec.describe MessageGenerators::Coaching do
 
       expected_elements = [
         "Hey there,",
-        "One of your teammates signed you up for <a href='http://replicate.info'>Replicate</a>. There's no UI. GPT just shows up in your inbox with an infra puzzle every week. The more you think out loud, the more it can help uncover your blind spots (before production does).<br/>",
+        "<p>One of your teammates added you to their <a href='https://replicate.info'>replicate.info</a> team. No UI. GPT just shows up in your inbox with an infra puzzle every week. The more you think out loud, the more it can help uncover your blind spots (before production does).</p>",
         Prompts::CoachingIntro,
         generator.send(:unsubscribe_footer, recipient)
       ]

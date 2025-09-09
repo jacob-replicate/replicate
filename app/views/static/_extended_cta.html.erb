@@ -30,25 +30,29 @@
           <div class="px-3 py-2">$100,000</div>
         </div>
       </div>
-      <div class="mt-8 lg:mt-[16px] p-4 text-sm border-2 border-neutral-200 bg-white rounded-md">
-        <div class="mb-3 text-[17px] tracking-tight">Procurement</div>
-        <div class="mb-1">&bull;&nbsp;<span class="font-semibold">One annual invoice</span> after <span class="font-semibold">3-month</span> free trial</div>
-        <div class="mb-1">&bull;&nbsp;<span class="font-semibold">30%</span> off multi-year terms via one upfront check</div>
-        <div class="mb-1">&bull;&nbsp;<span class="font-semibold">No auto-renewal</span> or <span class="font-semibold">evergreen</span> clauses</div>
-        <div class="mb-1">&bull;&nbsp;No RFPs, redlines, or portals. All sales are final.</div>
-        <div class="mb-1">&bull;&nbsp;<span class="font-semibold">5x liability cap</span>, uncapped for gross misconduct</div>
-        <div class="mb-3">&bull;&nbsp;Allows partial terms to align with budget cycles</div>
-        <%= link_to 'Billing & Payment Details&nbsp;&nbsp;&rarr;'.html_safe, '/billing', class: "text-blue-600 hover:underline font-medium", target: "_blank" %>
+      <div class="mt-8 lg:mt-[20px] text-sm border-2 border-neutral-200 bg-white rounded-md">
+        <div class="bg-neutral-100 border-b border-neutral-200 font-semibold px-3 py-2 rounded-t-md">Procurement</div>
+        <div class="p-3">
+          <div class="mb-1">&bull;&nbsp;<span class="font-semibold">One annual invoice</span> after <span class="font-semibold">3-month</span> free trial</div>
+          <div class="mb-1">&bull;&nbsp;<span class="font-semibold">30%</span> off multi-year terms via one upfront check</div>
+          <div class="mb-1">&bull;&nbsp;<span class="font-semibold">No auto-renewal</span> or <span class="font-semibold">evergreen</span> clauses</div>
+          <div class="mb-1">&bull;&nbsp;No RFPs, redlines, or portals. All sales are final.</div>
+          <div class="mb-1">&bull;&nbsp;<span class="font-semibold">5x liability cap</span>, uncapped for gross misconduct</div>
+          <div class="mb-3">&bull;&nbsp;Allows partial terms to align with budget cycles</div>
+          <%= link_to 'Billing & Payment Details&nbsp;&nbsp;&rarr;'.html_safe, '/billing', class: "text-blue-600 hover:underline font-medium", target: "_blank" %>
+        </div>
       </div>
-      <div class="mt-8 lg:mt-[17px] p-4 text-sm border-2 border-neutral-200 bg-white rounded-md">
-        <div class="mb-3 text-[17px] tracking-tight">Security</div>
-        <div class="mb-1">&bull;&nbsp;<span class="font-semibold">Email only</span>. No cookies or accounts to manage.</div>
-        <div class="mb-1">&bull;&nbsp;Zero access to <span class="font-semibold">customer data</span></div>
-        <div class="mb-1">&bull;&nbsp;Heroku + AWS (US infra). AES-256. TLS 1.2+. HA.</div>
-        <div class="mb-1">&bull;&nbsp;<span class="font-semibold">No SOC 2</span> yet. Type I in 2026, Type II after.</div>
-        <div class="mb-1">&bull;&nbsp;Insurance coverage: <%= link_to '$1M E&O', '/replicate-coi.pdf', class: "text-blue-600 hover:underline font-semibold", target: "_blank" %> + <%= link_to '$1M Cyber', '/replicate-coi.pdf', class: "text-blue-600 hover:underline font-semibold", target: "_blank" %></div>
-        <div class="mb-3">&bull;&nbsp;<span class="font-semibold">Ephemeral GPT prompts</span>, no long-term training</div>
-        <%= link_to 'Security Posture&nbsp;&rarr;'.html_safe, '/security', class: "text-blue-600 hover:underline font-medium", target: "_blank" %>
+      <div class="mt-8 lg:mt-[19px] text-sm border-2 border-neutral-200 bg-white rounded-md">
+        <div class="bg-neutral-100 border-b border-neutral-200 font-semibold px-3 py-2 rounded-t-md">Security</div>
+        <div class="p-3">
+          <div class="mb-1">&bull;&nbsp;<span class="font-semibold">Email only</span>. No cookies or accounts to manage.</div>
+          <div class="mb-1">&bull;&nbsp;Zero access to <span class="font-semibold">customer data</span></div>
+          <div class="mb-1">&bull;&nbsp;Heroku + AWS (US infra). AES-256. TLS 1.2+. HA.</div>
+          <div class="mb-1">&bull;&nbsp;<span class="font-semibold">No SOC 2</span> yet. Type I in 2026, Type II after.</div>
+          <div class="mb-1">&bull;&nbsp;Insurance coverage: <%= link_to '$1M E&O', '/replicate-coi.pdf', class: "text-blue-600 hover:underline font-semibold", target: "_blank" %> + <%= link_to '$1M Cyber', '/replicate-coi.pdf', class: "text-blue-600 hover:underline font-semibold", target: "_blank" %></div>
+          <div class="mb-3">&bull;&nbsp;<span class="font-semibold">Ephemeral GPT prompts</span>, no long-term training</div>
+          <%= link_to 'Security Posture&nbsp;&rarr;'.html_safe, '/security', class: "text-blue-600 hover:underline font-medium", target: "_blank" %>
+        </div>
       </div>
     </div>
   </div>

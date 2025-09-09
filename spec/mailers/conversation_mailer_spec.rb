@@ -14,7 +14,7 @@ RSpec.describe ConversationMailer, type: :mailer do
         expect(mail.from).to eq(["loop@mail.replicate.info"])
         expect(mail.reply_to).to eq(["loop@mail.replicate.info"])
         expect(recipient.conversations.count).to eq(1)
-        expect(mail.subject).to eq("[SEV-1 Training] #{conversation.subject_line}")
+        expect(mail.subject).to eq("SEV-1 Training: #{conversation.subject_line}")
         expect(mail.multipart?).to be(true)
         expect(mail.content_type).to match(%r{\Amultipart/alternative;})
         expect(mail.html_part.content_type).to match(%r{\Atext/html})
@@ -48,17 +48,18 @@ RSpec.describe ConversationMailer, type: :mailer do
       end
     end
 
-    context "when the recipient already has more than one conversation" do
-      it "does not prefix the subject" do
-        _other_conv = create(:conversation, recipient: recipient, subject_line: "older")
+    it "uses the longer prefix until your 4th convo" do
+      root = create(:message, conversation: conversation, content: "hi")
+      allow(conversation).to receive(:latest_system_message).and_return(root)
 
-        root = create(:message, conversation: conversation, content: "hi")
-        allow(conversation).to receive(:latest_system_message).and_return(root)
-
+      3.times do
         mail = described_class.drive(conversation)
-        expect(recipient.conversations.count).to be > 1
-        expect(mail.subject).to eq(conversation.subject_line)
+        expect(mail.subject).to eq("SEV-1 Training: #{conversation.subject_line}")
+        create(:conversation, recipient: recipient, subject_line: "older")
       end
+
+      mail = described_class.drive(conversation)
+      expect(mail.subject).to eq("SEV-1: #{conversation.subject_line}")
     end
   end
 end

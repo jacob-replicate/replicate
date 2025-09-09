@@ -1,35 +1,8 @@
 Product
 - Remove <p> + random padding top at the top of emails. (e.g., "Hey there" lines, initial line of replies)
-- Add a "check your spam folder" message to the homepage after you submit the form
 - Add the monday cron job back to Heroku
 - Check for inbound payloads in webhook processor
 - "SEV-1 Training:" prefix (no [ ] characters). Turns into "SEV-1:" after the user sends ~10 messages.
-
-Tested:
-- ApplicationController
-- ColdEmailVariants
-- Conversation
-- ConversationChannel
-- ConversationDriverWorker
-- ConversationMailer
-- CreateIncidentWorker
-- GradeContactWorker
-- Member
-- Message
-- MessageGenerators::Base
-- MessageGenerators::Coaching
-- NextIncidentSelector
-- Organization
-- OrganizationsController
-- PostmarkWebhook
-- PostmarkWebhooksController
-- SanitizeAiContent
-- ScheduleWeeklyIncidentsWorker
-- FetchContactsWorker
-- FetchContactsScheduler
-- ScheduleContactFetchingWorker
-- SendColdEmailWorker
-- ProcessPostmarkWebhookWorker
 
 Untested:
 - ColdEmailScheduler (Don't email people from the same domain multiple times in the same month)
@@ -41,15 +14,11 @@ Untested:
 Content
 - More cold email variants
 - 2-3 great email incidents
-- Tweak the example conversation on the homepage? Did you lose something while tweaking the coaching reply? It's more blog posty. Just revert to a few weeks ago?
 
-Misc
-- Don't send weekly emails to people who bounced. Bounce check on cold, not on transactional?
+------- LAUNCH ----------
 
 Legal
 - Terms + Privacy + MSA/DPA review
-
-------- LAUNCH ----------
 
 Resubscribe
 - Make sure to add the resubscribe link in the final "We're auto-unsubscribing you" email.
@@ -58,6 +27,7 @@ Cold Unsubscribe
 - Maybe make it a confirmation box? Why stop yourself from hitting people again in a few months?
 
 Product
+- Don't send weekly emails to people who bounced. Bounce check on cold, not on transactional? - Postmark does this automatically?
 - Scrape company website to figure out careers page + tech stack (if you can)
 - Add BIMI DNS record for logo.svg - https://mxtoolbox.com/dmarc/bimi/how-to-create-bimi-record (logo might be blurry)
 - Attach PDF's + inline JPG's once they close the loop
@@ -79,6 +49,7 @@ Ops
 - How will you know if your Bouncer credits are almost up?
 
 Sales
+- Add a "check your spam folder" message to the homepage after you submit the form
 - Create a procurement PDF you can link to in your "Welcome to replicate.info!" email?
 - Monthly email report format to Directors. Make it a PDF that Rails renders, which you can attach in Postmark email, that they can forward to VP.
 - Bouncer API call on owner email with loading spinner

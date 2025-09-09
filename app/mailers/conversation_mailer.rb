@@ -13,7 +13,7 @@ class ConversationMailer < ApplicationMailer
     headers['List-Unsubscribe'] = "<https://replicate.info/members/#{conversation.recipient_id}/unsubscribe>"
     headers["List-Unsubscribe-Post"] = "List-Unsubscribe=One-Click"
 
-    subject = conversation.recipient.conversations.count == 1 ? "[SEV-1 Training] #{conversation.subject_line}" : conversation.subject_line
+    subject = conversation.recipient.conversations.count < 4 ? "SEV-1 Training: #{conversation.subject_line}" : "SEV-1: #{conversation.subject_line}"
 
     mail(
       from: 'Replicate Loop <loop@mail.replicate.info>',

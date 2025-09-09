@@ -9,7 +9,7 @@ module MessageGenerators
         recipient = @conversation.recipient
         if recipient&.engineer? && recipient.conversations.count == 1
           owner_name = @conversation.recipient.organization.members.find_by(role: "owner")&.name || "One of your teammates"
-          elements << "#{owner_name} signed you up for <a href='http://replicate.info'>Replicate</a>. There's no UI. GPT just shows up in your inbox with an infra puzzle every week. The more you think out loud, the more it can help uncover your blind spots (before production does).<br/>"
+          elements << "<p>#{owner_name} added you to their <a href='https://replicate.info'>replicate.info</a> team. No UI. GPT just shows up in your inbox with an infra puzzle every week. The more you think out loud, the more it can help uncover your blind spots (before production does).</p>"
         end
 
         elements << Prompts::CoachingIntro
