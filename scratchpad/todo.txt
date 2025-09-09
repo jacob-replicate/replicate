@@ -3,6 +3,7 @@ Product
 - Add a "check your spam folder" message to the homepage after you submit the form
 - Add the monday cron job back to Heroku
 - Check for inbound payloads in webhook processor
+- "SEV-1 Training:" prefix (no [ ] characters). Turns into "SEV-1:" after the user sends ~10 messages.
 
 Tested:
 - ApplicationController
