@@ -9,6 +9,7 @@ class Contact < ApplicationRecord
   validates :email, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }
   validate :name_must_have_two_words
 
+  scope :contacted, -> { where(contacted: true) }
   scope :enriched, -> { where.not(email: "email_not_unlocked@domain.com").where.not(email: nil) }
   scope :unenriched, -> { where("email IS NULL OR email = ?", "email_not_unlocked@domain.com") }
   scope :us, -> { where(state: US_STATES) }
@@ -69,30 +70,6 @@ class Contact < ApplicationRecord
     }
   end
 
-  def self.report(cohort: nil)
-    scope = cohort.present? ? where(cohort: cohort) : all
-
-    score_counts = scope.group(:score).count
-    total = scope.count
-    scored = scope.where.not(score_reason: nil).count
-    unscored = total - scored
-
-    puts "Lead Quality Report#{cohort ? " (cohort: #{cohort})" : ''}"
-    puts "----------------------------------"
-    puts "Total contacts: #{total}"
-    puts "Scored: #{scored}"
-    puts "Unscored: #{unscored}"
-    puts
-
-    sorted_scores = score_counts.keys.compact.sort.reverse
-
-    sorted_scores.each do |score|
-      contacts = scope.where(score: score)
-      conversation_count = Conversation.where(recipient_id: contacts.pluck(:id)).count
-      puts "Score #{score}: #{contacts.count} contacts, #{conversation_count} conversations"
-    end
-  end
-
   private
 
   def name_must_have_two_words
@@ -117,7 +94,6 @@ class Contact < ApplicationRecord
       "hashicorp",
       ".edu",
       ".mil",
-      "gov",
       ".gov",
       "ibm"
     ].any? { |banned_phrase| company_domain.to_s.downcase.include?(banned_phrase) }
