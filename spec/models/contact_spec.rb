@@ -58,6 +58,42 @@ RSpec.describe Contact, type: :model do
       expect(Contact.unenriched).to include(unenriched_contact, nil_contact)
       expect(Contact.unenriched).not_to include(enriched_contact)
     end
+
+    describe ".us scope" do
+      it "includes contacts with a state in the US_STATES constant" do
+        ny = create(:contact, state: "New York")
+        ca = create(:contact, state: "California")
+        tx = create(:contact, state: "Texas")
+
+        results = Contact.us
+        expect(results).to include(ny, ca, tx)
+      end
+
+      it "excludes contacts with states not in US_STATES" do
+        on = create(:contact, state: "Ontario")
+        bc = create(:contact, state: "British Columbia")
+        mx = create(:contact, state: "Mexico City")
+
+        results = Contact.us
+        expect(results).not_to include(on, bc, mx)
+      end
+
+      it "handles DC variants defined in the constant" do
+        dc1 = create(:contact, state: "District of Columbia")
+        dc2 = create(:contact, state: "Washington DC")
+        dc3 = create(:contact, state: "Washington, D.C.")
+
+        results = Contact.us
+        expect(results).to include(dc1, dc2, dc3)
+      end
+
+      it "returns empty when no contact has a state in US_STATES" do
+        create(:contact, state: "Quebec")
+        create(:contact, state: "Ontario")
+
+        expect(Contact.us).to be_empty
+      end
+    end
   end
 
   describe "#first_name" do
@@ -73,25 +109,81 @@ RSpec.describe Contact, type: :model do
   end
 
   describe "#passed_bounce_check?" do
-    let(:contact) { build(:contact, email: "test@example.com", company_domain: "example.com", name: "Jane Doe") }
+    let(:contact) { build(:contact, email: "user@example.com", company_domain: "example.com") }
 
-    it "returns false if domain is blocklisted" do
-      blocked = build(:contact, email: "foo@givecampus.com", company_domain: "givecampus.com", name: "Joe Doe")
-      expect(blocked.passed_bounce_check?).to eq(false)
+    before do
+      # Don’t leak ENV changes across examples
+      allow(ENV).to receive(:[]).and_call_original
+      allow(ENV).to receive(:[]).with("BOUNCER_API_KEY").and_return("test-key")
     end
 
-    it "returns true when API says deliverable" do
-      fake_response = instance_double(Net::HTTPOK, body: { status: "deliverable", reason: "accepted_email" }.to_json)
-      allow(Net::HTTP).to receive(:start).and_return(fake_response)
+    it "short-circuits on blocklist without making any HTTP call" do
+      allow(contact).to receive(:company_domain_on_blocklist?).and_return(true)
 
-      expect(contact.passed_bounce_check?).to eq(true)
+      expect(Net::HTTP).not_to receive(:start)
+
+      expect(contact.passed_bounce_check?).to be(false)
     end
 
-    it "returns false when API says undeliverable" do
-      fake_response = instance_double(Net::HTTPOK, body: { status: "undeliverable", reason: "rejected" }.to_json)
-      allow(Net::HTTP).to receive(:start).and_return(fake_response)
+    it "calls Net::HTTP.start and http.request with the right GET + headers; returns true on deliverable/accepted_email" do
+      allow(contact).to receive(:company_domain_on_blocklist?).and_return(false)
 
-      expect(contact.passed_bounce_check?).to eq(false)
+      http_double = instance_double(Net::HTTP)
+      response_double = instance_double(Net::HTTPResponse,
+        body: { status: "deliverable", reason: "accepted_email" }.to_json
+      )
+
+      # Assert start is invoked with use_ssl and yields `http_double`, and returns the block's value
+      expect(Net::HTTP).to receive(:start)
+        .with("api.usebouncer.com", 443, use_ssl: true)
+        .and_yield(http_double)
+        .and_return(response_double)
+
+      # Assert the request object and header are correct; return the fake response
+      expect(http_double).to receive(:request) do |request|
+        expect(request).to be_a(Net::HTTP::Get)
+        expect(request["x-api-key"]).to eq("test-key")
+        # Make sure the URL includes the email query param (no need to assert exact encoding)
+        expect(request.uri.to_s).to include("email=user@example.com")
+      end.and_return(response_double)
+
+      expect(contact.passed_bounce_check?).to be(true)
+    end
+
+    it "returns false when status is deliverable but reason is not accepted_email" do
+      allow(contact).to receive(:company_domain_on_blocklist?).and_return(false)
+
+      http_double = instance_double(Net::HTTP)
+      response_double = instance_double(Net::HTTPResponse,
+        body: { status: "deliverable", reason: "catch_all" }.to_json
+      )
+
+      expect(Net::HTTP).to receive(:start)
+        .with("api.usebouncer.com", 443, use_ssl: true)
+        .and_yield(http_double)
+        .and_return(response_double)
+
+      expect(http_double).to receive(:request).and_return(response_double)
+
+      expect(contact.passed_bounce_check?).to be(false)
+    end
+
+    it "returns false when status is not deliverable" do
+      allow(contact).to receive(:company_domain_on_blocklist?).and_return(false)
+
+      http_double = instance_double(Net::HTTP)
+      response_double = instance_double(Net::HTTPResponse,
+        body: { status: "undeliverable", reason: "rejected_email" }.to_json
+      )
+
+      expect(Net::HTTP).to receive(:start)
+        .with("api.usebouncer.com", 443, use_ssl: true)
+        .and_yield(http_double)
+        .and_return(response_double)
+
+      expect(http_double).to receive(:request).and_return(response_double)
+
+      expect(contact.passed_bounce_check?).to be(false)
     end
   end
 
@@ -278,6 +370,40 @@ RSpec.describe Contact, type: :model do
 
         _ = contact.metadata_for_gpt
         expect(contact.metadata).to eq(meta) # unchanged
+      end
+    end
+
+    describe "#company_domain_on_blocklist?" do
+      # Use a minimal contact and just set company_domain directly.
+      # (No need to persist; the method only reads the attribute.)
+      let(:contact) { build(:contact, email: "user@example.com", name: "Test User") }
+
+      def blocked_for?(domain)
+        contact.company_domain = domain
+        contact.send(:company_domain_on_blocklist?)
+      end
+
+      it "blocks known companies and suffixes" do
+        expect(blocked_for?("givecampus.com")).to be(true)     # "givecampus"
+        expect(blocked_for?("replicate.info")).to be(true)     # "replicate"
+        expect(blocked_for?("hashicorp.com")).to be(true)      # "hashicorp"
+        expect(blocked_for?("university.edu")).to be(true)     # ".edu"
+        expect(blocked_for?("army.mil")).to be(true)           # ".mil"
+        expect(blocked_for?("agency.gov")).to be(true)         # ".gov"
+        expect(blocked_for?("ibm.com")).to be(true)            # "ibm"
+      end
+
+      it "treats matches as substring (not just exact label or tld)" do
+        expect(blocked_for?("research.ibm.cloud")).to be(true)     # contains "ibm"
+        expect(blocked_for?("edge-replicate-services.net")).to be(true) # contains "replicate"
+        expect(blocked_for?("x.y.gov.uk")).to be(true)             # contains ".gov"
+      end
+
+      it "does not block domains that only look similar (near-misses)" do
+        expect(blocked_for?("education.com")).to be(false)   # does not contain ".edu"
+        expect(blocked_for?("milestone.com")).to be(false)   # does not contain ".mil"
+        expect(blocked_for?("governance.com")).to be(false)  # does not contain ".gov"
+        expect(blocked_for?("example.com")).to be(false)
       end
     end
   end
