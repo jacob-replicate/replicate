@@ -96,37 +96,189 @@ RSpec.describe Contact, type: :model do
   end
 
   describe "#metadata_for_gpt" do
-    it "transforms raw metadata into structured hash" do
-      raw_metadata = {
-        "id" => "123",
-        "name" => "Alice Example",
-        "title" => "Engineer",
-        "email" => "alice@example.com",
-        "city" => "SF",
-        "state" => "CA",
-        "country" => "USA",
-        "linkedin_url" => "http://linkedin.com/in/alice",
-        "headline" => "Building things",
+    def build_contact_with(metadata_hash)
+      build(:contact, name: "Test User", email: "test@example.com", metadata: metadata_hash)
+    end
+
+    let(:full_metadata_string_keys) do
+      {
+        "person_id" => "person-123",
+        "id" => "id-should-be-ignored",
+        "name" => "Ada Lovelace",
+        "title" => "Principle Engineer", # intentionally misspelled to ensure passthrough
+        "email" => "ada@analytical.engine",
+        "present_raw_address" => "London, UK",
+        "city" => "London",
+        "state" => "London",
+        "country" => "UK",
+        "linkedin_url" => "https://linkedin.com/in/ada",
+        "headline" => "Computing pioneer",
         "organization" => {
-          "name" => "Acme Corp",
-          "primary_domain" => "acme.com",
-          "linkedin_url" => "http://linkedin.com/company/acme",
-          "angellist_url" => "http://angel.co/acme",
-          "raw_address" => "123 Street, SF",
-          "founded_year" => 2000
+          "name" => "Analytical Engine Ltd",
+          "primary_domain" => "analytical.engine",
+          "linkedin_url" => "https://linkedin.com/company/ae",
+          "angellist_url" => "https://angel.co/ae",
+          "raw_address" => "1 Babbage St",
+          "founded_year" => 1837,
+          "organization_headcount_six_month_growth" => 12.3,
+          "organization_headcount_twelve_month_growth" => 25.6
         },
         "employment_history" => [
-          { "title" => "Dev", "organization_name" => "Acme", "start_date" => "2020", "end_date" => "2022" }
-        ]
+          {
+            "title" => "Engineer",
+            "organization_name" => "AE",
+            "start_date" => "1837-01-01",
+            "end_date" => nil,
+            "irrelevant" => "ignored"
+          },
+          {
+            "title" => "Mathematician",
+            "organization_name" => "Royal Society",
+            "start_date" => "1835-01-01",
+            "end_date" => "1836-12-31"
+          }
+        ],
+        "extra_root_key" => "ignored"
       }
+    end
 
-      contact = build(:contact, metadata: raw_metadata, name: "Alice Example", email: "alice@example.com")
+    context "with complete metadata (string keys)" do
+      it "returns a fully-populated, correctly-shaped hash" do
+        contact = build_contact_with(full_metadata_string_keys)
 
-      result = contact.metadata_for_gpt
+        result = contact.metadata_for_gpt
 
-      expect(result[:id]).to eq("123")
-      expect(result[:company][:domain]).to eq("acme.com")
-      expect(result[:employment_history].first[:title]).to eq("Dev")
+        # top-level keys
+        expect(result[:id]).to eq("person-123") # prefers person_id over id
+        expect(result[:name]).to eq("Ada Lovelace")
+        expect(result[:title]).to eq("Principle Engineer")
+        expect(result[:email]).to eq("ada@analytical.engine")
+        expect(result[:location]).to eq("London, UK") # uses present_raw_address
+        expect(result[:linkedin]).to eq("https://linkedin.com/in/ada")
+        expect(result[:headline]).to eq("Computing pioneer")
+
+        # company hash
+        expect(result[:company]).to eq(
+          name: "Analytical Engine Ltd",
+          domain: "analytical.engine",
+          linkedin: "https://linkedin.com/company/ae",
+          angellist: "https://angel.co/ae",
+          hq_location: "1 Babbage St",
+          founded_year: 1837,
+          headcount_growth_6mo: 12.3,
+          headcount_growth_12mo: 25.6
+        )
+
+        # employment_history array mapping
+        expect(result[:employment_history]).to match_array([
+          { title: "Engineer",      org: "AE",             start: "1837-01-01", end: nil },
+          { title: "Mathematician", org: "Royal Society",  start: "1835-01-01", end: "1836-12-31" }
+        ])
+
+        # ensure only the defined keys are present at the top level
+        expect(result.keys).to contain_exactly(
+          :id, :name, :title, :email, :location, :linkedin, :headline, :company, :employment_history
+        )
+      end
+    end
+
+    context "id preference" do
+      it "falls back to :id when :person_id is absent" do
+        meta = full_metadata_string_keys.merge("person_id" => nil).merge("id" => "fallback-42")
+        contact = build_contact_with(meta)
+
+        expect(contact.metadata_for_gpt[:id]).to eq("fallback-42")
+      end
+
+      it "prefers :person_id when both are present" do
+        contact = build_contact_with(full_metadata_string_keys)
+        expect(contact.metadata_for_gpt[:id]).to eq("person-123")
+      end
+    end
+
+    context "location construction" do
+      it "builds location from city/state/country when present_raw_address is missing" do
+        meta = full_metadata_string_keys.except("present_raw_address")
+        contact = build_contact_with(meta)
+
+        expect(contact.metadata_for_gpt[:location]).to eq("London, London, UK")
+      end
+
+      it "compacts missing city/state/country without stray commas" do
+        meta = full_metadata_string_keys.except("present_raw_address").merge(
+          "city" => "London", "state" => nil, "country" => "UK"
+        )
+        contact = build_contact_with(meta)
+
+        expect(contact.metadata_for_gpt[:location]).to eq("London, UK")
+      end
+
+      it "returns empty string when no location components are available" do
+        meta = full_metadata_string_keys.slice("organization").merge(
+          "name" => "Ada Lovelace", "title" => "Engineer", "email" => "ada@x.y"
+        )
+        contact = build_contact_with(meta)
+
+        expect(contact.metadata_for_gpt[:location]).to eq("")
+      end
+    end
+
+    context "company section fallbacks" do
+      it "returns nils for company fields when organization is missing" do
+        meta = full_metadata_string_keys.except("organization")
+        contact = build_contact_with(meta)
+
+        expect(contact.metadata_for_gpt[:company]).to eq(
+          name: nil,
+          domain: nil,
+          linkedin: nil,
+          angellist: nil,
+          hq_location: nil,
+          founded_year: nil,
+          headcount_growth_6mo: nil,
+          headcount_growth_12mo: nil
+        )
+      end
+
+      it "handles symbol keys just as well as string keys" do
+        sym_meta = full_metadata_string_keys.deep_symbolize_keys
+        contact = build_contact_with(sym_meta)
+
+        expect(contact.metadata_for_gpt[:company][:domain]).to eq("analytical.engine")
+      end
+    end
+
+    context "employment_history mapping" do
+      it "returns [] when employment_history is nil" do
+        meta = full_metadata_string_keys.merge("employment_history" => nil)
+        contact = build_contact_with(meta)
+
+        expect(contact.metadata_for_gpt[:employment_history]).to eq([])
+      end
+
+      it "maps only the specified fields (title, org, start, end) and ignores extras" do
+        meta = {
+          "employment_history" => [
+            { "title" => "A", "organization_name" => "OrgA", "start_date" => "2020", "end_date" => "2021", "x" => "ignored" }
+          ],
+          "name" => "N", "email" => "e@e.com" # minimum for a valid build factory
+        }
+        contact = build_contact_with(meta)
+
+        expect(contact.metadata_for_gpt[:employment_history]).to eq([
+          { title: "A", org: "OrgA", start: "2020", end: "2021" }
+        ])
+      end
+    end
+
+    context "immutability" do
+      it "does not mutate the original metadata hash" do
+        meta = full_metadata_string_keys.deep_dup
+        contact = build_contact_with(meta)
+
+        _ = contact.metadata_for_gpt
+        expect(contact.metadata).to eq(meta) # unchanged
+      end
     end
   end
 end
