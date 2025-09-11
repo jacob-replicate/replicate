@@ -55,7 +55,7 @@ class ColdEmailScheduler
       contact = @contacts[@contact_index]
       @contact_index += 1
 
-      return contact if Rails.env.development? || contact.passed_bounce_check?
+      return contact if contact.passed_bounce_check?
       contact.update_columns(email: nil, score: contact.score * -1)
     end
   end
@@ -71,8 +71,9 @@ class ColdEmailScheduler
 
       iterations.times do |i|
         base_minute = (i * spacing).floor
-        minute = base_minute + rand(0...spacing)
+        minute = base_minute + rand(0..spacing)
         second = rand(0..59)
+        minute = 59 if minute == 60
         send_times << start_time.change(hour: hour, min: minute, sec: second)
       end
     end
