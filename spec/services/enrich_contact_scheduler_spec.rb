@@ -5,7 +5,15 @@ RSpec.describe EnrichContactScheduler, type: :service do
     let!(:unenriched_contact) do
       create(:contact,
         email: "email_not_unlocked@domain.com",
-        score: 10,
+        score: 90,
+        external_id: "abc123"
+      )
+    end
+
+    let!(:unenriched_contact_to_ignore) do
+      create(:contact,
+        email: "email_not_unlocked@domain.com",
+        score: 80, # under threshold
         external_id: "abc123"
       )
     end
@@ -13,7 +21,7 @@ RSpec.describe EnrichContactScheduler, type: :service do
     let!(:enriched_contact) do
       create(:contact,
         email: "real@example.com",
-        score: 20,
+        score: 90,
         external_id: "xyz789"
       )
     end
@@ -29,7 +37,7 @@ RSpec.describe EnrichContactScheduler, type: :service do
     end
 
     it "respects the limit argument" do
-      create_list(:contact, 15, email: "email_not_unlocked@domain.com", score: 5, external_id: "id-#{SecureRandom.hex(4)}")
+      create_list(:contact, 15, email: "email_not_unlocked@domain.com", score: 100, external_id: "id-#{SecureRandom.hex(4)}")
 
       expect {
         described_class.call(limit: 20)
