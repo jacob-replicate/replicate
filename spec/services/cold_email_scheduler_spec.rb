@@ -18,7 +18,7 @@ RSpec.describe ColdEmailScheduler do
       name: "Alex Doe",
       email: "alex@example.com",
       state: "California",
-      contacted: false,
+      contacted_at: nil,
       email_queued_at: nil,
       score: 10,
       metadata: {}
@@ -170,7 +170,7 @@ RSpec.describe ColdEmailScheduler do
       mk_contact(email: "blocked@x.com", state: "Ontario", score: 90)               # non-US
       mk_contact(email: "none@example.com", state: "California", email: "email_not_unlocked@domain.com")         # unenriched
       mk_contact(email: "queued@x.com", state: "California", email_queued_at: Time.current)
-      mk_contact(email: "contacted@x.com", state: "California", contacted: true)
+      mk_contact(email: "contacted@x.com", state: "California", contacted_at: Time.now)
       mk_contact(email: "low@x.com", state: "California", score: 4)                  # below min
 
       # min score 50 => expect ordering by score: c2 (75), c3 (60), c1 (50)

@@ -4,7 +4,7 @@ require "rails_helper"
 RSpec.describe SendColdEmailWorker, type: :worker do
   subject(:worker) { described_class.new }
 
-  let(:contact) { create(:contact, email: "jacob@replicate.info", contacted: false, state: US_STATES.first) }
+  let(:contact) { create(:contact, email: "jacob@replicate.info", contacted_at: nil, state: US_STATES.first) }
   let(:inbox)   { INBOXES.first }
   let(:variant) { ColdEmailVariants.build(inbox: inbox, contact: contact) }
   let(:client) { instance_double(Google::Apis::GmailV1::GmailService) }
@@ -29,7 +29,7 @@ RSpec.describe SendColdEmailWorker, type: :worker do
 
     context "when contact has already been contacted" do
       it "does nothing" do
-        contact.update!(contacted: true)
+        contact.update!(contacted_at: Time.now)
         worker.perform(contact.id, inbox, variant)
         expect(client).not_to have_received(:send_user_message)
       end
@@ -50,12 +50,12 @@ RSpec.describe SendColdEmailWorker, type: :worker do
     end
 
     context "when contact is outside the US" do
-      let(:non_us_contact) { create(:contact, email: "intl@example.com", contacted: false, state: "Puerto Rico") }
+      let(:non_us_contact) { create(:contact, email: "intl@example.com", contacted_at: nil, state: "Puerto Rico") }
 
       it "does nothing and skips sending" do
         worker.perform(non_us_contact.id, inbox, variant)
         expect(client).not_to have_received(:send_user_message)
-        expect(non_us_contact.reload.contacted).to eq(false)
+        expect(non_us_contact.reload.contacted_at).to eq(nil)
       end
     end
 
@@ -88,7 +88,7 @@ RSpec.describe SendColdEmailWorker, type: :worker do
         Timecop.freeze(monday_10am_et_utc) do
           expect(client).to receive(:send_user_message).with("me", instance_of(Google::Apis::GmailV1::Message))
           worker.perform(contact.id, inbox, variant)
-          expect(contact.reload.contacted).to eq(true)
+          expect(contact.reload.contacted_at).to eq(Time.current)
         end
       end
 

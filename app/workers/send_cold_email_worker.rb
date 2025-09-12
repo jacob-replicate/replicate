@@ -5,7 +5,7 @@ class SendColdEmailWorker
 
   def perform(contact_id, inbox, variant)
     contact = Contact.us.enriched.find_by(id: contact_id)
-    return if contact.blank? || contact.contacted? || contact.email.blank? || contact.email == "email_not_unlocked@domain.com"
+    return if contact.blank? || contact.contacted_at.present? || contact.email.blank? || contact.email == "email_not_unlocked@domain.com"
 
     now_et = Time.current.in_time_zone("America/New_York")
     unless now_et.on_weekday? && now_et.hour.between?(9, 17)
@@ -40,7 +40,7 @@ class SendColdEmailWorker
     ].join("\r\n")
 
     client.send_user_message("me", Google::Apis::GmailV1::Message.new(raw: rfc822))
-    contact.update_columns(contacted: true)
+    contact.update_columns(contacted_at: Time.now)
   end
 
   def scopes

@@ -38,13 +38,13 @@ RSpec.describe Contact, type: :model do
   end
 
   describe "scopes" do
-    let!(:contacted_contact)   { create(:contact, contacted: true) }
-    let!(:uncontacted_contact) { create(:contact, contacted: false) }
+    let!(:contacted_contact)   { create(:contact, contacted_at: Time.now) }
+    let!(:uncontacted_contact) { create(:contact, contacted_at: nil) }
     let!(:enriched_contact)    { create(:contact, email: "user@example.com") }
     let!(:unenriched_contact)  { create(:contact, email: "email_not_unlocked@domain.com") }
 
     it ".contacted returns only contacted" do
-      expect(Contact.contacted).to include(contacted_contact)
+      expect(Contact.contacted.to_a).to eq([contacted_contact])
       expect(Contact.contacted).not_to include(uncontacted_contact)
     end
 

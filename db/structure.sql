@@ -58,9 +58,9 @@ CREATE TABLE public.contacts (
     metadata jsonb DEFAULT '{}'::jsonb,
     name text,
     cohort text,
-    contacted boolean DEFAULT false NOT NULL,
     unsubscribed boolean DEFAULT false NOT NULL,
-    email_queued_at timestamp(6) without time zone DEFAULT NULL::timestamp without time zone
+    email_queued_at timestamp(6) without time zone DEFAULT NULL::timestamp without time zone,
+    contacted_at timestamp(6) without time zone
 );
 
 
@@ -251,6 +251,8 @@ CREATE INDEX index_messages_on_conversation_id ON public.messages USING btree (c
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250912005642'),
+('20250912005635'),
 ('20250907015905'),
 ('20250906162252'),
 ('20250905012419'),

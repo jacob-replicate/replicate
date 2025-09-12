@@ -9,7 +9,7 @@ class Contact < ApplicationRecord
   validates :email, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }
   validate :name_must_have_two_words
 
-  scope :contacted, -> { where(contacted: true) }
+  scope :contacted, -> { where.not(contacted_at: nil) }
   scope :enriched, -> { where.not(email: "email_not_unlocked@domain.com").where.not(email: nil) }
   scope :unenriched, -> { where("email IS NULL OR email = ?", "email_not_unlocked@domain.com") }
   scope :us, -> { where(state: US_STATES) }

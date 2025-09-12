@@ -10,7 +10,7 @@ FactoryBot.define do
     score_reason { "High intent" }
     name { "John Doe" }
     cohort { "Q1" }
-    contacted { false }
+    contacted_at { nil }
     unsubscribed { false }
   end
 end

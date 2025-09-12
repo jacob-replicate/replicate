@@ -10,7 +10,7 @@ RSpec.describe ContactReport do
       high_score_contact_without_reason =
         create(:contact, score: 10, score_reason: nil, email: "high2@example.com")
 
-      medium_score_contact = create(:contact, score: 5, score_reason: "matched mid-level criteria", email: "medium@example.com", contacted: true)
+      medium_score_contact = create(:contact, score: 5, score_reason: "matched mid-level criteria", email: "medium@example.com", contacted_at: Time.now)
 
       expected_output = [
         "Total contacts: 3",
