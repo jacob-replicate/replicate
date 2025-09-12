@@ -45,7 +45,11 @@ class ColdEmailScheduler
   end
 
   def fetch_contacts
-    Contact.us.enriched.where(email_queued_at: nil, contacted_at: nil).where("score >= ?", @min_score).order(score: :desc).limit(200).to_a
+    contacts = Contact.us.enriched.where(email_queued_at: nil, contacted_at: nil).where("score >= ?", @min_score).order(score: :desc).limit(200).to_a
+
+    contacts.select do |contact|
+      Contact.where("contacted_at > ?", 30.days.ago).where(company_domain: contact.company_domain).blank?
+    end
   end
 
   def fetch_next_contact!

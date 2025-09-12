@@ -1,16 +1,16 @@
 FactoryBot.define do
   factory :contact do
-    email { "contact@example.com" }
-    location { "USA" }
+    cohort { "Q1" }
     company_domain { "example.com" }
-    state { "active" }
-    source { "manual" }
+    contacted_at { nil }
+    email { "contact@example.com" }
     external_id { SecureRandom.uuid }
+    location { "USA" }
+    name { "John Doe" }
     score { 80 }
     score_reason { "High intent" }
-    name { "John Doe" }
-    cohort { "Q1" }
-    contacted_at { nil }
+    source { "manual" }
+    state { "Virginia" }
     unsubscribed { false }
   end
 end

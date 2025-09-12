@@ -13,19 +13,6 @@ RSpec.describe ColdEmailScheduler do
     srand(12345)
   end
 
-  def mk_contact(attrs = {})
-    defaults = {
-      name: "Alex Doe",
-      email: "alex@example.com",
-      state: "California",
-      contacted_at: nil,
-      email_queued_at: nil,
-      score: 10,
-      metadata: {}
-    }
-    create(:contact, defaults.merge(attrs))
-  end
-
   # Helpers for inspecting the per-hour distribution
   def max_per_hour(per_hour)
     per_hour.values.map { |by_hour| by_hour.values.map(&:size).max || 0 }.max || 0
@@ -57,7 +44,7 @@ RSpec.describe ColdEmailScheduler do
       allow(Rails).to receive_message_chain(:env, :development?).and_return(true)
       allow_any_instance_of(Contact).to receive(:passed_bounce_check?).and_return(true)
 
-      mk_contact(score: 50)
+      create(:contact, score: 50)
 
       Time.use_zone("America/New_York") do
         travel_to Time.zone.parse("2025-03-16 10:00:00") do # Sunday
@@ -71,7 +58,6 @@ RSpec.describe ColdEmailScheduler do
   describe "#build_send_times (deterministic under stubbed rand)" do
     it "generates sorted times only within SEND_HOURS with fixed spacing and count" do
       allow_any_instance_of(Contact).to receive(:passed_bounce_check?).and_return(true)
-      mk_contact # we only need one so initializer completes
 
       sched = ColdEmailScheduler.new(min_score: 0)
 
@@ -115,7 +101,7 @@ RSpec.describe ColdEmailScheduler do
     it "returns immediately when there are no eligible contacts" do
       allow_any_instance_of(Contact).to receive(:passed_bounce_check?).and_return(true)
       # Make sure ineligible by score
-      mk_contact(score: 1) # min_score 100 excludes
+      create(:contact, score: 1) # min_score 100 excludes
       sched = nil
       Time.use_zone("America/New_York") do
         travel_to Time.zone.parse("2025-03-12 10:00:00") do
@@ -128,11 +114,35 @@ RSpec.describe ColdEmailScheduler do
       expect(sched.call).to be_nil
     end
 
+    it "never emails people from the same company domain within the same 30 days" do
+      allow_any_instance_of(Contact).to receive(:passed_bounce_check?).and_return(true)
+
+      Timecop.freeze Time.zone.parse("2025-03-12 10:00:00") do
+        jacob = create(:contact, score: 100, email: "jacob@acme.com", contacted_at: 15.days.ago)
+        jane = create(:contact, score: 100, email: "jane@acme.com", contacted_at: nil)
+        larry = create(:contact, score: 100, email: "larry@acme.com", contacted_at: nil)
+
+        bob = create(:contact, score: 100, email: "bob@initech.com", contacted_at: 40.days.ago)
+        mary = create(:contact, score: 100, email: "jane@initech.com", contacted_at: nil)
+
+        susie = create(:contact, score: 100, email: "susie@company.com", contacted_at: nil)
+
+        scheduled = []
+        allow(SendColdEmailWorker).to receive(:perform_at) do |_t, id, _inbox, _variant|
+          scheduled << id
+        end
+
+        described_class.new(min_score: 0).call
+
+        expect(scheduled).to match_array([mary.id, susie.id])
+      end
+    end
+
     it "schedules at most 3 messages per inbox per hour and never above daily max" do
       allow_any_instance_of(Contact).to receive(:passed_bounce_check?).and_return(true)
 
       # 90 > daily total capacity (81) to ensure we hit limits
-      contacts = 90.times.map { |i| mk_contact(email: "person#{i}@ex.com", score: 100 - i) }
+      contacts = 90.times.map { |i| create(:contact, email: "person#{i}@ex.com", score: 100 - i) }
 
       per_hour = nil
       Time.use_zone("America/New_York") do
@@ -162,16 +172,16 @@ RSpec.describe ColdEmailScheduler do
       allow_any_instance_of(Contact).to receive(:passed_bounce_check?).and_return(true)
 
       # Eligible
-      c1 = mk_contact(email: "a@x.com", state: "California", score: 50)
-      c2 = mk_contact(email: "b@x.com", state: "Texas", score: 75)
-      c3 = mk_contact(email: "c@x.com", state: "New York", score: 60)
+      c1 = create(:contact, email: "a@x.com", state: "California", score: 50)
+      c2 = create(:contact, email: "b@y.com", state: "Texas", score: 75)
+      c3 = create(:contact, email: "c@z.com", state: "New York", score: 60)
 
       # Ineligible for various reasons
-      mk_contact(email: "blocked@x.com", state: "Ontario", score: 90)               # non-US
-      mk_contact(email: "none@example.com", state: "California", email: "email_not_unlocked@domain.com")         # unenriched
-      mk_contact(email: "queued@x.com", state: "California", email_queued_at: Time.current)
-      mk_contact(email: "contacted@x.com", state: "California", contacted_at: Time.now)
-      mk_contact(email: "low@x.com", state: "California", score: 4)                  # below min
+      create(:contact, email: "blocked@x.com", state: "Ontario", score: 90)               # non-US
+      create(:contact, email: "none@example.com", state: "California", email: "email_not_unlocked@domain.com")         # unenriched
+      create(:contact, email: "queued@x.com", state: "California", email_queued_at: Time.current)
+      create(:contact, email: "contacted@a.com", state: "California", contacted_at: Time.now)
+      create(:contact, email: "low@x.com", state: "California", score: 4)                  # below min
 
       # min score 50 => expect ordering by score: c2 (75), c3 (60), c1 (50)
       scheduled = []
@@ -179,13 +189,11 @@ RSpec.describe ColdEmailScheduler do
         scheduled << id
       end
 
-      Time.use_zone("America/New_York") do
-        travel_to Time.zone.parse("2025-03-12 10:00:00") do
-          sched = described_class.new(min_score: 50)
-          inboxes = sched.instance_variable_get(:@inboxes)
-          allow(inboxes).to receive(:shuffle).and_return(inboxes) # deterministic
-          sched.call
-        end
+      Timecop.freeze Time.zone.parse("2025-03-12 10:00:00") do
+        sched = described_class.new(min_score: 50)
+        inboxes = sched.instance_variable_get(:@inboxes)
+        allow(inboxes).to receive(:shuffle).and_return(inboxes) # deterministic
+        sched.call
       end
 
       expect(scheduled).to eq([c2.id, c3.id, c1.id])
@@ -194,8 +202,8 @@ RSpec.describe ColdEmailScheduler do
     end
 
     it "skips a contact that fails the bounce check and flips its score negative + nulls email" do
-      pass = mk_contact(email: "ok@x.com", score: 30)
-      fail = mk_contact(email: "bad@x.com", score: 40)
+      pass = create(:contact, email: "ok@x.com", score: 30)
+      fail = create(:contact, email: "bad@x.com", score: 40)
 
       allow_any_instance_of(Contact).to receive(:passed_bounce_check?).and_return(false)
 
@@ -223,7 +231,7 @@ RSpec.describe ColdEmailScheduler do
 
     it "returns the per-hour allocation hash with inbox/email, hour keys, and rows that include the variant" do
       allow_any_instance_of(Contact).to receive(:passed_bounce_check?).and_return(true)
-      c = mk_contact(email: "ok@x.com", score: 80)
+      c = create(:contact, email: "ok@x.com", score: 80)
 
       per_hour = nil
       Time.use_zone("America/New_York") do

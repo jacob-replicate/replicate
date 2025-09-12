@@ -58,41 +58,41 @@ RSpec.describe Contact, type: :model do
       expect(Contact.unenriched).to include(unenriched_contact, nil_contact)
       expect(Contact.unenriched).not_to include(enriched_contact)
     end
+  end
 
-    describe ".us scope" do
-      it "includes contacts with a state in the US_STATES constant" do
-        ny = create(:contact, state: "New York")
-        ca = create(:contact, state: "California")
-        tx = create(:contact, state: "Texas")
+  describe ".us scope" do
+    it "includes contacts with a state in the US_STATES constant" do
+      ny = create(:contact, state: "New York")
+      ca = create(:contact, state: "California")
+      tx = create(:contact, state: "Texas")
 
-        results = Contact.us
-        expect(results).to include(ny, ca, tx)
-      end
+      results = Contact.us
+      expect(results).to include(ny, ca, tx)
+    end
 
-      it "excludes contacts with states not in US_STATES" do
-        on = create(:contact, state: "Ontario")
-        bc = create(:contact, state: "British Columbia")
-        mx = create(:contact, state: "Mexico City")
+    it "excludes contacts with states not in US_STATES" do
+      on = create(:contact, state: "Ontario")
+      bc = create(:contact, state: "British Columbia")
+      mx = create(:contact, state: "Mexico City")
 
-        results = Contact.us
-        expect(results).not_to include(on, bc, mx)
-      end
+      results = Contact.us
+      expect(results).not_to include(on, bc, mx)
+    end
 
-      it "handles DC variants defined in the constant" do
-        dc1 = create(:contact, state: "District of Columbia")
-        dc2 = create(:contact, state: "Washington DC")
-        dc3 = create(:contact, state: "Washington, D.C.")
+    it "handles DC variants defined in the constant" do
+      dc1 = create(:contact, state: "District of Columbia")
+      dc2 = create(:contact, state: "Washington DC")
+      dc3 = create(:contact, state: "Washington, D.C.")
 
-        results = Contact.us
-        expect(results).to include(dc1, dc2, dc3)
-      end
+      results = Contact.us
+      expect(results).to include(dc1, dc2, dc3)
+    end
 
-      it "returns empty when no contact has a state in US_STATES" do
-        create(:contact, state: "Quebec")
-        create(:contact, state: "Ontario")
+    it "returns empty when no contact has a state in US_STATES" do
+      create(:contact, state: "Quebec")
+      create(:contact, state: "Ontario")
 
-        expect(Contact.us).to be_empty
-      end
+      expect(Contact.us).to be_empty
     end
   end
 

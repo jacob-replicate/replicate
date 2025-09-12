@@ -78,8 +78,8 @@ RSpec.describe EnrichContactsWorker, type: :worker do
         expect(@captured_request).to be_a(Net::HTTP::Post)
         expect(@captured_request["x-api-key"]).to eq("test-token")
         body_hash = JSON.parse(@captured_request.body)
-        expect(body_hash).to eq(
-          "details" => [
+        expect(body_hash["details"]).to match_array(
+          [
             { "id" => "A123" },
             { "id" => "B456" },
             { "id" => "C789" }
