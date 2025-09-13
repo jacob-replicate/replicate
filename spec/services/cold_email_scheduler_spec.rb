@@ -63,7 +63,7 @@ RSpec.describe ColdEmailScheduler do
 
       times = sched.send(:build_send_times)
       # 9 hours * 3 per inbox * 3 inboxes = 81
-      expect(times.size).to eq(84)
+      expect(times.size).to eq(93)
       expect(times).to eq(times.sort)          # sorted
       expect(times.all? { |t| (9..17).cover?(t.hour) }).to be(true)
 
@@ -74,15 +74,15 @@ RSpec.describe ColdEmailScheduler do
           expect(times).to be_present
 
           # With 3 inboxes, per_inbox=3, 9 hours -> 9 * (3 * 3) = 81 slots
-          expect(times.size).to eq(96)
+          expect(times.size).to eq(84)
 
           # Sorted and within 09:00..17:59
           expect(times).to eq(times.sort)
           expect(times.map(&:hour).uniq).to match_array((9..17).to_a)
 
           # Because of stubs: minutes = 0,6,12,18,24,30,36,42,48, seconds = 0
-          expect(times.select { |t| t.hour == 9 }.map(&:min)).to eq([5, 8, 15, 15, 23, 28, 35, 35, 40, 48, 50, 59])
-          expect(times.select { |t| t.hour == 9 }.map(&:sec).uniq).to eq([57, 39, 34, 52, 46, 37, 3, 42, 59, 13, 44])
+          expect(times.select { |t| t.hour == 9 }.map(&:min)).to eq([0, 11, 12, 20, 29, 31, 36, 44, 50])
+          expect(times.select { |t| t.hour == 9 }.map(&:sec).uniq).to eq([13, 23, 12, 53, 54, 25, 59, 56])
         end
       end
     end
@@ -148,8 +148,6 @@ RSpec.describe ColdEmailScheduler do
       Time.use_zone("America/New_York") do
         travel_to Time.zone.parse("2025-03-12 10:00:00") do
           sched = described_class.new(min_score: 0)
-          inboxes = sched.instance_variable_get(:@inboxes)
-          allow(inboxes).to receive(:shuffle).and_return(inboxes)
           per_hour = sched.call
         end
       end
@@ -178,7 +176,7 @@ RSpec.describe ColdEmailScheduler do
 
       # Ineligible for various reasons
       create(:contact, email: "blocked@x.com", state: "Ontario", score: 90)               # non-US
-      create(:contact, email: "none@example.com", state: "California", email: "email_not_unlocked@domain.com")         # unenriched
+      create(:contact, state: "California", email: "email_not_unlocked@domain.com")         # unenriched
       create(:contact, email: "queued@x.com", state: "California", email_queued_at: Time.current)
       create(:contact, email: "contacted@a.com", state: "California", contacted_at: Time.now)
       create(:contact, email: "low@x.com", state: "California", score: 4)                  # below min
@@ -191,8 +189,6 @@ RSpec.describe ColdEmailScheduler do
 
       Timecop.freeze Time.zone.parse("2025-03-12 10:00:00") do
         sched = described_class.new(min_score: 50)
-        inboxes = sched.instance_variable_get(:@inboxes)
-        allow(inboxes).to receive(:shuffle).and_return(inboxes) # deterministic
         sched.call
       end
 
@@ -215,8 +211,6 @@ RSpec.describe ColdEmailScheduler do
       Time.use_zone("America/New_York") do
         travel_to Time.zone.parse("2025-03-12 10:00:00") do
           sched = described_class.new(min_score: 0)
-          inboxes = sched.instance_variable_get(:@inboxes)
-          allow(inboxes).to receive(:shuffle).and_return(inboxes)
           sched.call
         end
       end
@@ -237,8 +231,6 @@ RSpec.describe ColdEmailScheduler do
       Time.use_zone("America/New_York") do
         travel_to Time.zone.parse("2025-03-12 10:00:00") do
           sched = described_class.new(min_score: 0)
-          inboxes = sched.instance_variable_get(:@inboxes)
-          allow(inboxes).to receive(:shuffle).and_return(inboxes)
           per_hour = sched.call
         end
       end

@@ -7,7 +7,6 @@ class ColdEmailScheduler
     return unless should_run_today? || Rails.env.development?
 
     @min_score = min_score
-    @inboxes = INBOXES.dup
     @contacts = fetch_contacts
     @per_hour  = Hash.new { |h, email| h[email] = Hash.new { |x, hour| x[hour] = [] } }
     @send_times = build_send_times
@@ -18,7 +17,7 @@ class ColdEmailScheduler
     return if @contacts.empty?
 
     @send_times.each_with_index do |send_time, i|
-      inbox = @inboxes.shuffle.find { |inbox| inbox_has_room?(inbox["email"], send_time.hour) }
+      inbox = INBOXES.dup.shuffle.find { |inbox| inbox_has_room?(inbox["email"], send_time.hour) }
       next unless inbox
 
       contact = fetch_next_contact!
@@ -70,7 +69,7 @@ class ColdEmailScheduler
 
     SEND_HOURS.each do |hour|
       per_inbox = 3 + rand(0..1)
-      iterations = per_inbox * @inboxes.size
+      iterations = per_inbox * INBOXES.size
       spacing = 60 / iterations
 
       iterations.times do |i|

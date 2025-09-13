@@ -8,7 +8,7 @@ EMAIL_INCIDENTS = [
     "subject" => "Legacy login page came back during SSO outage, bypassing MFA"
   },
   {
-    "prompt" => "A background worker crashed midway through persisting a company's monthly customer credit card charges. When it restarted, the queue reprocessed the task without realizing a partial write had already occurred. Lots of customers were billed twice because the system lacked true at-most-once safeguards. Finance teams now see unexplained spikes in duplicate transactions.",
+    "prompt" => "A background worker crashed midway through persisting a company's monthly customer credit card charges. When it restarted, the queue reprocessed the task without realizing a partial write had already occurred. Lots of customers were billed twice because the system lacked true at-most-once safeguards. Finance teams now see unexplained spikes in duplicate transactions. Zero idempotency.",
     "subject" => "Invoicing job crashed, double charging hundreds of customers"
   },
   {
@@ -21,6 +21,6 @@ EMAIL_INCIDENTS = [
   },
   {
     "prompt" => "A reporting endpoint assembled data with a JOIN that forgot to constrain by tenant. Under certain query parameters the ORM skipped the scoping clause, returning cross-tenant records. A cached response then amplified the blast radius until audit alerts caught the anomaly.",
-    "subject" => "Cross-tenant access via missing authorization filter"
+    "subject" => "Customer saw another org's data in CSV export"
   }
 ]
