@@ -27,6 +27,8 @@ gem "stimulus-rails"
 gem "stripe", "9.1.0"
 gem "tailwindcss-rails", "~> 2.0"
 gem "whenever"
+gem "sentry-ruby"
+gem "sentry-rails"
 
 group :development, :test do
   gem "factory_bot_rails"

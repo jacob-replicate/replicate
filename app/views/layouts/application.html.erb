@@ -43,6 +43,7 @@
     <%= stylesheet_link_tag "application", as: "style" %>
     <%= stylesheet_link_tag "tailwind", as: "style" %>
     <%= javascript_include_tag "application", defer: true %>
+    <%= Sentry.get_trace_propagation_meta.html_safe %>
   </head>
 
   <body>
