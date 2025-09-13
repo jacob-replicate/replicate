@@ -1,16 +1,8 @@
-Product
-- Remove <p> + random padding top at the top of emails. (e.g., "Hey there" lines, initial line of replies)
 - Add the monday cron job back to Heroku
-- Check for inbound payloads in webhook processor
-- "SEV-1 Training:" prefix (no [ ] characters). Turns into "SEV-1:" after the user sends ~10 messages.
-
-Untested:
-- Prompts::Base
-- Prompts::CoachingIntro (since it has custom logic -- which you might not even need?)
-
-Content
 - More cold email variants
-- 2-3 great email incidents
+- More SEVs
+- Test for Prompts::CoachingIntro (since it has custom logic - might find some to cut)
+- Check for inbound payload type in webhook processor
 
 ------- LAUNCH ----------
 
