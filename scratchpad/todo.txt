@@ -5,7 +5,6 @@ Product
 - "SEV-1 Training:" prefix (no [ ] characters). Turns into "SEV-1:" after the user sends ~10 messages.
 
 Untested:
-- ColdEmailScheduler (Don't email people from the same domain multiple times in the same month)
 - Prompts::Base
 - Prompts::CoachingIntro (since it has custom logic -- which you might not even need?)
 
@@ -57,7 +56,6 @@ Sales
 - [Maybe] Accordion left/right links floated around the homepage conversation. Nobody clicks that shit though.
 
 Reliability
-- Sentry
 - PagerDuty (or alternative, maybe, so you don't mix with Hashi? Sentry app, maybe?)
 - APM? Librato equivalent?
 - Add auto-unsubscribe logic (check it at runtime to account for last-minute messages)

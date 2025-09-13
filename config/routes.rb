@@ -13,7 +13,6 @@ Rails.application.routes.draw do
     mount Sidekiq::Web => "/sidekiq"
   end
 
-  post "/webhooks/stripe", to: "stripe_webhooks#create"
   post "/webhooks/postmark", to: "postmark_webhooks#create"
 
   get "/demo", to: "static#demo"
