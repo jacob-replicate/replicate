@@ -17,6 +17,7 @@ class StaticController < ApplicationController
   end
 
   def demo
+    raise "Test exception for sentry"
     return start_conversation(
       context: {
         conversation_type: :landing_demo,
