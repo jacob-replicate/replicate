@@ -1,19 +1,11 @@
-- Add the monday cron job back to Heroku
-- More cold email variants
-- More SEVs
-- Test for Prompts::CoachingIntro (since it has custom logic - might find some to cut)
-- Check for inbound payload type in webhook processor
+- More cold email variants + make sure it works
 
 ------- LAUNCH ----------
-
-Legal
+- Add more incidents. You have 6 weeks total (really 5 -- initial + 5 weeks)
 - Terms + Privacy + MSA/DPA review
-
-Resubscribe
+- Test for Prompts::CoachingIntro (since it has custom logic - might find some to cut)
 - Make sure to add the resubscribe link in the final "We're auto-unsubscribing you" email.
-
-Cold Unsubscribe
-- Maybe make it a confirmation box? Why stop yourself from hitting people again in a few months?
+- Maybe make cold unsubscribe a confirmation box? Why stop yourself from hitting people again in a few months?
 
 Product
 - Don't send weekly emails to people who bounced. Bounce check on cold, not on transactional? - Postmark does this automatically?

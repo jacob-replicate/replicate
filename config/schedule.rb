@@ -7,7 +7,7 @@ every 1.hour do
   sh <<~CMD
     cd /home/jacob/code/replicate && \
     git pull && \
-    (bundle check || bundle install) && \
+    (sudo bundle check || sudo bundle install) && \
     bundle exec whenever --update-crontab
   CMD
 end
