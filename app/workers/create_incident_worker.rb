@@ -12,7 +12,7 @@ class CreateIncidentWorker
 
     member_conversation_ids = member.conversations.pluck(:id)
     recent_user_reply_exists = Message.where(conversation_id: member_conversation_ids, user_generated: true).where("created_at >= ?", 3.weeks.ago).any?
-    return unless member.created_at > 3.weeks.ago || recent_user_reply_exists
+    return unless member_conversation_ids.size < 4 || recent_user_reply_exists
 
     conversation = Conversation.create!(
       channel: "email",

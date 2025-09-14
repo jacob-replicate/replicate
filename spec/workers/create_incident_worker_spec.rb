@@ -44,57 +44,21 @@ RSpec.describe CreateIncidentWorker, type: :worker do
       end
     end
 
-    context "3-week inactivity pause" do
-      context "when the member account is older than 3 weeks AND no user-generated messages in last 3 weeks" do
-        it "returns without creating a conversation" do
-          stale_member = create(:member,
-            organization: organization,
-            subscribed: true,
-            created_at: 2.months.ago
-          )
+    context "trial members" do
+      it "creates the first 4 conversations, then pauses until activity" do
+        Timecop.freeze do
+          new_member = create(:member, organization: organization, subscribed: true, created_at: 2.weeks.ago)
+          allow_any_instance_of(Prompts::Base).to receive(:fetch_raw_output).and_return("Imagine a status page shows read replica lag at 15ms for a week straight. Query durations spike briefly after large write operations, but dashboards for writes, reads, and connection pools all stay green.")
 
-          # Ensure there were conversations/messages, but all older than 3 weeks
-          old_conversation = create(:conversation, recipient: stale_member, created_at: 1.month.ago)
+          4.times do |i|
+            expect { worker.perform(new_member.id, incident) }.to change { Conversation.count }.by(1)
+            expect(new_member.conversations.count).to eq(i + 1)
+            Conversation.update_all(created_at: 1.week.ago)
+          end
 
-          create(:message, conversation: old_conversation, user_generated: true, created_at: 1.month.ago)
-
-          expect(Conversation).not_to receive(:create!)
-          worker.perform(stale_member.id, incident)
-        end
-      end
-
-      context "when the member account is older than 3 weeks BUT there was a user reply within the last 3 weeks" do
-        it "creates a conversation" do
-          returning_member = create(:member,
-            organization: organization,
-            subscribed: true,
-            created_at: 2.months.ago
-          )
-
-          recent_conversation = create(:conversation, recipient: returning_member, created_at: 2.weeks.ago)
-          create(:message, conversation: recent_conversation, user_generated: true, created_at: 2.weeks.ago)
-
-          expect_any_instance_of(Prompts::Base).to receive(:fetch_raw_output).and_return("Imagine a status page shows read replica lag at 15ms for a week straight. Query durations spike briefly after large write operations, but dashboards for writes, reads, and connection pools all stay green.")
-
-          expect {
-            worker.perform(returning_member.id, incident)
-          }.to change { Conversation.count }.by(1)
-        end
-      end
-
-      context "when the member account is NEW (created within the last 3 weeks) and has not replied yet" do
-        it "creates a conversation" do
-          new_member = create(:member,
-            organization: organization,
-            subscribed: true,
-            created_at: 2.weeks.ago
-          )
-
-          expect_any_instance_of(Prompts::Base).to receive(:fetch_raw_output).and_return("Imagine a status page shows read replica lag at 15ms for a week straight. Query durations spike briefly after large write operations, but dashboards for writes, reads, and connection pools all stay green.")
-
-          expect {
-            worker.perform(new_member.id, incident)
-          }.to change { Conversation.count }.by(1)
+          expect { worker.perform(new_member.id, incident) }.to change { Conversation.count }.by(0)
+          create(:message, conversation: new_member.conversations.last, user_generated: true, created_at: 2.weeks.ago)
+          expect { worker.perform(new_member.id, incident) }.to change { Conversation.count }.by(1)
         end
       end
     end
