@@ -12,6 +12,10 @@ RSpec.describe CreateIncidentWorker, type: :worker do
     }
   end
 
+  before(:each) do
+    allow_any_instance_of(Prompts::Base).to receive(:fetch_raw_output).and_return("Imagine a status page shows read replica lag at 15ms for a week straight. Query durations spike briefly after large write operations, but dashboards for writes, reads, and connection pools all stay green.")
+  end
+
   describe "#perform" do
     context "when the member does not exist" do
       it "returns without creating a conversation" do
@@ -38,9 +42,16 @@ RSpec.describe CreateIncidentWorker, type: :worker do
 
     context "when the member has a conversation in the last 24 hours" do
       it "returns without creating a new conversation" do
-        create(:conversation, recipient: member, created_at: 2.hours.ago)
-        expect(Conversation).not_to receive(:create!)
+        old_convo = create(:conversation, recipient: member, created_at: 10.hours.ago)
+        old_convo_id = old_convo.id
         worker.perform(member.id, incident)
+        expect(Conversation.count). to eq(1)
+        expect(Conversation.first.id). to eq(old_convo_id)
+
+        old_convo.destroy
+        worker.perform(member.id, incident)
+        expect(Conversation.count). to eq(1)
+        expect(Conversation.first.id).not_to eq(old_convo_id)
       end
     end
 
@@ -48,7 +59,6 @@ RSpec.describe CreateIncidentWorker, type: :worker do
       it "creates the first 4 conversations, then pauses until activity" do
         Timecop.freeze do
           new_member = create(:member, organization: organization, subscribed: true, created_at: 2.weeks.ago)
-          allow_any_instance_of(Prompts::Base).to receive(:fetch_raw_output).and_return("Imagine a status page shows read replica lag at 15ms for a week straight. Query durations spike briefly after large write operations, but dashboards for writes, reads, and connection pools all stay green.")
 
           4.times do |i|
             expect { worker.perform(new_member.id, incident) }.to change { Conversation.count }.by(1)

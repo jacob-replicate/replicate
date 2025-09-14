@@ -8,7 +8,7 @@ class CreateIncidentWorker
     return unless member.present?
     return unless member.subscribed?
     return unless member.organization.active?
-    return unless member.conversations.where("created_at >= ?", 24.hours.ago).blank?
+    return unless member.conversations.where("created_at >= ?", 12.hours.ago).blank?
 
     member_conversation_ids = member.conversations.pluck(:id)
     recent_user_reply_exists = Message.where(conversation_id: member_conversation_ids, user_generated: true).where("created_at >= ?", 3.weeks.ago).any?
