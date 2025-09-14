@@ -8,7 +8,7 @@ RSpec.describe CreateIncidentWorker, type: :worker do
   let(:incident) do
     {
       "prompt" => "Database writes intermittently fail due to replica lag. Walk me through your first 3 checks.",
-      "subject_lines" => ["Replica lag causing write flaps"]
+      "subject" => "Replica lag causing write flaps"
     }
   end
 

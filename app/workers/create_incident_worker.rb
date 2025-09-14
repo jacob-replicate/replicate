@@ -21,7 +21,7 @@ class CreateIncidentWorker
         incident: incident["prompt"]
       },
       recipient: member,
-      subject_line: incident["subject_lines"].sample,
+      subject_line: incident["subject"]
     )
 
     ConversationDriverWorker.new.perform(conversation.id)
