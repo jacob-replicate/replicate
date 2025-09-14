@@ -1,6 +1,6 @@
 EMAIL_INCIDENTS = [
   {
-    "prompt" => "An IAM audit log shows a service account executed admin actions in production using a token tied to a session already marked expired. The application still trusted the role claim in that token instead of enforcing session validity or scope checks. No approval workflow or ticket was linked, leaving unauthorized admin changes in audit trails and raising concerns about replayed or stale tokens being accepted across critical systems.",
+    "prompt" => "An IAM audit log shows a service account executed admin actions in production using a token tied to a session already marked expired. The application still trusted the role claim in that token instead of enforcing session validity or scope checks. No approval workflow or ticket was linked, leaving unauthorized admin changes in audit trails and raising concerns about replayed or stale tokens being accepted across critical systems. Other internal tools accepted the same stale token, indicating trust boundaries were shared across environments.",
     "subject" => "Expired token granted unauthorized admin in production"
   },
   {
@@ -8,19 +8,19 @@ EMAIL_INCIDENTS = [
     "subject" => "Legacy login page came back during SSO outage, bypassing MFA"
   },
   {
-    "prompt" => "A background worker crashed midway through persisting a company's monthly customer credit card charges. When it restarted, the queue reprocessed the task without realizing a partial write had already occurred. Lots of customers were billed twice because the system lacked true at-most-once safeguards. Finance teams now see unexplained spikes in duplicate transactions. Zero idempotency.",
-    "subject" => "Invoicing job crashed, double charging hundreds of customers"
+    "prompt" => "A background worker crashed midway through persisting a company’s monthly customer credit card charges. When it restarted, the task was retried by the job queue, which had no awareness of the partial write. The worker crashed again multiple times overnight, each time reprocessing the same task from scratch. Customers were charged two to four times depending on retry timing. The system lacked idempotency keys, write barriers, or deduplication safeguards — at-most-once semantics were completely absent. Finance teams didn’t notice the spike immediately, and the issue was first surfaced by a support ticket from a confused customer: 'Why was I charged four times?'",
+    "subject" => "Invoicing job crashed. The retry issued duplicate charges to every customer."
   },
   {
-    "prompt" => "A downstream dependency began returning 500 errors. Instead of backing off, workers retried requests in tight loops. Message queues filled rapidly, and dead-letter queues overflowed with poison messages. CPU and memory spiked across multiple services until circuit breakers finally tripped.",
-    "subject" => "Unbounded retries crippled customer-facing systems"
+    "prompt" => "During peak traffic, a downstream dependency began returning 500 errors. Instead of backing off, application workers retried in tight loops, flooding the message queue with duplicate requests. The retry storm overwhelmed the queueing system, caused dead-letter queues to overflow with poison messages, and spiked CPU and memory across multiple services. The customer dashboard began returning 503s and eventually failed entirely. The incident lasted 42 minutes before circuit breakers tripped and autoscaling recovered throughput. No alerts fired until the queue system breached resource thresholds, delaying detection across the board.",
+    "subject" => "Retry storm killed the customer dashboard during peak traffic"
   },
   {
-    "prompt" => "Users reported seeing data belonging to other accounts. Investigation shows CDN caches returning responses without including authentication headers in the cache key. As a result, personalized or sensitive content was served across sessions. Purge attempts didn’t fully clear stale entries.",
-    "subject" => "Cached personalized responses leaked between users"
+    "prompt" => "A SaaS employee accessed a customer-facing page while logged in with elevated staff permissions. The page included admin controls and sensitive data hidden behind 'if current_user.employee?'. The CDN cached that response without including auth headers in the cache key. Real customers later received the cached admin view of their own accounts. Attempts to purge the cache failed to fully clear stale entries, and multiple exposures were confirmed before the issue was contained.",
+    "subject" => "CDN cached admin view and exposed it to users"
   },
   {
-    "prompt" => "A reporting endpoint assembled data with a JOIN that forgot to constrain by tenant. Under certain query parameters the ORM skipped the scoping clause, returning cross-tenant records. A cached response then amplified the blast radius until audit alerts caught the anomaly.",
+    "prompt" => "A customer exported a CSV report and received records from a completely different organization. The reporting query used a JOIN that silently failed to apply the expected tenant scoping logic under specific query parameter combinations. The ORM auto-generated the SQL but skipped the WHERE clause due to a polymorphic association edge case. Since the endpoint cached the full export by URL, the incorrect results were reused across multiple customers until anomaly detection in the SIEM flagged irregular access patterns. The customer had already downloaded the file.",
     "subject" => "Customer saw another org's data in CSV export"
   }
 ]
