@@ -22,12 +22,12 @@ RSpec.describe ScheduleWeeklyIncidentsWorker, type: :worker do
 
   context 'when no organization_ids are passed' do
     it 'schedules emails for all subscribed members across active orgs' do
-      allow(NextIncidentSelector).to receive(:call).and_return(EMAIL_INCIDENTS.first)
+      allow(NextIncidentSelector).to receive(:call).and_return(INCIDENTS.first)
 
       Timecop.freeze do
-        expect(CreateIncidentWorker).to receive(:perform_at).with((Time.at(start_time)).change(usec: 0), active_member_active_org_1.id, EMAIL_INCIDENTS.first)
-        expect(CreateIncidentWorker).to receive(:perform_at).with((Time.at(start_time) + 1.second).change(usec: 0), active_member_active_org_2.id, EMAIL_INCIDENTS.first)
-        expect(CreateIncidentWorker).not_to receive(:perform_at).with(anything, active_member_inactive_org.id, EMAIL_INCIDENTS.first)
+        expect(CreateIncidentWorker).to receive(:perform_at).with((Time.at(start_time)).change(usec: 0), active_member_active_org_1.id, INCIDENTS.first)
+        expect(CreateIncidentWorker).to receive(:perform_at).with((Time.at(start_time) + 1.second).change(usec: 0), active_member_active_org_2.id, INCIDENTS.first)
+        expect(CreateIncidentWorker).not_to receive(:perform_at).with(anything, active_member_inactive_org.id, INCIDENTS.first)
         described_class.new.perform(nil, start_time.to_i, current_day_start)
       end
     end
@@ -35,10 +35,10 @@ RSpec.describe ScheduleWeeklyIncidentsWorker, type: :worker do
 
   context 'when specific organization_ids are passed' do
     it 'only schedules emails for members in those orgs' do
-      allow(NextIncidentSelector).to receive(:call).and_return(EMAIL_INCIDENTS.first)
+      allow(NextIncidentSelector).to receive(:call).and_return(INCIDENTS.first)
 
       Timecop.freeze do
-        expect(CreateIncidentWorker).to receive(:perform_at).with((Time.at(start_time)).change(usec: 0), active_member_active_org_1.id, EMAIL_INCIDENTS.first)
+        expect(CreateIncidentWorker).to receive(:perform_at).with((Time.at(start_time)).change(usec: 0), active_member_active_org_1.id, INCIDENTS.first)
         expect(CreateIncidentWorker).not_to receive(:perform_at).with(anything, active_member_active_org_2.id, anything)
         expect(CreateIncidentWorker).not_to receive(:perform_at).with(anything, inactive_member_active_org_1.id, anything)
         expect(CreateIncidentWorker).not_to receive(:perform_at).with(anything, inactive_member_active_org_2.id, anything)
@@ -50,13 +50,13 @@ RSpec.describe ScheduleWeeklyIncidentsWorker, type: :worker do
   end
 
   it "defaults start_time to noon of current_day_start when start_time is nil" do
-    allow(NextIncidentSelector).to receive(:call).and_return(EMAIL_INCIDENTS.first)
+    allow(NextIncidentSelector).to receive(:call).and_return(INCIDENTS.first)
 
     Timecop.freeze do
       expected_base = Time.at(current_day_start).advance(hours: 12).change(usec: 0)
 
-      expect(CreateIncidentWorker).to receive(:perform_at).with(expected_base, active_member_active_org_1.id, EMAIL_INCIDENTS.first)
-      expect(CreateIncidentWorker).to receive(:perform_at).with(expected_base + 1.second, active_member_active_org_2.id, EMAIL_INCIDENTS.first)
+      expect(CreateIncidentWorker).to receive(:perform_at).with(expected_base, active_member_active_org_1.id, INCIDENTS.first)
+      expect(CreateIncidentWorker).to receive(:perform_at).with(expected_base + 1.second, active_member_active_org_2.id, INCIDENTS.first)
 
       described_class.new.perform(nil, nil, current_day_start)
     end
@@ -66,9 +66,9 @@ RSpec.describe ScheduleWeeklyIncidentsWorker, type: :worker do
     it "returns early without scheduling anything" do
       Timecop.freeze do
         allow(NextIncidentSelector).to receive(:call).with(active_org_1).and_return(nil)
-        allow(NextIncidentSelector).to receive(:call).with(active_org_2).and_return(EMAIL_INCIDENTS.first)
+        allow(NextIncidentSelector).to receive(:call).with(active_org_2).and_return(INCIDENTS.first)
 
-        expect(CreateIncidentWorker).to receive(:perform_at).with((Time.at(start_time)).change(usec: 0), active_member_active_org_2.id, EMAIL_INCIDENTS.first)
+        expect(CreateIncidentWorker).to receive(:perform_at).with((Time.at(start_time)).change(usec: 0), active_member_active_org_2.id, INCIDENTS.first)
         expect(CreateIncidentWorker).not_to receive(:perform_at).with(anything, active_member_active_org_1.id, anything)
         expect(CreateIncidentWorker).not_to receive(:perform_at).with(anything, inactive_member_active_org_1.id, anything)
         expect(CreateIncidentWorker).not_to receive(:perform_at).with(anything, inactive_member_active_org_2.id, anything)
@@ -91,15 +91,15 @@ RSpec.describe ScheduleWeeklyIncidentsWorker, type: :worker do
 
   it "always zeroes microseconds on perform_at times" do
     times = []
-    allow(NextIncidentSelector).to receive(:call).and_return(EMAIL_INCIDENTS.first)
+    allow(NextIncidentSelector).to receive(:call).and_return(INCIDENTS.first)
     allow(CreateIncidentWorker).to receive(:perform_at) { |t, *_| times << t }
     Timecop.freeze { described_class.new.perform(nil, start_time.to_i, current_day_start) }
     expect(times).to all(satisfy { |t| t.usec.zero? })
   end
 
   it "calls NextIncidentSelector once per active organization" do
-    expect(NextIncidentSelector).to receive(:call).with(active_org_1).and_return(EMAIL_INCIDENTS.first.to_h)
-    expect(NextIncidentSelector).to receive(:call).with(active_org_2).and_return(EMAIL_INCIDENTS.first.to_h)
+    expect(NextIncidentSelector).to receive(:call).with(active_org_1).and_return(INCIDENTS.first.to_h)
+    expect(NextIncidentSelector).to receive(:call).with(active_org_2).and_return(INCIDENTS.first.to_h)
     expect(NextIncidentSelector).not_to receive(:call).with(inactive_org)
     expect(CreateIncidentWorker).to receive(:perform_at).twice
 

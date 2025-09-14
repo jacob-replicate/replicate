@@ -1,4 +1,4 @@
-EMAIL_INCIDENTS = [
+INCIDENTS = [
   {
     "prompt" => "An IAM audit log shows a service account executed admin actions in production using a token tied to a session already marked expired. The application still trusted the role claim in that token instead of enforcing session validity or scope checks. No approval workflow or ticket was linked, leaving unauthorized admin changes in audit trails and raising concerns about replayed or stale tokens being accepted across critical systems. Other internal tools accepted the same stale token, indicating trust boundaries were shared across environments.",
     "subject" => "Expired token granted unauthorized admin in production"

@@ -16,19 +16,6 @@ class StaticController < ApplicationController
     @title = "Billing"
   end
 
-  def demo
-    raise "Test exception for sentry"
-    return start_conversation(
-      context: {
-        conversation_type: :landing_demo,
-        engineer_name: "Alex Shaw",
-        first_name: "Alex",
-        incident: WEB_INCIDENTS.sample
-      },
-      force_tos: true
-    )
-  end
-
   def coaching
     name = ["Alex Shaw", "Taylor Morales", "Casey Patel"].sample
     first_name = name.split.first
@@ -38,7 +25,7 @@ class StaticController < ApplicationController
         conversation_type: :coaching,
         engineer_name: name,
         first_name: first_name,
-        incident: WEB_INCIDENTS.sample
+        incident: INCIDENTS.sample["prompt"]
       },
       force_tos: true
     )

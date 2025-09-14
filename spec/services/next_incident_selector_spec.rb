@@ -10,7 +10,7 @@ RSpec.describe NextIncidentSelector do
   let!(:subscribed_1_org_2)   { create(:member, organization: org_2, subscribed: true) }
   let!(:unsubscribed_org_2)   { create(:member, organization: org_2, subscribed: false) }
 
-  let(:email_incidents) do
+  let(:incidents) do
     [
       { prompt: "Incident A", code: "incident-a" },
       { prompt: "Incident B", code: "incident-b" },
@@ -19,7 +19,7 @@ RSpec.describe NextIncidentSelector do
   end
 
   before do
-    stub_const("EMAIL_INCIDENTS", email_incidents)
+    stub_const("INCIDENTS", incidents)
   end
 
   def see(member, prompt)
@@ -28,12 +28,12 @@ RSpec.describe NextIncidentSelector do
 
   describe ".call" do
     context "when the org has no seen incidents among subscribed members" do
-      it "returns one of EMAIL_INCIDENTS" do
+      it "return an incident" do
         # Unsubscribed members' conversations should be ignored
         see(unsubscribed_org_1, "Incident A")
 
         result = described_class.call(org_1)
-        expect(email_incidents).to include(result)
+        expect(INCIDENTS).to include(result)
       end
     end
 
@@ -56,7 +56,7 @@ RSpec.describe NextIncidentSelector do
         see(subscribed_1_org_2, "Incident B")
 
         result = described_class.call(org_1)
-        expect(email_incidents).to include(result)
+        expect(INCIDENTS).to include(result)
       end
     end
 
@@ -66,23 +66,23 @@ RSpec.describe NextIncidentSelector do
         create(:conversation, recipient: subscribed_2_org_1, context: { "incident" => nil })
 
         result = described_class.call(org_1)
-        expect(email_incidents).to include(result)
+        expect(INCIDENTS).to include(result)
       end
     end
 
     context "when all incidents were seen by subscribed members" do
       it "returns nothing" do
-        email_incidents.each { |inc| see(subscribed_1_org_1, inc[:prompt]) }
+        INCIDENTS.each { |inc| see(subscribed_1_org_1, inc[:prompt]) }
         expect(described_class.call(org_1)).to be_blank
       end
     end
 
     context "when only unsubscribed members have seen all incidents" do
       it "treats everything as unseen (since unsubscribed are ignored)" do
-        email_incidents.each { |inc| see(unsubscribed_org_1, inc[:prompt]) }
+        INCIDENTS.each { |inc| see(unsubscribed_org_1, inc[:prompt]) }
 
         result = described_class.call(org_1)
-        expect(email_incidents).to include(result)
+        expect(INCIDENTS).to include(result)
       end
     end
   end

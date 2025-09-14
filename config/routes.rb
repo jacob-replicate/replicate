@@ -15,7 +15,6 @@ Rails.application.routes.draw do
 
   post "/webhooks/postmark", to: "postmark_webhooks#create"
 
-  get "/demo", to: "static#demo"
   get "/terms", to: "static#terms"
   get "/privacy", to: "static#privacy"
   get "/billing", to: "static#billing"
