@@ -1,5 +1,9 @@
 - More cold email variants + make sure it works
 
+- Add this as an example to the landing demo engineer prompt (to mimic Slack-style messaging):
+    k, so it sounds like retries might be overwhelming the backend during heavy load. first thing i’d check is whether this is isolated to the dashboard, or if other user flows are failing too
+    it's weird that we're getting 500s with no payload. maybe timeouts from a downstream service? I’d want to check retry counts and queue depths across our infra. I'd also check if we had any kind of backoff in place. Are we just hammering the service nonstop?
+
 ------- LAUNCH ----------
 - Add more incidents. You have 6 weeks total (really 5 -- initial + 5 weeks)
 - Terms + Privacy + MSA/DPA review

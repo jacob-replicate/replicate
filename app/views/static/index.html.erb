@@ -101,7 +101,7 @@
   <div class="mt-8 md:mt-16 w-full lg:max-w-[780px] rounded-lg shadow-md border border-gray-100 bg-white mx-auto md:hidden">
     <div class="md:flex md:flex-row items-center justify-between bg-[#393E46] px-4 py-2.5 rounded-t-lg">
       <div class="text-[15px] text-[#FFFFFF] tracking-tight text-shadow" style="font-family: 'DM Mono'">
-        SEV-1 Training: Admin access granted without explicit intent
+        SEV-1 Training: Retry storm killed the customer dashboard during peak traffic
       </div>
       <div class="text-[13px] text-zinc-300 hidden md:block ml-2">
         <span class="font-semibold">Sep 8, 2025</span><span class="hidden lg:inline"> - 12:04pm ET</span>
@@ -117,7 +117,7 @@
               replicate.info
             </div>
             <div class="mt-1">
-              Imagine reviewing an IAM audit log and seeing a service account granted admin privileges within a Kubernetes cluster. The action lists a single API request with no associated approval workflow. The originating user is tagged with an expired session ID.
+              Imagine a latency graph for a customer-facing dashboard suddenly spikes during peak traffic. Query times balloon from 150ms to over 4 seconds. Logs show a downstream service intermittently returning HTTP 500s with no accompanying error payloads. Worker retries begin doubling, amplifying traffic. Within 8 minutes, dead-letter queues swell, and dashboards return 503 errors before becoming non-responsive.
               <br><br>
               <span class="font-semibold">What’s your first move here?</span>
             </div>
@@ -126,8 +126,9 @@
 
         <div class="flex justify-end">
           <div class="bg-neutral-100 rounded-2xl shadow px-4 py-3 max-w-2xl md:max-w-xl break-words message-body">
-            <div class="font-medium mb-1">Jordan Kim</div>
-            I’d start by checking how we’re validating the role claim in the token. If we’re trusting it directly from the SSO provider without verifying against internal user records or scopes, that’s probably the gap. Also curious if the token was reused. Maybe no jti or nonce checks?
+            <div class="font-medium mb-1">Jacob Comer</div>
+            k, so it sounds like retries might be overwhelming the backend during heavy load. first thing i’d check is whether this is isolated to the dashboard, or if other user flows are failing too<br><br>
+            it’s weird that we’re getting 500s with no payload. maybe timeouts from a downstream service? I’d want to check retry counts and queue depths across our infra. I’d also check if we had any kind of backoff in place. Are we just hammering the service nonstop?
           </div>
         </div>
 
@@ -138,22 +139,16 @@
               replicate.info
             </div>
             <div class="mt-1">
-              Did you address why <strong>"scope"</strong> validation didn’t block admin actions? If the token allows admin operations despite mismatched scopes, <strong>what other payload fields might authorization implicitly trust?</strong> Where else might incomplete validation propagate?
+              Retries likely overwhelmed the downstream, but you're assuming timeouts. <strong>What if the 500s indicate misconfigured clients sending invalid payloads?</strong> No amount of backoff helps if every retry is malformed. Can your infra handle poison message storms downstream?
             </div>
           </div>
         </div>
 
         <div class="flex justify-end">
           <div class="bg-neutral-100 rounded-2xl shadow px-4 py-3 max-w-2xl md:max-w-xl break-words message-body">
-            <div class="font-medium mb-1">Jordan Kim</div>
-            If scope didn’t block admin actions, we may be over-trusting role=admin without validating scope. I’d check if the authz layer defaults when claims are missing, and whether weak or partial tokens still create valid sessions. Sounds like the system may be failing open.
-          </div>
-        </div>
-
-        <div class="flex justify-end">
-          <div class="bg-neutral-100 rounded-2xl shadow px-4 py-3 max-w-2xl md:max-w-xl break-words message-body">
-            <div class="font-medium mb-1">Jordan Kim</div>
-            I’d also look at what other fields the system implicitly trusts. If the token had missing or malformed claims but still resulted in a valid session, maybe we’re silently defaulting to permissive behavior instead of failing closed. That could mean any weakly-signed or replayed token could slip through if one trusted field is present. Feels like the validation pipeline isn’t strict enough around partial success paths.
+            <div class="font-medium mb-1">Jacob Comer</div>
+            huh, I hadn’t thought about malformed payloads. if the retries are malformed, then the backoff is a red herring. we'd just hammer the same bad request until something else fails louder. <em>I think</em> we validate payloads before enqueuing jobs, but now I'm second guessing. there’s some retry logic in our checkout service that bypasses some checks<br><br>
+            we also don’t isolate retries in a separate queue, so a single poison job might get retried 1000x and stall every customer-facing job behind it
           </div>
         </div>
 
@@ -164,14 +159,33 @@
               replicate.info
             </div>
             <div class="mt-1">
-              How does the system reconcile scopes with roles during request execution? If scope mismatches don’t block, could partial matches or absent roles escalate privileges elsewhere? Where else do assumptions about claim integrity cascade?
+              Malformed payloads retrying endlessly could take the entire queue system down under load. What happens if another high-throughput service starts backpressuring the same queue? Can you isolate noisy retries without starving latency-sensitive workloads?
+            </div>
+          </div>
+        </div>
+
+        <div class="flex justify-end">
+          <div class="bg-neutral-100 rounded-2xl shadow px-4 py-3 max-w-2xl md:max-w-xl break-words message-body">
+            <div class="font-medium mb-1">Jacob Comer</div>
+            yeah, I don't think we have any guarantees here. retries just go back into the same queue as everything else, so if one service starts flapping or spamming retries, it can basically starve everything <em>(especially if multiple services fail at once)</em>. we don’t isolate traffic, don’t prioritize latency-sensitive jobs, and I don’t think we even track queue health by source.<br><br>
+            if this happened in prod, we’d be flying blind. just dashboards timing out, customers refreshing over and over, and infra quietly falling
+          </div>
+        </div>
+
+        <div class="flex justify-start">
+          <div class="break-words message-body">
+            <div class="font-medium flex items-center gap-2 mb-2">
+              <img src="/logo.png" alt="replicate.info" class="w-6 h-6 rounded-full" />
+              replicate.info
+            </div>
+            <div class="mt-1">
+              If retries bypass validation, how would you detect runaway poison messages in high-traffic queues? <strong>What prevents retries from consuming autoscaling capacity, cascading failures across isolated services?</strong> What alerting gaps allowed queues to fail silently?
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-
   <div class="mt-8 hidden md:block">
     <img src="/intro-email.png" class="border rounded-lg shadow w-full" />
   </div>
