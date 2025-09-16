@@ -1,3 +1,5 @@
+- Revert the scheduler.rake change to test on Tuesdays instead of Mondays
+
 Mobile:
     - Cut the MultiXact conversation. Replace is with mobile screenshots of Gmail?
       - Just email yourself the more polished messages, and fix in Photoshop.
