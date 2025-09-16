@@ -18,6 +18,10 @@
       <p class="mb-4">
         GPT drops you into a SEV, and makes you explain your thoughts until you hit a wall. Test first, find the blind spot that will crash prod, <span class="font-semibold">then</span> coach.
       </p>
+
+      <p class="mb-8">
+        It's just a cron job + webhook + LLM prompts. You can code up 70% in a weekend. I spent a few months on the last 30%.
+      </p>
     </div>
 
     <%= form_for Conversation.new, url: conversations_path, html: { id: "demo-form", class: "hidden lg:block" } do |f| %>
@@ -66,6 +70,11 @@
         <p class="mb-6">
           GPT drops you into a SEV-1<span class="hidden md:inline"> with some clues</span>, and makes you explain your thoughts until you hit a wall. <span class="block my-6 lg:inline lg:my-0"> No UI. It just shows up in your inbox and applies pressure. Test first, find the blind spot that will eventually crash prod, <span class="font-semibold">then</span> coach.</span>
         </p>
+
+        <p class="mb-6">
+          It's just a cron job + webhook + LLM prompts. You can code up 70% in a weekend. I spent a few months on the last 30%.
+        </p>
+
       </div>
 
       <div class="mt-8">
