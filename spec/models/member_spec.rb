@@ -5,6 +5,16 @@ RSpec.describe Member, type: :model do
   describe "associations" do
     it { should belong_to(:organization) }
     it { should have_many(:conversations).dependent(:destroy) }
+
+    it "has many user-generated messages through conversations" do
+      member = create(:member)
+      convo = create(:conversation, recipient: member)
+      user_message = create(:message, conversation: convo, user_generated: true)
+      _system_message = create(:message, conversation: convo, user_generated: false)
+
+      member.conversations
+      expect(member.messages.pluck(:id)).to eq([user_message.id])
+    end
   end
 
   describe "constants" do

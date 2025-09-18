@@ -105,7 +105,7 @@ CREATE TABLE public.members (
 CREATE TABLE public.messages (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
     content text,
-    conversation_id character varying,
+    conversation_id uuid,
     user_generated boolean,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
@@ -251,6 +251,7 @@ CREATE INDEX index_messages_on_conversation_id ON public.messages USING btree (c
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250918025026'),
 ('20250912005642'),
 ('20250912005635'),
 ('20250907015905'),

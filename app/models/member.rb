@@ -3,6 +3,7 @@ class Member < ApplicationRecord
 
   belongs_to :organization
   has_many :conversations, as: :recipient, dependent: :destroy
+  has_many :messages, -> { where(user_generated: true) }, through: :conversations
 
   validates :email, presence: true, uniqueness: { case_sensitive: false }
   validates :role, presence: true, inclusion: { in: ROLES }
