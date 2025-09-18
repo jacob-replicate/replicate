@@ -12,9 +12,9 @@ RSpec.describe NextIncidentSelector do
 
   let(:incidents) do
     [
-      { prompt: "Incident A", code: "incident-a" },
-      { prompt: "Incident B", code: "incident-b" },
-      { prompt: "Incident C", code: "incident-c" },
+      { "prompt" => "Incident A", "code" => "incident-a" },
+      { "prompt" => "Incident B", "code" => "incident-b" },
+      { "prompt" => "Incident C", "code" => "incident-c" },
     ]
   end
 
@@ -45,8 +45,8 @@ RSpec.describe NextIncidentSelector do
         result = described_class.call(org_1)
 
         expect(result).to be_present
-        expect(result[:prompt]).not_to eq("Incident A")
-        expect(["Incident B", "Incident C"]).to include(result[:prompt])
+        expect(result["prompt"]).not_to eq("Incident A")
+        expect(["Incident B", "Incident C"]).to include(result["prompt"])
       end
     end
 
@@ -72,14 +72,14 @@ RSpec.describe NextIncidentSelector do
 
     context "when all incidents were seen by subscribed members" do
       it "returns nothing" do
-        INCIDENTS.each { |inc| see(subscribed_1_org_1, inc[:prompt]) }
+        INCIDENTS.each { |inc| see(subscribed_1_org_1, inc["prompt"]) }
         expect(described_class.call(org_1)).to be_blank
       end
     end
 
     context "when only unsubscribed members have seen all incidents" do
       it "treats everything as unseen (since unsubscribed are ignored)" do
-        INCIDENTS.each { |inc| see(unsubscribed_org_1, inc[:prompt]) }
+        INCIDENTS.each { |inc| see(unsubscribed_org_1, inc["prompt"]) }
 
         result = described_class.call(org_1)
         expect(INCIDENTS).to include(result)

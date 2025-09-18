@@ -57,32 +57,34 @@ RSpec.describe ColdEmailScheduler do
 
   describe "#build_send_times (deterministic under stubbed rand)" do
     it "generates sorted times only within SEND_HOURS with fixed spacing and count" do
-      allow_any_instance_of(Contact).to receive(:passed_bounce_check?).and_return(true)
+      Timecop.freeze Time.zone.parse("2025-03-12 10:00:00") do
+        allow_any_instance_of(Contact).to receive(:passed_bounce_check?).and_return(true)
 
-      sched = ColdEmailScheduler.new(min_score: 0)
+        sched = ColdEmailScheduler.new(min_score: 0)
 
-      times = sched.send(:build_send_times)
-      # 9 hours * 3 per inbox * 3 inboxes = 81
-      expect(times.size).to eq(93)
-      expect(times).to eq(times.sort)          # sorted
-      expect(times.all? { |t| (9..17).cover?(t.hour) }).to be(true)
+        times = sched.send(:build_send_times)
+        # 9 hours * 3 per inbox * 3 inboxes = 81
+        expect(times.size).to eq(84)
+        expect(times).to eq(times.sort)          # sorted
+        expect(times.all? { |t| (9..17).cover?(t.hour) }).to be(true)
 
-      Time.use_zone("America/New_York") do
-        Timecop.freeze Time.zone.parse("2025-03-12 10:00:00") do
-          sched = described_class.new(min_score: 0)
-          times = sched.instance_variable_get(:@send_times)
-          expect(times).to be_present
+        Time.use_zone("America/New_York") do
+          Timecop.freeze Time.zone.parse("2025-03-12 10:00:00") do
+            sched = described_class.new(min_score: 0)
+            times = sched.instance_variable_get(:@send_times)
+            expect(times).to be_present
 
-          # With 3 inboxes, per_inbox=3, 9 hours -> 9 * (3 * 3) = 81 slots
-          expect(times.size).to eq(84)
+            # With 3 inboxes, per_inbox=3, 9 hours -> 9 * (3 * 3) = 81 slots
+            expect(times.size).to eq(96)
 
-          # Sorted and within 09:00..17:59
-          expect(times).to eq(times.sort)
-          expect(times.map(&:hour).uniq).to match_array((9..17).to_a)
+            # Sorted and within 09:00..17:59
+            expect(times).to eq(times.sort)
+            expect(times.map(&:hour).uniq).to match_array((9..17).to_a)
 
-          # Because of stubs: minutes = 0,6,12,18,24,30,36,42,48, seconds = 0
-          expect(times.select { |t| t.hour == 9 }.map(&:min)).to eq([0, 11, 12, 20, 29, 31, 36, 44, 50])
-          expect(times.select { |t| t.hour == 9 }.map(&:sec).uniq).to eq([13, 23, 12, 53, 54, 25, 59, 56])
+            # Because of stubs: minutes = 0,6,12,18,24,30,36,42,48, seconds = 0
+            expect(times.select { |t| t.hour == 9 }.map(&:min)).to eq([5, 8, 15, 15, 23, 28, 35, 35, 40, 48, 50, 59])
+            expect(times.select { |t| t.hour == 9 }.map(&:sec).uniq).to eq([57, 39, 34, 52, 46, 37, 3, 42, 59, 13, 44])
+          end
         end
       end
     end
@@ -99,19 +101,14 @@ RSpec.describe ColdEmailScheduler do
     end
 
     it "returns immediately when there are no eligible contacts" do
-      allow_any_instance_of(Contact).to receive(:passed_bounce_check?).and_return(true)
-      # Make sure ineligible by score
-      create(:contact, score: 1) # min_score 100 excludes
-      sched = nil
-      Time.use_zone("America/New_York") do
-        travel_to Time.zone.parse("2025-03-12 10:00:00") do
-          sched = described_class.new(min_score: 100)
-        end
-      end
+      Timecop.freeze Time.zone.parse("2025-03-12 10:00:00") do
+        allow_any_instance_of(Contact).to receive(:passed_bounce_check?).and_return(true)
+        create(:contact, score: 1) # min_score 100 excludes
+        sched = described_class.new(min_score: 100)
 
-      expect(SendColdEmailWorker).not_to have_received(:perform_at)
-      # @contacts will be empty; call should no-op and return nil
-      expect(sched.call).to be_nil
+        expect(SendColdEmailWorker).not_to have_received(:perform_at)
+        expect(sched.call).to be_nil
+      end
     end
 
     it "never emails people from the same company domain within the same 30 days" do

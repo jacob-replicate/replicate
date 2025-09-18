@@ -5,7 +5,7 @@ RSpec.describe AvatarService do
   describe ".avatar_row" do
     it "renders default name and photo" do
       html = described_class.avatar_row
-      expect(html).to include("class='rounded-full'")
+      expect(html).to include("style='border-radius: 100%'")
       expect(html).to include("src='/logo.png'")
       expect(html).to include(">replicate.info<")
       expect(html).to include("class='flex items-center gap-3'")
