@@ -3,6 +3,7 @@
 
 ------- LAUNCH ----------
 
+- Double check all your plans for overcharging (e.g., Apollo, Postmark, etc)
 - Add BIMI DNS record for logo.svg - https://mxtoolbox.com/dmarc/bimi/how-to-create-bimi-record (logo might be blurry)
 - Add more incidents. You have 6 weeks total (really 5 -- initial + 5 weeks)
 - Terms + Privacy + MSA/DPA review
