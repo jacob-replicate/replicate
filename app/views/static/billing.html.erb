@@ -11,10 +11,8 @@
   </p>
 
   <p class="mb-6">
-    You'll receive a <a href="/replicate-msa-dpa.pdf" class="text-blue-600 hover:underline font-semibold">pre-signed MSA/DPA</a> via DocuSign about a month in. If you do nothing, the emails eventually stop, and your data gets wiped.
-    <span class="block mt-6 md:mt-0 md:inline">Invoices are emailed (via Stripe) with <span class="font-semibold">full remittance details</span>. Pay by <span class="font-semibold">card</span>, <span class="font-semibold">ACH</span>, or <span class="font-semibold">wire</span>. Only <span class="font-semibold">Net 30</span>.
-    Here are the <a href="/replicate-w9.pdf" class="text-blue-600 hover:underline font-semibold" target="_blank">W-9</a> and
-    <%= link_to 'COI', '/replicate-coi.pdf', class: "text-blue-600 hover:underline font-semibold", target: "_blank" %> docs.</span>
+    You'll get a <a href="/replicate-msa-dpa.pdf" class="text-blue-600 hover:underline font-semibold">pre-signed MSA/DPA</a> via DocuSign a month in. If you do nothing, the emails stop, and your data gets wiped.
+    <span class="block mt-6 md:mt-0 md:inline"><span class="font-semibold">Net 90</span> invoices are emailed with <span class="font-semibold">full remittance details</span>. Pay by <span class="font-semibold">ACH</span> or <span class="font-semibold">wire</span>.</span>
   </p>
 
   <p class="mb-6">
@@ -105,7 +103,7 @@
 
   <p class="font-semibold mb-2 text-lg">Sales Tax</p>
   <p class="mb-6">
-    If you need to pay sales tax (e.g., VAT, GST, US state), <a href="https://stripe.com/tax" class="text-blue-600 hover:underline font-semibold">Stripe Tax</a> applies it to your invoice. Email exemption certificates to <a href="mailto:support@replicate.info" class="text-blue-600 hover:underline font-semibold">support@replicate.info</a> to apply them <span class="font-semibold">before</span> invoicing.
+    Prices include all applicable taxes (calculated via <a href="https://stripe.com/tax" class="text-blue-600 hover:underline font-semibold">Stripe Tax</a>). You pay the flat rates above, and I cover all the taxes. Email exemption certificates to <a href="mailto:support@replicate.info" class="text-blue-600 hover:underline font-semibold">support@replicate.info</a> to apply them <span class="font-semibold">before</span> invoicing.
   </p>
 
   <p class="mb-2 font-semibold text-lg">Standard Agreements</p>
@@ -120,13 +118,15 @@
 
   <p class="text-gray-500 mt-8 text-sm">
     <span class="md:hidden">
-      <%= link_to 'Terms', '/terms', class: "text-blue-600 hover:underline", target: "_blank" %> &nbsp;&nbsp;•&nbsp;&nbsp;
-      <%= link_to 'Privacy', '/privacy', class: "text-blue-600 hover:underline", target: "_blank" %> &nbsp;&nbsp;•&nbsp;&nbsp;
+      <%= link_to 'Terms', '/terms', class: "text-blue-600 hover:underline", target: "_blank" %>&nbsp;&nbsp;•&nbsp;&nbsp;
+      <%= link_to 'Privacy', '/privacy', class: "text-blue-600 hover:underline", target: "_blank" %>&nbsp;&nbsp;•&nbsp;&nbsp;
     </span>
     <span class="hidden md:inline">
       <%= link_to 'Terms of Service', '/terms', class: "text-blue-600 hover:underline", target: "_blank" %> &nbsp;&nbsp;•&nbsp;&nbsp;
       <%= link_to 'Privacy Policy', '/privacy', class: "text-blue-600 hover:underline", target: "_blank" %> &nbsp;&nbsp;•&nbsp;&nbsp;
     </span>
-    <%= link_to 'Security', '/security', class: "text-blue-600 hover:underline" %>
+    <%= link_to 'Security', '/security', class: "text-blue-600 hover:underline" %>&nbsp;&nbsp;•&nbsp;&nbsp;
+    <a href="/replicate-w9.pdf" class="text-blue-600 hover:underline" target="_blank">W-9</a>&nbsp;&nbsp;•&nbsp;&nbsp;
+    <%= link_to 'COI', '/replicate-coi.pdf', class: "text-blue-600 hover:underline", target: "_blank" %>
   </p>
 </div>
