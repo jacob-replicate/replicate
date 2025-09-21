@@ -16,7 +16,7 @@ class ConversationMailer < ApplicationMailer
     subject = conversation.recipient.conversations.count < 4 ? "SEV-1 Training: #{conversation.subject_line}" : "SEV-1: #{conversation.subject_line}"
 
     mail(
-      from: 'Replicate Loop <loop@mail.replicate.info>',
+      from: 'Replicate <loop@mail.replicate.info>',
       reply_to: "loop@mail.replicate.info",
       subject: subject,
       to: conversation.recipient.email
