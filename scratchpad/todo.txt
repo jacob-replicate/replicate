@@ -1,5 +1,4 @@
 - More cold email variants + make sure it works
-- intro-email-mobile.png + intro-email-mobile-first
 
 ------- LAUNCH ----------
 
