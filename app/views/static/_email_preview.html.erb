@@ -7,7 +7,7 @@
   <div class="text-gray-800">
     <div class="p-3">
       <div>
-        <div class="font-semibold text-gray-600">replicate.info</div> A job starts garbage collecting a soft-deleted <span class="font-semibold">Organization</span> with 400k dependent records, all in one transaction. <span class="font-semibold">pg_stat_slru</span> shows 87% usage on <span class="font-semibold">MultiXactOffset</span>. What do you want to rule out early?
+        <div class="font-semibold text-gray-600">Replicate</div> A job starts garbage collecting a soft-deleted <span class="font-semibold">Organization</span> with 400k dependent records, all in one transaction. <span class="font-semibold">pg_stat_slru</span> shows 87% usage on <span class="font-semibold">MultiXactOffset</span>. What do you want to rule out early?
       </div>
     </div>
     <div class="p-3 border-t border-gray-100">
@@ -17,7 +17,7 @@
     </div>
     <div class="p-3 border-t border-gray-100">
       <div>
-        <div class="font-semibold text-gray-600">replicate.info</div> That works until high-fanout <span class="font-semibold">DELETE</span>s grab locks for FK checks, and SLRU exhaustion kills reads/writes across the site. Let's try again.
+        <div class="font-semibold text-gray-600">Replicate</div> That works until high-fanout <span class="font-semibold">DELETE</span>s grab locks for FK checks, and SLRU exhaustion kills reads/writes across the site. Let's try again.
       </div>
     </div>
   </div>

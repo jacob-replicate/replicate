@@ -24,8 +24,7 @@ class ColdEmailScheduler
       break unless contact.present?
 
       variant = ColdEmailVariants.build(inbox: inbox, contact: contact)
-      puts "SendColdEmailWorker: #{contact.name} (#{contact.email}) - #{Time.at(send_time).in_time_zone('America/New_York').strftime("%A, %b %-d - %-l:%M%P (ET)")} - #{inbox['email']} - #{variant}"
-      puts
+      Rails.logger.info "SendColdEmailWorker: #{contact.name} (#{contact.email}) - #{Time.at(send_time).in_time_zone('America/New_York').strftime("%A, %b %-d - %-l:%M%P (ET)")} - #{inbox['email']} - #{variant}"
       SendColdEmailWorker.perform_at(send_time, contact.id, inbox, variant)
       contact.update_columns(email_queued_at: Time.now)
       email = inbox["email"]

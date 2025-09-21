@@ -132,7 +132,7 @@ RSpec.describe ColdEmailScheduler do
       allow_any_instance_of(Contact).to receive(:passed_bounce_check?).and_return(true)
 
       # 90 > daily total capacity (81) to ensure we hit limits
-      contacts = 90.times.map { |i| create(:contact, email: "person#{i}@ex.com", score: 100 - i) }
+      contacts = 90.times.map { |i| create(:contact, score: 100 - i) }
 
       per_hour = nil
       Time.use_zone("America/New_York") do
@@ -206,7 +206,6 @@ RSpec.describe ColdEmailScheduler do
       end
 
       expect(scheduled_ids).to eq([])
-
       expect(fail.reload.email).to be_nil
       expect(fail.score).to eq(-40)
       expect(pass.reload.email).to eq("ok@x.com")

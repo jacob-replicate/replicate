@@ -3,10 +3,10 @@ FactoryBot.define do
     cohort { "Q1" }
     company_domain { "example.com" }
     contacted_at { nil }
-    email { "contact@example.com" }
+    sequence(:email) { |i| "alex-#{i}@example.com" }
     external_id { SecureRandom.uuid }
     location { "USA" }
-    name { "John Doe" }
+    sequence(:name) { |i| "Alex ##{i}" }
     score { 80 }
     score_reason { "High intent" }
     source { "manual" }
