@@ -1,6 +1,4 @@
-- Mobile screenshot
 - More cold email variants + make sure it works
-- Revert scheduler.rake back to Monday
 - intro-email-mobile.png + intro-email-mobile-first
 
 ------- LAUNCH ----------
@@ -12,7 +10,6 @@
 - Make sure to add the resubscribe link in the final "We're auto-unsubscribing you" email.
 - Maybe make cold unsubscribe a confirmation box? Why stop yourself from hitting people again in a few months?
 - Don't send weekly emails to people who bounced. Bounce check on cold, not on transactional? - Postmark does this automatically?
-- Scrape company website to figure out careers page + tech stack (if you can)
 - Attach PDF's + inline JPG's once they close the loop
 - GPT 5 (in email, at least, not on web where it's slow af)
 - :coaching_should_continue prompt -- uncomment guard clause in coaching message generator
@@ -32,10 +29,10 @@
 - Add an example URL to copy/paste in the "Not the right time?" box. Give them the value ASAP.
 - Set up process for cold email addresses that failed bounce check. Funnel bad data into a CSV that Fiverr can clean up + send back.
 - Upsert contact metadata, so you can keep track of job changes. DB is going to get stale otherwise.
-- [Maybe] Accordion left/right links floated around the homepage conversation. Nobody clicks that shit though.
+- Accordion left/right links floated around the homepage conversation.
 - PagerDuty (or alternative, maybe, so you don't mix with Hashi? Sentry app, maybe?)
 - Automated data deletion + audit logging
-- After first contract, pay ~$1k for a verified checkmark in Gmail -- VMC - Verified Mark Certificate, like Verisign for logos
+- After first contract, pay ~$1k for a verified checkmark in Gmail -- VMC - Verified Mark Certificate, like Verisign for logos. Need a custom trademarked logo too.
 - Synthetic checks to verify homepage is still up
 - Add an email after auto-delete of data, but somebody replies to a super old thread -- "Sorry, I might have auto-deleted that conversation after 3 months of inactivity. <Want to start a new one? Type 1. for secrets management 2. for something else 3. for whatever"
 - Test for Prompts::CoachingIntro (since it has custom logic - might find some to cut)

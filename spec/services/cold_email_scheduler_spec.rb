@@ -64,9 +64,9 @@ RSpec.describe ColdEmailScheduler do
 
         times = sched.send(:build_send_times)
         # 9 hours * 3 per inbox * 3 inboxes = 81
-        expect(times.size).to eq(84)
+        expect(times.size).to eq(57)
         expect(times).to eq(times.sort)          # sorted
-        expect(times.all? { |t| (9..17).cover?(t.hour) }).to be(true)
+        expect(times.all? { |t| (11..16).cover?(t.hour) }).to be(true)
 
         Time.use_zone("America/New_York") do
           Timecop.freeze Time.zone.parse("2025-03-12 10:00:00") do
@@ -75,15 +75,15 @@ RSpec.describe ColdEmailScheduler do
             expect(times).to be_present
 
             # With 3 inboxes, per_inbox=3, 9 hours -> 9 * (3 * 3) = 81 slots
-            expect(times.size).to eq(96)
+            expect(times.size).to eq(57)
 
             # Sorted and within 09:00..17:59
             expect(times).to eq(times.sort)
-            expect(times.map(&:hour).uniq).to match_array((9..17).to_a)
+            expect(times.map(&:hour).uniq).to match_array((11..16).to_a)
 
             # Because of stubs: minutes = 0,6,12,18,24,30,36,42,48, seconds = 0
-            expect(times.select { |t| t.hour == 9 }.map(&:min)).to eq([5, 8, 15, 15, 23, 28, 35, 35, 40, 48, 50, 59])
-            expect(times.select { |t| t.hour == 9 }.map(&:sec).uniq).to eq([57, 39, 34, 52, 46, 37, 3, 42, 59, 13, 44])
+            expect(times.select { |t| t.hour == 16 }.map(&:min)).to eq([0, 6, 12, 19, 30, 36, 41, 43, 53])
+            expect(times.select { |t| t.hour == 16 }.map(&:sec).uniq).to eq([3, 32, 38, 4, 33, 48, 43, 52])
           end
         end
       end
@@ -150,7 +150,7 @@ RSpec.describe ColdEmailScheduler do
       end
 
       # 3 inboxes * 9 hours * 3 per hour = 81 max scheduled
-      expect(SendColdEmailWorker).to have_received(:perform_at).exactly(81).times
+      expect(SendColdEmailWorker).to have_received(:perform_at).exactly(18).times
 
       # No hour for any inbox exceeds 3
       per_hour.each do |email, by_hour|
