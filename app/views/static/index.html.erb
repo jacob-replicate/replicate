@@ -1,16 +1,16 @@
 <div class="flex flex-col lg:flex-row lg:gap-9 pt-4 md:pt-10">
   <!-- Left Column: Headline + Form -->
   <div class="lg:w-1/2 w-full">
-    <h1 class="text-2xl md:text-[27px] font-medium tracking-tight mb-4 md:mb-[10px]">
+    <h1 class="text-xl md:text-[27px] font-semibold md:font-medium tracking-tight mb-4 lg:mb-[10px]">
       Find the <span style="color: #E63946">SEV-1</span> before it finds prod.
     </h1>
-    <div class="hidden md:block">
+    <div class="hidden lg:block">
       <p class="text-gray-800 mb-6 md:mb-[16px] leading-relaxed text-[17px]">
         Weekly <span class="font-semibold">email-based drills</span> that uncover your team's infra blind spots. GPT pushes you to failure, <span class="font-semibold">then</span> coaches.
       </p>
     </div>
 
-    <div class="md:hidden">
+    <div class="lg:hidden">
       <p class="mb-3">
         This tool helps <span class="font-semibold">mid-market engineering teams</span> sharpen their production instincts.
       </p>
@@ -19,12 +19,8 @@
         It's a <span class="font-semibold">weekly fire drill</span>, over email.
       </p>
 
-      <p class="mb-3">
-        GPT drops you into a SEV-1, and makes you explain your thoughts until you hit a wall. 1on1 emails to pressure test your mental model of infra failures.
-      </p>
-
       <p>
-        It's just cron and some webhooks. No UI to manage.
+        GPT drops you into a SEV-1. Then you explain your thoughts until you hit a wall. 1on1 threads that apply pressure, and uncover your infra blind spots.
       </p>
     </div>
 
@@ -56,19 +52,17 @@
     <% end %>
   </div>
 
-  <div class="lg:w-1/2 w-full">
-    <div class="hidden md:block">
-      <%= render "email_preview" %>
-      <div class="mt-3">
-        <%= render "signature" %>
-      </div>
+  <div class="hidden lg:block lg:w-1/2 w-full">
+    <%= render "email_preview" %>
+    <div class="mt-3">
+      <%= render "signature" %>
     </div>
   </div>
 </div>
 
 <div>
   <div class="text-md leading-relaxed tracking-[0.008em]">
-    <div class="hidden md:block">
+    <div class="hidden lg:block">
       <div class="md:mt-12 max-w-[90ch] text-[17px] leading-relaxed text-gray-800">
         <p class="mb-6">
           This tool helps <span class="font-semibold">mid-market engineering teams</span> sharpen their production instincts. It's a <span class="font-semibold">weekly fire drill</span>, over email.
@@ -82,7 +76,7 @@
     <div class="mt-6 md:hidden">
       <img src="/intro-email-mobile.png" class="border rounded-lg shadow w-full" />
     </div>
-    <div class="hidden md:block md:mt-8">
+    <div class="hidden md:block md:mt-6 lg:mt-8">
       <img src="/intro-email-desktop.png" class="border rounded-lg shadow w-full" />
 
       <div class="mt-8">
