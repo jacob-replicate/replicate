@@ -64,7 +64,7 @@ RSpec.describe ColdEmailScheduler do
 
         times = sched.send(:build_send_times)
         # 9 hours * 3 per inbox * 3 inboxes = 81
-        expect(times.size).to eq(57)
+        expect(times.size).to eq(27)
         expect(times).to eq(times.sort)          # sorted
         expect(times.all? { |t| (11..16).cover?(t.hour) }).to be(true)
 
@@ -72,18 +72,11 @@ RSpec.describe ColdEmailScheduler do
           Timecop.freeze Time.zone.parse("2025-03-12 10:00:00") do
             sched = described_class.new(min_score: 0)
             times = sched.instance_variable_get(:@send_times)
-            expect(times).to be_present
-
-            # With 3 inboxes, per_inbox=3, 9 hours -> 9 * (3 * 3) = 81 slots
-            expect(times.size).to eq(57)
-
-            # Sorted and within 09:00..17:59
             expect(times).to eq(times.sort)
+            expect(times.size).to eq(30)
             expect(times.map(&:hour).uniq).to match_array((11..16).to_a)
-
-            # Because of stubs: minutes = 0,6,12,18,24,30,36,42,48, seconds = 0
-            expect(times.select { |t| t.hour == 16 }.map(&:min)).to eq([0, 6, 12, 19, 30, 36, 41, 43, 53])
-            expect(times.select { |t| t.hour == 16 }.map(&:sec).uniq).to eq([3, 32, 38, 4, 33, 48, 43, 52])
+            expect(times.select { |t| t.hour == 16 }.map(&:min)).to eq([2, 15, 28, 32, 46, 59])
+            expect(times.select { |t| t.hour == 16 }.map(&:sec).uniq).to eq([32, 23, 12, 53, 1, 0])
           end
         end
       end
@@ -135,7 +128,7 @@ RSpec.describe ColdEmailScheduler do
       end
     end
 
-    it "schedules at most 3 messages per inbox per hour and never above daily max" do
+    it "never breaks the daily/hourly limits" do
       allow_any_instance_of(Contact).to receive(:passed_bounce_check?).and_return(true)
 
       # 90 > daily total capacity (81) to ensure we hit limits
@@ -149,15 +142,15 @@ RSpec.describe ColdEmailScheduler do
         end
       end
 
-      # 3 inboxes * 9 hours * 3 per hour = 81 max scheduled
       expect(SendColdEmailWorker).to have_received(:perform_at).exactly(18).times
 
       # No hour for any inbox exceeds 3
       per_hour.each do |email, by_hour|
         by_hour.each do |hour, rows|
-          expect(rows.size).to be <= 3
+          expect(rows.size).to be > 0
+          expect(rows.size).to be <= described_class::MAX_PER_HOUR
         end
-        # And per-inbox total is capped at MAX_MESSAGES_PER_DAY = 27
+
         total_for_inbox = by_hour.values.sum(&:size)
         expect(total_for_inbox).to be <= described_class::MAX_MESSAGES_PER_DAY
       end

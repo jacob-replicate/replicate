@@ -8,7 +8,7 @@ class ColdEmailScheduler
 
     @min_score = min_score
     @contacts = fetch_contacts
-    @per_hour  = Hash.new { |h, email| h[email] = Hash.new { |x, hour| x[hour] = [] } }
+    @per_hour  = Hash.new
     @send_times = build_send_times
     @contact_index = 0
   end
@@ -24,9 +24,14 @@ class ColdEmailScheduler
       break unless contact.present?
 
       variant = ColdEmailVariants.build(inbox: inbox, contact: contact)
+      puts "SendColdEmailWorker: #{contact.name} (#{contact.email}) - #{Time.at(send_time).in_time_zone('America/New_York').strftime("%A, %b %-d - %-l:%M%P (ET)")} - #{inbox['email']} - #{variant}"
+      puts
       SendColdEmailWorker.perform_at(send_time, contact.id, inbox, variant)
       contact.update_columns(email_queued_at: Time.now)
-      @per_hour[inbox["email"]][send_time.hour] << [inbox["from_name"], inbox["email"], send_time, contact.id, contact.name, contact.email, variant]
+      email = inbox["email"]
+      @per_hour[email] ||= {}
+      @per_hour[email][send_time.hour] ||= []
+      @per_hour[email][send_time.hour] << [inbox["from_name"], inbox["email"], send_time, contact.id, contact.name, contact.email, variant]
     end
 
     @per_hour
@@ -35,7 +40,9 @@ class ColdEmailScheduler
   private
 
   def inbox_has_room?(email, hour)
-    (@per_hour[email].values.sum(&:size) < MAX_MESSAGES_PER_DAY) && (@per_hour[email][hour].size < MAX_PER_HOUR)
+    details = @per_hour[email]
+    return true if details.blank?
+    (details.values.sum(&:size) < MAX_MESSAGES_PER_DAY) && (details[hour].blank? || details[hour].size < MAX_PER_HOUR)
   end
 
   def should_run_today?
@@ -68,7 +75,7 @@ class ColdEmailScheduler
     start_time = Time.find_zone("America/New_York").now.beginning_of_day
 
     SEND_HOURS.each do |hour|
-      per_inbox = 3 + rand(0..1)
+      per_inbox = MAX_PER_HOUR + rand(0..1)
       iterations = per_inbox * INBOXES.size
       spacing = 60 / iterations
 
