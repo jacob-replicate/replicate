@@ -64,19 +64,19 @@ RSpec.describe ColdEmailScheduler do
 
         times = sched.send(:build_send_times)
         # 9 hours * 3 per inbox * 3 inboxes = 81
-        expect(times.size).to eq(27)
+        expect(times.size).to eq(12)
         expect(times).to eq(times.sort)          # sorted
-        expect(times.all? { |t| (11..16).cover?(t.hour) }).to be(true)
+        expect(times.all? { |t| (11..12).cover?(t.hour) }).to be(true)
 
         Time.use_zone("America/New_York") do
           Timecop.freeze Time.zone.parse("2025-03-12 10:00:00") do
             sched = described_class.new(min_score: 0)
             times = sched.instance_variable_get(:@send_times)
             expect(times).to eq(times.sort)
-            expect(times.size).to eq(30)
-            expect(times.map(&:hour).uniq).to match_array((11..16).to_a)
-            expect(times.select { |t| t.hour == 16 }.map(&:min)).to eq([2, 15, 28, 32, 46, 59])
-            expect(times.select { |t| t.hour == 16 }.map(&:sec).uniq).to eq([32, 23, 12, 53, 1, 0])
+            expect(times.size).to eq(12)
+            expect(times.map(&:hour).uniq).to match_array((11..12).to_a)
+            expect(times.select { |t| t.hour == 11 }.map(&:min)).to eq([7, 13, 25, 35, 48, 52])
+            expect(times.select { |t| t.hour == 11 }.map(&:sec).uniq).to eq([11, 17, 34, 51, 5, 44])
           end
         end
       end
@@ -142,7 +142,7 @@ RSpec.describe ColdEmailScheduler do
         end
       end
 
-      expect(SendColdEmailWorker).to have_received(:perform_at).exactly(18).times
+      expect(SendColdEmailWorker).to have_received(:perform_at).exactly(6).times
 
       # No hour for any inbox exceeds 3
       per_hour.each do |email, by_hour|
