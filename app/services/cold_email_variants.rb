@@ -42,10 +42,10 @@ class ColdEmailVariants
   def self.intros
     url = "<a href='https://replicate.info'>replicate.info</a>"
     [
-      "I design IAM systems for S&P 500 teams, after 14 years at VC scale-ups. I also built #{url} to help engineers catch SEVs before production does.",
-      "I've spent my career in infra/sec, and built #{url} to help mid-market engineering teams sharpen their production instincts.",
+      "I design IAM systems for S&P 500 platform teams, and built #{url} to help engineers catch SEVs before production does.",
+      "I've spent my career in infra/sec, and built #{url} to help engineering teams sharpen their production instincts.",
       "I've seen how infra blind spots can take down production, and built #{url} to help engineers surface those gaps in a safe environment.",
-      "After years of putting out fires in production, I built #{url} to help teams spot infra risks earlier.",
+      "After years of putting out infra/sec fires, I built #{url} to help teams spot blind spots earlier.",
       "I've scaled infra where downtime costs millions, and created #{url} to help teams feel more confident in production.",
       "I'm an infra engineer who has seen too many SEVs that could've been caught in review. #{url} helps prevent them.",
       "I've worked in production long enough to know where engineers get stuck, and built #{url} to cover those gaps.",
@@ -63,11 +63,11 @@ class ColdEmailVariants
   def self.ctas
     [
       "Just thought it might resonate. Happy to share more details if you're curious.",
-      "It's 100% async if you decide to try it out. No demos.",
+      "It's 100% async if you decide to try it out.",
       "It's a little harsh/uncompromising, but so is production.",
       "SEV thinking, without the actual SEV. I'd love to hear what you think.",
       "The goal is to expose blind spots before production does. Curious if it resonates.",
-      "1on1 email threads, with sharp questions that make you reconsider how infra fails.",
+      "1on1 threads, with sharp questions that make you reconsider how infra fails.",
       "Every team has blind spots. This helps you surface them before production does.",
       "Nothing to install/configure, just weekly infra puzzles that show up in your inbox.",
     ]
