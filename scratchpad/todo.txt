@@ -1,6 +1,7 @@
 - Mobile screenshot
 - More cold email variants + make sure it works
 - Revert scheduler.rake back to Monday
+- intro-email-mobile.png
 
 ------- LAUNCH ----------
 
