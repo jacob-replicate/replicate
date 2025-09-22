@@ -45,7 +45,7 @@ class ColdEmailVariants
     [
       "I design IAM systems for S&P 500 platform teams, and built #{url} to help engineers catch SEVs before production does.",
       "I've spent my career in infra/sec, and built #{url} to help engineering teams sharpen their production instincts.",
-      "I've seen how infra blind spots can take down production, and built #{url} to help engineers surface those gaps in a safe environment.",
+      "I've seen how infra blind spots transform into outages, and built #{url} to help engineers surface those gaps in a safe environment.",
       "After years of putting out infra/sec fires, I built #{url} to help teams spot blind spots earlier.",
       "I've scaled infra where downtime costs millions, and created #{url} to help teams feel more confident in production.",
       "I'm an infra engineer who has seen too many SEVs that could've been caught in review. #{url} helps prevent them.",
