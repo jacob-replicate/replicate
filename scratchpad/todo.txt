@@ -1,6 +1,8 @@
+- Terms + Privacy + MSA/DPA review
+- Influencers?
+
 - Double check all your plans for overcharging (e.g., Apollo, Postmark, etc)
 - Add more incidents. You have 6 weeks total (really 5 -- initial + 5 weeks)
-- Terms + Privacy + MSA/DPA review
 - Cron job to filter inbox + draft replies
 - Make sure to add the resubscribe link in the final "We're auto-unsubscribing you" email.
 - Maybe make cold unsubscribe a confirmation box? Why stop yourself from hitting people again in a few months?

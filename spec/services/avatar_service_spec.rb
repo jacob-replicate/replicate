@@ -7,7 +7,7 @@ RSpec.describe AvatarService do
       html = described_class.avatar_row
       expect(html).to include("style='border-radius: 100%'")
       expect(html).to include("src='/logo.png'")
-      expect(html).to include(">replicate.info<")
+      expect(html).to include(">Replicate<")
       expect(html).to include("class='flex items-center gap-3'")
       expect(html).to include("class='font-medium'")
     end
@@ -33,7 +33,7 @@ RSpec.describe AvatarService do
 
   describe ".brand_avatar_row" do
     it "delegates with defaults" do
-      expect(described_class).to receive(:avatar_row).with(first: false, name: "replicate.info", photo_path: "logo.png")
+      expect(described_class).to receive(:avatar_row).with(first: false, name: "Replicate", photo_path: "logo.png")
       described_class.brand_avatar_row
     end
 
@@ -44,7 +44,7 @@ RSpec.describe AvatarService do
 
     it "renders expected HTML with defaults" do
       html = described_class.brand_avatar_row
-      expect(html).to include(">replicate.info<")
+      expect(html).to include(">Replicate<")
       expect(html).to include("src='/logo.png'")
     end
   end

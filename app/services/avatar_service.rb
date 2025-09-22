@@ -3,7 +3,7 @@ class AvatarService
     avatar_row(first: first)
   end
 
-  def self.brand_avatar_row(first: false, name: "replicate.info", photo_path: "logo.png")
+  def self.brand_avatar_row(first: false, name: "Replicate", photo_path: "logo.png")
     avatar_row(first: first, name: name, photo_path: photo_path)
   end
 
@@ -19,7 +19,7 @@ class AvatarService
     avatar_row(name: engineer_name, photo_path: "profile-photo-#{photo_id}.jpg")
   end
 
-  def self.avatar_row(name: "replicate.info", photo_path: "logo.png", first: false)
+  def self.avatar_row(name: "Replicate", photo_path: "logo.png", first: false)
     "<div><div class='flex items-center gap-3'><div style='width: 32px'><img src='/#{photo_path}' style='border-radius: 100%' /></div><div class='font-medium'>#{name}</div></div></div>"
   end
 end
