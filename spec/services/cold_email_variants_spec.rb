@@ -34,8 +34,8 @@ RSpec.describe ColdEmailVariants do
     it "wraps each segment in paragraph tags" do
       result = described_class.build(inbox:, contact:)
       body = result["body_html"]
-      expect(body.scan(%r{<p>}).size).to eq(4) # One less for unsubscribe styling
-      expect(body.scan(%r{</p>}).size).to eq(5)
+      expect(body.scan(%r{<p>}).size).to eq(3) # One less for unsubscribe styling
+      expect(body.scan(%r{</p>}).size).to eq(4)
     end
 
     context "with deterministic single-choice sets" do
@@ -53,8 +53,7 @@ RSpec.describe ColdEmailVariants do
         expected_html = <<~HTML
           Hi #{contact.first_name},
           <p>INTRO <a href='https://replicate.info'>replicate.info</a></p>
-          <p>TECH</p>
-          <p>CTA</p>
+          <p>TECH CTA</p>
           <p>Best,<br/>J.C.</p>
           <p style="font-size: 80%; opacity: 0.6">Replicate Software, LLC - 131 Continental Dr, Suite 305, Newark, DE - <a href='https://replicate.info/contacts/#{contact.id}/unsubscribe'>Unsubscribe</a></p>
         HTML

@@ -6,8 +6,7 @@ class ColdEmailVariants
     body_html = <<~HTML
       #{greeting}
       <p>#{intros.sample}</p>
-      <p>#{tech_explanation.sample}</p>
-      <p>#{ctas.sample}</p>
+      <p>#{tech_explanation.sample} #{ctas.sample}</p>
       <p>#{inbox["signature"]}</p>
       <p style="font-size: 80%; opacity: 0.6">#{footer}</p>
     HTML
@@ -55,7 +54,7 @@ class ColdEmailVariants
 
   def self.tech_explanation
     [
-      "It's just a weekly email. GPT drops you into a SEV-1, asks for your next move, and applies pressure until your mental model starts to crack.",
+      "It's just a weekly email. GPT drops you into a SEV, asks for your next move, and applies pressure until your mental model starts to crack.",
       "GPT emails your team a SEV every Monday, and makes them work through it in private threads. It applies pressure, and tries to uncover blind spots that will eventually crash prod.",
       "Each week, engineers get an email with a simulated production fire. They reply like it's real, and GPT escalates when it sees them start to slip.",
     ]
@@ -63,14 +62,13 @@ class ColdEmailVariants
 
   def self.ctas
     [
-      "Just thought it might resonate. Happy to share more details if you're curious.",
+      "Just thought it might resonate. Happy to share more if you're curious.",
       "It's 100% async if you decide to try it out.",
       "It's a little harsh/uncompromising, but so is production.",
-      "SEV thinking, without the actual SEV. I'd love to hear what you think.",
+      "SEV thinking, without the actual SEV.",
       "The goal is to expose blind spots before production does. Curious if it resonates.",
-      "1on1 threads, with sharp questions that make you reconsider how infra fails.",
       "Every team has blind spots. This helps you surface them before production does.",
-      "Nothing to install/configure, just infra puzzles that show up in your inbox every week.",
+      "Nothing to install/configure, just infra puzzles that show up every week.",
     ]
   end
 end
