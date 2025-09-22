@@ -21,22 +21,21 @@ RSpec.describe ColdEmailVariants do
       result = described_class.build(inbox:, contact:)
       body = result["body_html"]
 
-      expect(body).to include("<p>Hi #{contact.first_name},</p>")
+      expect(body).to include("Hi #{contact.first_name},")
       expect(described_class.intros.any? { |s| body.include?(s) }).to be(true)
       expect(described_class.tech_explanation.any? { |s| body.include?(s) }).to be(true)
       expect(described_class.ctas.any? { |s| body.include?(s) }).to be(true)
       expect(body).to include(inbox["signature"])
       expect(body).to include("https://replicate.info/contacts/#{contact.id}/unsubscribe")
       expect(body).to include("<p style=\"font-size: 80%; opacity: 0.6\">")
-      expect(body).to start_with("<p>")
       expect(body).to end_with("\n")
     end
 
     it "wraps each segment in paragraph tags" do
       result = described_class.build(inbox:, contact:)
       body = result["body_html"]
-      expect(body.scan(%r{<p>}).size).to eq(5) # One less for unsubscribe styling
-      expect(body.scan(%r{</p>}).size).to eq(6)
+      expect(body.scan(%r{<p>}).size).to eq(4) # One less for unsubscribe styling
+      expect(body.scan(%r{</p>}).size).to eq(5)
     end
 
     context "with deterministic single-choice sets" do
@@ -52,7 +51,7 @@ RSpec.describe ColdEmailVariants do
         expect(result["subject"]).to eq("SUBJ")
 
         expected_html = <<~HTML
-          <p>Hi #{contact.first_name},</p>
+          Hi #{contact.first_name},
           <p>INTRO <a href='https://replicate.info'>replicate.info</a></p>
           <p>TECH</p>
           <p>CTA</p>

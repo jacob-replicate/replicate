@@ -4,7 +4,7 @@ class ColdEmailVariants
     footer = "Replicate Software, LLC - 131 Continental Dr, Suite 305, Newark, DE - <a href='https://replicate.info/contacts/#{contact.id}/unsubscribe'>Unsubscribe</a>"
 
     body_html = <<~HTML
-      <p>#{greeting}</p>
+      #{greeting}
       <p>#{intros.sample}</p>
       <p>#{tech_explanation.sample}</p>
       <p>#{ctas.sample}</p>
