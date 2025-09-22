@@ -70,7 +70,7 @@ class ColdEmailVariants
       "The goal is to expose blind spots before production does. Curious if it resonates.",
       "1on1 threads, with sharp questions that make you reconsider how infra fails.",
       "Every team has blind spots. This helps you surface them before production does.",
-      "Nothing to install/configure, just weekly infra puzzles that show up in your inbox.",
+      "Nothing to install/configure, just infra puzzles that show up in your inbox every week.",
     ]
   end
 end

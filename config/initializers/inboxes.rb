@@ -8,7 +8,7 @@ INBOXES = [
   },
   {
     "email" =>         "jacob@try-replicate.info",
-    "from_name" =>     "Jacob C.",
+    "from_name" =>     "Jacob Comer",
     "signature" =>     "-- Jacob"
   },
   {
