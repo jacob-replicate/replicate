@@ -1,7 +1,8 @@
+<% next_monday = Date.today.next_occurring(:monday).strftime("%b %-d") %>
 <div class="bg-white border border-gray-150 rounded-md shadow overflow-hidden text-sm">
   <div class="bg-neutral-700 text-white px-3 py-2 border-b border-neutral-150 font-medium flex justify-between items-center">
     <span>Re: The GC job that looked safe</span>
-    <span class="text-xs text-gray-400 font-normal">Mon, Jul 7 &bull; 9:17am</span>
+    <span class="text-xs text-gray-400 font-normal">Mon, <%= next_monday %> &bull; 1:17pm</span>
   </div>
 
   <div class="text-gray-800">

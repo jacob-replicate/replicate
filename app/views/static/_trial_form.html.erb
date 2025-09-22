@@ -3,7 +3,6 @@
 <% name_id  = "#{form_id}-name" %>
 <% email_id = "#{form_id}-email" %>
 <% team_id  = "#{form_id}-team" %>
-<% next_monday = Date.today.next_occurring(:monday).strftime("%b %-d") %>
 
 <form id="<%= form_id %>" novalidate>
   <div id="<%= box_id %>" class="border-2 rounded-lg bg-white <%= extra_form_container_classes %>">
