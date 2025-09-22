@@ -5,7 +5,8 @@ class ColdEmailVariants
 
     body_html = <<~HTML
       <p>#{greeting}</p>
-      <p>#{intros.sample} #{tech_explanation.sample}</p>
+      <p>#{intros.sample}</p>
+      <p>#{tech_explanation.sample}</p>
       <p>#{ctas.sample}</p>
       <p>#{inbox["signature"]}</p>
       <p style="font-size: 80%; opacity: 0.6">#{footer}</p>
@@ -48,7 +49,7 @@ class ColdEmailVariants
       "After years of putting out infra/sec fires, I built #{url} to help teams spot blind spots earlier.",
       "I've scaled infra where downtime costs millions, and created #{url} to help teams feel more confident in production.",
       "I'm an infra engineer who has seen too many SEVs that could've been caught in review. #{url} helps prevent them.",
-      "I've worked in production long enough to know where engineers get stuck, and built #{url} to cover those gaps.",
+      "I've worked in production long enough to know where engineers get stuck, and built #{url} to bridge those gaps.",
     ]
   end
 
