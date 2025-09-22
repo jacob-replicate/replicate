@@ -1,7 +1,3 @@
-- More cold email variants + make sure it works
-
-------- LAUNCH ----------
-
 - Double check all your plans for overcharging (e.g., Apollo, Postmark, etc)
 - Add more incidents. You have 6 weeks total (really 5 -- initial + 5 weeks)
 - Terms + Privacy + MSA/DPA review
