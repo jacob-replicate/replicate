@@ -16,5 +16,5 @@ every :weekday, at: '6:00am' do
 end
 
 every :weekday, at: '7:00am' do
-  sh "cd /home/jacob/code/replicate && bin/rails runner 'ColdEmailScheduler.new(min_score: 90).call' >> /home/jacob/cron_log.log 2>&1"
+  # sh "cd /home/jacob/code/replicate && bin/rails runner 'ColdEmailScheduler.new(min_score: 90).call' >> /home/jacob/cron_log.log 2>&1"
 end
