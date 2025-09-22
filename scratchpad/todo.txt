@@ -1,5 +1,6 @@
 - Terms + Privacy + MSA/DPA review
 - Influencers?
+- DISTRIBUTION - Nothing else matters.
 
 - Double check all your plans for overcharging (e.g., Apollo, Postmark, etc)
 - Add more incidents. You have 6 weeks total (really 5 -- initial + 5 weeks)
