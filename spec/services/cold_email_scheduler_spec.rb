@@ -66,7 +66,7 @@ RSpec.describe ColdEmailScheduler do
         expect(times.size).to eq(described_class::MAX_PER_HOUR * INBOXES.size * described_class::SEND_HOURS.size)
         expect(times.map(&:hour).uniq).to match_array(ColdEmailScheduler::SEND_HOURS)
         expect(times.select { |t| t.hour == 11 }.map(&:min).size).to eq(described_class::MAX_PER_HOUR * INBOXES.size)
-        expect(times.select { |t| t.hour == 11 }.map(&:min).size).to eq(described_class::MAX_PER_HOUR * INBOXES.size)
+        expect(times.select { |t| t.hour == 11 }.map(&:min).uniq.size > 1).to eq(true)
       end
     end
   end
