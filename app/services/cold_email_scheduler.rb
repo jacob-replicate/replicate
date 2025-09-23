@@ -10,7 +10,6 @@ class ColdEmailScheduler
     @contacts = fetch_contacts
     @per_hour  = Hash.new
     @send_times = build_send_times
-    @contact_index = 0
   end
 
   def call
@@ -60,10 +59,7 @@ class ColdEmailScheduler
   def fetch_next_contact!
     contact = nil
 
-    while @contact_index < @contacts.length && contact.nil?
-      contact = @contacts[@contact_index]
-      @contact_index += 1
-
+    while (contact = @contacts.shift).present?
       return contact if contact.passed_bounce_check?
       contact.update_columns(email: nil, score: contact.score * -1)
     end
@@ -74,7 +70,7 @@ class ColdEmailScheduler
     start_time = Time.find_zone("America/New_York").now.beginning_of_day
 
     SEND_HOURS.each do |hour|
-      per_inbox = MAX_PER_HOUR + rand(0..1)
+      per_inbox = MAX_PER_HOUR
       iterations = per_inbox * INBOXES.size
       spacing = 60 / iterations
 
@@ -82,7 +78,7 @@ class ColdEmailScheduler
         base_minute = (i * spacing).floor
         minute = base_minute + rand(0..spacing)
         second = rand(0..59)
-        minute = 59 if minute == 60
+        minute = 59 if minute >= 60
         send_times << start_time.change(hour: hour, min: minute, sec: second)
       end
     end
