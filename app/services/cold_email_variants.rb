@@ -63,7 +63,7 @@ class ColdEmailVariants
       "It's 100% async if you decide to try it out.",
       "It's a little harsh/uncompromising, but so is production.",
       "SEV thinking, without the actual SEV.",
-      "Every team has blind spots. This helps you find them before production does.",
+      "Every team has blind spots. This just helps you find them before production does.",
       "Nothing to install/configure if you're interested.",
     ]
   end
