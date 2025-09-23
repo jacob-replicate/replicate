@@ -111,7 +111,7 @@ RSpec.describe "Missive Webhooks", type: :request do
   end
 
   it "returns 200, persists payload verbatim" do
-    expect(SendAdminPushNotification).to receive(:call).with("Samwise Gamgee", "Hi Mr. Gamgee, I discovered something really disturbing about the Mordor coordinates we had.").and_return(nil)
+    expect(SendAdminPushNotification).to receive(:call).with("Samwise dGamgee", "Hi Mr. Gamgee, I discovered something really disturbing about the Mordor coordinates we had.").and_return(nil)
     expect {
       post path, params: payload
     }.to change { MissiveWebhook.count }.by(1)
