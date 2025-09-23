@@ -10,6 +10,14 @@ RSpec.describe EnrichContactScheduler, type: :service do
       )
     end
 
+    let!(:unenriched_contact_two) do
+      create(:contact,
+        email: "email_not_unlocked@domain.com",
+        score: 95,
+        external_id: "abc1234"
+      )
+    end
+
     let!(:unenriched_contact_to_ignore) do
       create(:contact,
         email: "email_not_unlocked@domain.com",
@@ -32,7 +40,7 @@ RSpec.describe EnrichContactScheduler, type: :service do
       }.to change(EnrichContactsWorker.jobs, :size).by(1)
 
       job = EnrichContactsWorker.jobs.last
-      expect(job["args"].first).to eq([unenriched_contact.id])
+      expect(job["args"].first).to eq([unenriched_contact_two.id, unenriched_contact.id])
       expect(job["args"].first).not_to include(enriched_contact.id)
     end
 
