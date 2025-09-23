@@ -42,7 +42,7 @@ class ColdEmailVariants
     url = "<a href='https://replicate.info'>replicate.info</a>"
     [
       "I built #{url} to help engineers catch SEV-1's before production does.",
-      "I've spent most of my career doing infra/sec, and built #{url} to help engineers sharpen their production instincts.",
+      "I've spent most of my career doing infra/sec, and built #{url} to help teams sharpen their production instincts.",
       "I've seen how infra blind spots turn into outages, and built #{url} to help teams fix those gaps in a safe environment.",
       "After years of putting out infra/sec fires, I built #{url} to help teams feel more confident in production.",
       "I've been hit by too many SEVs that could've been caught in review, and built #{url} to prevent them.",
@@ -63,7 +63,7 @@ class ColdEmailVariants
       "It's 100% async if you decide to try it out.",
       "It's a little harsh/uncompromising, but so is production.",
       "SEV thinking, without the actual SEV.",
-      "Every team has blind spots. This just helps you find them before production does.",
+      "Every team has blind spots. This just helps you find them sooner.",
       "Nothing to install/configure if you're interested.",
     ]
   end
