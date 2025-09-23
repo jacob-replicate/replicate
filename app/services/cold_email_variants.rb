@@ -53,7 +53,7 @@ class ColdEmailVariants
   def self.tech_explanation
     [
       "It's just a weekly email. GPT drops you into a SEV, asks for your next move, and applies pressure until your mental model starts to crack.",
-      "GPT emails your team a SEV every Monday, and makes them think through it in private threads. It keeps poking until it finds a blind spot that could crash prod.",
+      "GPT emails your team a SEV every Monday, and makes them think through it in private threads. It keeps poking until it finds a blind spot that might crash prod one day.",
     ]
   end
 

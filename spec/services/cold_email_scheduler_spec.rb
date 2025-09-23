@@ -63,8 +63,8 @@ RSpec.describe ColdEmailScheduler do
         sched = described_class.new(min_score: 0)
         times = sched.instance_variable_get(:@send_times)
         expect(times).to eq(times.sort)
-        expect(times.size).to eq(6)
-        expect(times.map(&:hour).uniq).to match_array((11..12).to_a)
+        expect(times.size).to eq(described_class::MAX_PER_HOUR * INBOXES.size * described_class::SEND_HOURS.size)
+        expect(times.map(&:hour).uniq).to match_array(ColdEmailScheduler::SEND_HOURS)
         expect(times.select { |t| t.hour == 11 }.map(&:min)).to eq([2, 21, 49])
         expect(times.select { |t| t.hour == 11 }.map(&:sec)).to eq([37, 36, 37])
       end
@@ -130,7 +130,7 @@ RSpec.describe ColdEmailScheduler do
         end
       end
 
-      expect(SendColdEmailWorker).to have_received(:perform_at).exactly(6).times
+      expect(SendColdEmailWorker).to have_received(:perform_at).exactly(described_class::MAX_PER_HOUR * INBOXES.size * described_class::SEND_HOURS.size).times
 
       # No hour for any inbox exceeds 3
       per_hour.each do |email, by_hour|
