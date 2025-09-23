@@ -82,7 +82,7 @@ RSpec.describe "Missive Webhooks", type: :request do
         "app_url": "missive://mail.missiveapp.com/#inbox/conversations/47a57b76-df42-4d8k-927x-80dbe5d87191",
         "web_url": "https://mail.missiveapp.com/#inbox/conversations/47a57b76-df42-4d8k-927x-80dbe5d87191"
       },
-      "latest_message": {
+      "message": {
         "id": "86ef8bb8-269c-4959-a4f0-213db4e67844",
         "subject": "Fwd: Mordor GPS coordinates",
         "preview": "Hi Mr. Gamgee, I discovered something really disturbing about the Mordor coordinates we had.",
@@ -111,7 +111,7 @@ RSpec.describe "Missive Webhooks", type: :request do
   end
 
   it "returns 200, persists payload verbatim" do
-    expect(SendAdminPushNotification).to receive(:call).with("Cold Email Reply", "Go check it out").and_return(nil)
+    expect(SendAdminPushNotification).to receive(:call).with("Samwise Gamgee", "Hi Mr. Gamgee, I discovered something really disturbing about the Mordor coordinates we had.").and_return(nil)
     expect {
       post path, params: payload
     }.to change { MissiveWebhook.count }.by(1)
