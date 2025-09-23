@@ -63,6 +63,8 @@ class ColdEmailScheduler
       return contact if contact.passed_bounce_check?
       contact.update_columns(email: nil, score: contact.score * -1)
     end
+
+    nil
   end
 
   def build_send_times
