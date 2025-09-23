@@ -114,6 +114,20 @@ CREATE TABLE public.messages (
 
 
 --
+-- Name: missive_webhooks; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.missive_webhooks (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    webhook_type character varying,
+    content json,
+    processed_at timestamp(6) without time zone,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
 -- Name: organizations; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -193,6 +207,14 @@ ALTER TABLE ONLY public.messages
 
 
 --
+-- Name: missive_webhooks missive_webhooks_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.missive_webhooks
+    ADD CONSTRAINT missive_webhooks_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: organizations organizations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -251,6 +273,7 @@ CREATE INDEX index_messages_on_conversation_id ON public.messages USING btree (c
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250923013123'),
 ('20250918025026'),
 ('20250912005642'),
 ('20250912005635'),
