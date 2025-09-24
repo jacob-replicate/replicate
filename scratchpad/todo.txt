@@ -1,3 +1,4 @@
+- Maybe make cold unsubscribe a confirmation box? Why stop yourself from hitting people again in a few months?
 - First name in coaching loop emails if known? Only do that for Contact, not Member?
 - .shuffle.pop through subject lines to guarantee uniqueness?
 - Remove the newline between tech_explanation -> CTA in cold email.
@@ -6,7 +7,6 @@
 - Add more incidents. You have 6 weeks total (really 5 -- initial + 5 weeks)
 - Cron job to filter inbox + draft replies
 - Make sure to add the resubscribe link in the final "We're auto-unsubscribing you" email.
-- Maybe make cold unsubscribe a confirmation box? Why stop yourself from hitting people again in a few months?
 - Don't send weekly emails to people who bounced. Bounce check on cold, not on transactional? - Postmark does this automatically?
 - Attach PDF's + inline JPG's once they close the loop
 - GPT 5 (in email, at least, not on web where it's slow af)
@@ -18,15 +18,11 @@
 - Figure out when bills land in Mercury account, so you can fund the account on time.
 - Double check Apollo invoicing + Mercury card transition
 - Find Apollo payment receipt from late August (~$59) + brainstorm any vendors you missed. Double check for all invoices.
-- Auth0 + SCIM + Self-serve admin UI
 - How will you know if your Bouncer credits are almost up?
 - Add a "check your spam folder" message to the homepage after you submit the form
 - Create a procurement PDF you can link to in your "Welcome to replicate.info!" email?
 - Monthly email report format to Directors. Make it a PDF that Rails renders, which you can attach in Postmark email, that they can forward to VP.
 - Bouncer API call on owner email with loading spinner
-- Add an example URL to copy/paste in the "Not the right time?" box. Give them the value ASAP.
-- Set up process for cold email addresses that failed bounce check. Funnel bad data into a CSV that Fiverr can clean up + send back.
-- Upsert contact metadata, so you can keep track of job changes. DB is going to get stale otherwise.
 - Accordion left/right links floated around the homepage conversation.
 - PagerDuty (or alternative, maybe, so you don't mix with Hashi? Sentry app, maybe?)
 - Automated data deletion + audit logging
