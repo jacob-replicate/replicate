@@ -78,6 +78,10 @@ class Contact < ApplicationRecord
     find_by("LOWER(email) ILIKE ?", "%#{email.downcase}%")
   end
 
+  def self.check
+    Contact.where("contacted_at > ?", 12.hours.ago).order(:name).map { |x| [x.name, x.email, x.company_domain, x.li] }
+  end
+
   private
 
   def name_must_have_two_words
