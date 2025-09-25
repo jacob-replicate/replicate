@@ -75,7 +75,7 @@ class Contact < ApplicationRecord
   end
 
   def self.f(email)
-    find_by(email: email.downcase)
+    find_by("LOWER(email) ILIKE ?", "%#{email.downcase}%")
   end
 
   private

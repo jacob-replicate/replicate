@@ -37,7 +37,7 @@
           Let's visualize the risk showing up in a weekly SEV drill.
         </p>
 
-        <%= text_area_tag :incident, "", class: "mt-4 w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 focus:ring-0", rows: 3, placeholder: "e.g., CDN cached admin view and exposed it to users", tabindex: 1 %>
+        <%= text_area_tag :incident, "CDN cached admin view and exposed it to users", class: "mt-4 w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 focus:ring-0", rows: 3, tabindex: 1, autofocus: true, onfocus: "var temp_value=this.value; this.value=''; this.value=temp_value" %>
         <%= hidden_field_tag :engineer_name, "Alex Shaw", name: "engineer_name", class: "hidden" %>
 
         <p class="mt-3 text-xs text-center text-gray-500">
