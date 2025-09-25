@@ -74,6 +74,10 @@ class Contact < ApplicationRecord
     metadata["linkedin_url"]
   end
 
+  def self.f(email)
+    find_by(email: email.downcase)
+  end
+
   private
 
   def name_must_have_two_words
