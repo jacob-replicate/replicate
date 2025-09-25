@@ -70,6 +70,10 @@ class Contact < ApplicationRecord
     }
   end
 
+  def li
+    metadata["linkedin_url"]
+  end
+
   private
 
   def name_must_have_two_words
