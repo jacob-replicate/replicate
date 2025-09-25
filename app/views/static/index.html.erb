@@ -36,7 +36,7 @@
         </p>
 
         <p class="mb-6">
-          GPT drops you into a SEV, and you explain your thoughts until you hit a wall. It expands the blast radius to help you trip over blind spots that might've otherwise crashed prod. <span class="font-semibold">No UI to manage</span>. Just check your inbox every Monday.
+          GPT drops you into a SEV, and you explain your thoughts until you hit a wall. It expands the blast radius to help you trip over infra blind spots that might've otherwise crashed prod. <span class="font-semibold">No UI to manage</span>. Just check your inbox every Monday.
         </p>
       </div>
     </div>
@@ -63,23 +63,3 @@
     <%= render "extended_cta" %>
   </div>
 </div>
-
-<script type="text/javascript">
-  document.addEventListener("DOMContentLoaded", () => {
-    const form = document.getElementById("demo-form");
-
-    const exampleButtons = document.querySelectorAll(".example-btn");
-    const engineer_name = document.querySelector("input[name='engineer_name']");
-    const textarea = document.querySelector("textarea[name='incident']");
-    const exampleContainer = document.getElementById("example-buttons");
-
-    exampleButtons.forEach((btn) => {
-      btn.addEventListener("click", (e) => {
-        e.preventDefault();
-        textarea.value = btn.dataset.example;
-        engineer_name.value = btn.dataset.name;
-        form.submit(); // Submit the form immediately
-      });
-    });
-  });
-</script>
