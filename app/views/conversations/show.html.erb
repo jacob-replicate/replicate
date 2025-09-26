@@ -108,24 +108,11 @@
     const conversationEl = document.getElementById("conversation");
     const tosWrapper = document.getElementById("terms-container");
 
-    const SCROLL_THRESHOLD = 120;
-    let userManuallyScrolled = false;
-
-    function atBottom() {
-      return (
-        conversationEl.scrollHeight -
-        conversationEl.scrollTop -
-        conversationEl.clientHeight
-      ) <= SCROLL_THRESHOLD;
-    }
-
     function scrollToBottom() {
-      window.scrollTo(0, document.body.scrollHeight);
+      if(Object.keys(messageQueue).length > 5) {
+        window.scrollTo(0, document.body.scrollHeight);
+      }
     }
-
-    conversationEl.addEventListener("scroll", () => {
-      userManuallyScrolled = !atBottom();
-    });
 
     let aiIsTyping = false;
     let loadingEl = null;
@@ -271,7 +258,6 @@
       { channel: "ConversationChannel", id: conversationId },
       {
         received(data) {
-          console.log(data);
           if (data.sequence !== undefined) {
             messageQueue[data.sequence] = data;
             tryFlushQueue();

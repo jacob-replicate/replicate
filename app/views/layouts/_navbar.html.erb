@@ -29,7 +29,7 @@
     </div>
 
     <div class="hidden md:flex md:flex-1 md:justify-end">
-      <% button_text = params[:controller] == "conversations" ? "Try a new SEV".html_safe : "Try it in a browser&nbsp;&nbsp;&rarr;".html_safe %>
+      <% button_text = params[:controller] == "conversations" ? "Try a new SEV".html_safe : "Try in a browser&nbsp;&nbsp;&rarr;".html_safe %>
       <a href="/sev" class="rounded-md px-3 py-1.5 text-[15px] text-white shadow-sm hover:shadow bg-indigo-700 hover:bg-indigo-600 active:bg-indigo-600 transition font-medium"><%= button_text %></a>
     </div>
   </nav>
