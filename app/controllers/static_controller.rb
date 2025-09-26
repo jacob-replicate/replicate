@@ -42,7 +42,6 @@ class StaticController < ApplicationController
       { seat_count: 75,  price: 30_000 },
       { seat_count: 150, price: 40_000 },
       { seat_count: 500, price: 50_000 },
-      { seat_count: 10000, price: 100_000 }
     ]; @prices.map { |x| x[:price] / x[:seat_count] }
   end
 end
