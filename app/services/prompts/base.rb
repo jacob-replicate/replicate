@@ -20,7 +20,7 @@ module Prompts
     end
 
     def fetch_valid_response
-      10.times do
+      20.times do
         llm_output = SanitizeAiContent.call(fetch_raw_output)
         error = validate(llm_output)
 
