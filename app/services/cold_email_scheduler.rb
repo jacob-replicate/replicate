@@ -1,6 +1,6 @@
 class ColdEmailScheduler
-  MAX_PER_HOUR = 2
-  SEND_HOURS = (11..15).to_a
+  MAX_PER_HOUR = 3
+  SEND_HOURS = (11..14).to_a
   MAX_MESSAGES_PER_DAY = SEND_HOURS.size * MAX_PER_HOUR
 
   def initialize(min_score:)

@@ -79,6 +79,7 @@ class Contact < ApplicationRecord
   end
 
   def self.check
+    Contact.where("contacted_at > ?", 12.hours.ago).order(:name).each { |x| puts "open #{x.li}" }
     Contact.where("contacted_at > ?", 12.hours.ago).order(:name).map { |x| [x.name, x.email, x.company_domain, x.li] }
   end
 
