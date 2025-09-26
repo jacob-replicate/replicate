@@ -1,3 +1,4 @@
+- Keep logs of cold email subjects + inboxes, so you can stay consistent with follow-ups
 - Remove bold text from web conversations
 - Maybe make cold unsubscribe a confirmation box? Why stop yourself from hitting people again in a few months?
 - New "first email" link
