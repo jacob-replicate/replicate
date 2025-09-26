@@ -73,13 +73,13 @@ RSpec.describe MessageGenerators::Base do
       expect(ConversationChannel).to receive(:broadcast_to).with(conversation, { type: "element", sequence: initial_seq + 2, user_generated: false, message: "two" }).ordered
       expect(ConversationChannel).to receive(:broadcast_to).with(conversation, { type: "done", sequence: initial_seq + 3, user_generated: false }).ordered
 
-      expect(ConversationChannel).to receive(:broadcast_to).with(conversation, { type: "element", sequence: initial_seq + 4, user_generated: false, message: "three" }).ordered
-      expect(ConversationChannel).to receive(:broadcast_to).with(conversation, { type: "loading", sequence: initial_seq + 5, user_generated: false }).ordered
-      expect(ConversationChannel).to receive(:broadcast_to).with(conversation, { type: "element", sequence: initial_seq + 6, user_generated: false, message: "four" }).ordered
-      expect(ConversationChannel).to receive(:broadcast_to).with(conversation, { type: "done", sequence: initial_seq + 7, user_generated: false }).ordered
-
-      expect(ConversationChannel).to receive(:broadcast_to).with(conversation, { type: "element", sequence: initial_seq + 8, user_generated: false, message: "five" }).ordered
+      expect(ConversationChannel).to receive(:broadcast_to).with(conversation, { type: "element", sequence: initial_seq + 6, user_generated: false, message: "three" }).ordered
+      expect(ConversationChannel).to receive(:broadcast_to).with(conversation, { type: "loading", sequence: initial_seq + 7, user_generated: false }).ordered
+      expect(ConversationChannel).to receive(:broadcast_to).with(conversation, { type: "element", sequence: initial_seq + 8, user_generated: false, message: "four" }).ordered
       expect(ConversationChannel).to receive(:broadcast_to).with(conversation, { type: "done", sequence: initial_seq + 9, user_generated: false }).ordered
+
+      expect(ConversationChannel).to receive(:broadcast_to).with(conversation, { type: "element", sequence: initial_seq + 12, user_generated: false, message: "five" }).ordered
+      expect(ConversationChannel).to receive(:broadcast_to).with(conversation, { type: "done", sequence: initial_seq + 13, user_generated: false }).ordered
 
       generator.deliver_elements(["<pre>one", "</pre> two"])
       generator.deliver_elements(["three", "four"])

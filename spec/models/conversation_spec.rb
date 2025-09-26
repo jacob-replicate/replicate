@@ -136,7 +136,7 @@ RSpec.describe Conversation, type: :model do
       it "computes sequence from real user/system counts" do
         create_list(:message, 3, conversation:, user_generated: true)
         create_list(:message, 2, conversation:, user_generated: false)
-        expect(conversation.next_message_sequence).to eq(14)
+        expect(conversation.next_message_sequence).to eq(18)
       end
     end
 

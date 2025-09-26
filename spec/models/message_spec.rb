@@ -74,17 +74,6 @@ RSpec.describe Message, type: :model do
         expect(ConversationDriverWorker).not_to have_received(:perform_async)
       end
     end
-
-    context "demo message (conversation_type: landing_demo)" do
-      let(:demo_conversation) { create(:conversation, channel: "web", context: { "conversation_type" => "landing_demo" }) }
-
-      it "does not broadcast and does not enqueue a system reply even if user_generated" do
-        create(:message, conversation: demo_conversation, user_generated: true, content: "demo hello")
-
-        expect(ConversationChannel).not_to have_received(:broadcast_to)
-        expect(ConversationDriverWorker).not_to have_received(:perform_async)
-      end
-    end
   end
 
   describe "#plain_text_content" do

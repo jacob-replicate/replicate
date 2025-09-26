@@ -271,6 +271,7 @@
       { channel: "ConversationChannel", id: conversationId },
       {
         received(data) {
+          console.log(data);
           if (data.sequence !== undefined) {
             messageQueue[data.sequence] = data;
             tryFlushQueue();
