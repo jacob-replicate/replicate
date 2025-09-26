@@ -51,7 +51,7 @@ RSpec.describe Prompts::Base do
     end
 
     context "when validation fails repeatedly" do
-      it "logs the error each time and returns nil after 10 tries" do
+      it "logs the error each time and returns nil after 20 tries" do
         described_class.class_variable_set(:@@template_cache, {})
 
         allow(prompt).to receive(:fetch_raw_output).and_return("raw")
@@ -60,7 +60,7 @@ RSpec.describe Prompts::Base do
         allow(Rails.logger).to receive(:error)
 
         expect(prompt.fetch_valid_response).to be_nil
-        expect(Rails.logger).to have_received(:error).exactly(10).times
+        expect(Rails.logger).to have_received(:error).exactly(20).times
       end
     end
   end
