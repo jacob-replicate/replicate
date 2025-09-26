@@ -16,7 +16,7 @@ RSpec.describe MessageGenerators::Coaching do
       allow(conversation).to receive(:web?).and_return(true)
       allow(conversation).to receive(:email?).and_return(false)
 
-      expect(generator).to receive(:deliver_elements).with([AvatarService.coach_avatar_row, Prompts::CoachingIntro, HINT_INK])
+      expect(generator).to receive(:deliver_elements).with([AvatarService.coach_avatar_row, Prompts::CoachingIntro, HINT_LINK])
       generator.deliver_intro
     end
 
