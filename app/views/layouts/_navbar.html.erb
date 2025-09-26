@@ -29,7 +29,8 @@
     </div>
 
     <div class="hidden md:flex md:flex-1 md:justify-end">
-      <a href="/sev" class="rounded px-3 py-1.5 text-sm text-white shadow-sm hover:shadow bg-indigo-700 hover:bg-indigo-600 active:bg-indigo-600 transition font-medium">Try the web version</a>
+      <% button_text = params[:controller] == "conversations" ? "Give me a new SEV" : "Try the web version" %>
+      <a href="/sev" class="rounded px-3 py-1.5 text-sm text-white shadow-sm hover:shadow bg-indigo-700 hover:bg-indigo-600 active:bg-indigo-600 transition font-medium"><%= button_text %></a>
     </div>
   </nav>
 
