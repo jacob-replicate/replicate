@@ -37,11 +37,12 @@ class StaticController < ApplicationController
 
   def set_prices
     @prices = [
+      { seat_count: 10,  price: 10_000 },
       { seat_count: 25,  price: 20_000 },
       { seat_count: 75,  price: 30_000 },
       { seat_count: 150, price: 40_000 },
-      { seat_count: 300, price: 50_000 },
-      { seat_count: 500, price: 60_000 }
+      { seat_count: 500, price: 50_000 },
+      { seat_count: 5000, price: 100_000 }
     ]; @prices.map { |x| x[:price] / x[:seat_count] }
   end
 end
