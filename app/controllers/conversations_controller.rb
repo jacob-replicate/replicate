@@ -13,6 +13,7 @@ class ConversationsController < ApplicationController
   end
 
   def show
+    @title = "replicate.info"
     @conversation = Conversation.find(params[:id])
   end
 end
