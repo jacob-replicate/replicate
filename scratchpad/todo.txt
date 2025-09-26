@@ -1,4 +1,5 @@
 - Maybe make cold unsubscribe a confirmation box? Why stop yourself from hitting people again in a few months?
+- New "first email" link
 
 - First name in coaching loop emails if known? Only do that for Contact, not Member?
 - .shuffle.pop through subject lines to guarantee uniqueness?
