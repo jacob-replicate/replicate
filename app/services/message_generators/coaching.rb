@@ -2,7 +2,7 @@ module MessageGenerators
   class Coaching < MessageGenerators::Base
     def deliver_intro
       if @conversation.web?
-        deliver_elements([AvatarService.coach_avatar_row, Prompts::CoachingIntro])
+        deliver_elements([AvatarService.coach_avatar_row, Prompts::CoachingIntro, hint_link])
       elsif @conversation.email?
         elements = ["Hey there,"]
 
@@ -21,10 +21,16 @@ module MessageGenerators
 
     def deliver_reply
       if @conversation.web?
-        deliver_elements([AvatarService.coach_avatar_row, Prompts::CoachingReply])
+        deliver_elements([AvatarService.coach_avatar_row, Prompts::CoachingReply, hint_link])
       elsif @conversation.email?
         deliver_elements([Prompts::CoachingReply])
       end
+    end
+
+    private
+
+    def hint_link
+      '<a class="hint-link no-underline text-sm text-blue-600 font-medium cursor-pointer mt-2 block" style="text-decoration: none" onclick="generateHint()">Give me a hint...</a>'
     end
   end
 end

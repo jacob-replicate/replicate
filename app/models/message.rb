@@ -21,19 +21,16 @@ class Message < ApplicationRecord
     update!(email_message_id_header: "<message-#{id}@mail.replicate.info>")
   end
 
-  def demo_message?
-    conversation.context["conversation_type"] == "landing_demo"
-  end
-
   def deliver_user_message_to_web
-    return unless conversation.web? && user_generated && !demo_message?
+    return unless conversation.web? && user_generated
+    Rails.logger.info("Broadcasting message #{id} to conversation #{conversation.id}")
     sequence = conversation.next_message_sequence - 2
     ConversationChannel.broadcast_to(conversation, { message: content, user_generated: user_generated, sequence: sequence })
     ConversationChannel.broadcast_to(conversation, { type: "done", sequence: sequence + 1 })
   end
 
   def schedule_system_reply
-    return unless user_generated && !demo_message?
+    return unless user_generated
     ConversationDriverWorker.perform_async(conversation_id)
   end
 end

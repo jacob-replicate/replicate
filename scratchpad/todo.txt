@@ -1,8 +1,6 @@
 - Maybe make cold unsubscribe a confirmation box? Why stop yourself from hitting people again in a few months?
 - New "first email" link
 
-- In the web version, add one-click suggestiosn like -- "I’d check retry counts and queue depths first — feels like we're hammering something that can’t recover."
-
 - First name in coaching loop emails if known? Only do that for Contact, not Member?
 - .shuffle.pop through subject lines to guarantee uniqueness?
 - Remove the newline between tech_explanation -> CTA in cold email.

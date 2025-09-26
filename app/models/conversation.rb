@@ -36,10 +36,9 @@ class Conversation < ApplicationRecord
     fake_names = ["Taylor Morales", "Casey Patel", "Alex Shaw"]
     fake_name_conditions = fake_names.map { |name| "content LIKE '%#{name}%'" }.join(" OR ")
 
-    fake_system_message_count = messages.where(fake_name_conditions).count
-    real_user_message_count = messages.user.count - fake_system_message_count
-    real_system_message_count = messages.system.count + fake_system_message_count
+    real_user_message_count = messages.user.count
+    real_system_message_count = messages.system.count
 
-    (real_user_message_count * 2) + (real_system_message_count * 4)
+    (real_user_message_count * 2) + (real_system_message_count * 6)
   end
 end

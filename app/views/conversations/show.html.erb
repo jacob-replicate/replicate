@@ -1,7 +1,6 @@
 <style>
   .message-body {
     line-height: 1.6;
-    margin-bottom: 0.5rem;
     word-break: break-word;
     overflow-wrap: break-word;
   }
@@ -74,7 +73,7 @@
 
 <div class="flex flex-col mt-10">
   <!-- Chat history -->
-  <div class="flex-1 rounded-md">
+  <div class="flex-1 rounded-md shadow bg-white p-4 border border-gray-100 mb-8">
     <div id="conversation"
          data-base-class="<%= base_message_classes %>"
          data-user-class="<%= user_message_classes %>">
@@ -87,7 +86,7 @@
     </div>
   </div>
 
-  <div class="pb-4 mt-2">
+  <div class="pb-4">
     <div class="flex items-center gap-2">
       <textarea id="message-input" placeholder="Type a message…" class="w-full border border-gray-200 rounded-lg p-2 resize-none disabled:opacity-50 disabled:cursor-not-allowed" rows="1" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px';"></textarea>
       <button id="send-button" class="bg-slate-600 text-white px-4 py-2 rounded-lg hover:bg-slate-700 ml-auto h-full disabled:opacity-50 disabled:cursor-not-allowed">Send</button>
@@ -147,9 +146,14 @@
       }
     }
 
-    function sendMessage() {
-      const message = textarea.value.trim();
+    window.generateHint = function() {
+      sendMessage("Give me a hint");
+    }
+
+    function sendMessage(message) {
+      message ||= textarea.value.trim();
       if (!message || aiIsTyping) return;
+
 
       aiIsTyping = true;
       setInputEnabled(false);
@@ -167,7 +171,10 @@
         body: JSON.stringify({ conversation_id: conversationId, content: message })
       });
 
-      textarea.value = "";
+      if(message != "Give me a hint") {
+        textarea.value = "";
+      }
+
       textarea.style.height = "auto";
       textarea.focus();
     }
@@ -199,16 +206,10 @@
       const isLoading = data.type === "loading";
       const isDone = data.type === "done";
 
-      if (data.type === "show_cta") {
-        const cta = document.getElementById("cta");
-        if (cta) cta.classList.remove("hidden");
-        return;
-      }
-
       if (isLoading) {
         if (!loadingEl) {
           loadingEl = document.createElement("div");
-          loadingEl.className = `mb-3 flex ${isUser ? "justify-end" : "justify-start"}`;
+          loadingEl.className = `mt-3 flex ${isUser ? "justify-end" : "justify-start"}`;
           const bubbleClass = "bg-white border border-gray-200 text-gray-500";
           loadingEl.innerHTML = `
         <div class="message-body ${bubbleClass} rounded-xl px-4 py-3 italic mt-2">
@@ -262,6 +263,8 @@
           conversationEl.appendChild(wrapper);
         }
 
+        document.querySelectorAll(".hint-link").forEach((link) => { link.remove(); });
+
         activeStreamContainer.innerHTML += data.message;
         scrollToBottomIfWanted();
       }
@@ -271,7 +274,6 @@
       { channel: "ConversationChannel", id: conversationId },
       {
         received(data) {
-          console.log(data);
           if (data.sequence !== undefined) {
             messageQueue[data.sequence] = data;
             tryFlushQueue();

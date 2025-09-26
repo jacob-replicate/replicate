@@ -45,6 +45,7 @@ Constraints:
 - Format all responses as raw HTML, never Markdown. Do not include any Markdown syntax like asterisks, backticks.
 - Do not use the <br/> tag or newline characters. One paragraph only.
 - Only use <b>This format</b> for emphasis, or key questions. No italics, just selective <b> tags text using that exact HTML tag. Zero classes or attributes on the <b> tag. I'm CMD+F'ing against it in post-AI code, so you need to match that format exactly.
+- Never bold the entire message, just certain words for emphasis if needed.
 - Do not include tables or underlines.
 - Never add links.
 
