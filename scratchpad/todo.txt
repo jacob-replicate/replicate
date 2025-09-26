@@ -1,4 +1,5 @@
 - Maybe make cold unsubscribe a confirmation box? Why stop yourself from hitting people again in a few months?
+
 - First name in coaching loop emails if known? Only do that for Contact, not Member?
 - .shuffle.pop through subject lines to guarantee uniqueness?
 - Remove the newline between tech_explanation -> CTA in cold email.
