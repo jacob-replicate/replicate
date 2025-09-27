@@ -2,11 +2,11 @@
   <h1 class="text-2xl font-semibold mb-4">Resubscribe to Replicate</h1>
 
   <p class="mb-4">
-    <span class="font-semibold"><%= @member.email %></span> will start receiving messages from Replicate again.
+    <span class="font-semibold"><%= @contact.email %></span> will start receiving messages again.
   </p>
 
   <div class="mt-6 flex items-center gap-3">
-    <%= form_with url: "/members/#{@member.id}/resubscribe", method: :post, local: true do %>
+    <%= form_with url: "/contacts/#{@contact.id}/resubscribe", method: :post, local: true do %>
       <%= submit_tag "Resubscribe", class: "px-4 py-2 rounded bg-green-600 text-white font-semibold hover:bg-green-700" %>
     <% end %>
 

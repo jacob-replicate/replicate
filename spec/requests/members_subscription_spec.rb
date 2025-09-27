@@ -25,10 +25,10 @@ RSpec.describe "Members subscription flows (HTML form clicks)", type: :request d
     it "GET confirm → POST unsubscribe → shows success with a POST resubscribe button, which works" do
       get "/members/#{member.id}/unsubscribe"
       expect(response).to have_http_status(:ok)
-      expect(response.body).to include("Unsubscribe from SEV-1 emails?")
+      expect(response.body).to include("Unsubscribe from Replicate")
       expect(response.body).to include(member.email)
 
-      action, method = form_action(response.body, button_label: "Yes, unsubscribe")
+      action, method = form_action(response.body, button_label: "Unsubscribe")
       expect(action).to eq("/members/#{member.id}/unsubscribe")
       expect(method).to eq("post")
 
@@ -56,10 +56,10 @@ RSpec.describe "Members subscription flows (HTML form clicks)", type: :request d
 
       get "/members/#{member.id}/resubscribe"
       expect(response).to have_http_status(:ok)
-      expect(response.body).to include("Resubscribe to SEV-1 emails?")
+      expect(response.body).to include("Resubscribe to Replicate")
       expect(response.body).to include(member.email)
 
-      action, method = form_action(response.body, button_label: "Yes, resubscribe")
+      action, method = form_action(response.body, button_label: "Resubscribe")
       expect(action).to eq("/members/#{member.id}/resubscribe")
       expect(method).to eq("post")
 
@@ -75,9 +75,9 @@ RSpec.describe "Members subscription flows (HTML form clicks)", type: :request d
 
       get link["href"]
       expect(response).to have_http_status(:ok)
-      expect(response.body).to include("Unsubscribe from SEV-1 emails?")
+      expect(response.body).to include("Unsubscribe from Replicate")
 
-      action2, method2 = form_action(response.body, button_label: "Yes, unsubscribe")
+      action2, method2 = form_action(response.body, button_label: "Unsubscribe")
       expect(action2).to eq("/members/#{member.id}/unsubscribe")
       expect(method2).to eq("post")
 
