@@ -1,3 +1,11 @@
+- Clean up old unsubscribes. Sep 26 02:47:56 PM was the cutoff.
+    Only real ones:
+    - /contacts/d04adb98-799c-454a-a8a3-3efa9798c8ba/unsubscribe" host=replicate.info request_id=9e5b7ed5-74a4-e971-8ab6-306184955b7b fwd="2.4.33.168" dyno=web.1 connect=0ms service=47ms status=200 bytes=8112 protocol=http1.1 tls=true tls_version=tls1.2
+    - /contacts/495dd12c-c0a7-46c5-908c-4388184a5052/unsubscribe" host=replicate.info request_id=2eebbc27-dfe8-14d9-db1a-ff71db670113 fwd="99.24.48.20" dyno=web.1 connect=0ms service=35ms status=200 bytes=8921 protocol=http1.1 tls=true tls_version=tls1.2
+
+
+- Add a "Just this one email, no follow-ups" or something to cold emails?
+- Wire up emailing for Staff+ engineers, not VP's
 - Stop autoscrolling to bottom messages build up in conversations#show. You're scrolling past the logo.
 - Keep logs of cold email subjects + inboxes, so you can stay consistent with follow-ups
 - Remove bold text from web conversations
