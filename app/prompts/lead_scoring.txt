@@ -4,7 +4,7 @@ You must return a JSON format in this exact format, with no additional content o
 { "score": 100, "reason": "<Fill out with useful info that helps me analyze your grading>" }
 
 Best-fit leads
-- Software engineering leaders (Director/VP/Head/CTO) at mid-market companies where SEV-1 incidents are a real risk.
+- Software engineering leaders (Director/VP/Head/CTO/Staff+ IC engineers) at mid-market companies where SEV-1 incidents are a real risk.
 
 Reject leads if:
 - Role scope is ML, data eng, BI, QA, frontend, or mobile
