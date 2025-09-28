@@ -105,6 +105,7 @@ class Contact < ApplicationRecord
       "givecampus",
       "replicate",
       "hashicorp",
+      "redhat",
       ".edu",
       ".mil",
       ".gov",
