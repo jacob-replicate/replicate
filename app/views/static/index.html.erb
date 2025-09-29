@@ -34,7 +34,7 @@
         <div class="flex flex-row items-center mb-[22px]">
           <div class="basis-1/2">
             <h1 class="text-[21px] lg:text-[27px] font-semibold md:font-medium tracking-tight pb-0">
-              Find the <span style="color: #E63946">SEV-1</span> before it finds prod.
+              Find the <span style="color: #E63946">SEV-1</span> before it finds production.
             </h1>
             <div class="text-[14px] tracking-tight whitespace-nowrap overflow-visible">
               3-month free trial. <span class="font-semibold">No sales calls</span>. Inactive users get auto-unsubscribed. <span class="font-semibold">$10-50k</span>/year.
@@ -72,15 +72,21 @@
       </div>
     </div>
 
-    <div class="mt-6 w-full lg:max-w-[780px] mx-auto text-center">
-      <a href="/sev" class="text-[18px] tracking-tight shadow inline-block rounded-lg bg-indigo-700 px-5 py-3 font-semibold text-white transition hover:bg-indigo-800 hover:shadow-md active:bg-indigo-900 sm:w-auto focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400">Try the web-based version</a>
-    </div>
-    <div class="mt-4 mb-14 md:mb-0 text-[15px] text-center text-gray-500">
-      No forms. Just a SEV-1 to fix.
+    <div class="md:hidden">
+      <div class="mt-6 w-full lg:max-w-[780px] mx-auto text-center">
+        <a href="/sev" class="text-[18px] tracking-tight shadow inline-block rounded-lg bg-indigo-700 px-5 py-3 font-semibold text-white transition hover:bg-indigo-800 hover:shadow-md active:bg-indigo-900 sm:w-auto focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400">Try the web-based version</a>
+      </div>
+      <div class="mt-4 mb-14 md:mb-0 text-[15px] text-center text-gray-500">
+        No forms. Just a SEV-1 to fix.
+      </div>
     </div>
   </div>
 
-  <div class="mt-8 lg:mt-14">
+  <div class="mt-8">
     <%= render "extended_cta" %>
+  </div>
+
+  <div class="mt-8 hidden md:block">
+    <%= render "conversations/conversation" %>
   </div>
 </div>

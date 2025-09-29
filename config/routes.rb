@@ -30,7 +30,7 @@ Rails.application.routes.draw do
   get '/members/:id/resubscribe', to: "members#resubscribe"
   post '/members/:id/resubscribe', to: "members#resubscribe_confirm"
 
-  resources :conversations, only: [:create, :show]
+  resources :conversations, only: [:show]
   resources :messages, only: [:create]
   resources :organizations, only: [:create]
 

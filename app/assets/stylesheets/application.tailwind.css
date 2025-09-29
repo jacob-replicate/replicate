@@ -61,3 +61,71 @@ body {
   font-style: normal;
   font-display: swap;
 }
+
+.message-body {
+  line-height: 1.6;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+.prompt-output {
+  margin-top: 15px;
+}
+
+.message-body p {
+  margin-top: 10px;
+}
+
+.message-body p:first-child {
+  margin-top: 0;
+}
+
+.message-body ul,
+.message-body ol {
+  padding-left: 2rem;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.message-body ul {
+  list-style-type: disc;
+}
+
+.message-body ol {
+  list-style-type: decimal;
+}
+
+.message-body li {
+  margin-bottom: 1.5rem;
+}
+
+.message-body strong {
+  font-weight: 600;
+}
+
+.message-body hr {
+  padding: 0;
+  margin: 18px 0 0 0;
+  opacity: 0.7;
+}
+
+.message-body a {
+  text-decoration: underline;
+}
+
+.message-body code {
+  background-color: #242424;
+  padding: 0.125rem 0.25rem;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+  color: white;
+}
+
+.message-body pre code {
+  display: block;
+  color: white;
+  padding: 1rem;
+  border-radius: 0.25rem;
+  overflow-x: auto;
+  font-size: 0.875rem;
+}

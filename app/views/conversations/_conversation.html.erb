@@ -1,0 +1,198 @@
+<% user_message_classes = "bg-neutral-100 rounded-2xl shadow px-4 py-3 max-w-2xl md:max-w-xl" %>
+<% base_message_classes = "break-words message-body" %>
+
+<div class="flex flex-col">
+  <div class="flex-1 rounded-xl shadow bg-white p-4 border border-gray-100">
+    <div id="conversation" data-base-class="<%= base_message_classes %>" data-user-class="<%= user_message_classes %>">
+      <% @conversation.messages.order(created_at: :asc).each_with_index do |m, i| %>
+        <div class="flex <%= i > 0 ? "mt-4" : "" %> <%= m.user_generated ? 'justify-end' : 'justify-start' %>">
+          <% message_classes = "#{base_message_classes} #{user_message_classes if m.user_generated}" %>
+          <div class="<%= message_classes %>"><%= m.content.gsub(HINT_LINK, "").html_safe %></div>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="flex items-center gap-2 mt-4">
+      <textarea id="message-input" placeholder="Type a message…" class="w-full border border-gray-200 rounded-lg p-2 resize-none disabled:opacity-50 disabled:cursor-not-allowed" rows="1" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px';"></textarea>
+      <button id="send-button" class="bg-slate-600 text-white px-4 py-2 rounded-lg hover:bg-slate-700 ml-auto h-full disabled:opacity-50 disabled:cursor-not-allowed">Send</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    // Email form submission
+    const conversationId = "<%= @conversation.id %>";
+    const textarea = document.getElementById("message-input");
+    const sendButton = document.getElementById("send-button");
+    const conversationEl = document.getElementById("conversation");
+    const tosWrapper = document.getElementById("terms-container");
+    let messageQueue = {};
+    let expectedSequence = <%= @conversation.next_message_sequence %>;
+
+    function pastFirstMessage() {
+      console.log(expectedSequence);
+      return expectedSequence > 6;
+    }
+
+    function scrollToBottom() {
+      if(pastFirstMessage()) {
+        window.scrollTo(0, document.body.scrollHeight);
+      }
+    }
+
+    let aiIsTyping = false;
+    let loadingEl = null;
+    let activeStreamContainer = null;
+    let dotInterval;
+
+    function setInputEnabled(enabled) {
+      if(textarea) {
+        textarea.disabled = !enabled;
+        sendButton.disabled = !enabled;
+        sendButton.classList.toggle("opacity-50", !enabled);
+        sendButton.classList.toggle("cursor-not-allowed", !enabled);
+        if(pastFirstMessage() || <%= params[:action] != 'index' %>) {
+          textarea.focus();
+        }
+        scrollToBottom();
+      }
+    }
+
+    window.generateHint = function() {
+      sendMessage("Give me a hint");
+    }
+
+    function sendMessage(message) {
+      message ||= textarea.value.trim();
+      if (!message || aiIsTyping) return;
+
+
+      aiIsTyping = true;
+      setInputEnabled(false);
+
+      if (tosWrapper) {
+        tosWrapper.remove();
+      }
+
+      fetch("/messages", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').content
+        },
+        body: JSON.stringify({ conversation_id: conversationId, content: message })
+      });
+
+      if(message != "Give me a hint") {
+        textarea.value = "";
+      }
+
+      textarea.style.height = "auto";
+      textarea.focus();
+    }
+
+    if(textarea) {
+      sendButton.addEventListener("click", sendMessage);
+      textarea.addEventListener("keydown", e => {
+        if (e.key === "Enter" && !e.shiftKey) {
+          e.preventDefault();
+          sendMessage();
+        }
+      });
+    }
+
+
+    function tryFlushQueue() {
+      while (messageQueue[expectedSequence]) {
+        const data = messageQueue[expectedSequence];
+        renderMessage(data);
+        delete messageQueue[expectedSequence];
+        expectedSequence++;
+      }
+    }
+
+    function renderMessage(data) {
+      const isUser = data.user_generated;
+      const isLoading = data.type === "loading";
+      const isDone = data.type === "done";
+
+      if (isLoading) {
+        if (!loadingEl) {
+          loadingEl = document.createElement("div");
+          loadingEl.className = `mt-3 flex ${isUser ? "justify-end" : "justify-start"}`;
+          const bubbleClass = "bg-yellow-100 border border-yellow-200 text-gray-700";
+          loadingEl.innerHTML = `
+        <div class="message-body ${bubbleClass} rounded-xl px-3 py-2 text-sm mt-2">
+          Thinking<span id="loading-dots">.</span>
+        </div>
+      `;
+          dotInterval = setInterval(() => {
+            const dots = document.getElementById("loading-dots");
+            if (!dots) return;
+            dots.textContent = dots.textContent.length >= 3 ? "." : dots.textContent + ".";
+          }, 500);
+          conversationEl.appendChild(loadingEl);
+          scrollToBottom();
+        }
+        aiIsTyping = true;
+        setInputEnabled(false);
+        return;
+      }
+
+      if (isDone) {
+        if (loadingEl) {
+          loadingEl.remove();
+          loadingEl = null;
+        }
+        if (dotInterval) {
+          clearInterval(dotInterval);
+          dotInterval = null;
+        }
+        aiIsTyping = false;
+        activeStreamContainer = null;
+        setInputEnabled(true);
+        scrollToBottom();
+        return;
+      }
+
+      if (data.message) {
+        const baseClass = conversationEl.dataset.baseClass;
+        const userClass = conversationEl.dataset.userClass;
+        const finalClass = isUser ? `${baseClass} ${userClass}` : baseClass;
+
+        if (!activeStreamContainer || data.sequence === 0) {
+          const wrapper = document.createElement("div");
+          wrapper.className = `flex ${isUser ? "justify-end" : "justify-start"}`;
+
+          activeStreamContainer = document.createElement("div");
+          let classes = finalClass;
+          if (data.sequence && data.sequence > 0) classes += " mt-4";
+
+          activeStreamContainer.className = classes;
+          wrapper.appendChild(activeStreamContainer);
+          conversationEl.appendChild(wrapper);
+        }
+
+        document.querySelectorAll(".hint-link").forEach((link) => { link.remove(); });
+
+        activeStreamContainer.innerHTML += data.message;
+        scrollToBottom();
+      }
+    }
+
+    window.consumer.subscriptions.create(
+      { channel: "ConversationChannel", id: conversationId },
+      {
+        received(data) {
+          if (data.sequence !== undefined) {
+            messageQueue[data.sequence] = data;
+            tryFlushQueue();
+          } else {
+            renderMessage(data); // still support non-sequenced messages
+          }
+        }
+      }
+    );
+  });
+</script>

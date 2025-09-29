@@ -1,15 +1,20 @@
-- Benefits section on homepage below next steps? Cards + visuals you can click into to see the benefits of SEV drills. Add to the homepage.
+Acquisition:
 
-- Stop autoscrolling to bottom messages build up in conversations#show. You're scrolling past the logo.
+- Ignore api@ support@ email addresses.
 - Keep logs of cold email subjects + inboxes, so you can stay consistent with follow-ups
-
+- Remove the "Try web-based version" button. Just show them the first message + make it standout visually. Black header bar for "Next Steps" to create separation?
+- YouTube video
+- Benefits section
+- Carousel screenshots for conversations + code snippets
+- Stop autoscrolling to bottom messages build up in conversations#show. You're scrolling past the logo.
 - Remove 100% bold text from web conversations. gsub around it?
-- Fix RSpec
+
+
+Doesn't matter if you don't have customers:
 
 - First name in coaching loop emails if known? Only do that for Contact, not Member?
 - .shuffle.pop through subject lines to guarantee uniqueness?
 - Remove the newline between tech_explanation -> CTA in cold email.
-- Terms + Privacy + MSA/DPA review
 - Double check all your plans for overcharging (e.g., Apollo, Postmark, etc)
 - Add more incidents. You have 6 weeks total (really 5 -- initial + 5 weeks)
 - Cron job to filter inbox + draft replies

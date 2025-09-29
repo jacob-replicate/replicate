@@ -2,6 +2,12 @@ class StaticController < ApplicationController
   before_action :set_prices
 
   def index
+    context = {
+      conversation_type: :coaching,
+      incident: INCIDENTS.sample["prompt"]
+    }
+
+    @conversation = Conversation.create!(context: context, channel: "web")
   end
 
   def terms
@@ -17,18 +23,13 @@ class StaticController < ApplicationController
   end
 
   def coaching
-    name = ["Alex Shaw", "Taylor Morales", "Casey Patel"].sample
-    first_name = name.split.first
+    context = {
+      conversation_type: :coaching,
+      incident: INCIDENTS.sample["prompt"]
+    }
 
-    return start_conversation(
-      context: {
-        conversation_type: :coaching,
-        engineer_name: name,
-        first_name: first_name,
-        incident: INCIDENTS.sample["prompt"]
-      },
-      force_tos: true
-    )
+    @conversation = Conversation.create!(context: context, channel: "web")
+    redirect_to conversation_path(@conversation, require_tos: true)
   end
 
   def security
