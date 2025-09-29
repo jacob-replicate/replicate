@@ -1,3 +1,5 @@
+- Benefits section on homepage below next steps? Cards + visuals you can click into to see the benefits of SEV drills. Add to the homepage.
+
 - Stop autoscrolling to bottom messages build up in conversations#show. You're scrolling past the logo.
 - Keep logs of cold email subjects + inboxes, so you can stay consistent with follow-ups
 
