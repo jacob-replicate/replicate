@@ -8,7 +8,7 @@ INCIDENTS = [
     "subject" => "Legacy login page came back during SSO outage, bypassing MFA"
   },
   {
-    "prompt" => "A background worker crashed midway through persisting a company’s monthly customer credit card charges. When it restarted, the task was retried by the job queue, which had no awareness of the partial write. The worker crashed again multiple times overnight, each time reprocessing the same task from scratch. Customers were charged two to four times depending on retry timing. The system lacked idempotency keys, write barriers, or deduplication safeguards — at-most-once semantics were completely absent. Finance teams didn’t notice the spike immediately, and the issue was first surfaced by a support ticket from a confused customer: 'Why was I charged four times?'",
+    "prompt" => "We charged customers multiple times by mistake. A background worker crashed midway through persisting a company’s monthly customer credit card charges. When it restarted, the task was retried by the job queue, which had no awareness of the partial write. The worker crashed again multiple times overnight, each time reprocessing the same task from scratch. Customers were charged two to four times depending on retry timing. The system lacked idempotency keys, write barriers, or deduplication safeguards — at-most-once semantics were completely absent. Finance teams didn’t notice the spike immediately, and the issue was first surfaced by a support ticket from a confused customer: 'Why was I charged four times?'",
     "subject" => "Invoicing job crashed. The retry issued duplicate charges to every customer."
   },
   {

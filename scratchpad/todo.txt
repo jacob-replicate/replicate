@@ -1,13 +1,12 @@
 Acquisition:
 
 - Ignore api@ support@ email addresses.
-- Keep logs of cold email subjects + inboxes, so you can stay consistent with follow-ups
-- Remove the "Try web-based version" button. Just show them the first message + make it standout visually. Black header bar for "Next Steps" to create separation?
-- YouTube video
 - Benefits section
 - Carousel screenshots for conversations + code snippets
-- Stop autoscrolling to bottom messages build up in conversations#show. You're scrolling past the logo.
+- Keep logs of cold email subjects + inboxes, so you can stay consistent with follow-ups
+- YouTube video
 - Remove 100% bold text from web conversations. gsub around it?
+- Check conversation scrolling on mobile -- doing it too early?
 
 
 Doesn't matter if you don't have customers:
