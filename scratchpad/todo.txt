@@ -1,6 +1,5 @@
 Acquisition:
 
-- Ignore api@ support@ email addresses.
 - Benefits section
 - Carousel screenshots for conversations + code snippets
 - Keep logs of cold email subjects + inboxes, so you can stay consistent with follow-ups
