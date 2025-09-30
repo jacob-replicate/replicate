@@ -1,4 +1,6 @@
 class Contact < ApplicationRecord
+  audited
+
   has_many :conversations, as: :recipient, dependent: :destroy
   has_many :messages, through: :conversations
 

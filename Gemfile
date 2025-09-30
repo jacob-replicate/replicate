@@ -2,6 +2,7 @@ source "https://rubygems.org"
 
 ruby "3.2.2"
 
+gem "audited"
 gem "awesome_print"
 gem "aws-sdk-s3", "~> 1"
 gem "bootsnap", require: false

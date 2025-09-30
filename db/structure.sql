@@ -40,6 +40,48 @@ CREATE TABLE public.ar_internal_metadata (
 
 
 --
+-- Name: audits; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.audits (
+    id bigint NOT NULL,
+    auditable_id integer,
+    auditable_type character varying,
+    associated_id integer,
+    associated_type character varying,
+    user_id integer,
+    user_type character varying,
+    username character varying,
+    action character varying,
+    audited_changes text,
+    version integer DEFAULT 0,
+    comment character varying,
+    remote_address character varying,
+    request_uuid character varying,
+    created_at timestamp(6) without time zone
+);
+
+
+--
+-- Name: audits_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.audits_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: audits_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.audits_id_seq OWNED BY public.audits.id;
+
+
+--
 -- Name: contacts; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -183,11 +225,26 @@ CREATE TABLE public.sessions (
 
 
 --
+-- Name: audits id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.audits ALTER COLUMN id SET DEFAULT nextval('public.audits_id_seq'::regclass);
+
+
+--
 -- Name: ar_internal_metadata ar_internal_metadata_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.ar_internal_metadata
     ADD CONSTRAINT ar_internal_metadata_pkey PRIMARY KEY (key);
+
+
+--
+-- Name: audits audits_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.audits
+    ADD CONSTRAINT audits_pkey PRIMARY KEY (id);
 
 
 --
@@ -263,6 +320,34 @@ ALTER TABLE ONLY public.sessions
 
 
 --
+-- Name: associated_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX associated_index ON public.audits USING btree (associated_type, associated_id);
+
+
+--
+-- Name: auditable_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX auditable_index ON public.audits USING btree (auditable_type, auditable_id, version);
+
+
+--
+-- Name: index_audits_on_created_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_audits_on_created_at ON public.audits USING btree (created_at);
+
+
+--
+-- Name: index_audits_on_request_uuid; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_audits_on_request_uuid ON public.audits USING btree (request_uuid);
+
+
+--
 -- Name: index_conversations_on_recipient; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -291,12 +376,20 @@ CREATE INDEX index_messages_on_conversation_id ON public.messages USING btree (c
 
 
 --
+-- Name: user_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX user_index ON public.audits USING btree (user_id, user_type);
+
+
+--
 -- PostgreSQL database dump complete
 --
 
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250930004845'),
 ('20250930002309'),
 ('20250929235307'),
 ('20250923013123'),

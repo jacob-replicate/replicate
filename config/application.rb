@@ -31,5 +31,6 @@ module Advance
     config.active_record.schema_format = :sql
     config.middleware.delete ActionDispatch::Cookies
     config.middleware.delete ActionDispatch::Session::CookieStore
+    config.active_record.yaml_column_permitted_classes = [Symbol, Date, Time, ActiveSupport::TimeWithZone, ActiveSupport::TimeZone]
   end
 end
