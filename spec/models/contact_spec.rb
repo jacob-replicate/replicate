@@ -379,7 +379,7 @@ RSpec.describe Contact, type: :model do
       let(:contact) { build(:contact, email: "user@example.com", name: "Test User") }
 
       def blocked_for?(domain)
-        contact.company_domain = domain
+        contact.email = domain
         contact.send(:company_domain_on_blocklist?)
       end
 

@@ -111,7 +111,9 @@ class Contact < ApplicationRecord
       ".edu",
       ".mil",
       ".gov",
+      "api",
+      "support",
       "ibm"
-    ].any? { |banned_phrase| company_domain.to_s.downcase.include?(banned_phrase) }
+    ].any? { |banned_phrase| email.to_s.downcase.include?(banned_phrase) }
   end
 end
