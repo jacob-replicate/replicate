@@ -177,7 +177,8 @@ CREATE TABLE public.sessions (
     referring_page character varying,
     duration integer,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    user_agent text
 );
 
 
@@ -296,6 +297,7 @@ CREATE INDEX index_messages_on_conversation_id ON public.messages USING btree (c
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250930002309'),
 ('20250929235307'),
 ('20250923013123'),
 ('20250918025026'),
