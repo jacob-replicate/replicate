@@ -21,6 +21,6 @@ class Growth
 
     sessions = Session.where("duration >= 5").where.not(ip: "98.249.45.68")
     puts "Total Sessions: #{sessions.count}"
-    puts "Average Session Duration (seconds): #{sessions.average(:duration).to_i}"
+    puts "Session Durations: #{sessions.group(:duration).count}"
   end
 end
