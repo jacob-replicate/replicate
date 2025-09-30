@@ -29,6 +29,7 @@ Rails.application.routes.draw do
   post '/members/:id/unsubscribe', to: "members#unsubscribe_confirm"
   get '/members/:id/resubscribe', to: "members#resubscribe"
   post '/members/:id/resubscribe', to: "members#resubscribe_confirm"
+  post '/sessions/pulse', to: "sessions#pulse"
 
   resources :conversations, only: [:show]
   resources :messages, only: [:create]

@@ -18,5 +18,9 @@ class Growth
     email_conversations = Conversation.where(channel: "email")
     email_messages = Message.where(conversation_id: email_conversations.pluck(:id), user_generated: true)
     puts "User Messages (Email): #{email_messages.count}"
+
+    sessions = Session.where("duration >= 5").where.not(ip: "98.249.45.68")
+    puts "Total Sessions: #{sessions.count}"
+    puts "Average Session Duration (seconds): #{sessions.average(:duration).to_i}"
   end
 end
