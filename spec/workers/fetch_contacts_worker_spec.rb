@@ -100,7 +100,7 @@ RSpec.describe FetchContactsWorker do
       expect(josh.metadata["id"]).to eq("6462b961ad39c900a3070207")
     end
 
-    it "updates an existing contact with the same external_id (no duplicates)" do
+    it "retains old email addresses" do
       existing = create(:contact, source: "apollo", external_id: "6596ea42d05a3e00014cf630", email: "old@example.com", cohort: "old")
 
       http_double_with(response_double(code: 200, body: apollo_payload))
@@ -110,7 +110,7 @@ RSpec.describe FetchContactsWorker do
       }.to change(Contact, :count).by(1)
 
       expect(existing.reload.cohort).to eq("vp marketing")
-      expect(existing.email).to eq("email_not_unlocked@domain.com")
+      expect(existing.email).to eq("old@example.com")
     end
 
     it "retries in 60s on 429 (rate limited)" do

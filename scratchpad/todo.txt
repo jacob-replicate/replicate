@@ -7,7 +7,7 @@ Acquisition:
 - YouTube video
 - Remove 100% bold text from web conversations. gsub around it?
 - Check conversation scrolling on mobile -- doing it too early?
-
+- Session.relevant scope (to filter out bots)
 
 Doesn't matter if you don't have customers:
 

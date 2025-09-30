@@ -58,7 +58,7 @@ class FetchContactsWorker
       contact.assign_attributes(
         cohort: title_keyword.downcase,
         name: person["name"],
-        email: person["email"],
+        email: [contact.email, person["email"]].reject(&:blank?).first,
         location: person["present_raw_address"] || [person["city"], person["state"], person["country"]].compact.join(", "),
         company_domain: person.dig("account", "primary_domain"),
         state: person["state"],
