@@ -1,3 +1,6 @@
+- One card email signup on mobile to try it themselves. Desktop too (with an option to invite teammates)
+- No web based version CTA on mobile. Just screenshot -> form -> pricing -> procurement -> security -> email again
+
 - Homepage refinement (video? benefits section? screenshot carousel? more images?)
 - More cold email variants
 - Better visitor tracking - can you write a script to do a whois + ask ChatGPT if it's relevant? Group sessions by IP in an hourly cron?
