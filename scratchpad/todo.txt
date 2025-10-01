@@ -1,15 +1,10 @@
-Acquisition:
-
-- Benefits section
+- Homepage refinement (video? benefits section? screenshot carousel? more images?)
+- More cold email variants
+- Better visitor tracking - can you write a script to do a whois + ask ChatGPT if it's relevant? Group sessions by IP in an hourly cron?
 - Carousel screenshots for conversations + code snippets
-- Keep logs of cold email subjects + inboxes, so you can stay consistent with follow-ups
 - YouTube video
 - Remove 100% bold text from web conversations. gsub around it?
 - Check conversation scrolling on mobile -- doing it too early?
-- Session.relevant scope (to filter out bots)
-
-Doesn't matter if you don't have customers:
-
 - First name in coaching loop emails if known? Only do that for Contact, not Member?
 - .shuffle.pop through subject lines to guarantee uniqueness?
 - Remove the newline between tech_explanation -> CTA in cold email.
