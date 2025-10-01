@@ -1,4 +1,5 @@
 - One card email signup on mobile to try it themselves. Desktop too (with an option to invite teammates)
+- Small 80% page width horizontal card below the email screenshot on desktop. One line. "Try it yourself" -> email input -> submit button floated to the right. Keep the main box at the bottom.
 - No web based version CTA on mobile. Just screenshot -> form -> pricing -> procurement -> security -> email again
 
 - Homepage refinement (video? benefits section? screenshot carousel? more images?)
