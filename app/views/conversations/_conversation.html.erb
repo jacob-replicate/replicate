@@ -37,7 +37,19 @@
 
     function scrollToBottom() {
       if(pastFirstMessage()) {
-        window.scrollTo(0, document.body.scrollHeight);
+        const input = document.getElementById('message-input');
+        if (input) {
+          const rect = input.getBoundingClientRect();
+          const isVisible = rect.bottom <= window.innerHeight && rect.top >= 0;
+
+          if (!isVisible) {
+            const offset = 200; // how much space you want *below* the input
+            const scrollY = window.scrollY;
+            const inputBottom = rect.bottom + scrollY;
+            const scrollTarget = inputBottom - window.innerHeight + offset;
+            window.scrollTo({ top: scrollTarget, behavior: 'smooth' });
+          }
+        }
       }
     }
 

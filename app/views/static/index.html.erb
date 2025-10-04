@@ -19,56 +19,54 @@
   </div>
 </div>
 
-<div>
-  <div class="text-md leading-relaxed tracking-[0.008em]">
-    <div class="hidden lg:block">
-      <div class="mt-[20px] max-w-[90ch] text-[17px] text-gray-800">
-            <h1 class="text-[21px] lg:text-[27px] font-semibold md:font-medium tracking-tight pb-0">
-              Find the <span style="color: #E63946">SEV-1</span> before it finds production.
-            </h1>
-            <div class="text-[15px] tracking-tight mb-4">
-              <span class="font-semibold">Weekly fire drills</span>, over email, to fix infra blind spots. You can roll it out org-wide in <span class="font-semibold">5min</span>. No calls.
-            </div>
-        </div>
-        <p class="mb-4">
-          GPT drops you into a SEV, and makes you think out loud until you hit a wall. <span class="bg-yellow-200 font-semibold">Bite-sized pressure tests</span>, not a newsletter.
+<div class="text-md tracking-[0.008em]">
+  <div class="hidden lg:block">
+    <div class="mt-[20px] max-w-[90ch] text-[17px] text-gray-800">
+          <h1 class="text-[21px] lg:text-[27px] font-semibold md:font-medium tracking-tight pb-0">
+            Find the <span style="color: #E63946">SEV-1</span> before it finds production.
+          </h1>
+          <div class="text-[15px] tracking-tight mb-4">
+            <span class="font-semibold">Weekly fire drills</span>, over email, to fix infra blind spots. You can roll it out org-wide in <span class="font-semibold">5min</span>. No calls.
+          </div>
+      <p class="mb-4">
+        GPT drops you into a SEV, and makes you think out loud until you hit a wall. <span class="bg-yellow-200 font-semibold">Bite-sized pressure tests</span>, not a newsletter.
 
-        </p>
+      </p>
 
-        <p class="mb-4">
-          You'll notice more precise language during sprint planning, and fewer incidents that impact your team's reputation.
-        </p>
-      </div>
-    </div>
-    <div class="md:hidden">
-      <img src="/intro-email-mobile.png" class="border rounded-lg shadow w-full" />
-    </div>
-    <div class="hidden md:block lg:mt-[30px]">
-      <img src="/intro-email-desktop.png" class="border border-gray-100 rounded-lg shadow-md w-full" />
-
-      <div class="mt-8">
-        <img src="/example-incidents.png" class="w-full rounded-xl border border-gray-700" />
-      </div>
-      <div class="mt-8">
-        <img src="/prompt.png" class="w-full rounded-xl border border-gray-700" />
-      </div>
-    </div>
-
-    <div class="md:hidden">
-      <div class="mt-6 w-full lg:max-w-[780px] mx-auto text-center">
-        <a href="/sev" class="text-[18px] tracking-tight shadow inline-block rounded-lg bg-indigo-700 px-5 py-3 font-semibold text-white transition hover:bg-indigo-800 hover:shadow-md active:bg-indigo-900 sm:w-auto focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400">Try the web-based version</a>
-      </div>
-      <div class="mt-4 mb-14 md:mb-0 text-[15px] text-center text-gray-500">
-        No forms. Just a SEV-1 to fix.
-      </div>
+      <p>
+        You'll notice more precise language during sprint planning, and fewer incidents that impact your team's reputation.
+      </p>
     </div>
   </div>
+  <div class="md:hidden">
+    <img src="/intro-email-mobile.png" class="border rounded-lg shadow w-full" />
+  </div>
+  <div class="hidden md:block lg:mt-[24px]">
+    <img src="/intro-email-desktop.png" class="border border-gray-100 rounded-lg shadow-md w-full" />
+
+    <div class="mt-8">
+      <img src="/example-incidents.png" class="w-full rounded-xl border border-gray-700" />
+    </div>
+
+    <div class="mt-8 hidden md:block">
+      <%= render "conversations/conversation" %>
+    </div>
+    <div class="mt-8">
+      <img src="/prompt.png" class="w-full rounded-xl border border-gray-700" />
+    </div>
+  </div>
+
+  <div class="md:hidden">
+    <div class="mt-6 w-full lg:max-w-[780px] mx-auto text-center">
+      <a href="/sev" class="text-[18px] tracking-tight shadow inline-block rounded-lg bg-indigo-700 px-5 py-3 font-semibold text-white transition hover:bg-indigo-800 hover:shadow-md active:bg-indigo-900 sm:w-auto focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400">Try the web-based version</a>
+    </div>
+    <div class="mt-4 mb-14 md:mb-0 text-[15px] text-center text-gray-500">
+      No forms. Just a SEV-1 to fix.
+    </div>
+  </div>
+
 
   <div class="mt-8">
     <%= render "extended_cta" %>
-  </div>
-
-  <div class="mt-8 hidden md:block">
-    <%= render "conversations/conversation" %>
   </div>
 </div>
