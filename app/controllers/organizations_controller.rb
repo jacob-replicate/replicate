@@ -2,15 +2,15 @@ class OrganizationsController < ApplicationController
   protect_from_forgery with: :null_session
 
   def create
-    return head(:bad_request) if owner_name.blank? || owner_email.blank?
+    return head(:bad_request) if owner_email.blank?
 
     org = Organization.create!(access_end_date: 3.months.from_now.end_of_month)
-    members_to_create.each { |member_info| org.members.create!(name: member_info[:name], email: member_info[:email], role: member_info[:role]) }
+    members_to_create.each { |member_info| org.members.create!(email: member_info[:email], role: member_info[:role]) }
 
     ScheduleWeeklyIncidentsWorker.perform_async([org.id], Time.current.to_i, Time.current.beginning_of_day.to_i)
 
     engineers = engineer_emails.size == 1 ? "1 engineer" : "#{engineer_emails.size} engineers"
-    SendAdminPushNotification.call("New Trial", "#{owner_name} (#{owner_email}) signed up #{engineers}")
+    SendAdminPushNotification.call("New Trial", "#{owner_email} signed up #{engineers}")
 
     head :ok
   rescue => e
@@ -22,10 +22,6 @@ class OrganizationsController < ApplicationController
 
   private
 
-  def owner_name
-    params[:name].to_s.squish
-  end
-
   def owner_email
     EmailExtractor.call(params[:email]).first
   end
@@ -35,6 +31,6 @@ class OrganizationsController < ApplicationController
   end
 
   def members_to_create
-    [{ name: owner_name, email: owner_email, role: "owner" }] + engineer_emails.map { |email| { email: email, role: "engineer" }}
+    [{ email: owner_email, role: "owner" }] + engineer_emails.map { |email| { email: email, role: "engineer" }}
   end
 end
