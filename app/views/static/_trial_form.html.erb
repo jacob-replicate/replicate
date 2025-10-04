@@ -20,17 +20,19 @@
         </div>
       </div>
 
-      <div>
-        <label for="<%= name_id %>" class="block font-semibold mb-1 tracking-normal text-[16px]">Name <span class="text-red-600">*</span></label>
-        <input type="text" id="<%= name_id %>" class="block w-full border border-neutral-300 shadow-sm rounded-md bg-white px-3 py-1.5 text-gray-900 outline-1 -outline-offset-1 outline-indigo-100 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 text-sm" />
-      </div>
-
-      <div class="mt-8">
+      <div class="mt-6">
         <label for="<%= email_id %>" class="block font-semibold text-[16px] mb-1 tracking-normal">Your Email <span class="text-red-600">*</span></label>
         <input type="email" id="<%= email_id %>" class="block w-full border border-neutral-300 shadow-sm rounded-md bg-white px-3 py-1.5 text-gray-900 outline-1 -outline-offset-1 outline-indigo-100 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 text-sm" />
       </div>
 
-      <div class="mt-8">
+      <div class="mt-2" id="show-team-input-cta">
+        <a onclick="document.getElementById('team-input').classList.remove('hidden'); this.parentElement.classList.add('hidden');" class="inline text-blue-700 font-medium text-sm hover:text-blue-700 hover:underline hover:underline-offset-4 decoration-1 transition items-center cursor-pointer">
+          + Add your team's emails
+        </a>
+        <span class="text-sm">(optional)</span>
+      </div>
+
+      <div class="mt-8 hidden" id="team-input">
         <label for="<%= team_id %>" class="block font-semibold text-[16px] tracking-normal">Team's Emails</label>
         <div class="text-[14px] mb-2">
           Inactive users get <span class="font-semibold inline-block bg-yellow-200 px-1">auto-unsubscribed</span> after 3 weeks.
@@ -51,7 +53,7 @@
         </div>
       </div>
 
-      <div class="mt-6 w-full">
+      <div class="mt-6 lg:mt-[37px] w-full">
         <button type="submit" class="shadow-md inline-flex w-full items-center justify-center rounded-lg bg-slate-700 px-5 py-3 text-lg font-semibold text-white transition hover:bg-slate-800 hover:shadow-md active:bg-slate-900 sm:w-auto focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400">
           Start Weekly Drills
         </button>
