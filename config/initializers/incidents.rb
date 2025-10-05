@@ -8,12 +8,12 @@ INCIDENTS = [
     "subject" => "Legacy login page came back during SSO outage, bypassing MFA"
   },
   {
-    "prompt" => "We charged customers multiple times by mistake. A background worker crashed midway through persisting a company’s monthly customer credit card charges. When it restarted, the task was retried by the job queue, which had no awareness of the partial write. The worker crashed again multiple times overnight, each time reprocessing the same task from scratch. Customers were charged two to four times depending on retry timing. The system lacked idempotency keys, write barriers, or deduplication safeguards — at-most-once semantics were completely absent. Finance teams didn’t notice the spike immediately, and the issue was first surfaced by a support ticket from a confused customer: 'Why was I charged four times?'",
-    "subject" => "Invoicing job crashed. The retry issued duplicate charges to every customer."
-  },
-  {
     "prompt" => "A SaaS employee accessed a customer-facing page while logged in with elevated staff permissions. The page included admin controls and sensitive data hidden behind 'if current_user.employee?'. The CDN cached that response without including auth headers in the cache key. Real customers later received the cached admin view of their own accounts. Attempts to purge the cache failed to fully clear stale entries, and multiple exposures were confirmed before the issue was contained.",
     "subject" => "CDN cached admin view and exposed it to users"
+  },
+  {
+    "prompt" => "We charged customers multiple times by mistake. A background worker crashed midway through persisting a company’s monthly customer credit card charges. When it restarted, the task was retried by the job queue, which had no awareness of the partial write. The worker crashed again multiple times overnight, each time reprocessing the same task from scratch. Customers were charged two to four times depending on retry timing. The system lacked idempotency keys, write barriers, or deduplication safeguards — at-most-once semantics were completely absent. Finance teams didn’t notice the spike immediately, and the issue was first surfaced by a support ticket from a confused customer: 'Why was I charged four times?'",
+    "subject" => "Invoicing job crashed. The retry issued duplicate charges to every customer."
   },
   {
     "prompt" => "During peak traffic, a downstream dependency began returning 500 errors. Instead of backing off, application workers retried in tight loops, flooding the message queue with duplicate requests. The retry storm overwhelmed the queueing system, caused dead-letter queues to overflow with poison messages, and spiked CPU and memory across multiple services. The customer dashboard began returning 503s and eventually failed entirely. The incident lasted 42 minutes before circuit breakers tripped and autoscaling recovered throughput. No alerts fired until the queue system breached resource thresholds, delaying detection across the board.",
