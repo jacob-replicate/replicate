@@ -8,7 +8,7 @@ INCIDENTS = [
     "subject" => "Legacy login page came back during SSO outage, bypassing MFA"
   },
   {
-    "prompt" => "A SaaS employee accessed a customer-facing page while logged in with elevated staff permissions. The page included admin controls and sensitive data hidden behind 'if current_user.employee?'. The CDN cached that response without including auth headers in the cache key. Real customers later received the cached admin view of their own accounts. Attempts to purge the cache failed to fully clear stale entries, and multiple exposures were confirmed before the issue was contained.",
+    "prompt" => "An employee accessed a customer-facing page while logged in with elevated staff permissions. The page included admin controls and sensitive data hidden behind 'if current_user.employee?'. The CDN cached that response without including auth headers in the cache key. Real customers later received the cached admin view of their own accounts. Attempts to purge the cache failed to fully clear stale entries, and multiple exposures were confirmed before the issue was contained.",
     "subject" => "CDN cached admin view and exposed it to users"
   },
   {
