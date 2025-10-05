@@ -27,9 +27,8 @@ class SanitizeAiContent
 
     response.gsub!("\n", "")
     response.gsub!(HINT_LINK, "")
-    response.gsub!('<b>', bold_start_placeholder)
-    response.gsub!(bold_start_replacement, bold_start_placeholder)
-    response.gsub!("</b>", bold_end_placeholder)
+    response.gsub!('<b>', "")
+    response.gsub!("</b>", "")
     response.gsub!("<html>", "")
     response = strip_tags(response).squish
     response.gsub!("Hey Alex,", "")
