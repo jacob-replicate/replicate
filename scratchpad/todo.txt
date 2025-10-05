@@ -1,3 +1,5 @@
+- Google Analytics + LinkedIn retargeting
+
 - Get like 1k engineers in the queue. VP's get a million emails. IC's get like 0.
 - Small 80% page width horizontal card below the email screenshot on desktop. One line. "Try it yourself" -> email input -> submit button floated to the right. Keep the main box at the bottom.
 - One card email signup forms on mobile + desktop to try it themselves.
