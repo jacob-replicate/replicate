@@ -7,28 +7,28 @@
 <form id="<%= form_id %>" novalidate>
   <div id="<%= box_id %>" class="border-2 rounded-lg bg-white <%= extra_form_container_classes %>">
     <div class="p-5">
-      <div class="text-xl tracking-tight font-medium mb-4">
-        Next Steps
+      <div class="text-xl tracking-tight mb-4 inline-block font-bold">
+        Try it out for a quarter.
       </div>
       <div class="text-[16px]">
         <div class="mb-4">
           You get the first SEV immediately. <span class="block mt-4 md:inline md:mt-0"><span class="font-semibold">No demos or setup</span>. 100% async.</span>
         </div>
 
-        <div class="mb-6">
+        <div class="">
           It emails a new incident every Monday, which you'll scramble to fix in <span class="font-semibold">private threads</span>. The more you think out loud, the better GPT can uncover blind spots.<span class="hidden md:inline"> No group threads where you need to perform.</span>
         </div>
       </div>
 
-      <div class="mt-6">
-        <label for="<%= email_id %>" class="block font-semibold text-[16px] mb-1 tracking-normal">Your Email <span class="text-red-600">*</span></label>
-        <input type="email" id="<%= email_id %>" class="block w-full border border-neutral-300 shadow-sm rounded-md bg-white px-3 py-1.5 text-gray-900 outline-1 -outline-offset-1 outline-indigo-100 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 text-sm" />
-        <div class="text-[14px] mt-2">
+      <div class="mt-6 lg:mt-[19px]">
+        <label for="<%= email_id %>" class="block font-semibold text-[17px] mb-1 tracking-tight">Email Address&nbsp;<span class="text-red-600">*</span></label>
+        <div class="text-[14px] mb-2 tracking-tight">
           You get <span class="font-semibold inline-block bg-yellow-200 px-1">auto-unsubscribed</span> after 3 inactive weeks.
         </div>
+        <input type="email" id="<%= email_id %>" class="block w-full border border-neutral-300 shadow-sm rounded-md bg-white px-3 py-1.5 text-gray-900 outline-1 -outline-offset-1 outline-indigo-100 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 text-sm" />
       </div>
 
-      <div class="mt-4" id="show-team-input-cta">
+      <div class="mt-[8px]" id="show-team-input-cta">
         <a onclick="document.getElementById('team-input').classList.remove('hidden'); this.parentElement.classList.add('hidden');" class="inline text-blue-700 font-medium text-sm hover:text-blue-700 hover:underline hover:underline-offset-4 decoration-1 transition items-center cursor-pointer">
           + Add your team's emails
         </a>
