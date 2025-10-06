@@ -7,20 +7,16 @@
 <form id="<%= form_id %>" novalidate>
   <div id="<%= box_id %>" class="border-2 rounded-lg bg-white <%= extra_form_container_classes %>">
     <div class="p-5">
-      <div class="text-[22px] tracking-tight mb-4 inline-block font-bold">
+      <div class="text-[23px] tracking-tight mb-4 inline-block font-bold">
         Try it for a quarter.
       </div>
       <div class="text-[16px]">
-        <div class="mb-4 hidden md:block">
-          You get the first SEV immediately. <span class="block mt-5 md:inline md:mt-0"><span class="font-semibold">No demos or setup</span>. 100% async.</span>
-        </div>
-
         <div class="">
-          It emails a new incident every Monday, which you'll <span class="hidden md:inline">scramble to&nbsp;</span>fix in <span class="font-semibold">private threads</span>. <span class="hidden lg:inline">No group threads where you need to perform.</span>
+          It emails a new SEV every Monday, which you'll fix in private threads. <span class="hidden lg:inline">No group conversations where you need to perform.</span>
         </div>
       </div>
 
-      <div class="mt-6 lg:mt-[20px]">
+      <div class="mt-6 lg:mt-[27px]">
         <label for="<%= email_id %>" class="block font-semibold text-[17px] mb-1 tracking-tight">Email Address&nbsp;<span class="text-red-600">*</span></label>
         <div class="text-[14px] mb-2">
           <span class="font-semibold inline-block bg-yellow-200 px-1">Auto-unsubscribed</span> after 3 inactive weeks.
@@ -36,11 +32,11 @@
       </div>
 
       <div class="mt-8 hidden" id="team-input">
-        <label for="<%= team_id %>" class="block font-semibold text-[16px] tracking-normal">Team's Emails</label>
+        <label for="<%= team_id %>" class="block font-semibold text-[17px] tracking-normal">Team's Emails</label>
         <textarea id="<%= team_id %>" rows="4" class="mt-2 block w-full border border-neutral-300 shadow-sm rounded-md bg-white px-3 py-1.5 text-gray-900 outline-1 -outline-offset-1 outline-indigo-100 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 text-sm" placeholder="Use any format you want (commas, newlines, semicolons, spaces, etc)."></textarea>
       </div>
 
-      <div class="mt-4 lg:mt-[26px] w-full">
+      <div class="mt-4 lg:mt-[32px] w-full">
         <button type="submit" class="shadow inline-flex w-full items-center justify-center rounded-md bg-indigo-700 px-4 py-3 text-lg font-semibold text-white transition hover:bg-indigo-800 hover:shadow-md active:bg-indigo-900 sm:w-auto focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400">
           Start Weekly Drills
         </button>
