@@ -1,3 +1,4 @@
+- Figure out why auditing doesn't work
 - Google Analytics + LinkedIn retargeting
 
 - Get like 1k engineers in the queue. VP's get a million emails. IC's get like 0.
