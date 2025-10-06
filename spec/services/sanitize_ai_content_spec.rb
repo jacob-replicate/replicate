@@ -4,7 +4,7 @@ RSpec.describe SanitizeAiContent do
   describe ".call" do
     it "delegates to #clean and returns the sanitized string" do
       raw = "Hello <b>world</b>"
-      expect(described_class.call(raw)).to include("<b class='font-medium'>world</b>")
+      expect(described_class.call(raw)).to eq("Hello world")
     end
   end
 
@@ -60,25 +60,6 @@ RSpec.describe SanitizeAiContent do
       expect(result).to include("Keep me")
     end
 
-    it "preserves bold text by re-wrapping <b>…</b> as <b class='font-medium'>…</b> while stripping other tags" do
-      raw = <<~HTML
-        <div>
-          Noise <i>italics</i> and <b>Very <em>Important</em></b> bits
-        </div>
-      HTML
-
-      result = sanitize.clean(raw)
-
-      aggregate_failures do
-        expect(result).to include("<b class='font-medium'>Very Important</b>")
-        expect(result).to include("Noise")
-        expect(result).to include("bits")
-        expect(result).not_to include("<div>")
-        expect(result).not_to include("<i>")
-        expect(result).not_to include("<em>")
-      end
-    end
-
     it "normalizes greetings, code fences, smart quotes, apostrophes, asterisks, backticks, and removes <html> wrapper" do
       raw = <<~RAW
         <html>
@@ -108,9 +89,7 @@ RSpec.describe SanitizeAiContent do
         expect(result).not_to include("&#39;")
         expect(result).to include('"quoted"')
         expect(result).to include("apos'")
-
-        # Bold preserved and upgraded
-        expect(result).to include("<b class='font-medium'>")
+        expect(result).not_to include("<b class='font-medium'>")
       end
     end
 
@@ -123,12 +102,6 @@ RSpec.describe SanitizeAiContent do
     it "removes specific greetings for Taylor and Casey as well" do
       result = sanitize.clean("Hey Taylor, Hey Casey, content")
       expect(result).to eq("content".html_safe)
-    end
-
-    it "returns an html_safe string" do
-      result = sanitize.clean("<b>safe</b>")
-      expect(result.html_safe?).to be(true)
-      expect(result).to include("<b class='font-medium'>safe</b>")
     end
 
     it "is idempotent under repeated cleaning (second pass doesn't re-damage output)" do

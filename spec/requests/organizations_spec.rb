@@ -11,12 +11,11 @@ RSpec.describe "OrganizationsController#create", type: :request do
           allow(ScheduleWeeklyIncidentsWorker).to receive(:perform_async)
 
           params = {
-            name:  "Jane Owner",
             email: "owner@example.com",
             engineer_emails: "\n\neng1@example.com, eng2@example.com ;\n\n ENG3@exaMple.com "
           }
 
-          expect(SendAdminPushNotification).to receive(:call).with("New Trial", "Jane Owner (owner@example.com) signed up 3 engineers")
+          expect(SendAdminPushNotification).to receive(:call).with("New Trial", "owner@example.com signed up 3 engineers")
           expect {
             post endpoint, params: params, as: :json
           }.to change(Organization, :count).by(1).and change(Member, :count).by(4)
@@ -26,7 +25,7 @@ RSpec.describe "OrganizationsController#create", type: :request do
           org = Organization.last
           # Owner
           owner = org.members.find_by(role: "owner")
-          expect(owner).to have_attributes(name: "Jane Owner", email: "owner@example.com")
+          expect(owner).to have_attributes(email: "owner@example.com")
 
           engineers = org.members.where(role: "engineer").pluck(:email)
           expect(engineers).to match_array(%w[eng1@example.com eng2@example.com eng3@example.com])
@@ -38,15 +37,6 @@ RSpec.describe "OrganizationsController#create", type: :request do
     end
 
     context "missing required fields" do
-      it "returns 400 when owner name is missing" do
-        allow(EmailExtractor).to receive(:call).with("owner@example.com").and_return(["owner@example.com"])
-
-        post endpoint, params: { email: "owner@example.com", engineer_emails: "" }, as: :json
-        expect(response).to have_http_status(:bad_request)
-        expect(Organization.count).to eq(0)
-        expect(Member.count).to eq(0)
-      end
-
       it "returns 400 when owner email is missing" do
         allow(EmailExtractor).to receive(:call).with(nil).and_return([])
 
