@@ -28,13 +28,36 @@
       <p class="mb-4">
         You'll notice sharper language in PR comments, and fewer incidents. Roll it out in <span class="font-semibold">5 minutes</span>. No calls. No UI to manage.
       </p>
+      <div class="flex items-center">
+        <div>
+          I put around <span class="font-semibold">800 hours</span> into this cron job
+          (after 15 years of infra/sec experience).
+        </div>
 
-      <p>
-        I've put <span class="font-semibold">~800 hours</span> into this project so far (after 15 years of infra/sec experience at VC scale-ups + Fortune 100s). 😉
-      </p>
+        <div class="ml-auto flex items-center">
+          <div class="text-[17px] font-semibold signature mr-2">Jacob Comer</div>
+
+          <% icon_class = "w-[24px] h-[24px] opacity-90 hover:opacity-100 transition mr-[6px]" %>
+          <%= link_to 'https://linkedin.com/in/jacobcomer', target: "_blank" do %>
+            <img src="/icons/linkedin.png" class="<%= icon_class %>" alt="LinkedIn" />
+          <% end %>
+          <%= link_to 'https://instagram.com/jacob_comer', target: "_blank" do %>
+            <img src="/icons/instagram.png" class="<%= icon_class %>" alt="Instagram" />
+          <% end %>
+          <%= link_to 'https://jacobcomer.medium.com', target: "_blank" do %>
+            <img src="/icons/medium.png" class="<%= icon_class %>" alt="Medium" />
+          <% end %>
+          <%= link_to 'https://www.reddit.com/user/jacob_the_snacob', target: "_blank" do %>
+            <img src="/icons/reddit.png" class="<%= icon_class %>" alt="Reddit" />
+          <% end %>
+          <%= link_to 'mailto:jacob@replicate.info', target: "_blank" do %>
+            <img src="/icons/email.png" class="<%= icon_class %>" alt="Email" />
+          <% end %>
+        </div>
+      </div>
     </div>
   </div>
-  <div class="lg:mt-[24px]">
+  <div class="lg:mt-[20px]">
     <img src="/intro-email-mobile.png" class="border rounded-lg shadow w-full md:hidden" />
     <img src="/intro-email-desktop.png" class="border border-gray-100 rounded-lg shadow-md w-full hidden md:block" />
 
