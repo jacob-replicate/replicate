@@ -8,8 +8,7 @@
 - More cold email variants
 
 - Make a helper method out of this
-    Session.order(:created_at).pluck(:ip, :created_at, :page, :duration, :referring_page).reject { |x| x[0].start_with?("7") || x[0].start_with?("13") ||
-    x[0].start_with?("17") || x[0].start_with?("34") }
+Session.order(:created_at).pluck(:ip, :created_at, :page, :duration, :referring_page).reject { |x| x[0].start_with?("7") || x[0].start_with?("13") || x[0].start_with?("17") || x[0].start_with?("34") }
 
 
 - Homepage refinement (video? benefits section? screenshot carousel? more images?)
