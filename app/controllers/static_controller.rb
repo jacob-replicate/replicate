@@ -25,7 +25,7 @@ class StaticController < ApplicationController
   def coaching
     context = {
       conversation_type: :coaching,
-      incident: INCIDENTS.sample["prompt"]
+      incident: WEB_INCIDENTS.sample
     }
 
     @conversation = Conversation.create!(context: context, channel: "web")
