@@ -1,14 +1,10 @@
-- Figure out why auditing doesn't work
-- Google Analytics + LinkedIn retargeting
+- Google Analytics + LinkedIn retargeting + Logrocket + Cookie popup
 
-- Get like 1k engineers in the queue. VP's get a million emails. IC's get like 0.
-- Small 80% page width horizontal card below the email screenshot on desktop. One line. "Try it yourself" -> email input -> submit button floated to the right. Keep the main box at the bottom.
+- Figure out why auditing doesn't work
+- Get like 1k engineers in the queue? VP's get a million emails. IC's get like 0.
 - One card email signup forms on mobile + desktop to try it themselves.
     - No web based version CTA on mobile. Just screenshot -> email form -> pricing -> procurement -> security -> email again
 - More cold email variants
-
-- Make a helper method out of this
-Session.order(:created_at).pluck(:ip, :created_at, :page, :duration, :referring_page).reject { |x| x[0].start_with?("7") || x[0].start_with?("13") || x[0].start_with?("17") || x[0].start_with?("34") }
 
 
 - Homepage refinement (video? benefits section? screenshot carousel? more images?)
