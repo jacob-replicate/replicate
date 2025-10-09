@@ -1,44 +1,32 @@
-<div class="pt-2 md:pt-8 lg:hidden mb-[20px]">
-  <h1 class="text-[21px] font-semibold md:font-medium tracking-tight mb-3">
-    Find the <span style="color: #E63946">SEV-1</span> before it finds prod<span class="hidden md:inline">uction</span>.
-  </h1>
-  <div class="mb-3">
-    GPT emails you a SEV every Monday, and keeps pushing until you hit a wall.
-  </div>
-
-  <div>
-    Pressure tests for infra blind spots, in a format your team will actually use.
-  </div>
-</div>
-
 <div class="text-md tracking-[0.008em]">
-  <div class="hidden lg:block">
-    <div class="mt-[14px] max-w-[90ch] text-[17px] text-gray-800">
+  <div class="lg:block">
+    <div class="mt-[10px] lg:mt-[14px] max-w-[90ch] text-[17px] text-gray-800">
       <h1 class="text-[21px] lg:text-[26px] font-semibold md:font-medium tracking-tight mb-[12px]">
-        Find the <span style="color: #E63946">SEV-1</span> before it finds production.
+        Find the <span style="color: #E63946">SEV-1</span> before it finds prod<span class="hidden md:inline">uction</span>.
       </h1>
       <p class="mb-4">
-        GPT emails you a SEV every Monday, and pushes until you hit a wall. <span class="bg-yellow-200 font-semibold px-1">Bite-sized pressure tests</span> for infra blind spots.
+        GPT emails you a SEV every Monday, and pushes until you hit a wall. <span class="block mt-4 lg:inline lg:mt-0"><span class="bg-yellow-200 font-semibold px-1"><span class="hidden md:inline">Bite-sized pressure</span><span class="md:hidden">Pressure</span> tests</span> for infra blind spots.</span>
       </p>
 
-      <p>
+      <p class="mb-4">
         You'll notice sharper language in PR comments, and fewer incidents. Roll it out in <span class="font-semibold">5 minutes</span>. No calls. No UI to manage.
       </p>
+
+      <div class="mb-4">
+        <%= render "conversations/conversation" %>
+      </div>
     </div>
   </div>
   <div class="lg:mt-[20px]">
-    <img src="/intro-email-mobile.png" class="border-2 border-gray-200 rounded-lg w-full md:hidden" />
-    <img src="/intro-email-desktop.png" class="border-2 border-gray-200 rounded-lg w-full hidden md:block" />
-
-    <div class="mt-6">
+    <div class="mb-6">
       <img src="/example-incidents.png" class="w-full rounded-xl border border-gray-700" />
     </div>
 
-    <div class="flex flex-col">
-      <div class="mt-6">
-        <%= render "conversations/conversation" %>
-      </div>
+    <img src="/intro-email-mobile.png" class="border-2 border-gray-200 rounded-lg w-full md:hidden" />
+    <img src="/intro-email-desktop.png" class="border-2 border-gray-200 rounded-lg w-full hidden md:block" />
 
+
+    <div class="flex flex-col">
       <div class="mt-6">
         <%= render "extended_cta" %>
       </div>
