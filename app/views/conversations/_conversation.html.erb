@@ -63,7 +63,9 @@
         sendButton.disabled = !enabled;
         sendButton.classList.toggle("opacity-50", !enabled);
         sendButton.classList.toggle("cursor-not-allowed", !enabled);
-        textarea.focus();
+        if(pastFirstMessage() || <%= params[:action] != 'index' %> || window.innerWidth >= 1024) {
+          textarea.focus();
+        }
         scrollToBottom();
       }
     }
