@@ -70,45 +70,5 @@
         <%= yield :wider_content %>
       </div>
     <% end %>
-
-    <script type="text/javascript">
-
-      document.addEventListener("DOMContentLoaded", () => {
-        const pulseSchedule = [0, 5, 5, 5, 5, 5, 5, 10, 10, 10, 15, 30, 60, 120, 300]; // in seconds
-        let scheduleIndex = 0;
-        let sessionId = null;
-
-        const endpoint = "/sessions/pulse";
-
-        function sendPulse() {
-        if (scheduleIndex >= pulseSchedule.length) return; // ✅ Stop when schedule ends
-
-        fetch(endpoint, {
-        method: "POST",
-        headers: {
-        "Content-Type": "application/json",
-        "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]')?.content
-      },
-        body: JSON.stringify({ id: sessionId, referring_page: "<%= request.referrer %>", page: "<%= params[:action] %>" })
-      })
-        .then(res => res.json())
-        .then(data => {
-        sessionId = data.id;
-
-        scheduleIndex++; // Move to next delay
-        if (scheduleIndex < pulseSchedule.length) {
-        setTimeout(sendPulse, pulseSchedule[scheduleIndex] * 1000);
-      }
-      })
-        .catch(err => {
-        console.error("Pulse failed:", err);
-        // No retry here — optional: you could retry once or log it somewhere
-      });
-      }
-
-      // Initial call
-      setTimeout(sendPulse, pulseSchedule[0] * 1000);
-    });
-    </script>
   </body>
 </html>
