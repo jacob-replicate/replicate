@@ -8,20 +8,14 @@
 </div>
 
 <% @conversations.each do |conversation| %>
-    <% user_message_classes = "bg-neutral-100 rounded border-2 px-4 py-2 max-w-2xl md:max-w-xl" %>
-    <% base_message_classes = "break-words message-body text-sm" %>
-
-    <div class="rounded-xl bg-white p-4 border-2 border-gray-400 shadow mb-6">
+    <div class="rounded-md bg-white border-2 border-gray-400 shadow mb-6">
       <% most_recent_message = conversation.messages.pluck(:created_at).sort.last %>
-      <div class="mb-4">
+      <div class="p-2">
           <%= conversation.created_at.in_time_zone("America/New_York").strftime("%A - %l:%m%P") %> - <%= conversation.duration %> <%= conversation.duration > 1 ? "minutes" : "minute" %> - <%= conversation.messages.where(user_generated: true).count %> messages - <%= conversation.channel %>
       </div>
 
       <% conversation.messages.order(created_at: :asc).each_with_index do |m, i| %>
-      <div class="flex <%= i > 0 ? "mt-2" : "" %> <%= m.user_generated ? 'justify-end' : 'justify-start' %>">
-        <% message_classes = "#{base_message_classes} #{user_message_classes if m.user_generated}" %>
-        <div class="<%= message_classes %>"><%= m.content.gsub(HINT_LINK, "").html_safe %></div>
-      </div>
-    <% end %>
+        <div class="border-t p-2"><span class="font-semibold"><%= m.user_generated? ? "Engineer" : "Replicate" %>:</span>&nbsp;<%= SanitizeAiContent.call(m.content).gsub(HINT_LINK, "").html_safe %></div>
+      <% end %>
     </div>
 <% end %>
