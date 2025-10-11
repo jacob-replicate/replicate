@@ -23,6 +23,9 @@ class StaticController < ApplicationController
     @email_conversations = Conversation.where(channel: "email")
     @email_messages = Message.where(conversation_id: @email_conversations.pluck(:id), user_generated: true)
 
+    top_conversation_ids = Message.where(user_generated: true).where("created_at > ?", 7.days.ago).group(:conversation_id).order(Arel.sql("COUNT(*) DESC")).limit(50).count.keys
+    @top_conversations = Conversation.where(id: top_conversation_ids).order(created_at: :desc)
+
     @stats = {
       web_conversations: @web_conversations.count,
       average_web_messages_per_conversation: (@web_messages.count.to_f / @web_conversations.count).round(2),
