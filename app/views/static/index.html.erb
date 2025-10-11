@@ -9,7 +9,8 @@
       </p>
 
       <p class="mb-4">
-        It's a weekly puzzle that drills into your <span class="font-semibold">infra blind spots</span>. Most engineers stumble by reply #6, which is kinda the point. 😉
+        <% engineer_name = params[:utm_source] == "reddit" ? "redditors" : "engineers" %>
+        Think of them as weekly puzzles that drill into your <span class="font-semibold">infra blind spots</span>. They're tough. Most <%= engineer_name %> stumble by reply #6.
       </p>
 
       <div class="mb-4">

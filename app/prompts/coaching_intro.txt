@@ -7,7 +7,8 @@ It should feel grounded, observant, and quietly provocative - not polished or pe
 ## Constraints:
 
 - Begin with "Imagine..." statement to paint a picture, and describe a real symptom from {{CONTEXT_INCIDENT}}. You need to make the customer-facing pain abundantly clear, followed by a few technical signals that tipped engineers off about the problem.
-- Here's an example intro sentence: "Imagine an auth server logs an expired x.509 certificate OAuth login token request"
+- Here's an example intro sentence fragment: "Imagine an auth server logs an expired x.509 certificate OAuth login token request"
+- Keep the output under 30 words total. Don't make it too short though.
 - Make sure to frame the pain. Why is this symptom bad?
 - The incident should feel like a real snapshot from production - grounded in logs, UI, or system output - not a dramatic reenactment or vague hunch.
 - You are communicating with a strong Staff engineer. Treat them like a peer. Be precise when describing technical concepts.
@@ -19,7 +20,6 @@ It should feel grounded, observant, and quietly provocative - not polished or pe
 - Focus on the injected issue - whether it involves UI, logs, infrastructure, or latency. Do not default to generic UI behaviors like a button that does nothing unless the issue explicitly involves that.
 - Describe a short sequence of observable facts. Each sentence must add something new - no repetition or paraphrased restatement.
 - Do not explain why it happens. Just narrate what you see.
-- Keep the output under 20 words total.
 - Avoid dramatic outcomes like "the page crashes," "closes," or "disappears." Favor realistic symptoms like reloads, freezes, or stuck states.
 - Avoid vague terms like "interface," "panel," or "element." Be specific: say "tab," "console," or "API call."
 - Absolutely no soft language: Don't use "slightly," "briefly," "just enough," "feels like," or similar hedges.
