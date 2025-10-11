@@ -11,11 +11,11 @@
     <div class="rounded-md bg-white border-2 border-gray-400 shadow mb-6">
       <% most_recent_message = conversation.messages.pluck(:created_at).sort.last %>
       <div class="p-2">
-          <%= conversation.created_at.in_time_zone("America/New_York").strftime("%A - %l:%m%P") %> - <%= conversation.duration %> <%= conversation.duration > 1 ? "minutes" : "minute" %> - <%= conversation.messages.where(user_generated: true).count %> messages - <%= conversation.channel %>
+        <a href="/conversations/<%= conversation.id %>" class="text-blue-600 underline">View</a> - <%= conversation.created_at.in_time_zone("America/New_York").strftime("%A - %l:%m%P") %> - <%= conversation.duration %> <%= conversation.duration > 1 ? "minutes" : "minute" %> - <%= conversation.messages.where(user_generated: true).count %> messages - <%= conversation.channel %>
       </div>
 
       <% conversation.messages.order(created_at: :asc).each_with_index do |m, i| %>
-        <div class="border-t p-2"><span class="font-semibold"><%= m.user_generated? ? "Engineer" : "Replicate" %>:</span>&nbsp;<%= SanitizeAiContent.call(m.content).gsub(HINT_LINK, "").html_safe %></div>
+        <div class="border-t p-2"><span class="font-semibold"><%= m.user_generated? ? "Engineer" : "Replicate" %>:</span>&nbsp;<%= SanitizeAiContent.call(m.content).gsub("Replicate", "").gsub(HINT_LINK, "").html_safe %></div>
       <% end %>
     </div>
 <% end %>
