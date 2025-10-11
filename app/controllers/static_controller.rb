@@ -11,17 +11,17 @@ class StaticController < ApplicationController
   end
 
   def growth
-#    return head(:not_found) unless params[:code] == "stats"
-#
-#    @relevant_contacts = Contact.where.not(contacted_at: nil)
-#    @unsubscribes = Contact.where(unsubscribed: true)
-#    @remaining_contacts = Contact.enriched.us.where(email_queued_at: nil).where("score >= 90")
-#    @relevant_messages = Message.where(user_generated: true).where.not(content: "Give me a hint")
-#    @base_conversations = Conversation.where(id: @relevant_messages.select(:conversation_id).distinct)
-#    @web_conversations = base_conversations.where(channel: "web")
-#    @web_messages = Message.where(conversation_id: web_conversations.map(&:id), user_generated: true).where.not(content: "Give me a hint")
-#    @email_conversations = Conversation.where(channel: "email")
-#    @email_messages = Message.where(conversation_id: email_conversations.pluck(:id), user_generated: true)
+    return head(:not_found) unless params[:code] == "stats"
+
+    @relevant_contacts = Contact.where.not(contacted_at: nil)
+    @unsubscribes = Contact.where(unsubscribed: true)
+    @remaining_contacts = Contact.enriched.us.where(email_queued_at: nil).where("score >= 90")
+    @relevant_messages = Message.where(user_generated: true).where.not(content: "Give me a hint")
+    @base_conversations = Conversation.where(id: @relevant_messages.select(:conversation_id).distinct)
+    @web_conversations = @base_conversations.where(channel: "web")
+    @web_messages = Message.where(conversation_id: @web_conversations.map(&:id), user_generated: true).where.not(content: "Give me a hint")
+    @email_conversations = Conversation.where(channel: "email")
+    @email_messages = Message.where(conversation_id: @email_conversations.pluck(:id), user_generated: true)
   end
 
   def terms
