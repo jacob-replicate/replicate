@@ -79,6 +79,16 @@
       if (!message || aiIsTyping) return;
 
 
+      if (typeof message === 'string' && message.includes("isTrusted")) {
+        if(message != "Give me a hint") {
+          textarea.value = "";
+        }
+
+        textarea.style.height = "auto";
+        textarea.focus();
+        return;
+      }
+
       aiIsTyping = true;
       setInputEnabled(false);
 
