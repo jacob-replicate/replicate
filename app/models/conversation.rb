@@ -2,6 +2,13 @@ class Conversation < ApplicationRecord
   belongs_to :recipient, polymorphic: true, optional: true
   has_many :messages, dependent: :destroy
 
+  def duration
+    message_times = messages.pluck(:created_at).sort
+    return nil if message_times.size < 2
+
+    [1, ((message_times.last - message_times.first).to_i / 60.0).round].max
+  end
+
   def email?
     channel == "email"
   end
