@@ -16,6 +16,7 @@ class Growth
 
     relevant_messages = Message.where(user_generated: true).where.not(content: "Give me a hint")
     base_conversations = Conversation.where(id: relevant_messages.select(:conversation_id).distinct)
+    puts "Engaged Conversations: #{base_conversations.count}"
     web_conversations = base_conversations.where(channel: "web")
     web_messages = Message.where(conversation_id: web_conversations.map(&:id), user_generated: true).where.not(content: "Give me a hint")
     puts "User Messages (Web): #{web_messages.count}"
