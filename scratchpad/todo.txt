@@ -1,3 +1,4 @@
+- "How engaged was this user?" grading for conversations
 - Google Analytics + LinkedIn retargeting + Logrocket + Cookie popup
 
 - Figure out why auditing doesn't work

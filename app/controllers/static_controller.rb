@@ -11,7 +11,7 @@ class StaticController < ApplicationController
   end
 
   def growth
-    return head(:not_found) unless params[:code] == "stats"
+    return head(:not_found) unless (request.remote_ip == "98.249.45.68" || Rails.env.development?)
 
     @relevant_contacts = Contact.where.not(contacted_at: nil)
     @unsubscribes = Contact.where(unsubscribed: true)
@@ -22,6 +22,17 @@ class StaticController < ApplicationController
     @web_messages = Message.where(conversation_id: @web_conversations.map(&:id), user_generated: true).where.not(content: "Give me a hint")
     @email_conversations = Conversation.where(channel: "email")
     @email_messages = Message.where(conversation_id: @email_conversations.pluck(:id), user_generated: true)
+
+    @stats = {
+      web_conversations: @web_conversations.count,
+      average_web_messages_per_conversation: (@web_messages.count.to_f / @web_conversations.count).round(2),
+      email_conversations: @email_conversations.count,
+      average_email_messages_per_conversation: (@email_messages.count.to_f / @email_conversations.count).round(2),
+      total_organizations: Organization.count,
+      total_active_organizations: Member.where(subscribed: true).pluck(:organization_id).uniq.count,
+      total_members: Member.count,
+      total_subscribed_members: Member.where(subscribed: true).count,
+    }
   end
 
   def terms
