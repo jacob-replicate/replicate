@@ -23,7 +23,7 @@ class StaticController < ApplicationController
     @email_conversations = Conversation.where(channel: "email")
     @email_messages = Message.where(conversation_id: @email_conversations.pluck(:id), user_generated: true)
 
-    recent_conversation_ids = Message.where(user_generated: true).where("created_at > ?", 7.days.ago).group(:conversation_id).order(Arel.sql("COUNT(*) DESC")).limit(50).count.keys
+    recent_conversation_ids = Message.where(user_generated: true).where("created_at > ?", 7.days.ago).pluck(:conversation_id)
     @conversations = Conversation.where(id: recent_conversation_ids).order(created_at: :desc)
 
     @stats = {
