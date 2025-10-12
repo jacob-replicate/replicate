@@ -17,14 +17,12 @@ class StaticController < ApplicationController
     @base_conversations = Conversation.where(id: @relevant_messages.select(:conversation_id).distinct)
     @web_conversations = @base_conversations.where(channel: "web")
     @web_messages = Message.where(conversation_id: @web_conversations.map(&:id), user_generated: true).where.not(content: "Give me a hint")
+    @web_duration = @web_conversations.map(&:duration).sum / @web_conversations.size.to_f
     @email_conversations = Conversation.where(channel: "email", id: @relevant_messages.pluck(:conversation_id).uniq)
     @email_messages = Message.where(conversation_id: @email_conversations.pluck(:id), user_generated: true)
 
-    recent_conversation_ids = Message.where(user_generated: true).pluck(:conversation_id)
-    @conversations = Conversation.where(id: recent_conversation_ids).order(created_at: :desc).first(50)
-
     @stats = {
-      web_threads: "#{@web_conversations.count} (#{(@web_messages.count.to_f / @web_conversations.count).round(2)})",
+      web_threads: "#{@web_conversations.count} - #{(@web_messages.count.to_f / @web_conversations.count).round(2)} - #{@web_duration.round}min",
       email_threads: "#{@email_conversations.count} (#{(@email_messages.count.to_f / @email_conversations.count).round(2)})",
       active_trials: "#{@active_trials} (#{Member.where(subscribed: true).count})",
       active_customers: "0 ($0)",
