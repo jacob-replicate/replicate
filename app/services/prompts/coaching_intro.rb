@@ -70,29 +70,12 @@ module Prompts
       return "Metaphor or personification detected" if contains?(llm_output, METAPHOR_PATTERNS)
       return "Interpretive language detected" if contains?(llm_output, INTERPRETIVE_PHRASES)
       return "Soft or narrative phrasing detected" if contains?(llm_output, SOFT_LANGUAGE)
-      return "Sentence exceeds 30 words: #{long_sentence(llm_output)}" if long_sentence(llm_output)
-      return "Redundant sentences detected" if redundant_sentences?(llm_output)
 
       nil
     end
 
     def contains?(text, patterns)
       patterns.any? { |r| text =~ r }
-    end
-
-    def long_sentence(text)
-      text.strip.split(/(?<=[.!?])\s+/).find do |s|
-        s.split.size > 30 && !s.strip.end_with?("?")
-      end
-    end
-
-    def redundant_sentences?(text)
-      sentences = text.strip.scan(/[^.!?]+[.!?]/).map(&:strip).map { |s| normalize(s) }
-      return false if sentences.size < 2
-
-      sentences.combination(2).any? do |a, b|
-        a.include?(b) || b.include?(a)
-      end
     end
 
     def normalize(sentence)

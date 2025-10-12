@@ -8,7 +8,7 @@ It should feel grounded, observant, and quietly provocative - not polished or pe
 
 - Begin with "Imagine..." statement to paint a picture, and describe a real symptom from {{CONTEXT_INCIDENT}}. You need to make the customer-facing pain abundantly clear, followed by a few technical signals that tipped engineers off about the problem.
 - Here's an example intro sentence fragment: "Imagine an auth server logs an expired x.509 certificate OAuth login token request"
-- Keep the output under 30 words total. Don't make it too short though.
+- Keep the output under 40 words total.
 - Make sure to frame the pain. Why is this symptom bad?
 - The incident should feel like a real snapshot from production - grounded in logs, UI, or system output - not a dramatic reenactment or vague hunch.
 - You are communicating with a strong Staff engineer. Treat them like a peer. Be precise when describing technical concepts.

@@ -39,7 +39,7 @@ module Prompts
 
       response = OpenAI::Client.new.chat.completions.create(
         messages: Array(@conversation&.message_history) + [{ role: "system", content: instructions }],
-        model: "gpt-4o-2024-11-20"
+        model: "gpt-5-chat-latest"
       )
 
       content = response.choices.first.message[:content]
