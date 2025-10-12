@@ -33,6 +33,7 @@ Rails.application.routes.draw do
   get '/growth', to: "static#growth"
 
   resources :conversations, only: [:show]
+  get '/conversations/:id/destroy', to: "conversations#destroy"
   resources :messages, only: [:create]
   resources :organizations, only: [:create]
 

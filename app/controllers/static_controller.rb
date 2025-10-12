@@ -1,5 +1,6 @@
 class StaticController < ApplicationController
   before_action :set_prices
+  before_action :verify_admin, only: [:growth]
 
   def index
     context = {
@@ -11,8 +12,6 @@ class StaticController < ApplicationController
   end
 
   def growth
-    return head(:not_found) unless (request.remote_ip == "98.249.45.68" || Rails.env.development?)
-
     @relevant_contacts = Contact.where.not(contacted_at: nil)
     @unsubscribes = Contact.where(unsubscribed: true)
     @remaining_contacts = Contact.enriched.us.where(email_queued_at: nil).where("score >= 90")
