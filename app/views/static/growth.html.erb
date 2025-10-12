@@ -13,6 +13,10 @@
   <% end %>
 </div>
 
+<div class="mb-4">
+  <span class="font-semibold">Trial Domains</span>: <%= Member.where(subscribed: true).pluck(:email_domain).uniq.reject(&:blank?).join(", ") %>
+</div>
+
 <% @conversations.each do |conversation| %>
     <div class="rounded-md bg-white border-2 border-gray-400 shadow mb-6">
       <% most_recent_message = conversation.messages.pluck(:created_at).sort.last %>

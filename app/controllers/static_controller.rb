@@ -13,9 +13,6 @@ class StaticController < ApplicationController
 
   def growth
     @active_trials = Member.where(subscribed: true).pluck(:organization_id).uniq.size
-    @relevant_contacts = Contact.where.not(contacted_at: nil)
-    @unsubscribes = Contact.where(unsubscribed: true)
-    @remaining_contacts = Contact.enriched.us.where(email_queued_at: nil).where("score >= 90")
     @relevant_messages = Message.where(user_generated: true).where.not(content: "Give me a hint")
     @base_conversations = Conversation.where(id: @relevant_messages.select(:conversation_id).distinct)
     @web_conversations = @base_conversations.where(channel: "web")
@@ -23,8 +20,8 @@ class StaticController < ApplicationController
     @email_conversations = Conversation.where(channel: "email")
     @email_messages = Message.where(conversation_id: @email_conversations.pluck(:id), user_generated: true)
 
-    recent_conversation_ids = Message.where(user_generated: true).where("created_at > ?", 7.days.ago).pluck(:conversation_id)
-    @conversations = Conversation.where(id: recent_conversation_ids).order(created_at: :desc)
+    recent_conversation_ids = Message.where(user_generated: true).pluck(:conversation_id)
+    @conversations = Conversation.where(id: recent_conversation_ids).order(created_at: :desc).first(50)
 
     @stats = {
       active_trials: @active_trials,
