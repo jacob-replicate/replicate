@@ -2,7 +2,7 @@
 <% base_message_classes = "break-words message-body" %>
 
 <div class="flex flex-col">
-  <div class="flex-1 rounded-lg bg-white p-4 border-2 border-gray-400">
+  <div class="flex-1 rounded-lg bg-white p-4 border-2 border-gray-700 shadow-md">
     <div id="conversation" data-base-class="<%= base_message_classes %>" data-user-class="<%= user_message_classes %>">
       <% @conversation.messages.order(created_at: :asc).each_with_index do |m, i| %>
         <div class="flex <%= i > 0 ? "mt-4" : "" %> <%= m.user_generated ? 'justify-end' : 'justify-start' %>">
