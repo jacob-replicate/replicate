@@ -285,6 +285,9 @@
         setTimeout(function() {
           const emailBox = document.getElementById("email-subscribe-box");
           emailBox.style.opacity = "0";
+
+          const textarea = document.getElementById("message-input");
+          textarea.focus();
           setTimeout(() => { emailBox.classList.add("hidden"); }, 1000); // Match your CSS transition duration (e.g. 1000ms)
         }, 3000); // Hide after 3 seconds
       } catch (error) {
