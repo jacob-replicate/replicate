@@ -17,7 +17,7 @@ class StaticController < ApplicationController
     @base_conversations = Conversation.where(id: @relevant_messages.select(:conversation_id).distinct)
     @web_conversations = @base_conversations.where(channel: "web")
     @web_messages = Message.where(conversation_id: @web_conversations.map(&:id), user_generated: true).where.not(content: "Give me a hint")
-    @email_conversations = Conversation.where(channel: "email")
+    @email_conversations = Conversation.where(channel: "email", id: @relevant_messages.pluck(:conversation_id).uniq)
     @email_messages = Message.where(conversation_id: @email_conversations.pluck(:id), user_generated: true)
 
     recent_conversation_ids = Message.where(user_generated: true).pluck(:conversation_id)
