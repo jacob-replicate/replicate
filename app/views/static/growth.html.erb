@@ -1,9 +1,9 @@
-<div class="flex flex-row items-top space-x-4 mb-6">
+<div class="flex flex-row items-top space-x-4 mb-6 pt-4">
   <% @stats.each do |key, value| %>
-    <div class="basis-1/6">
+    <div class="basis-1/4">
       <div class="border-2 border-gray-200 bg-white rounded-md">
         <div class="bg-gray-700 text-white p-3 rounded-tl-md rounded-tr-md">
-          <%= key %>
+          <%= key.to_s.humanize.split.map(&:capitalize).join(" ") %>
         </div>
         <div class="text-center text-2xl py-8">
           <%= value %>

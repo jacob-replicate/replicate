@@ -24,12 +24,10 @@ class StaticController < ApplicationController
     @conversations = Conversation.where(id: recent_conversation_ids).order(created_at: :desc).first(50)
 
     @stats = {
-      active_trials: @active_trials,
-      active_members: Member.where(subscribed: true).count,
-      web_convos: @web_conversations.count,
-      avg_web_msgs: (@web_messages.count.to_f / @web_conversations.count).round(2),
-      email_convos: @email_conversations.count,
-      avg_email_msgs: (@email_messages.count.to_f / @email_conversations.count).round(2),
+      web_threads: "#{@web_conversations.count} (#{(@web_messages.count.to_f / @web_conversations.count).round(2)})",
+      email_threads: "#{@email_conversations.count} (#{(@email_messages.count.to_f / @email_conversations.count).round(2)})",
+      active_trials: "#{@active_trials} (#{Member.where(subscribed: true).count})",
+      active_customers: "0 ($0)",
     }
   end
 
