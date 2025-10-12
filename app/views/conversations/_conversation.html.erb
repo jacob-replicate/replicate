@@ -2,7 +2,7 @@
 <% base_message_classes = "break-words message-body" %>
 
 <div class="flex flex-col">
-  <div class="flex-1 rounded-xl bg-white p-4 border-2 border-gray-400 shadow">
+  <div class="flex-1 rounded-lg bg-white p-4 shadow border border-gray-200">
     <div id="conversation" data-base-class="<%= base_message_classes %>" data-user-class="<%= user_message_classes %>">
       <% @conversation.messages.order(created_at: :asc).each_with_index do |m, i| %>
         <div class="flex <%= i > 0 ? "mt-4" : "" %> <%= m.user_generated ? 'justify-end' : 'justify-start' %>">
@@ -13,10 +13,26 @@
     </div>
 
     <div class="flex items-center gap-2 mt-4">
-      <textarea id="message-input" placeholder="Type a message…" class="w-full border border-gray-200 rounded-lg p-2 resize-none disabled:opacity-50 disabled:cursor-not-allowed" rows="1" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px';"></textarea>
-      <button id="send-button" class="bg-slate-600 text-white px-4 py-2 rounded-lg hover:bg-slate-700 ml-auto h-full disabled:opacity-50 disabled:cursor-not-allowed">Send</button>
+      <textarea id="message-input" placeholder="Type a message…" class="w-full border border-gray-200 rounded-lg p-2 resize-none disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" rows="1" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px';"></textarea>
+      <button id="send-button" class="bg-slate-600 text-white px-4 py-2 rounded-md hover:bg-slate-700 ml-auto h-full disabled:opacity-50 disabled:cursor-not-allowed">Send</button>
     </div>
   </div>
+</div>
+
+<div id="email-subscribe-box" class="hidden mt-6 border-2 border-yellow-200 bg-yellow-100 rounded-lg p-3 text-[16px] transition-opacity duration-1000">
+  <form id="email-subscribe-form" class="lg:flex lg:items-center lg:justify-between">
+    <div class="lg:mr-6">
+      <%= params[:action] == "index" ? "Want SEV drills via email?&nbsp;".html_safe : "" %>You get <span class="font-semibold">auto-unsubscribed</span> after 3 inactive weeks.
+    </div>
+
+    <div id="email-subscribe-controls" class="flex flex-col mt-4 space-y-2 lg:mt-0 lg:flex-row lg:items-center lg:space-y-0 lg:space-x-2 lg:w-auto w-full">
+      <input id="subscribe-email" type="email" class="border shadow-sm rounded border-gray-200 p-2 w-full lg:w-[200px] text-sm" placeholder="Email Address" required />
+      <button type="submit" class="shadow bg-indigo-600 text-white px-4 py-1.5 rounded-md hover:bg-indigo-700 transition-all w-full lg:w-auto">
+        <span class="hidden lg:inline">Subscribe</span>
+        <span class="lg:hidden">Start Weekly Drills</span>
+      </button>
+    </div>
+  </form>
 </div>
 
 <script>
@@ -68,6 +84,18 @@
         }
         scrollToBottom();
       }
+
+      if(expectedSequence > 27 && enabled) {
+        const emailBox = document.getElementById("email-subscribe-box");
+        if (emailBox && emailBox.classList.contains("hidden")) {
+          emailBox.classList.remove("hidden");
+          setTimeout(() => {
+            const emailBox = document.getElementById("email-subscribe-box");
+            emailBox.style.opacity = "1";
+          }, 2000); // slight delay to ensure transition
+        }
+      }
+
     }
 
     window.generateHint = function() {
@@ -215,5 +243,61 @@
         }
       }
     );
+  });
+</script>
+
+
+<script type="text/javascript">
+  document.addEventListener("DOMContentLoaded", () => {
+    const form = document.getElementById("email-subscribe-form");
+    if (!form) return;
+
+    const box = document.getElementById("email-subscribe-box");
+    const emailInput = document.getElementById("subscribe-email");
+    const controls = document.getElementById("email-subscribe-controls");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const email = emailInput?.value?.trim();
+      if (!email) {
+        alert("Please enter a valid email address.");
+        return;
+      }
+
+      const btn = form.querySelector('button[type="submit"]');
+      btn?.setAttribute("disabled", "disabled");
+
+      try {
+        const response = await fetch("/organizations", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]')?.content
+          },
+          body: JSON.stringify({ email })
+        });
+
+        if (!response.ok) throw new Error("Request failed");
+
+        // Swap controls with a checkmark
+        controls.innerHTML = `
+          <div class="text-green-600 font-semibold flex items-center space-x-2">
+            <span class="text-xl">✅</span>
+            <span>You're subscribed</span>
+          </div>
+        `;
+
+        setTimeout(function() {
+          const emailBox = document.getElementById("email-subscribe-box");
+          emailBox.style.opacity = "0";
+          setTimeout(() => { emailBox.classList.add("hidden"); }, 1000); // Match your CSS transition duration (e.g. 1000ms)
+        }, 3000); // Hide after 3 seconds
+      } catch (error) {
+        alert("Something went wrong. Please try again.");
+        console.log(error);
+        btn?.removeAttribute("disabled");
+      }
+    });
   });
 </script>

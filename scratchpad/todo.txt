@@ -1,4 +1,6 @@
-- "How engaged was this user?" grading for conversations
+- Ask for email in main conversation window
+- Fewer questions in convo
+
 - Google Analytics + LinkedIn retargeting + Logrocket + Cookie popup
 
 - Figure out why auditing doesn't work

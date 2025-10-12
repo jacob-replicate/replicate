@@ -55,14 +55,12 @@
     if (!form) return;
 
     const box   = document.getElementById("<%= box_id %>");
-    const nameI = document.getElementById("<%= name_id %>");
     const mailI = document.getElementById("<%= email_id %>");
     const teamI = document.getElementById("<%= team_id %>");
 
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
 
-      const name  = nameI?.value?.trim();
       const email = mailI?.value?.trim();
       const engineerEmails = teamI?.value?.trim();
 
