@@ -12,6 +12,7 @@ class StaticController < ApplicationController
   end
 
   def growth
+    @active_trials = Member.where(subscribed: true).pluck(:organization_id).uniq.size
     @relevant_contacts = Contact.where.not(contacted_at: nil)
     @unsubscribes = Contact.where(unsubscribed: true)
     @remaining_contacts = Contact.enriched.us.where(email_queued_at: nil).where("score >= 90")
@@ -26,14 +27,12 @@ class StaticController < ApplicationController
     @conversations = Conversation.where(id: recent_conversation_ids).order(created_at: :desc)
 
     @stats = {
-      web_conversations: @web_conversations.count,
-      average_web_messages_per_conversation: (@web_messages.count.to_f / @web_conversations.count).round(2),
-      email_conversations: @email_conversations.count,
-      average_email_messages_per_conversation: (@email_messages.count.to_f / @email_conversations.count).round(2),
-      total_organizations: Organization.count,
-      total_active_organizations: Member.where(subscribed: true).pluck(:organization_id).uniq.count,
-      total_members: Member.count,
-      total_subscribed_members: Member.where(subscribed: true).count,
+      active_trials: @active_trials,
+      active_members: Member.where(subscribed: true).count,
+      web_convos: @web_conversations.count,
+      avg_web_msgs: (@web_messages.count.to_f / @web_conversations.count).round(2),
+      email_convos: @email_conversations.count,
+      avg_email_msgs: (@email_messages.count.to_f / @email_conversations.count).round(2),
     }
   end
 

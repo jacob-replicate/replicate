@@ -1,8 +1,14 @@
-<div class="border-2 p-6 mt-4 rounded-md border-gray-400 mb-4">
+<div class="flex flex-row items-top space-x-4 mb-6">
   <% @stats.each do |key, value| %>
-    <div class="mb-2">
-      <span class="font-semibold"><%= key %>:</span>
-      <%= value %>
+    <div class="basis-1/6">
+      <div class="border-2 border-gray-200 bg-white rounded-md">
+        <div class="bg-gray-700 text-white p-3 rounded-tl-md rounded-tr-md">
+          <%= key %>
+        </div>
+        <div class="text-center text-2xl py-8">
+          <%= value %>
+        </div>
+      </div>
     </div>
   <% end %>
 </div>
