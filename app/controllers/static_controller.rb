@@ -5,7 +5,7 @@ class StaticController < ApplicationController
   def index
     context = {
       conversation_type: :coaching,
-      incident: (INCIDENTS - [INCIDENTS[3]]).sample["prompt"]
+      incident: INCIDENTS.sample["prompt"]
     }
 
     @conversation = Conversation.create!(context: context, channel: "web")

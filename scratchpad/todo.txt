@@ -1,12 +1,8 @@
-- Ask for email in main conversation window
-- Fewer questions in convo
-
-- Google Analytics + LinkedIn retargeting + Logrocket + Cookie popup
+- Use ads to test which incidents give long responses.
+- Add in coaching links. -- e.g., <Click here> for a more detailed breakdown of this concept.
+- Add in fake logs.
 
 - Figure out why auditing doesn't work
-- Get like 1k engineers in the queue? VP's get a million emails. IC's get like 0.
-- One card email signup forms on mobile + desktop to try it themselves.
-    - No web based version CTA on mobile. Just screenshot -> email form -> pricing -> procurement -> security -> email again
 - More cold email variants
 
 

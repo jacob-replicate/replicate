@@ -57,6 +57,8 @@ module Prompts
         "What is the first thing you'd check?",
         "What would you poke at first?",
         "What would you want to rule out early?",
+        "What's going through your mind here?",
+        "How do we get back to green?",
         "What's your first move here?",
         "What would you dig into first?",
         "Where's the first place you'd start digging?"
