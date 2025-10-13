@@ -1,3 +1,5 @@
+- Message from Jacob (instead of replicate) if they're stressed AF?
+- Track conversations by FingerprintJS, so you can see repeat visits on web (before actual trial).
 - Use ads to test which incidents give long responses.
 - Add in coaching links. -- e.g., <Click here> for a more detailed breakdown of this concept.
 - Add in fake logs.
