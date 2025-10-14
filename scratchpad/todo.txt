@@ -1,8 +1,17 @@
+- Give me a hint -> Give me another hint -> What am I missing here?
+- Wiring to inject messages from Jacob into the conversation.
+  - What's your email?
+  - Want to share on social media?
+  - Here's a screenshot to post in Slack.
+
+- Hardcoded incident prompts, but keep the "Thinking..." ellipsis. It's important. Just sleep in JS for the first one or something.
+
 - Download screenshot to post share on Twitter/Slack/Teams/etc.
 - Track conversations by FingerprintJS, so you can see repeat visits on web (before actual trial).
 - Use ads to test which incidents give long responses.
 - Add in coaching links. -- e.g., <Click here> for a more detailed breakdown of this concept.
 - Add in fake logs.
+- Cancel try-replicate + Apollo billing. Zero traction from cold email + feels spammy. Seeing traction from ads. Lean in.
 
 - Figure out why auditing doesn't work
 - More cold email variants
