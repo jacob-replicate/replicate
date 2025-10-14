@@ -1,26 +1,15 @@
 - Give me a hint -> Give me another hint -> What am I missing here?
-- Wiring to inject messages from Jacob into the conversation.
-  - What's your email?
-  - Want to share on social media?
-  - Here's a screenshot to post in Slack.
-
+- Individual can use it for free if you share it on social media. 😉
+- Wiring to inject email CTA + Slack post (with invite link + screenshot)
 - Hardcoded incident prompts, but keep the "Thinking..." ellipsis. It's important. Just sleep in JS for the first one or something.
-
-- Download screenshot to post share on Twitter/Slack/Teams/etc.
 - Track conversations by FingerprintJS, so you can see repeat visits on web (before actual trial).
-- Use ads to test which incidents give long responses.
-- Add in coaching links. -- e.g., <Click here> for a more detailed breakdown of this concept.
-- Add in fake logs.
+
+
 - Cancel try-replicate + Apollo billing. Zero traction from cold email + feels spammy. Seeing traction from ads. Lean in.
 
 - Figure out why auditing doesn't work
-- More cold email variants
-
-
-- Homepage refinement (video? benefits section? screenshot carousel? more images?)
 - Carousel screenshots for conversations + code snippets
 - YouTube video
-- Remove 100% bold text from web conversations. gsub around it?
 - Check conversation scrolling on mobile -- doing it too early?
 - First name in coaching loop emails if known? Only do that for Contact, not Member?
 - .shuffle.pop through subject lines to guarantee uniqueness?
