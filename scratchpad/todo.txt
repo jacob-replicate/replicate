@@ -1,5 +1,7 @@
 Growth Drivers:
 ---------------
+- Stop showing a blank conversation when you use the back button.
+
 - Better chat control UI. You should be able to offer multiple choices elegantly.
     - Give me a hint -> Give me another hint -> What am I missing here?
     - "Teach me something impactful" -> multi-paragraph breakdown for long conversations - transition them to reading + reflecting mode
