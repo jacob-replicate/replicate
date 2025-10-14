@@ -11,6 +11,8 @@ Growth Drivers:
 - Hardcoded incident prompts, but keep the "Thinking..." ellipsis. It's important. Just sleep in JS for the first one or something.
 - Track conversations by FingerprintJS, so you can see repeat visits on web (before actual trial).
 - Pricing box: Individuals can use it for free if you share it on social media. 😉
+    - Put a full-width + slim horizontal bar above the "Next Steps - Pricing/Security" sections.
+    - "Want to use it for free?
 - Make Postmark only look at email-based messages. The "channel" belongs on the message. You should be able to take an email message over to web, since you have way more control over one-click CTA's. Less clunky.
 
 Not Super Important:
