@@ -21,7 +21,19 @@ module MessageGenerators
 
     def deliver_reply
       if @conversation.web?
-        deliver_elements([AvatarService.coach_avatar_row, Prompts::CoachingReply, HINT_LINK])
+        latest_message = @conversation.latest_user_message.content
+        hint_link = HINT_LINK
+        prompt = Prompts::CoachingReply
+
+        if latest_message == "Give me a hint"
+          hint_link = ANOTHER_HINT_LINK
+        elsif latest_message == "Give me another hint"
+          hint_link = FINAL_HINT_LINK
+        elsif latest_message == "What am I missing here?"
+          prompt = Prompts::CoachingExplain
+        end
+
+        deliver_elements([AvatarService.coach_avatar_row, prompt, hint_link])
       elsif @conversation.email?
         deliver_elements([Prompts::CoachingReply])
       end

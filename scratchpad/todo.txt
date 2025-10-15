@@ -1,20 +1,20 @@
 Growth Drivers:
 ---------------
 - Stop showing a blank conversation when you use the back button.
+- Add the extended CTA partial to conversations#show
 
-- Better chat control UI. You should be able to offer multiple choices elegantly.
-    - Give me a hint -> Give me another hint -> What am I missing here?
-    - "Teach me something impactful" -> multi-paragraph breakdown for long conversations - transition them to reading + reflecting mode
-    - Email me incidents like this every week
-    - Help me share this on Slack
+p.s. - If you paste replicate.info/data-leak into Slack, your teammates can solve their own version.
 
 - If they're in a thought loop, and clearly not getting it, use a new prompt to teach. Like the "What am I missing here?", just detected automatically. Both flows are important. Give them that feeling of control.
 - Wiring to inject email CTA + Slack post (with invite link + screenshot)
 - Hardcoded incident prompts, but keep the "Thinking..." ellipsis. It's important. Just sleep in JS for the first one or something.
 - Track conversations by FingerprintJS, so you can see repeat visits on web (before actual trial).
-- Pricing box: Individuals can use it for free if you share it on social media. 😉
-    - Put a full-width + slim horizontal bar above the "Next Steps - Pricing/Security" sections.
-    - "Want to use it for free?
+- Add a "Returning Web Users" section to growth page
+
+- Make the "Delete" button require confirmation + move it to the right of the page.
+
+Soon:
+-----------
 - Make Postmark only look at email-based messages. The "channel" belongs on the message. You should be able to take an email message over to web, since you have way more control over one-click CTA's. Less clunky.
 
 Not Super Important:

@@ -27,6 +27,8 @@ class SanitizeAiContent
 
     response.gsub!("\n", "")
     response.gsub!(HINT_LINK, "")
+    response.gsub!(ANOTHER_HINT_LINK, "")
+    response.gsub!(FINAL_HINT_LINK, "")
     response.gsub!('<b>', "")
     response.gsub!("</b>", "")
     response.gsub!("<html>", "")
