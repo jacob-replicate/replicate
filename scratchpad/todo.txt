@@ -1,17 +1,11 @@
-Growth Drivers:
----------------
 - Stop showing a blank conversation when you use the back button.
 - Figure out why it sometimes just dies. OpenAI upstream issues? Add a "Hey, this is awkward. Put in your email to continue later." or something.
 - Add more incidents to the homepage + the ability to cycle through the lower effort ones if you run out?
-- Better convo tracking (FingerprintJS, user agent, IP, etc)
 - Automatically use coaching_explain if they're angry, or clearly not getting it. Maybe dial back to multiple choice questions?
 - Hardcoded incident prompts, but keep the "Thinking..." ellipsis. It's important. Just sleep in JS for the first one or something.
 - Add a "Returning Web Users" tile to growth page
 - Edit messages
 - Add the extended CTA partial to conversations#show
-
-- Multiple Choice Questions
-    - Around 15% of the time? One every 4-5 messages? A/B test multiple choice vs. typing it in?
 
 - Log lines in a code block
 
