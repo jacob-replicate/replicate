@@ -19,7 +19,7 @@ module MessageGenerators
       raise NotImplementedError, "You must implement the deliver_reply method in your subclass"
     end
 
-    def deliver_elements(elements, user_generated = false)
+    def deliver_elements(elements, user_generated = false, skip_done_message = false)
       full_response = ""
 
       elements.each_with_index do |element, i|
@@ -43,11 +43,12 @@ module MessageGenerators
       message = @conversation.messages.create!(content: full_response, user_generated: user_generated)
 
       if @conversation.web?
-        broadcast_to_web(type: "done")
-        @message_sequence = @conversation.next_message_sequence
+        broadcast_to_web(type: "done") unless skip_done_message
       elsif @conversation.email?
         ConversationMailer.drive(@conversation).deliver_now
       end
+
+      message
     end
 
     def broadcast_to_web(message: "", type: "broadcast", user_generated: false)
@@ -58,6 +59,7 @@ module MessageGenerators
       end
 
       ConversationChannel.broadcast_to(@conversation, broadcasting_context)
+      @conversation.update!(sequence_count: @message_sequence)
       @message_sequence += 1
     end
 

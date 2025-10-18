@@ -14,9 +14,6 @@ class SanitizeAiContent
       AvatarService.brand_avatar_row(name: "Overview"),
       AvatarService.brand_avatar_row(name: "Jacob Comer", first: true, photo_path: "jacob-square.jpg"),
       AvatarService.brand_avatar_row(name: "replicate.info"),
-      AvatarService.student_avatar_row("Taylor Morales"),
-      AvatarService.student_avatar_row("Casey Patel"),
-      AvatarService.student_avatar_row("Alex Shaw")
     ].reject(&:blank?)
 
     avatars.each { |avatar| response.gsub!(avatar, "") }

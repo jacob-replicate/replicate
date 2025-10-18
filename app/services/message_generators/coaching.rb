@@ -2,7 +2,9 @@ module MessageGenerators
   class Coaching < MessageGenerators::Base
     def deliver_intro
       if @conversation.web?
-        deliver_elements([AvatarService.coach_avatar_row, Prompts::CoachingIntro, HINT_LINK])
+        deliver_elements([AvatarService.coach_avatar_row, Prompts::CoachingIntro], false, true)
+        deliver_multiple_choice_options
+        broadcast_to_web(type: "done")
       elsif @conversation.email?
         elements = ["Hey there,"]
 
@@ -33,9 +35,28 @@ module MessageGenerators
           prompt = Prompts::CoachingExplain
         end
 
-        deliver_elements([AvatarService.coach_avatar_row, prompt, hint_link])
+        elements = [AvatarService.coach_avatar_row, prompt]
+        engaged =  @conversation.messages.user.where(suggested: false).any?
+        if engaged
+          elements << hint_link
+        end
+
+        deliver_elements(elements, false, true)
+        deliver_multiple_choice_options unless engaged
+        broadcast_to_web(type: "done")
       elsif @conversation.email?
         deliver_elements([Prompts::CoachingReply])
+      end
+    end
+
+    def deliver_multiple_choice_options
+      options = Prompts::MultipleChoiceOptions.new(conversation: @conversation).call
+
+      3.times do
+        if options.any?
+          broadcast_to_web(message: options, type: "multiple_choice")
+          return
+        end
       end
     end
   end

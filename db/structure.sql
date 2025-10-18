@@ -118,7 +118,8 @@ CREATE TABLE public.conversations (
     updated_at timestamp(6) without time zone NOT NULL,
     context jsonb DEFAULT '{}'::jsonb NOT NULL,
     channel character varying,
-    subject_line text
+    subject_line text,
+    sequence_count integer DEFAULT 0 NOT NULL
 );
 
 
@@ -152,7 +153,7 @@ CREATE TABLE public.messages (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     email_message_id_header text,
-    sequence_count integer DEFAULT 0 NOT NULL
+    suggested boolean DEFAULT false
 );
 
 
@@ -390,6 +391,8 @@ CREATE INDEX user_index ON public.audits USING btree (user_id, user_type);
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20251018183734'),
+('20251018175339'),
 ('20251018163154'),
 ('20250930004845'),
 ('20250930002309'),

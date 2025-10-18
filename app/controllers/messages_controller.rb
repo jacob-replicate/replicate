@@ -9,7 +9,7 @@ class MessagesController < ApplicationController
       SendAdminPushNotification.call("New Conversation", params[:content])
     end
 
-    message = conversation.messages.create!(content: params[:content], user_generated: true)
+    message = conversation.messages.create!(content: params[:content], user_generated: true, suggested: params[:suggested].present?)
     head :ok
   end
 end

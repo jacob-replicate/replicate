@@ -22,11 +22,10 @@ class Message < ApplicationRecord
   end
 
   def deliver_user_message_to_web
-    return unless conversation.web? && user_generated
-    Rails.logger.info("Broadcasting message #{id} to conversation #{conversation.id}")
-    sequence = conversation.next_message_sequence - 2
-    ConversationChannel.broadcast_to(conversation, { message: content, user_generated: user_generated, sequence: sequence })
-    ConversationChannel.broadcast_to(conversation, { type: "done", sequence: sequence + 1 })
+    return unless conversation.web? && user_generated && !suggested
+    generator = MessageGenerators::Coaching.new(conversation)
+    generator.broadcast_to_web(message: content, user_generated: true)
+    generator.broadcast_to_web(type: "done", user_generated: true)
   end
 
   def schedule_system_reply
