@@ -151,7 +151,8 @@ CREATE TABLE public.messages (
     user_generated boolean,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    email_message_id_header text
+    email_message_id_header text,
+    sequence_count integer DEFAULT 0 NOT NULL
 );
 
 
@@ -389,6 +390,7 @@ CREATE INDEX user_index ON public.audits USING btree (user_id, user_type);
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20251018163154'),
 ('20250930004845'),
 ('20250930002309'),
 ('20250929235307'),
