@@ -32,7 +32,7 @@ Rails.application.routes.draw do
   post '/sessions/pulse', to: "sessions#pulse"
   get '/growth', to: "static#growth"
 
-  resources :conversations, only: [:show]
+  resources :conversations, only: [:show, :update]
   get '/conversations/:id/destroy', to: "conversations#destroy"
   resources :messages, only: [:create]
   resources :organizations, only: [:create]

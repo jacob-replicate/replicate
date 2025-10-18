@@ -73,7 +73,7 @@
       btn?.setAttribute("disabled", "disabled");
 
       try {
-        const response = await fetch("/organizations", {
+        const response = fetch("/organizations", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

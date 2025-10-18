@@ -6,6 +6,11 @@ class ConversationsController < ApplicationController
     @conversation = Conversation.where(channel: "web").find(params[:id])
   end
 
+  def update
+    @conversation = Conversation.find(params[:id])
+    @conversation.update(fingerprint: params[:fingerprint])
+  end
+
   def destroy
     @conversation = Conversation.find(params[:id])
     @conversation.destroy

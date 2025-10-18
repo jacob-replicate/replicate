@@ -119,7 +119,8 @@ CREATE TABLE public.conversations (
     context jsonb DEFAULT '{}'::jsonb NOT NULL,
     channel character varying,
     subject_line text,
-    sequence_count integer DEFAULT 0 NOT NULL
+    sequence_count integer DEFAULT 0 NOT NULL,
+    fingerprint text
 );
 
 
@@ -391,6 +392,7 @@ CREATE INDEX user_index ON public.audits USING btree (user_id, user_type);
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20251018193053'),
 ('20251018183734'),
 ('20251018175339'),
 ('20251018163154'),
