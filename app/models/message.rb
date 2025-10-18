@@ -23,12 +23,15 @@ class Message < ApplicationRecord
   def schedule_system_reply
     return unless user_generated
 
+    min_sequence = conversation.next_message_sequence
+
     if conversation.web? && !suggested
       generator = MessageGenerators::Coaching.new(conversation)
       generator.broadcast_to_web(message: content, user_generated: true)
       generator.broadcast_to_web(type: "done", user_generated: true)
+      min_sequence += 2
     end
 
-    ConversationDriverWorker.perform_async(conversation_id)
+    ConversationDriverWorker.perform_async(conversation_id, min_sequence)
   end
 end

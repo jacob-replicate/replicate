@@ -1,9 +1,9 @@
 module MessageGenerators
   class Base
-    def initialize(conversation)
+    def initialize(conversation, min_sequence = nil)
       @conversation = conversation
       @context = conversation.context || {}
-      @message_sequence = conversation.next_message_sequence
+      @message_sequence = [min_sequence, conversation.next_message_sequence].reject(&:blank?).max
     end
 
     def deliver

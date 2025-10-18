@@ -16,8 +16,9 @@ Constraints
 - One sentence. No fancy characters like semi-colons or em dashes.
 - Don't just start every sentence with the word "I'd" - mix it up. The sentences should have different shapes/lengths.
 - Do not include any additional text outside the JSON object.
-- Don't just suggest next steps. If you asked a core technical question, the suggestions should try to answer it. They don't just need to be action-oriented if you asked a core technical question.
+- Your options don't just have to be actions. They can be answers to hypotheticals too. If you asked the engineer a core technical question early, the suggestions can try to answer it.
 - Your response should be in the form of a first-person answer the engineer reading would give. It should directly address the question(s) you just asked.
+- Your response should feel conversational, like how a senior engineer types in a ChatGPT window. Not always robotic or overly formal.
 - Use precise technical terms. Don't dumb anything down. That said, don't just sound like you're only using big words. Make it approachable, but sharp.
 - Each option must have fewer than 15 words.
 
