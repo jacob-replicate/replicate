@@ -3,7 +3,6 @@ class Message < ApplicationRecord
 
   validates :content, presence: true
 
-  after_create :deliver_user_message_to_web
   after_create :schedule_system_reply
   after_create :generate_email_message_id_header
 
@@ -21,15 +20,15 @@ class Message < ApplicationRecord
     update!(email_message_id_header: "<message-#{id}@mail.replicate.info>")
   end
 
-  def deliver_user_message_to_web
-    return unless conversation.web? && user_generated && !suggested
-    generator = MessageGenerators::Coaching.new(conversation)
-    generator.broadcast_to_web(message: content, user_generated: true)
-    generator.broadcast_to_web(type: "done", user_generated: true)
-  end
-
   def schedule_system_reply
     return unless user_generated
+
+    if conversation.web? && !suggested
+      generator = MessageGenerators::Coaching.new(conversation)
+      generator.broadcast_to_web(message: content, user_generated: true)
+      generator.broadcast_to_web(type: "done", user_generated: true)
+    end
+
     ConversationDriverWorker.perform_async(conversation_id)
   end
 end
