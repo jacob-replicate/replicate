@@ -54,7 +54,7 @@ module MessageGenerators
 
       3.times do
         if options.any?
-          broadcast_to_web(message: options, type: "multiple_choice")
+          broadcast_to_web(message: options, type: "multiple_choice", user_generated: false)
           return
         end
       end
