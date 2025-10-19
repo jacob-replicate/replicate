@@ -27,16 +27,21 @@ module MessageGenerators
         hint_link = HINT_LINK
         prompt = Prompts::CoachingReply
 
+        engaged_messages = @conversation.messages.user.where(suggested: false).count
+        engaged = engaged_messages > 0 && (engaged_messages < 3 || ((engaged_messages % 3) != 0))
+
         if latest_message == "Give me a hint"
           hint_link = ANOTHER_HINT_LINK
+          engaged = true
         elsif latest_message == "Give me another hint"
           hint_link = FINAL_HINT_LINK
+          engaged = true
         elsif latest_message == "What am I missing here?"
+          engaged = true
           prompt = Prompts::CoachingExplain
         end
 
         elements = [AvatarService.coach_avatar_row, prompt]
-        engaged =  @conversation.messages.user.where(suggested: false).any?
         if engaged
           elements << hint_link
         end

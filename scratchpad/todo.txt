@@ -2,6 +2,7 @@
 - Figure out why it sometimes just dies. OpenAI upstream issues? Add a "Hey, this is awkward. Put in your email to continue later." or something.
 - Add more incidents to the homepage + the ability to cycle through the lower effort ones if you run out?
 - Automatically use coaching_explain if they're angry, or clearly not getting it. Maybe dial back to multiple choice questions?
+- Export screenshot
 - Hardcoded incident prompts, but keep the "Thinking..." ellipsis. It's important. Just sleep in JS for the first one or something.
 - Add a "Returning Web Users" tile to growth page
 - Edit messages
