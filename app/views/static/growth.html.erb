@@ -21,7 +21,7 @@
     <div class="rounded-md bg-white border-2 border-gray-400 shadow mb-6">
       <% most_recent_message = conversation.messages.pluck(:created_at).sort.last %>
       <div class="p-2">
-        <a href="/conversations/<%= conversation.id %>" class="text-blue-600 underline">View</a> - <a href="/conversations/<%= conversation.id %>/destroy" class="text-blue-600 underline">Delete</a> - <%= conversation.created_at.in_time_zone("America/New_York").strftime("%A - %l:%m%P") %> - <%= conversation.duration %> <%= conversation.duration > 1 ? "minutes" : "minute" %> - <%= conversation.messages.where(user_generated: true).count %> messages - <%= conversation.channel %> - <%= conversation.fingerprint %>
+        <a href="/conversations/<%= conversation.id %>" class="text-blue-600 underline">View</a> - <a href="/conversations/<%= conversation.id %>/destroy" class="text-blue-600 underline">Delete</a> - <%= conversation.created_at.in_time_zone("America/New_York").strftime("%A, %b %e - %l:%M%P") %> - <%= conversation.duration %> <%= conversation.duration > 1 ? "minutes" : "minute" %> - <%= conversation.messages.where(user_generated: true).count %> messages - <%= conversation.channel %> - <%= conversation.fingerprint %>
       </div>
 
       <% conversation.messages.order(created_at: :asc).each_with_index do |m, i| %>
