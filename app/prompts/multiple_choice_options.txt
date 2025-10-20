@@ -5,8 +5,8 @@ Background Info:
 - You just asked them tough technical question(s), and are giving them multiple choice options to choose from.
 
 Action Requested:
-- Analyze the preceding conversation between you (the Principal Engineer) and the Staff+ SRE, and give the SRE 3 distinct multiple choice responses to the most recent question(s) you asked in your most recent message.
-- 1 of the answers should be on the right path (without giving the answer away). The other 2 options should be slightly flawed in some way, even though they sound plausible at first glance.
+- Analyze the preceding conversation between you (the Principal Engineer) and the Staff+ SRE, and give the SRE {{CONTEXT_TOTAL_OPTIONS}} distinct multiple choice responses to the most recent question(s) you asked in your most recent message.
+- 1 of the answers should be on the right path (without giving the answer away). The other {{CONTEXT_BAD_OPTIONS}} options should be slightly flawed in some way, even though they sound plausible at first glance.
 
 Constraints
 - Think very hard. Give me 10/10 A+ suggestions. Don't rush.
@@ -16,12 +16,12 @@ Constraints
 - No fancy characters like semi-colons or em dashes.
 - Don't just start every sentence with the word "I'd" - mix it up. The sentences should have different shapes/lengths.
 - Do not include any additional text outside the JSON object.
-- No obviously wrong/junior answers. The 2 bad ones should be something senior+ engineers might plausibly say.
+- No obviously wrong/junior answers. The {{CONTEXT_BAD_OPTIONS}} bad ones should be something senior+ engineers might plausibly say.
 - Complete sentences, not sentence fragments.
 - Your options don't just have to be actions. They can be answers to hypotheticals too. If you asked the engineer a core technical question early, the suggestions can try to answer it.
 - Your response should be in the form of a first-person answer the engineer reading would give. It should directly address the question(s) you just asked.
 - Each option must have fewer than 20 words.
 
 Expected Format:
-- Format should be a single JSON object with an "options" key containing an array of 3 strings for the values. I'm writing code around this. Don't inject extra AI bullshit.
+- Format should be a single JSON object with an "options" key containing an array of {{CONTEXT_TOTAL_OPTIONS}} strings for the values. I'm writing code around this. Don't inject extra AI bullshit.
 - You must only return the JSON. Don't include extra shit that is going to break my JSON parsing code.

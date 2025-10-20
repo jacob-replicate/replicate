@@ -55,9 +55,18 @@ module MessageGenerators
     end
 
     def deliver_multiple_choice_options
-      options = Prompts::MultipleChoiceOptions.new(conversation: @conversation).call
-
       3.times do
+        message_count = @conversation.messages.user.count
+        option_count = if message_count == 0
+          4
+        elsif message_count == 1
+          3
+        else
+          2
+        end
+
+        options = Prompts::MultipleChoiceOptions.new(conversation: @conversation, context: { total_options: option_count, bad_options: option_count - 1 }).call
+
         if options.any?
           broadcast_to_web(message: options, type: "multiple_choice", user_generated: false)
           return
