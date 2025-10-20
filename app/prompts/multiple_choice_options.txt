@@ -20,7 +20,7 @@ Constraints
 - Complete sentences, not sentence fragments.
 - Your options don't just have to be actions. They can be answers to hypotheticals too. If you asked the engineer a core technical question early, the suggestions can try to answer it.
 - Your response should be in the form of a first-person answer the engineer reading would give. It should directly address the question(s) you just asked.
-- Each option must have fewer than 40 words.
+- Each option must have fewer than 20 words.
 
 Expected Format:
 - Format should be a single JSON object with an "options" key containing an array of 3 strings for the values. I'm writing code around this. Don't inject extra AI bullshit.

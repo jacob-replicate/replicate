@@ -28,7 +28,7 @@ module MessageGenerators
         prompt = Prompts::CoachingReply
 
         engaged_messages = @conversation.messages.user.where(suggested: false).count
-        engaged = engaged_messages > 0 && (engaged_messages < 3 || ((@conversation.messages.user.count % 3) != 0))
+        engaged = engaged_messages > 0 || @conversation.messages.user.count > 2
 
         if latest_message == "Give me a hint"
           hint_link = ANOTHER_HINT_LINK
