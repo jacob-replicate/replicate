@@ -47,14 +47,28 @@
   </head>
 
   <body>
-    <div class="container mx-auto">
-      <div class="px-4 pb-6 pt-4 md:pt-6 md:pb-8 lg:px-[55px] xl:px-[185px] 2xl:px-[312px]">
-        <%= render 'layouts/navbar' %>
+    <% if (params[:controller] == "static" && params[:action] == "index") || params[:action] == "growth" || params[:action] == "show" %>
+      <div class="container mx-auto">
+        <div class="px-4 pb-6 pt-4 md:pt-6 md:pb-8 lg:px-[55px] xl:px-[185px] 2xl:px-[312px]">
+          <div class="hidden md:block">
+            <%= render 'layouts/navbar' %>
+          </div>
 
-        <div class="pt-4 md:pt-0 lg:pt-2">
-          <%= yield %>
+          <div class="pt-4 md:pt-0 lg:pt-2">
+            <%= yield %>
+          </div>
         </div>
       </div>
-    </div>
+    <% else %>
+      <div class="h-screen flex flex-col container mx-auto">
+        <div class="px-4 xl:px-56 2xl:px-[320px] py-4 md:py-6">
+          <div class="max-w-3xl mx-auto"><%= render 'layouts/navbar' %></div>
+
+          <div class="max-w-3xl mx-auto">
+            <%= yield %>
+          </div>
+        </div>
+      </div>
+    <% end %>
   </body>
 </html>
