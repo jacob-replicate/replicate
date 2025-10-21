@@ -3,7 +3,10 @@
 
 <div class="flex flex-col">
   <div class="flex-1 rounded-lg bg-white p-4 border border-neutral-300 shadow text-[16px]">
-    <div id="conversation" data-base-class="<%= base_message_classes %>" data-user-class="<%= user_message_classes %>">
+    <div id="conversation" class="relative" data-base-class="<%= base_message_classes %>" data-user-class="<%= user_message_classes %>">
+      <div class="absolute top-0 right-0 bg-neutral-700 text-white text-sm px-2 py-1 rounded-md">
+        <span class="font-semibold">Difficulty</span>: Staff+
+      </div>
       <% @conversation.messages.order(created_at: :asc).each_with_index do |m, i| %>
         <div class="flex <%= i > 0 ? "mt-6" : "" %> <%= m.user_generated ? 'justify-end' : 'justify-start' %>">
           <% message_classes = "#{base_message_classes} #{user_message_classes if m.user_generated}" %>
