@@ -8,7 +8,7 @@ class StaticController < ApplicationController
       incident: INCIDENTS.sample["prompt"]
     }
 
-    @conversation = Conversation.create!(context: context, channel: "web")
+    @conversation = Conversation.create!(context: context, channel: "web", ip_address: request.remote_ip)
   end
 
   def growth

@@ -120,7 +120,8 @@ CREATE TABLE public.conversations (
     channel character varying,
     subject_line text,
     sequence_count integer DEFAULT 0 NOT NULL,
-    fingerprint text
+    fingerprint text,
+    ip_address character varying
 );
 
 
@@ -392,6 +393,7 @@ CREATE INDEX user_index ON public.audits USING btree (user_id, user_type);
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20251022074354'),
 ('20251018193053'),
 ('20251018183734'),
 ('20251018175339'),
