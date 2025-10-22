@@ -1,3 +1,9 @@
+- Leave a placeholder reply on Turn #4 (with a blinking cursor at the end) that they're most likely to type in that moment.
+- incident selector below main loop
+- ask not quite a "yes/no", but an easy question they can answer pretty quickly? foreplay
+- "check all that apply" -> "I think the following are true: A/B/C"
+- ?min_messages=10 GET param on /growth
+
 - Stop showing a blank conversation when you use the back button.
 - Figure out why it sometimes just dies. OpenAI upstream issues? Add a "Hey, this is awkward. Put in your email to continue later." or something.
 - Add more incidents to the homepage + the ability to cycle through the lower effort ones if you run out?
@@ -52,4 +58,5 @@ Not Super Important:
 - After first contract, pay ~$1k for a verified checkmark in Gmail -- VMC - Verified Mark Certificate, like Verisign for logos. Need a custom trademarked logo too.
 - Synthetic checks to verify homepage is still up
 - Add an email after auto-delete of data, but somebody replies to a super old thread -- "Sorry, I might have auto-deleted that conversation after 3 months of inactivity. <Want to start a new one? Type 1. for secrets management 2. for something else 3. for whatever"
+
 - Test for Prompts::CoachingIntro (since it has custom logic - might find some to cut)
