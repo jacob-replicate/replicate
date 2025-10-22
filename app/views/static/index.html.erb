@@ -24,9 +24,15 @@
         You'll learn something every time. It catches most senior SREs in 4-5 turns.
       </p>
 
-      <div class="mb-4">
+      <div class="mb-6">
         <%= render "conversations/conversation" %>
       </div>
+
+      <% if Rails.env.development? && false %>
+        <div class="mb-6">
+          <%= render "shared/incident_library"  %>
+        </div>
+      <% end %>
     </div>
   </div>
   <div class="mt-6 lg:mt-[20px]">
