@@ -27,8 +27,7 @@ module MessageGenerators
         hint_link = HINT_LINK
         prompt = Prompts::CoachingReply
 
-        engaged_messages = @conversation.messages.user.where(suggested: false).count
-        engaged = engaged_messages > 0 || @conversation.messages.user.count > 2
+        engaged = @conversation.messages.user.count >= 1
 
         if latest_message == "Give me a hint"
           hint_link = ANOTHER_HINT_LINK
@@ -56,16 +55,7 @@ module MessageGenerators
 
     def deliver_multiple_choice_options
       3.times do
-        message_count = @conversation.messages.user.count
-        option_count = if message_count == 0
-          4
-        elsif message_count == 1
-          3
-        else
-          2
-        end
-
-        options = Prompts::MultipleChoiceOptions.new(conversation: @conversation, context: { total_options: option_count, bad_options: option_count - 1 }).call
+        options = Prompts::MultipleChoiceOptions.new(conversation: @conversation).call
 
         if options.any?
           broadcast_to_web(message: options, type: "multiple_choice", user_generated: false)

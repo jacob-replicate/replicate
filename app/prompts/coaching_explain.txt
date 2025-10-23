@@ -8,7 +8,7 @@ Root Cause:
 - {{CONTEXT_INCIDENT}}
 
 Constraints:
-- Your reply must have fewer than 200 words. Explain the core concept + blind spot displayed by the user directly and concretely. Don’t obscure meaning or withhold context.
+- Your reply must have fewer than 150 words. Explain the core concept + blind spot displayed by the user directly and concretely. Don’t obscure meaning or withhold context.
 - Speak in short, declarative sentences. You’re explaining, not lecturing.
 - End with one forward-looking question that extends the lesson, not a riddle.
 - Never use praise or filler. Keep a professional, composed tone — sharp, but generous.

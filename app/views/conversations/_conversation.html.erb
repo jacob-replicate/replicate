@@ -101,25 +101,31 @@
     }
 
     window.generateHint = function() {
-      sendMessage("Give me a hint");
+      sendMessage("Give me a hint")
     }
 
     window.generateAnotherHint = function() {
-      sendMessage("Give me another hint");
+      sendMessage("Give me another hint")
     }
 
     window.generateFinalHint = function() {
-      sendMessage("What am I missing here?");
+      sendMessage("What am I missing here?")
     }
 
     function sendMessage(message, suggested) {
       message ||= textarea.value.trim();
       if (!message || aiIsTyping) return;
 
-      if(suggested === undefined && window.mcEnabled) {
-        const lastMC = conversationEl.querySelectorAll(".multiple-choice-options");
-        if (lastMC.length > 0) {
-          lastMC[lastMC.length - 1].remove();
+      if (suggested === undefined && window.mcEnabled) {
+        const lastMCs = conversationEl.querySelectorAll(".multiple-choice-options");
+        if (lastMCs.length > 0) {
+          const lastMC = lastMCs[lastMCs.length - 1];
+          const radios = lastMC.querySelectorAll("input[type='radio']");
+          const anySelected = Array.from(radios).some(r => r.checked);
+
+          if (!anySelected) {
+            lastMC.remove();
+          }
         }
         window.mcEnabled = false;
       }
@@ -150,7 +156,7 @@
         body: JSON.stringify({ conversation_id: conversationId, content: message, suggested: suggested })
       });
 
-      if(message != "Give me a hint") {
+      if(message != "Give me a hint" && message != "Give me another hint" && message != "What am I missing here?") {
         textarea.value = "";
       }
 
