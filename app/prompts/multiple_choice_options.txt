@@ -17,6 +17,7 @@ Constraints
 - You authored the prior message in the conversation. Do not summarize or repeat it. The Staff+ SRE will then respond to your coaching in real time, using one of these 4 multiple choice options.
 - Avoid vague language. No hedging, no filler. Every word must earn its place.
 - Do not include ``` characters.
+- Don't mention specific technologies. These options should reflect core infra instincts and concepts, not specific tools.
 - No fancy characters like semi-colons or em dashes.
 - Sentence fragments the engineer would type into ChatGPT, not complete sentences. Don't start sentences with the word "I'd", just get to the core idea
 - Don't just start every sentence with the word "I'd" - mix it up. The sentences should have different shapes/lengths.

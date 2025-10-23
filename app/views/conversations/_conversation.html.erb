@@ -2,7 +2,7 @@
 <% base_message_classes = "break-words message-body" %>
 
 <div class="flex flex-col">
-  <div class="flex-1 rounded-lg bg-white p-4 border border-neutral-300 shadow text-[16px]">
+  <div class="flex-1 rounded-lg bg-white p-4 border border-neutral-300 shadow-sm text-[16px]">
     <div id="conversation" class="relative" data-base-class="<%= base_message_classes %>" data-user-class="<%= user_message_classes %>">
       <div class="absolute top-0 right-0 bg-neutral-700 text-white text-sm px-2 py-1 rounded-md">
         <span class="font-semibold">Difficulty</span>: Staff+
@@ -20,23 +20,6 @@
     </div>
   </div>
 </div>
-
-<div id="email-subscribe-box" class="hidden mt-6 border-2 border-gray-400 bg-gray-100 rounded-lg p-3 text-[16px] transition-opacity duration-1000">
-  <form id="email-subscribe-form" class="lg:flex lg:items-center lg:justify-between">
-    <div class="lg:mr-6">
-      <%= params[:action] == "index" ? "Want SEV drills via email?&nbsp;".html_safe : "" %><span class="block mt-4 lg:inline lg:mt-0">You get <span class="font-semibold">auto-unsubscribed</span> after 3 inactive weeks.</span>
-    </div>
-
-    <div id="email-subscribe-controls" class="flex flex-col mt-4 space-y-4 lg:mt-0 lg:flex-row lg:items-center lg:space-y-0 lg:space-x-2 lg:w-auto">
-      <input id="subscribe-email" type="email" class="border rounded border-gray-300 p-2 lg:w-[200px] text-sm" placeholder="Email Address" required />
-      <button type="submit" class="bg-indigo-600 text-white px-4 py-1.5 rounded-md tracking-tight hover:bg-indigo-700 transition-all lg:w-auto">
-        <span class="hidden lg:inline text-sm">Subscribe</span>
-        <span class="lg:hidden">Start Weekly Drills</span>
-      </button>
-    </div>
-  </form>
-</div>
-
 
 <script>
   document.addEventListener("DOMContentLoaded", () => {
@@ -84,20 +67,6 @@
         }
         scrollToBottom();
       }
-
-      if(expectedSequence > 50 && enabled) {
-        const emailBox = document.getElementById("email-subscribe-box");
-        if (emailBox && emailBox.classList.contains("hidden")) {
-          /*
-            emailBox.classList.remove("hidden");
-            setTimeout(() => {
-              const emailBox = document.getElementById("email-subscribe-box");
-              emailBox.style.opacity = "1";
-            }, 2000); // slight delay to ensure transition
-          */
-        }
-      }
-
     }
 
     window.generateHint = function() {
@@ -321,64 +290,6 @@
         }
       }
     );
-  });
-</script>
-
-
-<script type="text/javascript">
-  document.addEventListener("DOMContentLoaded", () => {
-    const form = document.getElementById("email-subscribe-form");
-    if (!form) return;
-
-    const box = document.getElementById("email-subscribe-box");
-    const emailInput = document.getElementById("subscribe-email");
-    const controls = document.getElementById("email-subscribe-controls");
-
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-
-      const email = emailInput?.value?.trim();
-      if (!email) {
-        alert("Please enter a valid email address.");
-        return;
-      }
-
-      const btn = form.querySelector('button[type="submit"]');
-      btn?.setAttribute("disabled", "disabled");
-
-      try {
-        const response = await fetch("/organizations", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]')?.content
-          },
-          body: JSON.stringify({ email })
-        });
-
-        if (!response.ok) throw new Error("Request failed");
-
-        // Swap controls with a checkmark
-        controls.innerHTML = `
-          <div class="text-green-600 font-semibold flex items-center space-x-2">
-            <span class="text-xl">✅</span>
-            <span>You're subscribed</span>
-          </div>
-        `;
-
-        setTimeout(function() {
-          const emailBox = document.getElementById("email-subscribe-box");
-          emailBox.style.opacity = "0";
-
-          const textarea = document.getElementById("message-input");
-          textarea.focus();
-          setTimeout(() => { emailBox.classList.add("hidden"); }, 1000); // Match your CSS transition duration (e.g. 1000ms)
-        }, 3000); // Hide after 3 seconds
-      } catch (error) {
-        alert("Something went wrong. Please try again.");
-        btn?.removeAttribute("disabled");
-      }
-    });
   });
 </script>
 
