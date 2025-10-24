@@ -1,4 +1,6 @@
 - "Give me a hint" should include links to sharable articles unique to their blind spot.
+- Opacity on replicate
+- Make certain technical phrases clickable, and link to a new conversation explaining the concept
 - Break up "coaching explain" prompt. Mini lesson -> links to articles -> bolded question, not just one big paragraph.
 - Edit messages
 - The article is just a conversation. There's a text box at the bottomw with a different coaching prompt.
