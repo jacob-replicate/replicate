@@ -87,7 +87,7 @@
       message ||= textarea.value.trim();
       if (!message || aiIsTyping) return;
 
-      if (suggested === undefined && window.mcEnabled) {
+      if (suggested === undefined && (window.mcEnabled || message == "What am I missing here?")) {
         const lastMCs = conversationEl.querySelectorAll(".multiple-choice-options");
         if (lastMCs.length > 0) {
           const lastMC = lastMCs[lastMCs.length - 1];
