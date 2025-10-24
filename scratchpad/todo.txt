@@ -1,22 +1,20 @@
-- Leave a placeholder reply on Turn #4 (with a blinking cursor at the end) that they're most likely to type in that moment.
+- "Give me a hint" should include links to sharable articles unique to their blind spot.
+- Break up "coaching explain" prompt. Mini lesson -> links to articles -> bolded question, not just one big paragraph.
+- Edit messages
+- The article is just a conversation. There's a text box at the bottomw with a different coaching prompt.
 - incident selector below main loop
-- ask not quite a "yes/no", but an easy question they can answer pretty quickly? foreplay
-- "check all that apply" -> "I think the following are true: A/B/C"
-- ?min_messages=10 GET param on /growth
 
-- Stop showing a blank conversation when you use the back button.
-- Figure out why it sometimes just dies. OpenAI upstream issues? Add a "Hey, this is awkward. Put in your email to continue later." or something.
+Sharing
+- Shareable link to conversation (read-only)
+- Show multiple choice options in persisted conversation -- can't just generate in JS -- MessageElement, maybe?
+
 - Add more incidents to the homepage + the ability to cycle through the lower effort ones if you run out?
 - Automatically use coaching_explain if they're angry, or clearly not getting it. Maybe dial back to multiple choice questions?
 - Export screenshot
 - Hardcoded incident prompts, but keep the "Thinking..." ellipsis. It's important. Just sleep in JS for the first one or something.
 - Add a "Returning Web Users" tile to growth page
-- Edit messages
-- Add the extended CTA partial to conversations#show
-
-- Log lines in a code block
-
-- Make the "Delete" button require confirmation + move it to the right of the page.
+- Stop showing a blank conversation when you use the back button.
+- Figure out why it sometimes just dies. OpenAI upstream issues? Add a "Hey, this is awkward. Put in your email to continue later." or something.
 
 Soon:
 -----------
