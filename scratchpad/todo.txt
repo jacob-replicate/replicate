@@ -1,4 +1,8 @@
+- Every 6 messages, provide an off-ramp (e.g., personalized articles about blind spots, status reports, etc)
+    - personalized articles get you out of the SEV -- "Does any of this resonate with what your team is experiencing?"
+
 - "Give me a hint" should include links to sharable articles unique to their blind spot.
+- "Close incident" button?
 - Opacity on replicate
 - Make certain technical phrases clickable, and link to a new conversation explaining the concept
 - Break up "coaching explain" prompt. Mini lesson -> links to articles -> bolded question, not just one big paragraph.
