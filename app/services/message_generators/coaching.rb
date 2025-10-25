@@ -24,30 +24,29 @@ module MessageGenerators
     def deliver_reply
       if @conversation.web?
         latest_message = @conversation.latest_user_message.content
-        hint_link = HINT_LINK
-        prompt = Prompts::CoachingReply
+        elements = [AvatarService.coach_avatar_row]
+        multiple_choice = false
 
-        engaged = @conversation.messages.user.count >= 1
-
-        elements = [AvatarService.coach_avatar_row, prompt]
-
-        if latest_message == "Give me a hint"
-          hint_link = ANOTHER_HINT_LINK
-          engaged = true
+        if @conversation.messages.user.count == 0
+          elements << Prompts::CoachingReply
+          multiple_choice = true
+        elsif latest_message == "Give me a hint"
+          elements << Prompts::CoachingReply
+          elements << ANOTHER_HINT_LINK
         elsif latest_message == "Give me another hint"
+          elements << Prompts::CoachingReply
           elements << FINAL_HINT_LINK
-          engaged = false # to offer multiple choice options
+          multiple_choice = true
         elsif latest_message == "What am I missing here?"
-          engaged = true
-          prompt = Prompts::CoachingExplain
-        end
-
-        if engaged
-          elements << hint_link
+          elements << Prompts::CoachingExplain
+          elements << HINT_LINK
+        else
+          elements << Prompts::CoachingReply
+          elements << HINT_LINK
         end
 
         deliver_elements(elements, false, true)
-        deliver_multiple_choice_options unless engaged
+        deliver_multiple_choice_options if multiple_choice
         broadcast_to_web(type: "done")
       elsif @conversation.email?
         deliver_elements([Prompts::CoachingReply])
