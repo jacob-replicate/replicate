@@ -30,7 +30,6 @@
     const textarea = document.getElementById("message-input");
     const conversationEl = document.getElementById("conversation");
     const tosWrapper = document.getElementById("terms-container");
-    window.mcEnabled = true;
     let messageQueue = {};
     let expectedSequence = <%= @conversation.next_message_sequence %>;
 
@@ -87,7 +86,7 @@
       message ||= textarea.value.trim();
       if (!message || aiIsTyping) return;
 
-      if (suggested === undefined && (window.mcEnabled || message == "What am I missing here?")) {
+      if (suggested === undefined) {
         const lastMCs = conversationEl.querySelectorAll(".multiple-choice-options");
         if (lastMCs.length > 0) {
           const lastMC = lastMCs[lastMCs.length - 1];
@@ -98,7 +97,6 @@
             lastMC.remove();
           }
         }
-        window.mcEnabled = false;
       }
 
       if (typeof message === 'string' && message.includes("isTrusted")) {
