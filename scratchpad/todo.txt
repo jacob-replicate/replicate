@@ -1,3 +1,4 @@
+- 30min timer -> progress report at the end
 - Every 6 messages, provide an off-ramp (e.g., personalized articles about blind spots, status reports, etc)
     - personalized articles get you out of the SEV -- "Does any of this resonate with what your team is experiencing?"
 
