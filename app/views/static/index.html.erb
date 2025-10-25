@@ -20,15 +20,13 @@
         Think of it like a 20min chess match against the AI. <span class="font-semibold">You win by learning something new</span>.
       </p>
 
-      <div class="mb-6">
+      <div class="mb-6 md:mb-4">
         <%= render "conversations/conversation" %>
       </div>
 
-      <% if Rails.env.development? && false %>
-        <div class="mb-6">
-          <%= render "shared/incident_library"  %>
-        </div>
-      <% end %>
+      <div class="hidden md:block mb-10">
+        <%= render "static/signature" %>
+      </div>
     </div>
   </div>
   <div class="mt-6 lg:mt-[20px]">
