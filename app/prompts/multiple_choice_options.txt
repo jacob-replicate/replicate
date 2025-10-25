@@ -14,6 +14,7 @@ Expected Format:
 
 Constraints
 - Think very hard. Give me 10/10 A+ suggestions. Don't rush.
+- All options must be phrased in present tense as decisive actions the engineer is actively taking.
 - You authored the prior message in the conversation. Do not summarize or repeat it. The Staff+ SRE will then respond to your coaching in real time, using one of these 4 multiple choice options.
 - Avoid vague language. No hedging, no filler. Every word must earn its place.
 - Do not include ``` characters.

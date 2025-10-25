@@ -27,6 +27,7 @@ module MessageGenerators
         elements = [AvatarService.coach_avatar_row]
         multiple_choice = false
 
+
         if @conversation.messages.user.count == 0
           elements << Prompts::CoachingReply
           multiple_choice = true
