@@ -40,7 +40,7 @@ module MessageGenerators
         broadcast_to_web(type: "element", message: AvatarService.coach_avatar_row, user_generated: false)
         broadcast_to_web(type: "loading", user_generated: false)
 
-        reply = ""
+        reply = "<p>AvatarService.coach_avatar_row</p>"
         hint_link = nil
         if engaged_messages.blank? && suggested_messages.count < 3
           reply = Prompts::CoachingReply.new(conversation: @conversation).call

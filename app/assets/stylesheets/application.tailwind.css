@@ -134,11 +134,18 @@ pre {
   background-color: #333;
   color: white;
   padding: 15px;
+  font-size: 14px;
   border-radius: 7px;
+  white-space: pre;
   margin: 20px 0;
-  white-space: pre-wrap;      /* allow wrapping */
-  word-break: break-word;     /* break long words if needed */
   overflow-x: auto;           /* add horizontal scroll if still too wide */
   max-width: 100%;            /* never exceed parent width */
   box-sizing: border-box;
+}
+
+pre {
+  white-space: pre !important;          /* don’t wrap */
+  overflow-x: auto !important;          /* scroll horizontally */
+  word-break: normal !important;        /* override break-word */
+  overflow-wrap: normal !important;     /* override break-word again */
 }

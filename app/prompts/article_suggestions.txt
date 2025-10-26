@@ -19,6 +19,7 @@ Constraints:
 - The intro sentence should be less than 80 characters, and introduce the blog posts below.
 - Your intro sentence should highlight what the articles are about. Complete sentence, no fragments.
 - The intro sentence should not reference the number of posts (e.g., "Two articles that..."). They don't care. Just describe the content.
+- No self-congratulatory takes. -- i.e., don't say "Thoughtful take" -- you wrote the blog, just describe the content.
 - No em dashes, no semicolons.
 - The content should be focused around how infra systems fail at work. Don't call that out directly, but it should be focused around the engineer not making a SEV-1 fuckup at work.
 - Each title must be fewer than 25 words. Don't make it too hype driven. Cool, calm, collected, aimed at technical audiences who appreciate precision, not theatrics.
