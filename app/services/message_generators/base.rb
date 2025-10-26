@@ -64,7 +64,7 @@ module MessageGenerators
     end
 
     def sanitize_response(message)
-      message.to_s.gsub("<pre>", "").gsub("</pre>", "").gsub("</p></p>", "</p>").squish.html_safe
+      message.to_s.gsub("</p></p>", "</p>").squish.html_safe
     end
 
     private

@@ -31,31 +31,43 @@ module MessageGenerators
         engaged_messages = @conversation.messages.user.where(suggested: false).where.not("content ILIKE ?", "%hint%")
         total_user_message_count = @conversation.messages.user.count
 
-        if total_user_message_count == 3 || (total_user_message_count % 6) == 0
-          generate_article_suggestions = true
-        end
-
-        if engaged_messages.blank? && suggested_messages.count < 3
-          elements << Prompts::CoachingReply
-          multiple_choice_options = 3
-        elsif latest_message == "Give me a hint"
-          elements << Prompts::CoachingReply
-          elements << ANOTHER_HINT_LINK
-        elsif latest_message == "Give me another hint"
-          elements << Prompts::CoachingReply
-          elements << FINAL_HINT_LINK
-          multiple_choice_options = 3
-        elsif latest_message == "What am I missing here?"
-          elements << Prompts::CoachingExplain
-          elements << HINT_LINK
-        else
-          elements << Prompts::CoachingReply
-          elements << HINT_LINK
+        if total_user_message_count == 3 || (total_user_message_count % 6) == 0 || latest_message == "What am I missing here?"
+          generate_article_suggestions = true unless latest_message.include?("hint")
         end
 
         deliver_article_suggestions if generate_article_suggestions
-        deliver_elements(elements, false, true)
+
+        broadcast_to_web(type: "element", message: AvatarService.coach_avatar_row, user_generated: false)
+        broadcast_to_web(type: "loading", user_generated: false)
+
+        reply = ""
+        hint_link = nil
+        if engaged_messages.blank? && suggested_messages.count < 3
+          reply = Prompts::CoachingReply.new(conversation: @conversation).call
+          multiple_choice_options = 3
+        elsif latest_message == "Give me a hint"
+          reply = Prompts::CoachingReply.new(conversation: @conversation).call
+          hint_link = ANOTHER_HINT_LINK
+        elsif latest_message == "Give me another hint"
+          reply = Prompts::CoachingReply.new(conversation: @conversation).call
+          hint_link = FINAL_HINT_LINK
+          multiple_choice_options = 3
+        elsif latest_message == "What am I missing here?"
+          reply = Prompts::CoachingExplain.new(conversation: @conversation).call
+          hint_link = HINT_LINK
+        else
+          reply = Prompts::CoachingReply.new(conversation: @conversation).call
+          hint_link = HINT_LINK
+        end
+
+        broadcast_to_web(type: "element", message: reply, user_generated: false)
+        if hint_link.present?
+          broadcast_to_web(type: "element", message: hint_link, user_generated: false)
+        end
+
         deliver_multiple_choice_options(multiple_choice_options) if multiple_choice_options.positive?
+
+        @conversation.messages.create!(content: reply, user_generated: false)
         broadcast_to_web(type: "done")
       elsif @conversation.email?
         deliver_elements([Prompts::CoachingReply])

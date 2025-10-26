@@ -6,7 +6,11 @@ module Prompts
         raw_json = raw_json.with_indifferent_access
 
         if Array(raw_json["paragraphs"]).any?
-          return raw_json["paragraphs"].map { |content| "<p>#{content}</p>" }.join("\n").html_safe
+          formatted_paragraphs = raw_json["paragraphs"].map do |content|
+            "<p>#{content}</p>".html_safe
+          end
+
+          return formatted_paragraphs.join
         end
       end
     end

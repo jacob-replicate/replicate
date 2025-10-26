@@ -129,3 +129,16 @@ body {
   overflow-x: auto;
   font-size: 0.875rem;
 }
+
+pre {
+  background-color: #333;
+  color: white;
+  padding: 15px;
+  border-radius: 7px;
+  margin: 20px 0;
+  white-space: pre-wrap;      /* allow wrapping */
+  word-break: break-word;     /* break long words if needed */
+  overflow-x: auto;           /* add horizontal scroll if still too wide */
+  max-width: 100%;            /* never exceed parent width */
+  box-sizing: border-box;
+}
