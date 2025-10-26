@@ -22,6 +22,7 @@ Constraints:
 - No em dashes, no semicolons.
 - The content should be focused around how infra systems fail at work. Don't call that out directly, but it should be focused around the engineer not making a SEV-1 fuckup at work.
 - Each title must be fewer than 25 words. Don't make it too hype driven. Cool, calm, collected, aimed at technical audiences who appreciate precision, not theatrics.
+- Don't refer to the articles as "pieces".
 - No big words for the sake of looking smart. Make it approachable.
 - Each description must be fewer than 270 characters.
 - The description shouldn't say things like "This post explores". Don't waste space on filler words. Get to the point.
