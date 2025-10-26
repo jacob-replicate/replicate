@@ -156,6 +156,7 @@
       const isUser = data.user_generated;
       const isLoading = data.type === "loading";
       const isMultipleChoice = data.type === "multiple_choice";
+      const isArticleSuggestions = data.type === "article_suggestions";
       const isDone = data.type === "done";
 
       if (isLoading) {
@@ -202,7 +203,49 @@
         const userClass = conversationEl.dataset.userClass;
         const finalClass = isUser ? `${baseClass} ${userClass}` : baseClass;
 
-        if(isMultipleChoice) {
+        if(isArticleSuggestions) {
+          const articles = Array.isArray(data.message) ? data.message : [];
+          const container = document.createElement("div");
+          container.className = "mt-4 mb-6 flex flex-col gap-2 article-suggestion-options";
+
+          if (loadingEl) {
+            loadingEl.remove();
+            loadingEl = null;
+          }
+          if (dotInterval) {
+            clearInterval(dotInterval);
+            dotInterval = null;
+          }
+          activeStreamContainer = null;
+
+          articles.forEach((article) => {
+            console.log(article);
+            const option = document.createElement("a");
+            option.className = "text-[16px] p-2 border border-gray-300 bg-gray-50 rounded hover:border-gray-400 hover:bg-gray-50 cursor-pointer transition";
+            option.href = "/conversations/" + article.conversation_id;
+            option.target = "_blank";
+            option.rel = "noopener noreferrer";
+
+            const titleSpan = document.createElement("a");
+            titleSpan.innerHTML = article.title;
+            titleSpan.href = "/conversations/" + article.conversation_id;
+            titleSpan.target = "_blank";
+            titleSpan.className = "text-indigo-600 text-[14px] underline underline-offset-2 font-medium";
+
+            const descSpan = document.createElement("div");
+            descSpan.className = "mt-2 text-gray-600 text-[14px]";
+            descSpan.innerHTML = article.description;
+
+            option.appendChild(titleSpan);
+            option.appendChild(descSpan);
+            container.appendChild(option);
+          });
+
+          conversationEl.appendChild(container);
+          scrollToBottom();
+
+          return;
+        } else if(isMultipleChoice) {
           const options = Array.isArray(data.message) ? data.message : [];
           const uniqueGroupId = "choice_group_" + Math.random().toString(36).substring(2, 10);
           const container = document.createElement("div");
@@ -210,7 +253,7 @@
 
           options.forEach((opt, i) => {
             const option = document.createElement("label");
-            option.className = "text-[16px] flex items-center p-2 border border-indigo-300 bg-indigo-50 rounded-lg hover:border-indigo-400 hover:bg-indigo-50 cursor-pointer transition";
+            option.className = "text-[14px] flex items-center p-2 border border-indigo-300 bg-indigo-50 rounded-lg hover:border-indigo-400 hover:bg-indigo-50 cursor-pointer transition";
 
             const input = document.createElement("input");
             input.type = "radio";
@@ -254,6 +297,8 @@
             container.appendChild(option);
           });
 
+          scrollToBottom();
+
           conversationEl.appendChild(container);
 
           return;
@@ -281,6 +326,7 @@
       { channel: "ConversationChannel", id: conversationId },
       {
         received(data) {
+          console.log(data);
           if (data.sequence !== undefined) {
             messageQueue[data.sequence] = data;
             tryFlushQueue();

@@ -33,13 +33,6 @@ RSpec.describe SanitizeAiContent do
       allow(AvatarService).to receive(:coach_avatar_row).with(first: true).and_return(avatar_tokens[:coach_first])
       allow(AvatarService).to receive(:coach_avatar_row).with(no_args).and_return(avatar_tokens[:coach])
 
-      # brand avatars
-      allow(AvatarService).to receive(:brand_avatar_row).with(first: true).and_return(avatar_tokens[:brand_first])
-      allow(AvatarService).to receive(:brand_avatar_row).with(no_args).and_return(avatar_tokens[:brand])
-      allow(AvatarService).to receive(:brand_avatar_row).with(name: "Overview").and_return(avatar_tokens[:brand_overview])
-      allow(AvatarService).to receive(:brand_avatar_row).with(name: "Jacob Comer", first: true, photo_path: "jacob-square.jpg").and_return(avatar_tokens[:brand_jacob])
-      allow(AvatarService).to receive(:brand_avatar_row).with(name: "replicate.info").and_return(avatar_tokens[:brand_replicate])
-
       # student avatars
       allow(AvatarService).to receive(:student_avatar_row).with("Taylor Morales").and_return(avatar_tokens[:student_taylor])
       allow(AvatarService).to receive(:student_avatar_row).with("Casey Patel").and_return(avatar_tokens[:student_casey])

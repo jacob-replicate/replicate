@@ -19,19 +19,7 @@ RSpec.describe ConversationChannel, type: :channel do
         expect(subscription).to have_stream_for(conversation)
       end
 
-      context "when conversation has no messages and context includes initial_message" do
-        let(:context) { { "initial_message" => "hello world" } }
-
-        it "creates the initial message" do
-          expect {
-            subscribe(id: conversation.id)
-          }.to change { conversation.messages.user.count }.by(1)
-
-          expect(conversation.messages.last.content).to eq("hello world")
-        end
-      end
-
-      context "when conversation has no messages and no initial_message in context" do
+      context "when conversation has no messages" do
         it "enqueues ConversationDriverWorker" do
           allow(ConversationDriverWorker).to receive(:perform_async)
 

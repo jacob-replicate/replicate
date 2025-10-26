@@ -3,7 +3,7 @@ module MessageGenerators
     def deliver_intro
       if @conversation.web?
         deliver_elements([AvatarService.coach_avatar_row, Prompts::CoachingIntro], false, true)
-        deliver_multiple_choice_options(4)
+        deliver_multiple_choice_options(3)
         broadcast_to_web(type: "done")
       elsif @conversation.email?
         elements = ["Hey there,"]
@@ -26,12 +26,18 @@ module MessageGenerators
         latest_message = @conversation.latest_user_message.content
         elements = [AvatarService.coach_avatar_row]
         multiple_choice_options = 0
+        generate_article_suggestions = false
         suggested_messages = @conversation.messages.user.where(suggested: true).where.not("content ILIKE ?", "%hint%")
         engaged_messages = @conversation.messages.user.where(suggested: false).where.not("content ILIKE ?", "%hint%")
+        total_user_message_count = @conversation.messages.user.count
 
-        if engaged_messages.blank? && suggested_messages.count < 3
+        if total_user_message_count == 2 || (total_user_message_count % 5) == 0
+          generate_article_suggestions = true
+        end
+
+        if engaged_messages.blank? && suggested_messages.count == 1
           elements << Prompts::CoachingReply
-          multiple_choice_options = 4 - suggested_messages.count
+          multiple_choice_options = 3
         elsif latest_message == "Give me a hint"
           elements << Prompts::CoachingReply
           elements << ANOTHER_HINT_LINK
@@ -47,11 +53,29 @@ module MessageGenerators
           elements << HINT_LINK
         end
 
+        deliver_article_suggestions if generate_article_suggestions
         deliver_elements(elements, false, true)
         deliver_multiple_choice_options(multiple_choice_options) if multiple_choice_options.positive?
         broadcast_to_web(type: "done")
       elsif @conversation.email?
         deliver_elements([Prompts::CoachingReply])
+      end
+    end
+
+    def deliver_article_suggestions
+      broadcast_to_web(message: AvatarService.jacob_avatar_row, type: "element", user_generated: false)
+      broadcast_to_web(type: "loading", user_generated: false)
+
+      3.times do
+        response = Prompts::ArticleSuggestions.new(conversation: @conversation).call
+        options = response["options"]
+        intro_sentence = response["intro_sentence"]
+
+        if options.any?
+          broadcast_to_web(message: "<p>#{intro_sentence}</p>", type: "element", user_generated: false)
+          broadcast_to_web(message: options, type: "article_suggestions", user_generated: false)
+          return
+        end
       end
     end
 
@@ -64,6 +88,36 @@ module MessageGenerators
           return
         end
       end
+    end
+
+    def article_suggest_intro_sentences
+      [
+        "Interesting direction. These might help connect the dots a bit further.",
+        "You're on the right track. Here are a few writeups that go a bit deeper.",
+        "This reminded me of a few good reads. Might help sharpen the boundary you're exploring.",
+        "Good instincts. Here's some reading that pushes the idea further if you're in the mood.",
+        "You’re circling something important. Do these links spark any ideas?",
+
+        "If you're hitting a blind spot, these might help unblock it. No rush.",
+
+        "This echoes some lessons we’ve seen before. Might be worth skimming:",
+        "Strong read. Want to see how others handled something similar?",
+        "Good catch. These notes might back up the mental model you're sketching.",
+        "You’re asking the right questions. Here's some backup thinking that digs deeper.",
+        "Sharp. Here are a few more nudges in that same direction.",
+        "Noticed you’re probing at a tough edge case. These might help sharpen the intuition.",
+        "You’re pushing into real systems territory. This might help add language to what you're seeing.",
+        "These might give you a clearer lens on the tradeoff you're wrestling with.",
+        "Seen others get burned here — this writeup captures it well.",
+        "You're not wrong — here's how others have tried to thread that same needle.",
+        "Some context that might help de-risk your next move.",
+        "You’re not far off. These go a bit deeper down that rabbit hole.",
+        "The questions you're asking deserve better answers. These helped me.",
+        "If this feels murky, you’re not alone. These helped clarify it for others.",
+        "This one gets weird fast. Here are some breadcrumbs to stay grounded.",
+        "You're brushing up against a blind spot most folks don’t notice. These might help.",
+        "If that part felt shaky, these reads usually land well for folks at your level."
+      ]
     end
   end
 end
