@@ -15,6 +15,7 @@ Constraints:
 - Avoid vague language. No hedging, no filler.
 - Complete sentences to answer the previous question(s) in the conversation's most recent message.
 - Never start an option with "I" or "I'd" - just get to the point.
+- No semicolons or em dashes.
 - Each option must be fewer than 15 words.
 - Reflect core infra reasoning, not specific tools.
 - No code fences, no markdown, no special characters. Plain text sentences (in your JSON response).
