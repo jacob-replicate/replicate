@@ -15,6 +15,7 @@ Constraints:
 - Avoid vague language. No hedging, no filler.
 - Complete sentences. Don't just use a bunch of verbose technical words. Keep it approachable. Regular capitalization, not title case.
 - The title/description shouldn't directly answer any of the questions you just asked. The should content should be related to this convo, but also feel like a regular piece of learning content the engineer would be interested in.
+- The user should not be mentioned at all in the title/description. No "You will learn". It should just describe the technical topic.
 - The intro sentence should be less than 20 words, and introduce the blog posts below.
 - The content should be focused around how infra systems fail at work. Don't call that out directly, but it should be focused around the engineer not making a SEV-1 fuckup at work.
 - Each title must be fewer than 20 words. Don't make it too hype driven. Cool, calm, collected, aimed at technical audiences who appreciate precision, not theatrics.

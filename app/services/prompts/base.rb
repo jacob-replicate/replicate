@@ -6,6 +6,10 @@ module Prompts
       @conversation = conversation
       @context = context
 
+      if @context.present?
+        @context = @context.merge(@conversation.context || {}) if @conversation.present?
+      end
+
       if @context.blank? && @conversation.present?
         @context = @conversation.context || {}
       end
