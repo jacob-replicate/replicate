@@ -31,11 +31,11 @@ module MessageGenerators
         engaged_messages = @conversation.messages.user.where(suggested: false).where.not("content ILIKE ?", "%hint%")
         total_user_message_count = @conversation.messages.user.count
 
-        if total_user_message_count == 2 || (total_user_message_count % 5) == 0
+        if total_user_message_count == 3 || (total_user_message_count % 6) == 0
           generate_article_suggestions = true
         end
 
-        if engaged_messages.blank? && suggested_messages.count == 1
+        if engaged_messages.blank? && suggested_messages.count < 3
           elements << Prompts::CoachingReply
           multiple_choice_options = 3
         elsif latest_message == "Give me a hint"

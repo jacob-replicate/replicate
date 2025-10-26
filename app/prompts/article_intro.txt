@@ -8,7 +8,7 @@
 - Don't mention the post at all. Just keep that in mind when thinking about what they hope to learn. Don't greet them at all. Just get to the content.
 - I want it to feel like you're engineering peer they're learning from over Slack, not a full-blown blog post. One single paragraph. No HTML.
 - Each paragraph should have under 60 words. You can use up to 4 paragraphs.
-- Your final paragraph should be an open-ended question under 15 words. It should be easy. It's not a quiz. Just that thing ChatGPT does to keep people engaged in learning with yes/no questions around if they want to keep learning about something.
+- Your final paragraph should be an open-ended question under 10 words. It should be easy. It's not a quiz. Just that thing ChatGPT does to keep people engaged in learning with yes/no questions around if they want to keep learning about something.
 
 Response format:
 - Your response should be a single JSON object with a "paragraphs" key that contains an array of strings. That's it. Nothing else.

@@ -16,10 +16,13 @@ Constraints:
 - Complete sentences. Don't just use a bunch of verbose technical words. Keep it approachable. Regular capitalization, not title case.
 - The title/description shouldn't directly answer any of the questions you just asked. The should content should be related to this convo, but also feel like a regular piece of learning content the engineer would be interested in.
 - The user should not be mentioned at all in the title/description. No "You will learn". It should just describe the technical topic.
-- The intro sentence should be less than 20 words, and introduce the blog posts below.
-- Your intro sentence should highlight what they'll get out of reading these posts.
+- The intro sentence should be less than 80 characters, and introduce the blog posts below.
+- Your intro sentence should highlight what the articles are about. Complete sentence, no fragments.
+- The intro sentence should not reference the number of posts (e.g., "Two articles that..."). They don't care. Just describe the content.
+- No em dashes, no semicolons.
 - The content should be focused around how infra systems fail at work. Don't call that out directly, but it should be focused around the engineer not making a SEV-1 fuckup at work.
-- Each title must be fewer than 20 words. Don't make it too hype driven. Cool, calm, collected, aimed at technical audiences who appreciate precision, not theatrics.
+- Each title must be fewer than 25 words. Don't make it too hype driven. Cool, calm, collected, aimed at technical audiences who appreciate precision, not theatrics.
+- No big words for the sake of looking smart. Make it approachable.
 - Each description must be fewer than 270 characters.
 - The description shouldn't say things like "This post explores". Don't waste space on filler words. Get to the point.
 - Highlight core infra reasoning + fundamentals, not specific tools. I want them to improve their production instincts.
