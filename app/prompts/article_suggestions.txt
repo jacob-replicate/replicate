@@ -17,14 +17,10 @@ Constraints:
 - The title/description shouldn't directly answer any of the questions you just asked. The should content should be related to this convo, but also feel like a regular piece of learning content the engineer would be interested in.
 - The user should not be mentioned at all in the title/description. No "You will learn". It should just describe the technical topic.
 - The intro sentence should be less than 20 words, and introduce the blog posts below.
+- Your intro sentence should highlight what they'll get out of reading these posts.
 - The content should be focused around how infra systems fail at work. Don't call that out directly, but it should be focused around the engineer not making a SEV-1 fuckup at work.
 - Each title must be fewer than 20 words. Don't make it too hype driven. Cool, calm, collected, aimed at technical audiences who appreciate precision, not theatrics.
-- Each description must be fewer than 300 characters.
+- Each description must be fewer than 270 characters.
 - The description shouldn't say things like "This post explores". Don't waste space on filler words. Get to the point.
 - Highlight core infra reasoning + fundamentals, not specific tools. I want them to improve their production instincts.
 - No code fences, no markdown, no special characters. Plain text sentences (in your JSON response).
-
-Examples:
-- "Two angles that might sharpen how you think about systemic drift and coordination risk."
-- "You're brushing up against a blind spot most folks don't notice. These might help."
-- "Good instincts. Here is some reading that pushes the ideas further if you're in the mood."

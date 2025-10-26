@@ -2,8 +2,8 @@ class ConversationsController < ApplicationController
   before_action :verify_admin
 
   def show
-    @title = "replicate.info"
     @conversation = Conversation.where(channel: "web").find(params[:id])
+    @title = @conversation.context["title"] || "replicate.info"
   end
 
   def update
