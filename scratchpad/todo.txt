@@ -1,69 +1,41 @@
-- Regenerate button (soft delete everything >= created_at of the message you want to regen from)
-- Remember previous article submissions, so you don't repeat them.
-- 30min timer -> progress report at the end
-- Every 6 messages, provide an off-ramp (e.g., personalized articles about blind spots, status reports, etc)
-    - personalized articles get you out of the SEV -- "Does any of this resonate with what your team is experiencing?"
-
-- "Give me a hint" should include links to sharable articles unique to their blind spot.
-- "Close incident" button?
-- Opacity on replicate
-- Make certain technical phrases clickable, and link to a new conversation explaining the concept
-- Break up "coaching explain" prompt. Mini lesson -> links to articles -> bolded question, not just one big paragraph.
-- Edit messages
-- The article is just a conversation. There's a text box at the bottomw with a different coaching prompt.
-- incident selector below main loop
-
-Sharing
-- Shareable link to conversation (read-only)
-- Show multiple choice options in persisted conversation -- can't just generate in JS -- MessageElement, maybe?
-
+Website:
+- "Close incident" button? There's no sense of closure right now. Should there be?
+- Incident selector on homepage / within the conversation. Add a timer + redirect back to the selector?
+- More off-ramps (e.g., status report, email form, "share this link with your team in Slack" on weekdays, "add your work email" on weekends)
+- More visual "coaching explain prompt? Did you already solve this with paragraphs?
 - Add more incidents to the homepage + the ability to cycle through the lower effort ones if you run out?
-- Automatically use coaching_explain if they're angry, or clearly not getting it. Maybe dial back to multiple choice questions?
-- Export screenshot
-- Hardcoded incident prompts, but keep the "Thinking..." ellipsis. It's important. Just sleep in JS for the first one or something.
-- Add a "Returning Web Users" tile to growth page
+
+Quality of life:
+- Persist previous article recommendations, so you don't repeat them. -- make "parent_conversation_id" a real column, so you can query all the actual article URL's + pluck their context title/description
+- Edit messages + Regenerate button (soft delete everything >= created_at of the message you want to regen from)
+- Make certain technical phrases clickable, and link to an article convo
 - Stop showing a blank conversation when you use the back button.
 - Figure out why it sometimes just dies. OpenAI upstream issues? Add a "Hey, this is awkward. Put in your email to continue later." or something.
+- Show multiple choice options in persisted conversation -- can't just generate in JS -- MessageElement, maybe?
+- Figure out why auditing doesn't work
+- Login to support@ + jacob@ on your phone just in case.
 
-Soon:
------------
-- Make Postmark only look at email-based messages. The "channel" belongs on the message. You should be able to take an email message over to web, since you have way more control over one-click CTA's. Less clunky.
+Email:
+- Audit what needs to be ported over once you eventually transition back into the paid version (e.g., multiple choice, article links, etc).
+- Make it possible to clone a conversation into a separate web-based fork. Don't try to maintain two channels in a single conversation.
+- Make sure to add the resubscribe link in the final "We're auto-unsubscribing you" email. -- and maybe actually send one?
+- After first contract, pay ~$1k for a verified checkmark in Gmail -- VMC - Verified Mark Certificate, like Verisign for logos. Need a custom trademarked logo too.
+- Add an email after auto-delete of data, but somebody replies to a super old thread -- "Sorry, I might have auto-deleted that conversation after 3 months of inactivity. <Want to start a new one? Type 1. for secrets management 2. for something else 3. for whatever"
+
+Paid Version:
+- Monthly email report format to Directors. Make it a PDF that Rails renders, which you can attach in Postmark email, that they can forward to VP.
 
 Not Super Important:
 ----------------------
 - Cancel try-replicate + Apollo billing. Zero traction from cold email + feels spammy. Seeing traction from ads. Lean in.
-- Figure out why auditing doesn't work
 - Carousel screenshots for conversations + code snippets
 - YouTube video
 - Check conversation scrolling on mobile -- doing it too early?
 - First name in coaching loop emails if known? Only do that for Contact, not Member?
-- .shuffle.pop through subject lines to guarantee uniqueness?
-- Remove the newline between tech_explanation -> CTA in cold email.
 - Double check all your plans for overcharging (e.g., Apollo, Postmark, etc)
 - Add more incidents. You have 6 weeks total (really 5 -- initial + 5 weeks)
-- Cron job to filter inbox + draft replies
-- Make sure to add the resubscribe link in the final "We're auto-unsubscribing you" email.
 - Don't send weekly emails to people who bounced. Bounce check on cold, not on transactional? - Postmark does this automatically?
-- Attach PDF's + inline JPG's once they close the loop
-- GPT 5 (in email, at least, not on web where it's slow af)
-- :coaching_should_continue prompt -- uncomment guard clause in coaching message generator
 - Handle email throttling for abuse
-- Figure out how to figure out in Postmark's UI if emails bounced, so you can manually flag + notify the account owner.
-- Move Missive to Mercury account
 - Protect your S3 credentials from misuse -- spin down old keys
-- Figure out when bills land in Mercury account, so you can fund the account on time.
-- Double check Apollo invoicing + Mercury card transition
-- Find Apollo payment receipt from late August (~$59) + brainstorm any vendors you missed. Double check for all invoices.
-- How will you know if your Bouncer credits are almost up?
-- Add a "check your spam folder" message to the homepage after you submit the form
 - Create a procurement PDF you can link to in your "Welcome to replicate.info!" email?
-- Monthly email report format to Directors. Make it a PDF that Rails renders, which you can attach in Postmark email, that they can forward to VP.
-- Bouncer API call on owner email with loading spinner
-- Accordion left/right links floated around the homepage conversation.
-- PagerDuty (or alternative, maybe, so you don't mix with Hashi? Sentry app, maybe?)
 - Automated data deletion + audit logging
-- After first contract, pay ~$1k for a verified checkmark in Gmail -- VMC - Verified Mark Certificate, like Verisign for logos. Need a custom trademarked logo too.
-- Synthetic checks to verify homepage is still up
-- Add an email after auto-delete of data, but somebody replies to a super old thread -- "Sorry, I might have auto-deleted that conversation after 3 months of inactivity. <Want to start a new one? Type 1. for secrets management 2. for something else 3. for whatever"
-
-- Test for Prompts::CoachingIntro (since it has custom logic - might find some to cut)
