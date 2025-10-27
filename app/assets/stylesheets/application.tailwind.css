@@ -137,14 +137,9 @@ pre {
   font-size: 14px;
   border-radius: 7px;
   white-space: pre;
-  margin: 20px 0;
   overflow-x: auto;           /* add horizontal scroll if still too wide */
   max-width: 100%;            /* never exceed parent width */
   box-sizing: border-box;
-}
-
-pre:last-child {
-  margin-bottom: 0;
 }
 
 pre {

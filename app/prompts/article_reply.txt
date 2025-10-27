@@ -11,7 +11,7 @@
 - Don't mix <pre> blocks into the middle of sentences. They should stand alone, or be described by a complete sentence beforehand.
 - Don't include any links.
 - If you want to share code, it needs to be in its own paragraph. You need to use the <pre>var a = 5;</pre> HTML tag. You can use the \n newline character in the code tag for multiple lines. No JSON or markdown code snippets.
-- You as many paragraphs as you want, just make sure each one has fewer than 60 words. No minimum word requirement, just stay below that cap per paragraph.
+- Use as many paragraphs as you want, just make sure each one has fewer than 60 words. No minimum word requirement, just stay below that cap per paragraph.
 - Your final paragraph should be an open-ended question under 10 words. It should be easy. It's not a quiz. Just that thing ChatGPT does to keep people engaged in learning with yes/no questions around if they want to keep learning about something.
 - Always complete sentences. Nothing like "Example heartbeat:" or any other subheader format.
 - Use phrases relevant to software engineers, not stuff from other engineering disciplines.

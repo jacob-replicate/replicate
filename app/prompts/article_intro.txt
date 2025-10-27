@@ -10,7 +10,7 @@
 - If you want to share code, it needs to be in its own paragraph. You need to use the <pre>var a = 5;</pre> HTML tag. You can use the \n newline character in the code tag for multiple lines. No JSON or markdown code snippets.
 - Don't mention the post at all. Just keep that in mind when thinking about what they hope to learn. Don't greet them at all. Just get to the content.
 - I want it to feel like you're engineering peer they're learning from over Slack, not a polished blog post.
-- You as many paragraphs as you want, just make sure each one has fewer than 60 words. No minimum word requirement, just stay below that cap per paragraph.
+- Use as many paragraphs as you want, just make sure each one has fewer than 80 words. No minimum word requirement, just stay below that cap per paragraph.
 - Try to use a <pre></pre> tag (or multiple) if you can (e.g., code snippets, log examples, configurations, etc). Only skip it if you absolutely can't think of a good reason.
 - Always complete sentences. Nothing like "Example heartbeat:" or any other subheader format.
 - Use phrases relevant to software engineers, not phrases that are mostly common in other engineering disciplines (e.g., circuit breakers).

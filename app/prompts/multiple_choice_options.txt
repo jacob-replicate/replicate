@@ -6,7 +6,7 @@ Background Info:
 - The question is meant to be a trap: it sounds simple, but reveals gaps in how they reason about safety boundaries, trust, or guarantees.
 - Now, generate multiple choice responses that reflect how they interpret the situation, not what they’d do.
 - Each answer should show a different mental model, theory, or heuristic they might believe to be true.
-- Your only goal is to surface different ways someone might think about the original question — not steps they’d take.
+- Your only goal is to surface different ways someone might think about the original question.
 - No answer should be obviously wrong. Flawed is fine, but not outright incorrect or nonsensical or junior-level quality work.
 
 Action Requested:
@@ -17,11 +17,10 @@ Action Requested:
 - Return only the JSON.
 
 Constraints:
-- Avoid vague language. No hedging, no filler.
-- Complete sentences to answer the previous question(s) in the conversation's most recent message.
+- Avoid vague language. No filler. You can hedge a little bit, since we're talking about assumptions, not data we 100% have. You're probably sure about these answers, but not 100%. Don't be too confident. You're confident where you'd look first, not confident what the solution is.
+- Complete sentences to answer the previous question(s) in the conversation's most recent message. Don't use the . period character though.
 - Never start an option with "I" or "I'd" - just get to the point.
 - The phrasing of your options should align with the tense of the question asked, the style, etc.
-- Your answers don't always need to be in a first-person perspective. For example, if the question asks something like "What happens when...", answer. Don't just reply with a first-person action. Match the vibe of the questions asked earlier in the convo.
 - No semicolons or em dashes.
 - Each option must be fewer than 12 words.
 - Precise technical terms are fine, but avoid jargon overload. Don't make it look like word salad for non-SREs.

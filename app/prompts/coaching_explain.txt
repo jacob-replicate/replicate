@@ -8,7 +8,7 @@ Root Cause:
 - {{CONTEXT_INCIDENT}}
 
 Response format:
-- Your response should be a single JSON object with a "paragraphs" key that contains an array of strings. That's it. Nothing else. Try to return a single paragraph unless absolutely necessary.
+- Your response should be a single JSON object with a "paragraphs" key that contains an array of strings. That's it. Nothing else.
 
 Constraints:
 - Explain the core concept + blind spot displayed by the user directly and concretely. Don’t obscure meaning or withhold context.
@@ -16,6 +16,7 @@ Constraints:
 - Don't use **markdown** bold text syntax. Only <span class='font-semibold'>HTML syntax</span> to highlight a few key terms/phrases in your reply if needed (optional). No other HTML tags other than <span class='font-semibold'></span> and <pre></pre> (without classes) if you want to share code / logs / etc.
 - Don't include any links. No em dashes.
 - If you want to share code/logs/etc, it needs to be in its own paragraph. You need to use the <pre>var a = 5;</pre> HTML tag. You can use the \n newline character in the <pre> tag for multiple lines. No JSON or markdown code snippets.
+- Use as many paragraphs as you want, just make sure each one has fewer than 60 words. No minimum word requirement, just stay below that cap per paragraph.
 - Speak in short, declarative sentences. You’re explaining, not lecturing.
 - End with one forward-looking question that extends the lesson, not a riddle.
 - Never use praise or filler. Keep a professional, composed tone — sharp, but generous.

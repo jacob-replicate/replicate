@@ -1,12 +1,15 @@
 Website:
-- "Close incident" button? There's no sense of closure right now. Should there be?
 - Incident selector on homepage / within the conversation. Add a timer + redirect back to the selector?
+- Multiple choice options on what to learn next in article view. Never drop those. Fuck the "Answer yes" option, just click on one of 3 great follow-ups. Persist them.
+- "Close incident" button? There's no sense of closure right now. Should there be?
 - More off-ramps (e.g., status report, email form, "share this link with your team in Slack" on weekdays, "add your work email" on weekends)
 - More visual "coaching explain prompt? Did you already solve this with paragraphs?
 - Add more incidents to the homepage + the ability to cycle through the lower effort ones if you run out?
 
 Quality of life:
+- CodeMirror
 - Extract common paragraph + JSON + <pre> formatting logic into a shared {{INSTRUCTIONS_BLOCK}} component
+- Shared validation rules to reject em dashes, semi-colons outside of code blocks, etc. Tiny shit that it often misses.
 - Persist previous article recommendations, so you don't repeat them. -- make "parent_conversation_id" a real column, so you can query all the actual article URL's + pluck their context title/description
 - Edit messages + Regenerate button (soft delete everything >= created_at of the message you want to regen from)
 - Make certain technical phrases clickable, and link to an article convo
