@@ -143,6 +143,10 @@ pre {
   box-sizing: border-box;
 }
 
+pre:last-child {
+  margin-bottom: 0;
+}
+
 pre {
   white-space: pre !important;          /* don’t wrap */
   overflow-x: auto !important;          /* scroll horizontally */

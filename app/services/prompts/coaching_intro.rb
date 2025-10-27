@@ -5,7 +5,7 @@ module Prompts
       return "" if intro_paragraph.nil?
 
       classes = (@conversation.present? && @conversation.web?) ? " class='font-medium'" : ""
-      intro_paragraph + "<p><b#{classes}>What's your first move here?</b></p>".html_safe
+      intro_paragraph + "<p><b#{classes}>What's going through your head?</b></p>".html_safe
     end
   end
 end

@@ -7,7 +7,7 @@ Background Info:
 - Now, generate multiple choice responses that reflect how they interpret the situation, not what they’d do.
 - Each answer should show a different mental model, theory, or heuristic they might believe to be true.
 - Your only goal is to surface different ways someone might think about the original question — not steps they’d take.
-- No answer shoudl be obviously wrong. Flawed is fine, but not outright incorrect or nonsensical or junior-level quality work.
+- No answer should be obviously wrong. Flawed is fine, but not outright incorrect or nonsensical or junior-level quality work.
 
 Action Requested:
 - Write {{CONTEXT_MAX}} distinct multiple choice answers to your most recent question(s).

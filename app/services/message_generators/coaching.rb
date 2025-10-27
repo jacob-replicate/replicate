@@ -24,7 +24,6 @@ module MessageGenerators
     def deliver_reply
       if @conversation.web?
         latest_message = @conversation.latest_user_message.content
-        elements = [AvatarService.coach_avatar_row]
         multiple_choice_options = 0
         generate_article_suggestions = false
         suggested_messages = @conversation.messages.user.where(suggested: true).where.not("content ILIKE ?", "%hint%")
@@ -42,7 +41,7 @@ module MessageGenerators
 
         hint_link = nil
         if engaged_messages.blank? && suggested_messages.count < 2
-          reply = Prompts::CoachingReply.new(conversation: @conversation).call
+          reply = Prompts::CoachingReply.new(conversation: @conversation, context: { special_instructions: "- Despite what you'll read below, I want this reply to be visual. Vivid. At least 200 characters, with a relevant <pre> tag that enhances the story. This is your 2nd post in the conversation. The first one was light, since they're cold traffic. I want to keep layering on the details. Add some color." }).call
           multiple_choice_options = 3
         elsif latest_message == "Give me a hint"
           reply = Prompts::CoachingReply.new(conversation: @conversation).call
