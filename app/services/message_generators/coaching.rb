@@ -31,7 +31,7 @@ module MessageGenerators
         engaged_messages = @conversation.messages.user.where(suggested: false).where.not("content ILIKE ?", "%hint%")
         total_user_message_count = @conversation.messages.user.count
 
-        if total_user_message_count == 3 || (total_user_message_count % 6) == 0 || latest_message == "What am I missing here?"
+        if total_user_message_count == 2 || (total_user_message_count % 6) == 0 || latest_message == "What am I missing here?"
           generate_article_suggestions = true unless latest_message.include?("hint")
         end
 
@@ -41,7 +41,7 @@ module MessageGenerators
         broadcast_to_web(type: "loading", user_generated: false)
 
         hint_link = nil
-        if engaged_messages.blank? && suggested_messages.count < 3
+        if engaged_messages.blank? && suggested_messages.count < 2
           reply = Prompts::CoachingReply.new(conversation: @conversation).call
           multiple_choice_options = 3
         elsif latest_message == "Give me a hint"
