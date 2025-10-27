@@ -7,9 +7,8 @@ Website:
 - Add more incidents to the homepage + the ability to cycle through the lower effort ones if you run out?
 
 Quality of life:
-- CodeMirror
-- Extract common paragraph + JSON + <pre> formatting logic into a shared {{INSTRUCTIONS_BLOCK}} component
 - Shared validation rules to reject em dashes, semi-colons outside of code blocks, etc. Tiny shit that it often misses.
+- Validation to cut out widows and orphans on desktop -- i.e., character count validations at the prompt level.
 - Persist previous article recommendations, so you don't repeat them. -- make "parent_conversation_id" a real column, so you can query all the actual article URL's + pluck their context title/description
 - Edit messages + Regenerate button (soft delete everything >= created_at of the message you want to regen from)
 - Make certain technical phrases clickable, and link to an article convo

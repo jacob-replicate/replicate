@@ -222,7 +222,6 @@
           activeStreamContainer = null;
 
           articles.forEach((article) => {
-            console.log(article);
             const option = document.createElement("a");
             option.className = "text-[16px] p-3 border border-gray-300 shadow-sm bg-gray-50 rounded-md hover:border-indigo-400 cursor-pointer transition";
             option.href = "/conversations/" + article.conversation_id;
@@ -321,6 +320,7 @@
         document.querySelectorAll(".hint-link").forEach((link) => { link.remove(); });
 
         activeStreamContainer.innerHTML += data.message;
+        hljs.highlightAll();
         scrollToBottom();
       }
     }
@@ -329,7 +329,6 @@
       { channel: "ConversationChannel", id: conversationId },
       {
         received(data) {
-          console.log(data);
           if (data.sequence !== undefined) {
             messageQueue[data.sequence] = data;
             tryFlushQueue();
@@ -339,6 +338,8 @@
         }
       }
     );
+
+    hljs.highlightAll();
   });
 </script>
 
