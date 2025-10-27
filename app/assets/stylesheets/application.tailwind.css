@@ -109,10 +109,6 @@ body {
   opacity: 0.7;
 }
 
-.message-body a {
-  text-decoration: underline;
-}
-
 pre code {
   font-size: 14px;
   border-radius: 5px;

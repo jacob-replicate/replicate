@@ -7,7 +7,7 @@ Background Info:
 
 Action Requested:
 - Each option should reflect a different line of thinking, theory, or heuristic. They don’t have to be actions.
-- Format must be a single JSON object with an "intro_sentence" key, and an "options" key containing an array of objects, each with a "title" and "description" field.
+- Format must be a single JSON object with an "intro_sentence" key (string), and an "options" key containing an array of objects, each with a "title" and "description" field.
 - The options collection should have 2 elements.
 - Return only the JSON.
 
@@ -16,7 +16,7 @@ Constraints:
 - Complete sentences. Don't just use a bunch of verbose technical words. Keep it approachable. Regular capitalization, not title case.
 - The title/description shouldn't directly answer any of the questions you just asked. The should content should be related to this convo, but also feel like a regular piece of learning content the engineer would be interested in.
 - The user should not be mentioned at all in the title/description. No "You will learn". It should just describe the technical topic.
-- The intro sentence should be less than 80 characters, and introduce the blog posts below.
+- The intro sentence should be less than 60 characters, and introduce the blog posts below.
 - Your intro sentence should highlight what the articles are about. Complete sentence, no fragments.
 - The intro sentence should not reference the number of posts (e.g., "Two articles that..."). They don't care. Just describe the content.
 - No self-congratulatory takes. -- i.e., don't say "Thoughtful take" -- you wrote the blog, just describe the content.

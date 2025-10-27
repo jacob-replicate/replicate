@@ -30,7 +30,7 @@ module MessageGenerators
         engaged_messages = @conversation.messages.user.where(suggested: false).where.not("content ILIKE ?", "%hint%")
         total_user_message_count = @conversation.messages.user.count
 
-        if total_user_message_count == 2 || (total_user_message_count % 6) == 0 || latest_message == "What am I missing here?"
+        if total_user_message_count == 3 || (total_user_message_count % 7) == 0 || latest_message == "What am I missing here?"
           generate_article_suggestions = true unless latest_message.include?("hint")
         end
 
@@ -76,14 +76,12 @@ module MessageGenerators
       broadcast_to_web(message: AvatarService.jacob_avatar_row, type: "element", user_generated: false)
       broadcast_to_web(type: "loading", user_generated: false)
 
-      3.times do
+      10.times do
         response = Prompts::ArticleSuggestions.new(conversation: @conversation).call
-        options = response["options"]
-        intro_sentence = response["intro_sentence"]
-
-        if options.any?
-          broadcast_to_web(message: "<p>#{intro_sentence}</p>", type: "element", user_generated: false)
-          broadcast_to_web(message: options, type: "article_suggestions", user_generated: false)
+        html = response["html"]
+        if html.present?
+          @conversation.messages.create!(content: "<p>#{AvatarService.jacob_avatar_row}</p>#{html}", user_generated: false)
+          broadcast_to_web(message: html, type: "article_suggestions", user_generated: false)
           return
         end
       end

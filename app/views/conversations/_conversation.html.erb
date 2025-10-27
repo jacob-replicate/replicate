@@ -13,7 +13,7 @@
         </div>
       <% end %>
       <% @conversation.messages.order(created_at: :asc).each_with_index do |m, i| %>
-        <div class="flex <%= i > 0 ? "mt-6" : "" %> <%= m.user_generated ? 'justify-end' : 'justify-start' %>">
+        <div class="flex <%= i > 0 ? "mt-8" : "" %> <%= m.user_generated ? 'justify-end' : 'justify-start' %>">
           <% message_classes = "#{base_message_classes} #{system_message_classes unless m.user_generated} #{user_message_classes if m.user_generated}" %>
           <div class="<%= message_classes %>"><%= m.content.gsub(HINT_LINK, "").gsub(ANOTHER_HINT_LINK, "").gsub(FINAL_HINT_LINK, "").html_safe %></div>
         </div>
@@ -207,45 +207,12 @@
         const finalClass = isUser ? `${baseClass} ${userClass}` : `${baseClass} w-full`;
 
         if(isArticleSuggestions) {
-          const articles = Array.isArray(data.message) ? data.message : [];
-          const container = document.createElement("div");
-          container.className = "mt-4 mb-6 flex flex-col gap-4 article-suggestion-options";
+          if (loadingEl) loadingEl.remove();
+          if (dotInterval) clearInterval(dotInterval);
 
-          if (loadingEl) {
-            loadingEl.remove();
-            loadingEl = null;
-          }
-          if (dotInterval) {
-            clearInterval(dotInterval);
-            dotInterval = null;
-          }
           activeStreamContainer = null;
-
-          articles.forEach((article) => {
-            const option = document.createElement("a");
-            option.className = "text-[16px] p-3 border border-gray-300 shadow-sm bg-gray-50 rounded-md hover:border-indigo-400 cursor-pointer transition";
-            option.href = "/conversations/" + article.conversation_id;
-            option.target = "_blank";
-            option.rel = "noopener noreferrer";
-
-            const titleSpan = document.createElement("a");
-            titleSpan.innerHTML = article.title;
-            titleSpan.href = "/conversations/" + article.conversation_id;
-            titleSpan.target = "_blank";
-            titleSpan.className = "text-indigo-600 text-[16px] underline underline-offset-4 font-medium";
-
-            const descSpan = document.createElement("div");
-            descSpan.className = "mt-2 text-gray-700 text-[15px]";
-            descSpan.innerHTML = article.description;
-
-            option.appendChild(titleSpan);
-            option.appendChild(descSpan);
-            container.appendChild(option);
-          });
-
-          conversationEl.appendChild(container);
+          conversationEl.insertAdjacentHTML("beforeend", "<div class='mt-3 mb-4'>" + data.message + "</div>");
           scrollToBottom();
-
           return;
         } else if(isMultipleChoice) {
           const options = Array.isArray(data.message) ? data.message : [];

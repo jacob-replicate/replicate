@@ -5,7 +5,7 @@ class StaticController < ApplicationController
   def index
     context = {
       conversation_type: :coaching,
-      incident: INCIDENTS.sample["prompt"]
+      incident: (WEB_INCIDENTS + INCIDENTS.map { |i| i["prompt"] }).sample
     }
 
     @conversation = Conversation.create!(context: context, channel: "web", ip_address: request.remote_ip)

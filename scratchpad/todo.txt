@@ -9,7 +9,6 @@ Website:
 Quality of life:
 - Shared validation rules to reject em dashes, semi-colons outside of code blocks, etc. Tiny shit that it often misses.
 - Validation to cut out widows and orphans on desktop -- i.e., character count validations at the prompt level.
-- Persist previous article recommendations, so you don't repeat them. -- make "parent_conversation_id" a real column, so you can query all the actual article URL's + pluck their context title/description
 - Edit messages + Regenerate button (soft delete everything >= created_at of the message you want to regen from)
 - Make certain technical phrases clickable, and link to an article convo
 - Stop showing a blank conversation when you use the back button.
@@ -27,6 +26,7 @@ Email:
 
 Paid Version:
 - Monthly email report format to Directors. Make it a PDF that Rails renders, which you can attach in Postmark email, that they can forward to VP.
+- Additional tracks? Security, GRC, etc.
 
 Not Super Important:
 ----------------------
