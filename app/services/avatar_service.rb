@@ -8,6 +8,6 @@ class AvatarService
   end
 
   def self.avatar_row(name: "replicate.info", photo_path: "logo.png")
-    "<div><div class='flex items-center gap-3'><div style='width: 32px'><img src='/#{photo_path}' style='border-radius: 100%' /></div><div class='font-medium'>#{name}</div></div></div>"
+    "<div><div class='flex items-center gap-3'><div style='width: 28px'><img src='/#{photo_path}' style='border-radius: 100%' /></div><div class='font-medium tracking-tight'>#{name}</div></div></div>"
   end
 end

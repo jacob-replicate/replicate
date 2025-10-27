@@ -2,7 +2,7 @@ module MessageGenerators
   class Coaching < MessageGenerators::Base
     def deliver_intro
       if @conversation.web?
-        deliver_elements([AvatarService.coach_avatar_row, Prompts::CoachingIntro], false, true)
+        deliver_elements([AvatarService.avatar_row(name: "Incident Summary"), Prompts::CoachingIntro], false, true)
         deliver_multiple_choice_options(3)
         broadcast_to_web(type: "done")
       elsif @conversation.email?

@@ -8,7 +8,8 @@ class SanitizeAiContent
   def clean(response)
     avatars = [
       AvatarService.coach_avatar_row,
-      AvatarService.jacob_avatar_row
+      AvatarService.jacob_avatar_row,
+      AvatarService.avatar_row(name: "Incident Summary")
     ].reject(&:blank?)
 
     avatars.each { |avatar| response.gsub!(avatar, "") }
