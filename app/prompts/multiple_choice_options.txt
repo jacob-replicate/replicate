@@ -7,6 +7,7 @@ Background Info:
 - Now, generate multiple choice responses that reflect how they interpret the situation, not what they’d do.
 - Each answer should show a different mental model, theory, or heuristic they might believe to be true.
 - Your only goal is to surface different ways someone might think about the original question.
+- These answers shouldn't be definitive. They should use words like "seems", "might", "could", "appears", "likely", "probably", etc. Don't overdo it.
 - No answer should be obviously wrong. Flawed is fine, but not outright incorrect or nonsensical or junior-level quality work.
 
 Action Requested:
@@ -22,7 +23,7 @@ Constraints:
 - Never start an option with "I" or "I'd" - just get to the point.
 - The phrasing of your options should align with the tense of the question asked, the style, etc.
 - No semicolons or em dashes.
-- Each option must be fewer than 12 words.
+- Each option must be fewer than 90 characters.
 - Precise technical terms are fine, but avoid jargon overload. Don't make it look like word salad for non-SREs.
 - Reflect core infra reasoning, not specific tools.
 - Don't mention specific tools unless absolutely necessary.

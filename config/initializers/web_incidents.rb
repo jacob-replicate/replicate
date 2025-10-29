@@ -5,7 +5,6 @@ WEB_INCIDENTS = [
   "A schema change removed a nullable column — and the next deploy crashed every signup.",
   "A stale config in staging masked a 503 loop in production for nearly 3 hours.",
   "A malformed webhook payload bypassed validation and poisoned the audit trail.",
-  "The incident response bot went down with the same dependency it was meant to report on.",
   "A caching layer upgrade dropped all write-through logic — production data diverged within minutes.",
   "Rate limits were enforced globally, not per user — and a single customer blocked the entire API.",
   "A misconfigured health check caused a node rotation storm that degraded performance company-wide.",

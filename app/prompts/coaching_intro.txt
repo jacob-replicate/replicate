@@ -5,19 +5,25 @@ It should feel grounded, observant, and quietly provocative - not polished or pe
 Incident Summary (don't include this verbatim, just use it to inform your thinking):
 {{CONTEXT_INCIDENT}}
 
+{{FORMATTING_RULES_PARAGRAPHS}}
+- Return 3 paragraphs. 1st paragraph text, 2nd paragraph <pre><code class="language-something">block like this</code></pre>, 3rd paragraph more text about incident.
+- The 1st and 3rd paragraph should have fewer than 240 characters each.
+- The code block should show whatever technical artifact is most relevant for the cold traffic viewing this page. Get them hooked, whether that's log lines, network traces, CLI output, code snippet, whatever will land the hardest with a hardcore SRE visitor. Use whatever length is needed for the code block. No character requirements on the code block. Do what feels right.
+
 Constraints:
 - Think hard. 10/10 A+ quality only. Deliver your best work.
 - Paint a picture, and describe a real symptom from the SEV. You need to make the customer-facing pain abundantly clear, followed by a few technical signals that tipped engineers off about the problem.
 - Don't give the engineer any action items. Don't ask them to check any logs, or contact support, or anything like that. We're giving the engineer a complex problem to chew on, so we can see where their mental model snaps.
-- Don't address the engineer directly (e.g., "Hey there -"). Describe the problem in a single, crisp paragraph. I'm telling you who they are so you can calibrate the complexity and tone, not address them.
+- Don't address the engineer directly (e.g., "Hey there -"). Describe the problem in a crisp words. I'm telling you who they are so you can calibrate the complexity and tone, not address them.
+- Briefly weave in how this impacts the customer, how support discovered the issue, etc. Make it feel like an internal #incidents update at a mid-market SaaS company, not just the tech puzzle.
 - Use present progressive tense to describe unfolding behavior. Treat it like a live SEV-1 update in Slack. It's still in progress, and the team is actively responding.
 - Never include a question. End with a literal, observational sentence - no speculation, summaries, or prompts.
 - Treat them like a peer. Be precise when describing technical concepts. No junior-level hand-holding. If they don't know something, they'll google it.
 - Make the infra failure real and specific. Don't just talk about the customer pain. Present a SEV puzzle mid-fire that an SRE can't help but engage with.
-- You must keep the output under 40 words.
 - Make sure to frame the pain. Why is this symptom bad?
 - The incident should feel like a real snapshot from production - grounded in logs, UI, or system output - not a dramatic reenactment or vague hunch.
 - Don't use weird technical language or logs that would look weird in an email.
+- No cheesy example company names. Keep it serious.
 - You are communicating with a strong Staff engineer. Treat them like a peer. Be precise when describing technical concepts.
 - Never write from the reader's perspective (e.g., "you notice," "you're on the page").
 - Describe a literal sequence - one event leading to another - as if replaying a debug session.

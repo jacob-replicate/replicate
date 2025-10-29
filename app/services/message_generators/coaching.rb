@@ -2,7 +2,11 @@ module MessageGenerators
   class Coaching < MessageGenerators::Base
     def deliver_intro
       if @conversation.web?
-        deliver_elements([AvatarService.avatar_row(name: "Incident Summary"), Prompts::CoachingIntro], false, true)
+        broadcast_to_web(type: "element", message: AvatarService.avatar_row(name: "Incident Summary"), user_generated: false)
+        broadcast_to_web(type: "loading", user_generated: false)
+        reply = Prompts::CoachingIntro.new(conversation: @conversation).call
+        broadcast_to_web(type: "element", message: reply, user_generated: false)
+
         deliver_multiple_choice_options(3)
         broadcast_to_web(type: "done")
       elsif @conversation.email?
@@ -40,10 +44,8 @@ module MessageGenerators
         broadcast_to_web(type: "loading", user_generated: false)
 
         hint_link = nil
-        if total_user_message_count == 1 && suggested_messages.count == 1
-          reply = Prompts::CoachingReply.new(conversation: @conversation, context: { special_instructions: "- Despite what you'll read below, I want this reply to be visual. Vivid. At least 200 characters, with a relevant <pre> tag that enhances the story. This is your 2nd post in the conversation. The first one was light, since they're cold traffic. I want to keep layering on the details. Add some color." }).call
-          hint_link = HINT_LINK
-        elsif latest_message == "Give me a hint"
+        reply = ""
+        if latest_message == "Give me a hint"
           reply = Prompts::CoachingReply.new(conversation: @conversation).call
           hint_link = ANOTHER_HINT_LINK
         elsif latest_message == "Give me another hint"

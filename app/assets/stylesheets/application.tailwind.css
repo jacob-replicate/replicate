@@ -109,6 +109,9 @@ body {
   opacity: 0.7;
 }
 
+pre {
+  margin: 15px 0;
+}
 pre code {
   font-size: 14px;
   border-radius: 5px;

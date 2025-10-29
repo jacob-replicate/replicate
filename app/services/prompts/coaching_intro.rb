@@ -1,11 +1,19 @@
 module Prompts
   class CoachingIntro < Prompts::Base
     def call
-      intro_paragraph = SanitizeAiContent.call(fetch_raw_output)
-      return "" if intro_paragraph.nil?
+      30.times do
+        raw_json = JSON.parse(fetch_raw_output) rescue {}
+        raw_json = raw_json.with_indifferent_access
 
-      classes = (@conversation.present? && @conversation.web?) ? " class='font-medium'" : ""
-      intro_paragraph + "<p><b#{classes}>What's going through your head?</b></p>".html_safe
+        if Array(raw_json["paragraphs"]).any?
+          formatted_paragraphs = raw_json["paragraphs"].map do |content|
+            "<p>#{content}</p>".html_safe
+          end
+
+          classes = (@conversation.present? && @conversation.web?) ? " class='font-semibold'" : ""
+          return formatted_paragraphs.join + "<p><b#{classes}>What's your first thought here?</b></p>".html_safe
+        end
+      end
     end
   end
 end
