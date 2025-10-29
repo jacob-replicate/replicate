@@ -15,7 +15,7 @@ Constraints:
 - Paint a picture, and describe a real symptom from the SEV. You need to make the customer-facing pain abundantly clear, followed by a few technical signals that tipped engineers off about the problem.
 - Don't give the engineer any action items. Don't ask them to check any logs, or contact support, or anything like that. We're giving the engineer a complex problem to chew on, so we can see where their mental model snaps.
 - Don't address the engineer directly (e.g., "Hey there -"). Describe the problem in a crisp words. I'm telling you who they are so you can calibrate the complexity and tone, not address them.
-- Briefly weave in how this impacts the customer, how support discovered the issue, etc. Make it feel like an internal #incidents update at a mid-market SaaS company, not just the tech puzzle.
+- Briefly weave in how this impacts the customer, how support discovered the issue, etc. Make it feel like an internal #incidents update at a mid-market SaaS company, not just the tech puzzle. Don't waste the entire text on the customer pain, but do frame it.
 - Use present progressive tense to describe unfolding behavior. Treat it like a live SEV-1 update in Slack. It's still in progress, and the team is actively responding.
 - Never include a question. End with a literal, observational sentence - no speculation, summaries, or prompts.
 - Treat them like a peer. Be precise when describing technical concepts. No junior-level hand-holding. If they don't know something, they'll google it.
@@ -41,6 +41,8 @@ Constraints:
 - If it sounds like it came from a blog post or product tour, rewrite it. You're DMing a teammate - keep it crisp and observational.
 - Do not describe what the browser, user, or system does intentionally. No phrasing like "Safari skips," "Chrome fetches," or "other browsers behave differently." Only describe what is logged, rendered, or measured.
 - Do not describe what the system wants, expects, tries to do, or does intentionally. No thoughts, intent, logic, or behavior - only literal logs, rendered outputs, or measurements.
+- Don't use the phrase "circuit breaker"
+- Don't start with the word "Customer". Mix it in naturally.
 
 ## Voice:
 

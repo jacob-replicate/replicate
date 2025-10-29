@@ -9,6 +9,7 @@ Response Format Constraints:
 - Don't include any links. You must never use em dashes.
 - Always complete sentences. Nothing like "Example heartbeat:" or any other subheader format.
 - I want it to feel like you're engineering peer they're learning from over Slack, not a polished blog post.
+- You don't have to show dates/times. However, if you do, always include the date + time, and use UTC. The current time is {{CONTEXT_CURRENT_TIME}}. Take that into consideration if you're showing timestamps. You don't have to use the exact current time, just don't do anything stupid like show timestamps from 6 months ago.
 - Use the language-plaintext class for any non-code snippets for the HighlightJS <pre><code class="language-plaintext">blocks</code></pre>. Use the regular language class for popular coding languages if you can though.
 - Only return the content I'm requesting. No intro text. You're giving me data that I can drop into the coaching app directly.
 - Use phrases relevant to software engineers, not phrases that are mostly common in other engineering disciplines (e.g., circuit breakers).

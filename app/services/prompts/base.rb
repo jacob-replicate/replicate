@@ -13,6 +13,8 @@ module Prompts
       if @context.blank? && @conversation.present?
         @context = @conversation.context || {}
       end
+
+      @context[:current_time] = Time.current.utc.to_s
     end
 
     def call
