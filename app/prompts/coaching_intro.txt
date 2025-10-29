@@ -7,7 +7,7 @@ Incident Summary (don't include this verbatim, just use it to inform your thinki
 
 {{FORMATTING_RULES_PARAGRAPHS}}
 - Return 3 paragraphs. 1st paragraph text, 2nd paragraph <pre><code class="language-something">block like this</code></pre>, 3rd paragraph more text about incident.
-- The 1st and 3rd paragraph should have fewer than 330 characters each. The response should have at least one bolded technical term that's hyper relevant to the story. Not a random bold. Add more bold text if needed.
+- The 1st and 3rd paragraph should have fewer than 330 characters each.
 - The code block should show whatever technical artifact is most relevant for the cold traffic viewing this page. Get them hooked, whether that's log lines, network traces, CLI output, code snippet, whatever will land the hardest with a hardcore SRE visitor. Use whatever length is needed for the code block. No character requirements on the code block. Do what feels right.
 
 Constraints:
