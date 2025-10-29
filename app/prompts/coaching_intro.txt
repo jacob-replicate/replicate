@@ -7,15 +7,17 @@ Incident Summary (don't include this verbatim, just use it to inform your thinki
 
 {{FORMATTING_RULES_PARAGRAPHS}}
 - Return 3 paragraphs. 1st paragraph text, 2nd paragraph <pre><code class="language-something">block like this</code></pre>, 3rd paragraph more text about incident.
-- The 1st and 3rd paragraph should have fewer than 240 characters each.
+- The 1st and 3rd paragraph should have fewer than 330 characters each. The response should have at least one bolded technical term that's hyper relevant to the story. Not a random bold. Add more bold text if needed.
 - The code block should show whatever technical artifact is most relevant for the cold traffic viewing this page. Get them hooked, whether that's log lines, network traces, CLI output, code snippet, whatever will land the hardest with a hardcore SRE visitor. Use whatever length is needed for the code block. No character requirements on the code block. Do what feels right.
 
 Constraints:
 - Think hard. 10/10 A+ quality only. Deliver your best work.
+- Your first sentence needs to make the customer pain abundantly clear. Don't jump into the tech stuff too quickly. What is the fire? Plain english, more precise tech stuff later in the reply.
 - Paint a picture, and describe a real symptom from the SEV. You need to make the customer-facing pain abundantly clear, followed by a few technical signals that tipped engineers off about the problem.
 - Don't give the engineer any action items. Don't ask them to check any logs, or contact support, or anything like that. We're giving the engineer a complex problem to chew on, so we can see where their mental model snaps.
 - Don't address the engineer directly (e.g., "Hey there -"). Describe the problem in a crisp words. I'm telling you who they are so you can calibrate the complexity and tone, not address them.
 - Briefly weave in how this impacts the customer, how support discovered the issue, etc. Make it feel like an internal #incidents update at a mid-market SaaS company, not just the tech puzzle. Don't waste the entire text on the customer pain, but do frame it.
+- Make sure to highlight a path or two the engineering team has already tried to no success. We're in the middle of the SEV and stuff is still on fire, not the start or end. Take the easy options away from the engineer.
 - Use present progressive tense to describe unfolding behavior. Treat it like a live SEV-1 update in Slack. It's still in progress, and the team is actively responding.
 - Never include a question. End with a literal, observational sentence - no speculation, summaries, or prompts.
 - Treat them like a peer. Be precise when describing technical concepts. No junior-level hand-holding. If they don't know something, they'll google it.

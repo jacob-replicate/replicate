@@ -11,7 +11,7 @@ module Prompts
           end
 
           classes = (@conversation.present? && @conversation.web?) ? " class='font-semibold'" : ""
-          return formatted_paragraphs.join + "<p><b#{classes}>What's your first thought here?</b></p>".html_safe
+          return formatted_paragraphs.join + "<p style='margin-top: 30px; font-size: 17px'><b#{classes}>What's your first thought here?</b></p>".html_safe
         end
       end
     end
