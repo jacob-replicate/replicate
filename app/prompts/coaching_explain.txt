@@ -8,6 +8,8 @@ Root Cause:
 - {{CONTEXT_INCIDENT}}
 
 {{FORMATTING_RULES_PARAGRAPHS}}
+- Try to keep each paragraph under 300 characters. Use as many paragraphs as you need to illustrate the point. Clarity, not verbosity for the sake of it.
+- Don't use more than 4 paragraphs.
 
 Constraints:
 - Explain the core concept + blind spot displayed by the user directly and concretely. Don’t obscure meaning or withhold context. You're in teaching mode now.
