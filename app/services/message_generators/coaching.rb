@@ -75,14 +75,15 @@ module MessageGenerators
     end
 
     def deliver_article_suggestions
-      broadcast_to_web(message: AvatarService.jacob_avatar_row, type: "element", user_generated: false)
+      subheader = "<span class='font-semibold tracking-tight'>Recommended Reading</span>"
+      broadcast_to_web(message: subheader, type: "element", user_generated: false)
       broadcast_to_web(type: "loading", user_generated: false)
 
       10.times do
         response = Prompts::ArticleSuggestions.new(conversation: @conversation).call
         html = response["html"]
         if html.present?
-          @conversation.messages.create!(content: "<p>#{AvatarService.jacob_avatar_row}</p>#{html}", user_generated: false)
+          @conversation.messages.create!(content: "<p>#{subheader}</p>#{html}", user_generated: false)
           broadcast_to_web(message: html, type: "article_suggestions", user_generated: false)
           return
         end
