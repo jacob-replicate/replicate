@@ -1,13 +1,23 @@
-Website:
-- Multiple choice -> SINGLE article (faded out at bottom), generate title + copy in one prompt
-    - Keep the two article suggestion format, but also introduce this new "article_deep_dive" or whatever
-    - The deep dive should land first (3rd message), then the suggestions later on hint at what you're clicking into
-- Incident selector on homepage / within the conversation. Add a timer + redirect back to the selector?
-- Multiple choice options on what to learn next in article view. Never drop those. Fuck the "Answer yes" option, just click on one of 3 great follow-ups. Persist them.
-- "Close incident" button? There's no sense of closure right now. Should there be?
-- More off-ramps (e.g., status report, email form, "share this link with your team in Slack" on weekdays, "add your work email" on weekends)
-- More visual "coaching explain prompt? Did you already solve this with paragraphs?
-- Add more incidents to the homepage + the ability to cycle through the lower effort ones if you run out?
+- Incident selector on homepage / within the conversation.
+
+- New elements:
+    - Share this SEV with your friends link (replicate.info/retry-storm)
+    - Multiple choice options on what to learn next in article view. Never drop those. Fuck the "Answer yes" option, just click on one of 3 great follow-ups. Persist them.
+    - Single article highlight (show the first paragraph, faded -- not a title + description)
+    - Line Graph (e.g. retry rates, queue depth, replica lag)
+    - Bar Chart (e.g. per-zone errors, API versions in use)
+    - Timeline (e.g. event order, deployment propagation)
+    - Heatmap (e.g. fault intensity across services or zones)
+    - Table (e.g. config diffs, replica status, customer impact matrix)
+    - Sequence Diagram (e.g. write flow across services)
+    - Scatterplot (e.g. latency vs correctness, node drift)
+    - Tree Graph (e.g. version conflicts or data forks)
+    - Cards -- show some text, and it flips to other text whenever you click on it
+    - Flow charts
+    - Diff view to highlight PR changes
+    - File browser
+    - Group chat transcripts - "where's the flaw in their thinking here?"
+
 
 Quality of life:
 - Shared validation rules to reject em dashes, semi-colons outside of code blocks, etc. Tiny shit that it often misses.
@@ -19,7 +29,15 @@ Quality of life:
 - Figure out why it sometimes just dies. OpenAI upstream issues? Add a "Hey, this is awkward. Put in your email to continue later." or something.
 - Show multiple choice options in persisted conversation -- can't just generate in JS -- MessageElement, maybe?
 - Figure out why auditing doesn't work
+
+Paid Version
+----------------------
+
 - Login to support@ + jacob@ on your phone just in case.
+
+Paid Version:
+- Monthly email report format to Directors. Make it a PDF that Rails renders, which you can attach in Postmark email, that they can forward to VP.
+- Additional tracks? Security, GRC, etc.
 
 Email:
 - Audit what needs to be ported over once you eventually transition back into the paid version (e.g., multiple choice, article links, etc).
@@ -27,10 +45,6 @@ Email:
 - Make sure to add the resubscribe link in the final "We're auto-unsubscribing you" email. -- and maybe actually send one?
 - After first contract, pay ~$1k for a verified checkmark in Gmail -- VMC - Verified Mark Certificate, like Verisign for logos. Need a custom trademarked logo too.
 - Add an email after auto-delete of data, but somebody replies to a super old thread -- "Sorry, I might have auto-deleted that conversation after 3 months of inactivity. <Want to start a new one? Type 1. for secrets management 2. for something else 3. for whatever"
-
-Paid Version:
-- Monthly email report format to Directors. Make it a PDF that Rails renders, which you can attach in Postmark email, that they can forward to VP.
-- Additional tracks? Security, GRC, etc.
 
 Not Super Important:
 ----------------------
