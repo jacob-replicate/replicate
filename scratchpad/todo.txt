@@ -1,22 +1,40 @@
 - Incident selector on homepage / within the conversation.
 
+- New script to judge the conversation so far, and figure out which elements from the list below to include.
+- Then you can just inject them into "special instructions" + not clog up the prompt with a bunch of formatting instructions it doesn't need.
+- Ask GPT for an array of element types to render, then only pass those into the next prompt to render in full.
+
 - New elements:
-    - Share this SEV with your friends link (replicate.info/retry-storm)
-    - Multiple choice options on what to learn next in article view. Never drop those. Fuck the "Answer yes" option, just click on one of 3 great follow-ups. Persist them.
     - Single article highlight (show the first paragraph, faded -- not a title + description)
+    - Multiple choice options on what to learn next in article view. Never drop those. Fuck the "Answer yes" option, just click on one of 3 great follow-ups. Persist them.
+
+    - Diff view to highlight PR changes
+        - https://github.com/rtfpessoa/diff2html?tab=readme-ov-file#online-example
+
     - Line Graph (e.g. retry rates, queue depth, replica lag)
-    - Bar Chart (e.g. per-zone errors, API versions in use)
-    - Timeline (e.g. event order, deployment propagation)
-    - Heatmap (e.g. fault intensity across services or zones)
+        - Simple: https://echarts.apache.org/examples/en/editor.html?c=line-simple
+        - Stacked: https://echarts.apache.org/examples/en/editor.html?c=line-stack
+        - Look at https://echarts.apache.org/examples/en/editor.html?c=line-sections to figure out how to create highlighted red columns to emphasize the fire.
+
     - Table (e.g. config diffs, replica status, customer impact matrix)
-    - Sequence Diagram (e.g. write flow across services)
+
+    - Timeline (e.g. event order, deployment propagation)
+        - This is just a text summary. You don't need a fancy JS library.
+
+    - Bar Chart (e.g. per-zone errors, API versions in use)
+        - https://echarts.apache.org/examples/en/editor.html?c=bar-simple
+
     - Scatterplot (e.g. latency vs correctness, node drift)
-    - Tree Graph (e.g. version conflicts or data forks)
+        - https://echarts.apache.org/examples/en/editor.html?c=scatter-simple
+
+    - Heatmap (e.g. fault intensity across services or zones)
+        - https://echarts.apache.org/examples/en/editor.html?c=heatmap-cartesian
+
+    - Sequence Diagram (e.g. write flow across services)
     - Cards -- show some text, and it flips to other text whenever you click on it
     - Flow charts
-    - Diff view to highlight PR changes
-    - File browser
     - Group chat transcripts - "where's the flaw in their thinking here?"
+    - Share this SEV with your friends link (replicate.info/retry-storm)
 
 
 Quality of life:
