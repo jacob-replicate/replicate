@@ -5,6 +5,7 @@ module MessageGenerators
         broadcast_to_web(type: "element", message: AvatarService.avatar_row(name: "Incident Summary"), user_generated: false)
         broadcast_to_web(type: "loading", user_generated: false)
         reply = Prompts::CoachingIntro.new(conversation: @conversation).call
+        @conversation.messages.create!(content: "<p>#{AvatarService.avatar_row(name: "Incident Summary")}</p>#{reply}", user_generated: false)
         broadcast_to_web(type: "element", message: reply, user_generated: false)
 
         deliver_multiple_choice_options(3)
