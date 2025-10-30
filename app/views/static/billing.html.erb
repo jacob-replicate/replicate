@@ -1,6 +1,10 @@
 <div class="py-6">
   <h1 class="text-3xl font-semibold mb-4">Billing & Payment Terms</h1>
-  <p class="text-sm text-gray-500 mb-6">Last updated: October 6, 2025</p>
+  <p class="text-sm text-gray-500 mb-6">Last updated: October 29, 2025</p>
+
+  <p class="mb-6">
+    The web version is free. The paid version simply <span class="font-semibold">emails</span> your team a SEV-1 every week in private threads, and sends actionable progress reports to EMs. Here an <a href="/intro-email-desktop.png" class="text-blue-600 hover:underline font-semibold">example conversation</a>.
+  </p>
 
   <p class="mb-6">
     <span class="font-semibold">One annual invoice</span> (USD) due <span class="font-semibold">30 days</span> after your <span class="font-semibold">3-month free trial</span> ends.  Pay by <span class="font-semibold">ACH</span> or <span class="font-semibold">wire</span>.
@@ -17,6 +21,7 @@
   <p class="mb-6 md:mb-8">
     You can also prepay <span class="font-semibold">multi-year</span> terms in one check to shave <span class="font-semibold">30%</span> off the <span class="font-semibold">entire contract</span>.
   </p>
+
 
 <%# ---------- helpers (local to this template) ---------- %>
   <% two_year_total   = ->(p) { (p * 2 * 0.70).round(-2) }   # 30% off entire multi-year
@@ -80,6 +85,9 @@
         </div>
       </div>
     <% end %>
+  </div>
+  <div class="mt-6">
+    <%= render "trial_form" %>
   </div>
 
   <div class="mt-6 md:mt-8 mb-6">
