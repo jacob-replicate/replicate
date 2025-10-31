@@ -46,20 +46,20 @@
     }
 
     function scrollToBottom() {
-      if(pastFirstMessage()) {
-        const input = document.getElementById('message-input');
-        if (input) {
-          const rect = input.getBoundingClientRect();
-          const isVisible = rect.bottom <= window.innerHeight && rect.top >= 0;
+      if (pastFirstMessage()) {
+        const conversation = document.getElementById('conversation');
+        if (!conversation) return;
 
-          if (!isVisible) {
-            const offset = 200; // how much space you want *below* the input
-            const scrollY = window.scrollY;
-            const inputBottom = rect.bottom + scrollY;
-            const scrollTarget = inputBottom - window.innerHeight + offset;
-            window.scrollTo({ top: scrollTarget, behavior: 'smooth' });
-          }
-        }
+        // Find all messages, grab the last non-user one
+        const messages = conversation.querySelectorAll('.message-body.w-full');
+        if (messages.length === 0) return;
+
+        const lastMessage = messages[messages.length - 1];
+        const rect = lastMessage.getBoundingClientRect();
+        const scrollY = window.scrollY;
+        const targetY = rect.top + scrollY - 100; // offset so it’s not glued to top
+
+        window.scrollTo({ top: targetY, behavior: 'smooth' });
       }
     }
 
