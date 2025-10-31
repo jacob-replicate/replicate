@@ -3,6 +3,7 @@ Response Format:
 - Only return the content I'm requesting. No intro text. You're giving me data that I can drop into the coaching app code directly.
 - Each "element" must have a "type" field. Valid options are: "paragraph", "code", and "line_chart".
 - Each element should have a "content" field, whose format depends on the element type.
+- No matter what, always include at least one "paragraph" element.
 
 Response Format Constraints: "paragraph" elements
 - The "content" field for "paragraph" elements must be a string of text.
