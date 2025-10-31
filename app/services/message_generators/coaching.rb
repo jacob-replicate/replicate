@@ -53,6 +53,7 @@ module MessageGenerators
         if latest_message == "Give me a hint"
           reply = Prompts::CoachingReply.new(conversation: @conversation, context: { custom_instructions: custom_instructions }).call
           hint_link = ANOTHER_HINT_LINK
+          multiple_choice_options = 3
         elsif latest_message == "Give me another hint"
           reply = Prompts::CoachingReply.new(conversation: @conversation, context: { custom_instructions: custom_instructions }).call
           hint_link = FINAL_HINT_LINK
