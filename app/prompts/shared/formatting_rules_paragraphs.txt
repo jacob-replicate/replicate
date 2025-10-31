@@ -32,6 +32,7 @@ Response Format Constraints: "line_chart" elements
 - The line chart's "title" should feel like a regular metric configured in the engineer's monitoring system, not a one-off bespoke chart for the exercise.
 - The lines need to be interesting. Not just flat lines or clearly linear. Make it realistic. Include more points + longer timestamps if needed. My example below is minimal. Use the tools I'm unlocking for you creatively.
 - If you're including multiple lines, you better have a great reason, and they should not have similar shapes. You're allowed to just use 1 line in the chart if that fits the story.
+- Leave the "highlight_ranges" empty if there's nothing obvious to highlight in the visual.
 - Must include:
   - `"x_axis_labels"`: Array of strings, ordered labels (e.g. time buckets).
   - `"series"`: Array of objects with:
