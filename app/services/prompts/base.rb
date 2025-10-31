@@ -57,6 +57,7 @@ module Prompts
       30.times do
         Rails.logger.info "Fetching LLM output for Conversation: #{@conversation&.id || 'N/A'}"
         raw_json = JSON.parse(fetch_raw_output) rescue {}
+        Rails.logger.info raw_json.to_json
         raw_json = raw_json.with_indifferent_access
         elements = parse_elements(raw_json["elements"])
         return [prefix, elements, suffix].reject(&:blank?).join if elements.present?

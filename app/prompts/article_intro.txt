@@ -5,7 +5,7 @@
 - Don't include any links.
 - If you want to share code, it needs to be in its own paragraph. You need to use the <pre>var a = 5;</pre> HTML tag. You can use the \n newline character in the code tag for multiple lines. No JSON or markdown code snippets.
 - Don't mention the post at all. Just keep that in mind when thinking about what they hope to learn. Don't greet them at all. Just get to the content.
-- Your final paragraph should be an open-ended question under 10 words. It should be easy. It's not a quiz. Just that thing ChatGPT does to keep people engaged in learning with yes/no questions around if they want to keep learning about something.
+- Never end on an open-ended question that asks them how they want to proceed. I have separate prompts for that.
 
 {{FORMATTING_RULES_PARAGRAPHS}}
 - Try to keep each paragraph under 340 characters. Use as many paragraphs as you need to illustrate the point. Clarity, not verbosity for the sake of it.
