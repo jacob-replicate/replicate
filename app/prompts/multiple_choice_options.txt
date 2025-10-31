@@ -4,10 +4,10 @@ Background Info:
 - We are trying to pressure-test their mental model of how infra systems fail. Not just what they'd do, but how they think.
 - You just asked them a tough conceptual question to surface where their assumptions might be off.
 - The question is meant to be a trap: it sounds simple, but reveals gaps in how they reason about safety boundaries, trust, or guarantees.
-- Now, generate multiple choice responses that reflect how they interpret the situation, not what they’d do.
-- Each answer should show a different mental model, theory, or heuristic they might believe to be true.
-- Your only goal is to surface different ways someone might think about the original question.
-- These answers shouldn't be definitive. They should use words like "seems", "might", "could", "appears", "likely", "probably", etc. Don't overdo it.
+- Now, generate multiple choice responses that reflect how they might reply to your previous prompt.
+- Each answer should highlight a different mental model, theory, or heuristic they might believe to be true. Don't just give answers that all boil down to the same idea.
+- These answers shouldn't be definitive. A few should use words like "seems", "might", "could", "appears", "likely", "probably", etc. Don't overdo it.
+- Don't just reply with first-person actions. If you replied with a hypothetical question, respond accordingly. GPT overindexes on actions even when they don't fit the story/question.
 - No answer should be obviously wrong. Flawed is fine, but not outright incorrect or nonsensical or junior-level quality work.
 
 Action Requested:

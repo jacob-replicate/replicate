@@ -34,6 +34,7 @@ module MessageGenerators
         suggested_messages = @conversation.messages.user.where(suggested: true).where.not("content ILIKE ?", "%hint%")
         engaged_messages = @conversation.messages.user.where(suggested: false).where.not("content ILIKE ?", "%hint%")
         total_user_message_count = @conversation.messages.user.count
+        previous_message = @conversation.messages.user.order(created_at: :desc).first&.content || ""
 
         if total_user_message_count == 3 || (total_user_message_count % 7) == 0 || latest_message == "What am I missing here?"
           generate_article_suggestions = true unless latest_message.include?("hint")
@@ -48,12 +49,8 @@ module MessageGenerators
 
         hint_link = nil
         reply = ""
-        if total_user_message_count == 1
-          custom_instructions = "- Try to use a \"line_chart\" in your reply somehow. Don't use a \"code\" element. Just line chart (single) and paragraphs. Skip this instruction if it doesn't align with the story."
-          reply = Prompts::CoachingReply.new(conversation: @conversation, context: { custom_instructions: custom_instructions }).call
-          multiple_choice_options = 3
-          hint_link = HINT_LINK
-        elsif latest_message == "Give me a hint"
+
+        if latest_message == "Give me a hint"
           reply = Prompts::CoachingReply.new(conversation: @conversation, context: { custom_instructions: custom_instructions }).call
           hint_link = ANOTHER_HINT_LINK
         elsif latest_message == "Give me another hint"
@@ -62,6 +59,15 @@ module MessageGenerators
           multiple_choice_options = 3
         elsif latest_message == "What am I missing here?"
           reply = Prompts::CoachingExplain.new(conversation: @conversation).call
+          hint_link = HINT_LINK
+        elsif total_user_message_count == 1 || (rand(10) < 2 && previous_message.exclude?("<script>"))
+          custom_instructions = "- Try to use a \"line_chart\" in your reply somehow. Don't use a \"code\" element. Just line chart (single) and paragraphs. Skip this instruction if it doesn't align with the story, or the engineer explicitly asked for another format/piece of data."
+          reply = Prompts::CoachingReply.new(conversation: @conversation, context: { custom_instructions: custom_instructions }).call
+          multiple_choice_options = 3
+          hint_link = HINT_LINK
+        elsif total_user_message_count == 1 || rand(100) < 35
+          custom_instructions = "- Try to use a \"code\" element in your reply somehow. Don't use a \"line_chart\" element. Just a single \"code\" element and paragraphs. It should have real code, not logs. Skip this instruction if it doesn't align with the story, or the engineer explicitly asked for another format/piece of data."
+          reply = Prompts::CoachingReply.new(conversation: @conversation, context: { custom_instructions: custom_instructions }).call
           hint_link = HINT_LINK
         else
           reply = Prompts::CoachingReply.new(conversation: @conversation, context: { custom_instructions: custom_instructions }).call

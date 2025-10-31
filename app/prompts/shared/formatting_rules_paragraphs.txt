@@ -28,6 +28,9 @@ Response Format Constraints: "code" elements
 
 Response Format Constraints: "line_chart" elements
 - If you include a line chart, the timelines must align with the rest of the conversation. Don't introduce conflicting time ranges.
+- The line chart should feel like a natural part of the conversation, not something tacked on.
+- The line chart should feel like a regular metric configured in the engineer's monitoring system, not a one-off bespoke chart for the exercise.
+- If you're including multiple lines, you better have a great reason, and they should not have similar shapes. You're allowed to just use 1 line in the chart if that fits the story.
 - Must include:
   - `"x_axis_labels"`: Array of strings, ordered labels (e.g. time buckets).
   - `"series"`: Array of objects with:
