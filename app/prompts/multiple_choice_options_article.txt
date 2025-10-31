@@ -14,6 +14,7 @@ Action Requested:
 Constraints:
 - Avoid vague language. No filler.
 - Never start an option with "I" or "I'd" - just get to the point.
+- Use the correct capilization (e.g., SLO, API), not just all lowercase.
 - Plain english. Precise technical terms are fine, but also keep in mind this is for cold ad traffic to my site. They're not warmed up yet.
 - No semicolons or em dashes.
 - Each option must be fewer than 90 characters.

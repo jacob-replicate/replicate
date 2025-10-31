@@ -7,15 +7,9 @@
 
 - New elements:
     - Single article highlight (show the first paragraph, faded -- not a title + description)
-    - Multiple choice options on what to learn next in article view. Never drop those. Fuck the "Answer yes" option, just click on one of 3 great follow-ups. Persist them.
 
     - Diff view to highlight PR changes
         - https://github.com/rtfpessoa/diff2html?tab=readme-ov-file#online-example
-
-    - Line Graph (e.g. retry rates, queue depth, replica lag)
-        - Simple: https://echarts.apache.org/examples/en/editor.html?c=line-simple
-        - Stacked: https://echarts.apache.org/examples/en/editor.html?c=line-stack
-        - Look at https://echarts.apache.org/examples/en/editor.html?c=line-sections to figure out how to create highlighted red columns to emphasize the fire.
 
     - Table (e.g. config diffs, replica status, customer impact matrix)
 
@@ -39,6 +33,7 @@
 
 
 Quality of life:
+- Scroll to the top of Replicate's message, not to the input box. Focus -> scroll, in that order. Most noticeable in articles with huge replies, but can happen in coaching too.
 - Fix missing "Loading..." after articles load for "What am I missing here?" prompt.
 - Shared validation rules to reject em dashes, semi-colons outside of code blocks, etc. Tiny shit that it often misses.
 - Gsub out ’ characters
