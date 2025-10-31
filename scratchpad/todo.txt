@@ -39,6 +39,7 @@
 
 
 Quality of life:
+- Fix missing "Loading..." after articles load for "What am I missing here?" prompt.
 - Shared validation rules to reject em dashes, semi-colons outside of code blocks, etc. Tiny shit that it often misses.
 - Gsub out ’ characters
 - Validation to cut out widows and orphans on desktop -- i.e., character count validations at the prompt level.

@@ -61,12 +61,12 @@ module MessageGenerators
           reply = Prompts::CoachingExplain.new(conversation: @conversation).call
           hint_link = HINT_LINK
         elsif total_user_message_count == 1 || (rand(10) < 2 && previous_message.exclude?("<script>"))
-          custom_instructions = "- Try to use a \"line_chart\" in your reply somehow. Don't use a \"code\" element. Just line chart (single) and paragraphs. Skip this instruction if it doesn't align with the story, or the engineer explicitly asked for another format/piece of data."
+          custom_instructions = "- Try to use a \"line_chart\" in your reply somehow. Don't use a \"code\" element unless they asked for it. Just line chart (single) and paragraphs. Skip this instruction if it doesn't align with the story, or the engineer explicitly asked for another format/piece of data."
           reply = Prompts::CoachingReply.new(conversation: @conversation, context: { custom_instructions: custom_instructions }).call
           multiple_choice_options = 3
           hint_link = HINT_LINK
         elsif total_user_message_count == 1 || rand(100) < 35
-          custom_instructions = "- Try to use a \"code\" element in your reply somehow. Don't use a \"line_chart\" element. Just a single \"code\" element and paragraphs. It should have real code, not logs. Skip this instruction if it doesn't align with the story, or the engineer explicitly asked for another format/piece of data."
+          custom_instructions = "- Try to use a \"code\" element in your reply somehow. Don't use a \"line_chart\" element unless they asked for it. Just a single \"code\" element and paragraphs. It should have real code, not logs. Skip this instruction if it doesn't align with the story, or the engineer explicitly asked for another format/piece of data."
           reply = Prompts::CoachingReply.new(conversation: @conversation, context: { custom_instructions: custom_instructions }).call
           hint_link = HINT_LINK
         else
