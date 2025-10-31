@@ -28,14 +28,28 @@ Response Format Constraints: "code" elements
 - Example: { "elements": [{ "type": "code", language: "python", content: "def hello_world():\nprint('Hello, world!')" }] }
 
 Response Format Constraints: "line_chart" elements
-- If you include a line chart, the timelines must align with the rest of the conversation. Don't introduce conflicting time ranges.
-- The line chart should feel like a natural part of the conversation, not something tacked on.
+- Line charts must reflect realistic observability metrics and tell a compelling story. Avoid artificial flatness, symmetry, or over-polished shapes.
 - The line chart's "title" should feel like a regular metric configured in the engineer's monitoring system, not a one-off bespoke chart for the exercise.
-- The lines need to be interesting. Not just flat lines or clearly linear lines. Noticeable differences along the y-axis when looking at the lines. Make it realistic. Include more points + longer timestamps if needed. My example below is minimal. Use the tools I'm unlocking for you creatively.
-- If you're including multiple lines, you better have a great reason, and they should not have similar shapes. You're allowed to just use 1 line in the chart if that fits the story.
-- If using multiple lines, don't make the differences between numbers too large. I want to see changes in all of the lines on the chart, not just one dominating the y-axis.
 - Leave the "highlight_ranges" empty if there's nothing obvious to highlight in the visual.
-- Must include:
+- The timeline must align with earlier events in the conversation. Do not introduce conflicting time buckets.
+- The chart should tell a story on its own. Flat lines or mirrored shapes are not helpful.
+- If the data looks too tidy or symmetrical, add noise, spikes, or subtle trends to simulate real-world conditions.
+- Avoid flat lines. At least one line must show noticeable variation.
+- If using multiple lines:
+- They should contrast. Do not submit two lines with the same slope or trajectory.
+- The Y-axis values should be in similar ranges, so one line doesn’t dominate visually.
+- If they overlap too much, either revise one or remove it entirely.
+- It’s okay to use a single line if that’s what makes the story compelling.
+- If two lines are closely related (e.g., cause/effect), introduce lag, overshoot, or jitter between them.
+- If they rise/fall together, their shapes should still differ in slope, duration, or recovery profile.
+- Avoid mirrored bell curves — real systems rarely rise and fall in lockstep.
+Examples of acceptable line shapes:
+- A retry rate that spikes unexpectedly for 10 minutes, then falls.
+- Two services that track closely until one diverges.
+- A jittery CPU line over 20 minutes that reveals a subtle but clear rise.
+- A cache hit rate slowly degrading, then rebounding.
+
+- The element's JSON must include:
   - `"x_axis_labels"`: Array of strings, ordered labels (e.g. time buckets).
   - `"series"`: Array of objects with:
     - `"name"`: Series label (string)
@@ -48,9 +62,9 @@ Response Format Constraints: "line_chart" elements
 
   - Optional: `"title"` and `"subtitle"` (strings)
 
-- The "content" field for line charts must be a Ruby hash structure, not a string or JSON string.
 
-- Line Chart Response Example:
+- The "content" field for line charts must be a Ruby hash structure, not a string or JSON string.
+Line Chart Response Example:
 {
     "elements": [
         {
