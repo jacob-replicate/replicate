@@ -72,7 +72,7 @@ module Prompts
         if element["type"] == "paragraph"
           "<p>#{element["content"]}</p>".html_safe
         elsif element["type"] == "code"
-          "<pre><code class='language-#{element['language']}'>#{element["content"]}</code></pre>".html_safe
+          "<pre><code class='language-#{element['language'].to_s.gsub('language-', '')}'>#{element["content"]}</code></pre>".html_safe
         elsif element["type"] == "line_chart"
           chart_id = "visual-#{rand(1_000_000)}"
           content = Hash(element["content"])
