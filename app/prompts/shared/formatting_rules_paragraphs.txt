@@ -42,6 +42,9 @@ Response Format Constraints: "line_chart" elements
 - It’s okay to use a single line if that’s what makes the story compelling.
 - If two lines are closely related (e.g., cause/effect), introduce lag, overshoot, or jitter between them.
 - If they rise/fall together, their shapes should still differ in slope, duration, or recovery profile.
+- Good charts often show causal lag or offset between related metrics. If one signal rises steeply, the other should respond later or differently. Avoid mirrored rise/fall timing.
+- Let the recovery period tell a story — use delayed falloff, noise, or instability to mimic real SEV fatigue.
+- You should not hit the very top of the y-axis.
 - Avoid mirrored bell curves — real systems rarely rise and fall in lockstep.
 Examples of acceptable line shapes:
 - A retry rate that spikes unexpectedly for 10 minutes, then falls.

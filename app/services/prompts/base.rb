@@ -117,8 +117,7 @@ module Prompts
             var myChart = echarts.init(chartDom);
             var option = {
               title: {
-                text: "#{content["title"]}",
-                subtext: "#{content["subtitle"] || ""}"
+                text: "#{content["title"]}"
               },
               tooltip: { trigger: "axis", axisPointer: { type: "cross" } },
               legend: { data: [#{legend_data}] },
