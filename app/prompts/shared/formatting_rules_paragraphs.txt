@@ -1,7 +1,7 @@
 Response Format:
 - Your response must be a single JSON object with an "elements" key that contains an array of reply elements.
 - Only return the content I'm requesting. No intro text. You're giving me data that I can drop into the coaching app code directly.
-- Each "element" must have a "type" field. Valid options are: "paragraph", "code", and "line_chart".
+- Each "element" must have a "type" field. Valid options are: "paragraph", "code", and "line_chart". You sometimes forget the "type" field and it breaks my code.
 - Each element should have a "content" field, whose format depends on the element type.
 - No matter what, always include at least one "paragraph" element.
 

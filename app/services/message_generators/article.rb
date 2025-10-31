@@ -2,7 +2,7 @@ module MessageGenerators
   class Article < MessageGenerators::Base
     def deliver_intro
       broadcast_to_web(type: "loading", user_generated: false)
-      reply = Prompts::ArticleIntro.new(conversation: @conversation).call + "<p class='font-semibold'>#{ctas.sample}</span>"
+      reply = Prompts::ArticleIntro.new(conversation: @conversation).call + "<p style='margin-top: 20px; font-size: 17px' class='font-semibold'>#{ctas.sample}</span>"
       broadcast_to_web(type: "element", message: reply, user_generated: false)
       @conversation.messages.create!(content: "#{reply}", user_generated: false)
       deliver_multiple_choice_options(3)
