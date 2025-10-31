@@ -297,6 +297,7 @@
 
         activeStreamContainer.innerHTML += data.message;
         hljs.highlightAll();
+        hljs.initLineNumbersOnLoad();
         scrollToBottom();
       }
     }
@@ -316,21 +317,6 @@
     );
 
     hljs.highlightAll();
+    hljs.initLineNumbersOnLoad();
   });
-</script>
-
-<script>
-  const fpPromise = import('https://openfpcdn.io/fingerprintjs/v4').then(FingerprintJS => FingerprintJS.load())
-  fpPromise.then(fp => fp.get()).then(result => {
-    window.visitorId = result.visitorId
-
-    const response = fetch("/conversations/<%= @conversation.id %>", {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]')?.content
-      },
-      body: JSON.stringify({ fingerprint: window.visitorId })
-    });
-  })
 </script>

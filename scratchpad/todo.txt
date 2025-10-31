@@ -3,6 +3,7 @@
 - New script to judge the conversation so far, and figure out which elements from the list below to include.
 - Then you can just inject them into "special instructions" + not clog up the prompt with a bunch of formatting instructions it doesn't need.
 - Ask GPT for an array of element types to render, then only pass those into the next prompt to render in full.
+- You have used them the following times already: { "line_graph": 5, "bar_chart": 3, "diff_view": 2 }. Mix it up.
 
 - New elements:
     - Single article highlight (show the first paragraph, faded -- not a title + description)

@@ -43,8 +43,10 @@
     <%= stylesheet_link_tag "application", as: "style" %>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/vs2015.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.9.0/highlightjs-line-numbers.min.js"></script>
     <%= stylesheet_link_tag "tailwind", as: "style" %>
     <%= javascript_include_tag "application", defer: true %>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@latest/dist/echarts.min.js"></script>
     <%= Sentry.get_trace_propagation_meta.html_safe %>
   </head>
 
