@@ -7,7 +7,7 @@ Root Cause:
 - {{CONTEXT_INCIDENT}}
 
 {{FORMATTING_RULES_PARAGRAPHS}}
-- Try to return a single paragraph unless absolutely necessary. Try to keep paragraphs under 300 characters.
+{{CONTEXT_CUSTOM_INSTRUCTIONS}}
 
 Constraints:
 - Think hard. 10/10 A+ quality only. Deliver your best work.

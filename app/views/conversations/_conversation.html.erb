@@ -295,7 +295,25 @@
 
         document.querySelectorAll(".hint-link").forEach((link) => { link.remove(); });
 
-        activeStreamContainer.innerHTML += data.message;
+        const scriptRegex = /<script\b[^>]*>([\s\S]*?)<\/script>/gi;
+        const scriptBodies = [];
+        const withoutScripts = data.message.replace(scriptRegex, (_, scriptBody) => {
+          scriptBodies.push(scriptBody);
+          return '';
+        });
+
+        activeStreamContainer.innerHTML += withoutScripts;
+
+        setTimeout(() => {
+          for (const script of scriptBodies) {
+            try {
+              new Function(script)();
+            } catch (err) {
+              console.error("Script execution failed", err);
+            }
+          }
+        }, 50);
+
         hljs.highlightAll();
         hljs.initLineNumbersOnLoad();
         scrollToBottom();

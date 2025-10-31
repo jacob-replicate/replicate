@@ -25,6 +25,7 @@ class SanitizeAiContent
     response.gsub!('<b>', "")
     response.gsub!("</b>", "")
     response.gsub!("<html>", "")
+    response.gsub!(/<script\b[^>]*>[\s\S]*?<\/script>/i, "")
     response = strip_tags(response).squish
     response.gsub!("Hey Alex,", "")
     response.gsub!("Hey Taylor,", "")

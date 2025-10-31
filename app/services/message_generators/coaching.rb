@@ -44,20 +44,27 @@ module MessageGenerators
         broadcast_to_web(type: "element", message: AvatarService.coach_avatar_row, user_generated: false)
         broadcast_to_web(type: "loading", user_generated: false)
 
+        custom_instructions = "- Try to return a single \"paragraph\" element. You can include \"code\" and \"line_chart\" elements too if asked, or needed to move the story along. Err on the side of a single concise paragraph most of the time."
+
         hint_link = nil
         reply = ""
-        if latest_message == "Give me a hint"
-          reply = Prompts::CoachingReply.new(conversation: @conversation).call
+        if total_user_message_count == 1
+          custom_instructions = "- Try to use a \"line_chart\" in your reply somehow. Don't use a \"code\" element. Just line chart (single) and paragraphs. Skip this instruction if it doesn't align with the story."
+          reply = Prompts::CoachingReply.new(conversation: @conversation, context: { custom_instructions: custom_instructions }).call
+          multiple_choice_options = 3
+          hint_link = HINT_LINK
+        elsif latest_message == "Give me a hint"
+          reply = Prompts::CoachingReply.new(conversation: @conversation, context: { custom_instructions: custom_instructions }).call
           hint_link = ANOTHER_HINT_LINK
         elsif latest_message == "Give me another hint"
-          reply = Prompts::CoachingReply.new(conversation: @conversation).call
+          reply = Prompts::CoachingReply.new(conversation: @conversation, context: { custom_instructions: custom_instructions }).call
           hint_link = FINAL_HINT_LINK
           multiple_choice_options = 3
         elsif latest_message == "What am I missing here?"
           reply = Prompts::CoachingExplain.new(conversation: @conversation).call
           hint_link = HINT_LINK
         else
-          reply = Prompts::CoachingReply.new(conversation: @conversation).call
+          reply = Prompts::CoachingReply.new(conversation: @conversation, context: { custom_instructions: custom_instructions }).call
           hint_link = HINT_LINK
         end
 

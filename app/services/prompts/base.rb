@@ -55,6 +55,7 @@ module Prompts
 
     def parse_formatted_elements(prefix: nil, suffix: nil)
       30.times do
+        Rails.logger.info "Fetching LLM output for Conversation: #{@conversation&.id || 'N/A'}"
         raw_json = JSON.parse(fetch_raw_output) rescue {}
         raw_json = raw_json.with_indifferent_access
         elements = parse_elements(raw_json["elements"])
@@ -64,25 +65,28 @@ module Prompts
 
     def parse_elements(elements)
       return nil if elements.blank?
+      return nil unless Array(elements).any? { |element| Hash(element)["type"] == "paragraph" }
       Array(elements).reject(&:blank?).map do |element|
+        element = Hash(element)
         if element["type"] == "paragraph"
           "<p>#{element["content"]}</p>".html_safe
         elsif element["type"] == "code"
           "<pre><code class='language-#{element['language']}'>#{element["content"]}</code></pre>".html_safe
         elsif element["type"] == "line_chart"
           chart_id = "visual-#{rand(1_000_000)}"
-          labels = element["x_axis_labels"].to_json
-          series_data = element["series"] # e.g. [{"name"=>"Retries", "data"=>[...]}, ...]
+          content = Hash(element["content"])
+          labels = content["x_axis_labels"].to_json
+          series_data = content["series"] # e.g. [{"name"=>"Retries", "data"=>[...]}, ...]
 
-          highlight_ranges = (element["highlight_ranges"] || [])
+          highlight_ranges = (content["highlight_ranges"] || [])
           mark_area_data = highlight_ranges.map do |range|
             %Q|[
-          { name: "#{range["label"] || "SEV Window"}", xAxis: "#{range["start"]}" },
+          { xAxis: "#{range["start"]}" },
           { xAxis: "#{range["end"]}" }
         ]|
           end.join(",\n")
 
-          series_blocks = series_data.map do |s|
+          series_blocks = Array(series_data).map do |s|
             mark_area = if highlight_ranges.any?
               %Q|,
           markArea: {
@@ -104,36 +108,35 @@ module Prompts
 
           legend_data = series_data.map { |s| "\"#{s["name"]}\"" }.join(", ")
 
-          <<~HTML.html_safe
+          line_chart = <<~HTML
         <div id="#{chart_id}" style="width: 100%; height: 400px;"></div>
         <script>
-          var chartDom = document.getElementById("#{chart_id}");
-          var myChart = echarts.init(chartDom);
-          var option = {
-            title: {
-              text: "#{element["title"]}",
-              subtext: "#{element["subtitle"] || ""}"
-            },
-            tooltip: { trigger: "axis", axisPointer: { type: "cross" } },
-            legend: { data: [#{legend_data}] },
-            toolbox: {
-              show: true,
-              feature: { saveAsImage: {} }
-            },
-            xAxis: {
-              type: "category",
-              boundaryGap: false,
-              data: #{labels}
-            },
-            yAxis: {
-              type: "value",
-              axisPointer: { snap: true }
-            },
-            series: [#{series_blocks}]
-          };
-          myChart.setOption(option);
+          setTimeout(function() { 
+            var chartDom = document.getElementById("#{chart_id}");
+            var myChart = echarts.init(chartDom);
+            var option = {
+              title: {
+                text: "#{content["title"]}",
+                subtext: "#{content["subtitle"] || ""}"
+              },
+              tooltip: { trigger: "axis", axisPointer: { type: "cross" } },
+              legend: { data: [#{legend_data}] },
+              xAxis: {
+                type: "category",
+                boundaryGap: false,
+                data: #{labels}
+              },
+              yAxis: {
+                type: "value",
+                axisPointer: { snap: true }
+              },
+              series: [#{series_blocks}]
+            };
+            myChart.setOption(option);
+          }, 100);
         </script>
       HTML
+        line_chart.html_safe
       else nil
         end
       end.reject(&:blank?).join.html_safe
