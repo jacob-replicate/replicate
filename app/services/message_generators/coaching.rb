@@ -74,6 +74,10 @@ module MessageGenerators
           broadcast_to_web(type: "element", message: hint_link, user_generated: false)
         end
 
+        if suggested_messages.count >= 4 && engaged_messages.count.zero?
+          multiple_choice_options = 3
+        end
+
         deliver_multiple_choice_options(multiple_choice_options) if multiple_choice_options.positive?
 
         @conversation.messages.create!(content: "<p>#{AvatarService.coach_avatar_row}</p>#{reply}", user_generated: false)
