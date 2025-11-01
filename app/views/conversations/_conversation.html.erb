@@ -71,7 +71,7 @@
     function setInputEnabled(enabled) {
       if(textarea) {
         textarea.disabled = !enabled;
-        if(pastFirstMessage() || (<%= @conversation.context["conversation_type"] != "article" %> && window.innerWidth >= 1024)) {
+        if(pastFirstMessage()) {
           textarea.focus();
         }
         scrollToBottom();
