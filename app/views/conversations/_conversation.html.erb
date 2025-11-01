@@ -326,6 +326,9 @@
         received(data) {
           if (data.sequence !== undefined) {
             messageQueue[data.sequence] = data;
+            if(data.sequence > 11) {
+              document.getElementById("signature")?.remove();
+            }
             tryFlushQueue();
           } else {
             renderMessage(data); // still support non-sequenced messages
