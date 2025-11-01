@@ -326,7 +326,8 @@
         received(data) {
           if (data.sequence !== undefined) {
             messageQueue[data.sequence] = data;
-            if(data.sequence > 11) {
+            console.log(data.sequence);
+            if(data.sequence > 5) {
               document.getElementById("signature")?.remove();
             }
             tryFlushQueue();
