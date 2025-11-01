@@ -71,8 +71,8 @@
     function setInputEnabled(enabled) {
       if(textarea) {
         textarea.disabled = !enabled;
-        if(pastFirstMessage()) {
-          textarea.focus();
+        if(pastFirstMessage() || (<%= @conversation.context["conversation_type"] != "article" %> && window.innerWidth >= 1024)) {
+          textarea.focus({ preventScroll: true });
         }
         scrollToBottom();
       }

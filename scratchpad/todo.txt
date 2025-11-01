@@ -32,7 +32,6 @@
     - Group chat transcripts - "where's the flaw in their thinking here?"
     - Share this SEV with your friends link (replicate.info/retry-storm)
 
-
 Quality of life:
 - Scroll to the top of Replicate's message, not to the input box. Focus -> scroll, in that order. Most noticeable in articles with huge replies, but can happen in coaching too.
 - Fix missing "Loading..." after articles load for "What am I missing here?" prompt.
