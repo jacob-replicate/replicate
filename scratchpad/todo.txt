@@ -6,6 +6,10 @@
 - You have used them the following times already: { "line_graph": 5, "bar_chart": 3, "diff_view": 2 }. Mix it up.
 
 - New elements:
+    - What kind of elements would land hard with returning users?
+        - Want to use this at work? Send this tl;dr to whoever leads the team.
+        - Welcome back. What skills are we working on today?
+
     - Single article highlight (show the first paragraph, faded -- not a title + description)
 
     - Diff view to highlight PR changes

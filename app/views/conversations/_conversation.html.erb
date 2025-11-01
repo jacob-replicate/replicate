@@ -3,7 +3,7 @@
 <% base_message_classes = "break-words message-body" %>
 
 <div class="flex flex-col">
-  <div class="flex-1 rounded-lg bg-white p-4 border border-neutral-300 shadow-sm text-[16px]">
+  <div class="flex-1 rounded-lg bg-white p-4 border border-neutral-200 shadow-sm text-[16px]">
     <div id="conversation" class="relative" data-base-class="<%= base_message_classes %>" data-user-class="<%= user_message_classes %>">
       <% if @conversation.context['conversation_type'] == 'coaching' %>
         <div class="absolute top-0 right-0">
