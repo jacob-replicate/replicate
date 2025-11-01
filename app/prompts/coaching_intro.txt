@@ -7,7 +7,7 @@ Incident Summary (don't include this verbatim, just use it to inform your thinki
 
 {{FORMATTING_RULES_PARAGRAPHS}}
 - Only return 3 elements in the response. "paragraph" -> "code" -> "paragraph", in that order. No line charts.
-- The code element should use one of these languages: Go, SQL, Python, Bash, Terraform, or Typescript. No logs. I want you to use code.
+- The code element should use one of these languages: Go, SQL, Python, Bash, Terraform, or Typescript. No logs. I want you to use code. It needs to be relevant to the story, and highly technical. No junior snippets. It should make people think. Introduce a flaw into the code.
 
 Constraints:
 - Think hard. 10/10 A+ quality only. Deliver your best work.
