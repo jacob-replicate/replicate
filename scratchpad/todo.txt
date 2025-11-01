@@ -28,6 +28,7 @@
     - Sequence Diagram (e.g. write flow across services)
     - Cards -- show some text, and it flips to other text whenever you click on it
     - Flow charts
+    - "Edit this SQL" to run commands. GPT just makes shit up based on what they type.
     - Group chat transcripts - "where's the flaw in their thinking here?"
     - Share this SEV with your friends link (replicate.info/retry-storm)
 
