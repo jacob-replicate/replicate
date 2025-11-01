@@ -24,6 +24,7 @@ Response Format Constraints: "code" elements
 - The "code" element must also have a "language" key. It should be in a lowercase format (e.g., "python").
 - Try to use a programming language that fits the story. You can also include logs, timelines, etc. Get creative. I want this element type to get the engineer engaged.
 - Use "plaintext" as the language for logs, CLI output, or other non-code snippets. Use the real language for everything else (e.g., python, ruby, javascript, go, sql, etc).
+- Make sure the "code" element doesn't have comments that reveal the answer or give away the solution too easily.
 - You don't have to show dates/times. However, if you do, always include the date + time, and use UTC. The current time is {{CONTEXT_CURRENT_TIME}}. Take that into consideration if you're showing timestamps. You don't have to use the exact current time, just don't do anything stupid like show timestamps from 6 months ago.
 - Feel free to include logs / timelines / etc if needed, not just code. Whatever is the most effective way to escalate the pressure with this engineer, and tell the story. Don't use them every message, but if this is a great opportunity to inject an artifact (code snippet, logs, CLI output, diagram, etc), output it.
 - Example: { "elements": [{ "type": "code", language: "python", content: "def hello_world():\nprint('Hello, world!')" }] }
