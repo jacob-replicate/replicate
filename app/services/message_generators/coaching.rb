@@ -115,35 +115,5 @@ module MessageGenerators
         end
       end
     end
-
-    def article_suggest_intro_sentences
-      [
-        "Interesting direction. These might help connect the dots a bit further.",
-        "You're on the right track. Here are a few writeups that go a bit deeper.",
-        "This reminded me of a few good reads. Might help sharpen the boundary you're exploring.",
-        "Good instincts. Here's some reading that pushes the idea further if you're in the mood.",
-        "You’re circling something important. Do these links spark any ideas?",
-
-        "If you're hitting a blind spot, these might help unblock it. No rush.",
-
-        "This echoes some lessons we’ve seen before. Might be worth skimming:",
-        "Strong read. Want to see how others handled something similar?",
-        "Good catch. These notes might back up the mental model you're sketching.",
-        "You’re asking the right questions. Here's some backup thinking that digs deeper.",
-        "Sharp. Here are a few more nudges in that same direction.",
-        "Noticed you’re probing at a tough edge case. These might help sharpen the intuition.",
-        "You’re pushing into real systems territory. This might help add language to what you're seeing.",
-        "These might give you a clearer lens on the tradeoff you're wrestling with.",
-        "Seen others get burned here — this writeup captures it well.",
-        "You're not wrong — here's how others have tried to thread that same needle.",
-        "Some context that might help de-risk your next move.",
-        "You’re not far off. These go a bit deeper down that rabbit hole.",
-        "The questions you're asking deserve better answers. These helped me.",
-        "If this feels murky, you’re not alone. These helped clarify it for others.",
-        "This one gets weird fast. Here are some breadcrumbs to stay grounded.",
-        "You're brushing up against a blind spot most folks don’t notice. These might help.",
-        "If that part felt shaky, these reads usually land well for folks at your level."
-      ]
-    end
   end
 end
