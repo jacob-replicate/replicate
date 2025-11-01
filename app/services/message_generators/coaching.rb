@@ -36,11 +36,7 @@ module MessageGenerators
         total_user_message_count = @conversation.messages.user.count
         previous_message = @conversation.messages.user.order(created_at: :desc).first&.content || ""
 
-        if total_user_message_count == 3 || (total_user_message_count % 7) == 0 || latest_message == "What am I missing here?"
-          generate_article_suggestions = true unless latest_message.include?("hint")
-        end
-
-        deliver_article_suggestions if generate_article_suggestions
+        deliver_article_suggestions if latest_message == "Give me another hint"
 
         broadcast_to_web(type: "element", message: AvatarService.coach_avatar_row, user_generated: false)
         broadcast_to_web(type: "loading", user_generated: false)
