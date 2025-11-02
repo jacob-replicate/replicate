@@ -42,8 +42,8 @@ module MessageGenerators
         total_conversations = Conversation.where(ip_address: @conversation.ip_address)
         Rails.logger.info "Message Count: #{Message.where(user_generated: true, conversation: total_conversations).count}"
         global_message_count = Message.where(user_generated: true, conversation: total_conversations).count
-        if turn == 3 && Message.where(user_generated: true, conversation: total_conversations).count == 2
-          broadcast_to_web(type: "element", message: "#{AvatarService.jacob_avatar_row}<p>Don't try to win. <a href='https://gist.github.com/jacob-comer/9bba483ddd9ee3f3c379246bcba17873' class='text-blue-700 font-semibold hover:underline underline-offset-2' target='_blank'>The prompt</a> is a loop. It keeps asking hard SRE questions until you don't have a great reply.</p><p class='mb-6'>Answer this next one without multiple choice if you don't believe me.</p>", user_generated: false)
+        if turn == 3 && Message.where(user_generated: true, conversation: total_conversations).count == 2 && suggested_messages.count == 2
+          broadcast_to_web(type: "element", message: "#{AvatarService.jacob_avatar_row}<p>Don't try to win. <a href='https://gist.github.com/jacob-comer/9bba483ddd9ee3f3c379246bcba17873' class='text-blue-700 font-semibold hover:underline underline-offset-2' target='_blank'>The prompt</a> is a loop. It keeps asking hard SRE questions until you don't have a great reply.</p><p class='mb-6'>Answer this next one without multiple choice if you don't believe me. I know it sounds like vaporware.</p>", user_generated: false)
         end
 
         broadcast_to_web(type: "element", message: AvatarService.coach_avatar_row, user_generated: false)
