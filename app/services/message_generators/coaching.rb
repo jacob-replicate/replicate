@@ -41,10 +41,10 @@ module MessageGenerators
 
         total_conversations = Conversation.where(ip_address: @conversation.ip_address)
         Rails.logger.info "Message Count: #{Message.where(user_generated: true, conversation: total_conversations).count}"
-        global_messages = Message.where(user_generated: true, conversation: total_conversations)
+        global_messages = Message.where(user_generated: true, conversation: total_conversations).where("created_at > ?", Time.at(1762053600))
         global_message_count = global_messages.count
 
-        if turn == 3 && global_messages.count < 10 && suggested_messages.count == 2
+        if turn == 3 && suggested_messages.count == 2
           broadcast_to_web(type: "element", message: "#{AvatarService.jacob_avatar_row}<p>Don't try to win. <a href='https://gist.github.com/jacob-comer/9bba483ddd9ee3f3c379246bcba17873' class='text-blue-700 font-semibold hover:underline underline-offset-2' target='_blank'>The prompt</a> is a loop. It keeps asking hard SRE questions until you don't have a great reply.</p><p>Try answering this next one without multiple choice. How would your <span class='font-semibold'>ideal system</span> handle the pressure?</p><p class='mb-6'>Pretend leadership gave you all the time in the world to build it. Now let's poke holes in your ideas.</p>", user_generated: false)
         end
 
