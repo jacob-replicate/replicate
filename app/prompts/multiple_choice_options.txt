@@ -20,7 +20,7 @@ Action Requested:
 Constraints:
 - Avoid vague language. No filler. You can hedge a little bit, since we're talking about assumptions, not data we 100% have. You're probably sure about these answers, but not 100%. Don't be too confident. You're confident where you'd look first, not confident what the solution is.
 - Complete sentences to answer the previous question(s) in the conversation's most recent message. Don't use the . period character though.
-- No word salad. Don't overload sentences with jargon or long words. The reply should be mostly plain english, with a 2-3 precise technical terms thrown in. Precise and sharp, but approachable to non-FAANG engineers looking to level up.
+- No word salad. Don't overload sentences with jargon or long words. The reply should be mostly plain english, with 1-2 precise technical terms thrown in. Precise and sharp, but approachable to non-FAANG engineers looking to level up.
 - Never start an option with "I" or "I'd" - just get to the point.
 - Plain english. Precise technical terms are fine, but also keep in mind this is for cold ad traffic to my site. They're not warmed up yet.
 - The phrasing of your options should align with the tense of the question asked, the style, etc.

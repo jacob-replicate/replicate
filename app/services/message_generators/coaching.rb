@@ -32,11 +32,18 @@ module MessageGenerators
         multiple_choice_options = 0
         generate_article_suggestions = false
         suggested_messages = @conversation.messages.user.where(suggested: true).where.not("content ILIKE ?", "%hint%")
-        engaged_messages = @conversation.messages.user.where(suggested: false).where.not("content ILIKE ?", "%hint%")
+        engaged_messages = @conversation.messages.user.where(suggested: false).where.not("content ILIKE ?", "%hint%").where.not("content ILIKE ?", "%missing here%")
         total_user_message_count = @conversation.messages.user.count
         previous_message = @conversation.messages.user.order(created_at: :desc).first&.content || ""
+        turn = total_user_message_count + 1
 
         deliver_article_suggestions if latest_message == "Give me another hint"
+
+        total_conversations = Conversation.where(ip_address: @conversation.ip_address)
+        Rails.logger.info "Message Count: #{Message.where(user_generated: true, conversation: total_conversations).count}"
+        if turn == 3 && Message.where(user_generated: true, conversation: total_conversations).count == 2
+          broadcast_to_web(type: "element", message: "#{AvatarService.jacob_avatar_row}<p>Don't try to beat it. It's a loop. It's keeps asking systemic SRE questions until you don't have a good answer.</p><p>You win by learning something new. Answer this next one without multiple choice if you don't believe me.</p><p class='mb-6'>Here's the <a href='https://gist.github.com/jacob-comer/9bba483ddd9ee3f3c379246bcba17873' class='text-blue-700 font-semibold hover:underline underline-offset-2' target='_blank'>main prompt</a>. It uncovers infra blind spots fast if you take it serious. You can leave feedback <a href='https://www.reddit.com/user/jacob_the_snacob/comments/1olq8xs/hard_sre_puzzles_to_stress_test_your_production' class='text-blue-700 font-semibold hover:underline underline-offset-2' target='_blank'>here</a>.</p>", user_generated: false)
+        end
 
         broadcast_to_web(type: "element", message: AvatarService.coach_avatar_row, user_generated: false)
         broadcast_to_web(type: "loading", user_generated: false)
@@ -57,7 +64,7 @@ module MessageGenerators
         elsif latest_message == "What am I missing here?"
           reply = Prompts::CoachingExplain.new(conversation: @conversation).call
           hint_link = HINT_LINK
-        elsif total_user_message_count == 1
+        elsif turn == 2
           custom_instructions = "- Try to use a \"code\" element in your reply somehow. You must end with a \"paragraph\" element though. Don't use a \"line_chart\" element unless they asked for it. Just a single \"code\" element and paragraphs. It should have logs in it, or some kind of timeline. Not actual code. Skip this instruction if it doesn't align with the story, or the engineer explicitly asked for another format/piece of data."
           reply = Prompts::CoachingReply.new(conversation: @conversation, context: { custom_instructions: custom_instructions }).call
           hint_link = HINT_LINK
@@ -76,7 +83,7 @@ module MessageGenerators
           broadcast_to_web(type: "element", message: hint_link, user_generated: false)
         end
 
-        if suggested_messages.count >= 4 && engaged_messages.count.zero?
+        if suggested_messages.count >= 4 && engaged_messages.count < 3
           multiple_choice_options = 3
         end
 

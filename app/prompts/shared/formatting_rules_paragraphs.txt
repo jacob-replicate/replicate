@@ -30,6 +30,7 @@ Response Format Constraints: "code" elements
 - Example: { "elements": [{ "type": "code", language: "python", content: "def hello_world():\nprint('Hello, world!')" }] }
 
 Response Format Constraints: "line_chart" elements
+- The "content" field for line charts must be a Ruby hash structure, not a string or JSON string.
 - Line charts must reflect realistic observability metrics and tell a compelling story. Avoid artificial flatness, symmetry, or over-polished shapes.
 - The line chart's "title" should feel like a regular metric configured in the engineer's monitoring system, not a one-off bespoke chart for the exercise.
 - Leave the "highlight_ranges" empty if there's nothing obvious to highlight in the visual.
@@ -68,7 +69,6 @@ Examples of acceptable line shapes:
   - Optional: `"title"` and `"subtitle"` (strings)
 
 
-- The "content" field for line charts must be a Ruby hash structure, not a string or JSON string.
 Line Chart Response Example:
 {
     "elements": [
