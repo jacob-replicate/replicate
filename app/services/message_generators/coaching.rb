@@ -48,7 +48,7 @@ module MessageGenerators
           broadcast_to_web(type: "element", message: "#{AvatarService.jacob_avatar_row}<p>Don't try to win. <a href='https://gist.github.com/jacob-comer/9bba483ddd9ee3f3c379246bcba17873' class='text-blue-700 font-semibold hover:underline underline-offset-2' target='_blank'>The prompt</a> is a loop. It keeps asking hard SRE questions until you don't have a great reply.</p><p>Try answering this next one without multiple choice. How would your <span class='font-semibold'>ideal system</span> handle the pressure?</p><p class='mb-6'>Pretend leadership gave you all the time in the world to build it. Now let's poke holes in your ideas.</p>", user_generated: false)
         end
 
-        if global_messages.where(suggested: false).count < 7 && engaged_messages.count == 4
+        if engaged_messages.count == 5
           broadcast_to_web(type: "element", message: "#{AvatarService.jacob_avatar_row}<p class='mb-6'>Is it working? Do the questions sound like word salad now? This is where most senior engineers rage quit.</p>", user_generated: false)
         end
 
