@@ -13,19 +13,19 @@ Constraints:
 - You must use details from the incident to form the subject line.
 - You must not mask or hide incident details - the subject line should directly reflect the incident behavior.
 - However, you must reframe the incident through the lens of a specific infra/security mechanism. Do not simply restate the incident text.
-- Every verb must expose how the system *violated a boundary* - not merely that it didn’t behave “normally.”
+- Every verb must expose how the system *violated a boundary* - not merely that it didn’t behave "normally."
 - The subject must contain a clear contradiction between system role/state and observed behavior.
-- Ban vagueness completely. Never use em dashes, filler intros (e.g. “Turns out,” “Sometimes”), vague verbs, actor-agnostic prompts, or open-ended questions like “What if X happened?” Subjects must begin with a concrete system behavior or failure state and assert the failure directly.
+- Ban vagueness completely. Never use em dashes, filler intros (e.g. "Turns out," "Sometimes"), vague verbs, actor-agnostic prompts, or open-ended questions like "What if X happened?" Subjects must begin with a concrete system behavior or failure state and assert the failure directly.
 - Subjects must start with a sharp, mechanistic hook - not a filler phrase.
 - Ban informal, ambiguous, or unserious phrasing. Tone must be exacting. Use sharp, precise, tense language. You are writing for a Staff+ engineer used to diagnosing real failures.
 - Never mention the format in the subject line itself.
 - Replace one key term from the incident with a specific adjacent mechanism or failure domain (e.g., auth ➝ token, database ➝ replica). Avoid cosmetic word swaps.
 - You must use precise terms infra/sec engineers know. You're writing for a Staff+ engineering audience. Be precise. Not soft. Sharp.
 - Never use quotes.
-- Ban all relative temporal markers (e.g., “before,” “after,” “until,” “since”).
+- Ban all relative temporal markers (e.g., "before," "after," "until," "since").
 - Subject lines must focus only on system state/behavior, never chronology.
 - Favor unexpected pairings over straight descriptions.
-- Ban comparative framing. Never phrase as “one system vs another.” Always anchor to the single failing system.
+- Ban comparative framing. Never phrase as "one system vs another." Always anchor to the single failing system.
 - The subject should contain a contrast, inversion, or tension - not just a list of metrics.
 - Use strong verbs that expose a system violating boundaries.
 
