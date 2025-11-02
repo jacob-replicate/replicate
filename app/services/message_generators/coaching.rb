@@ -48,7 +48,7 @@ module MessageGenerators
         end
 
         if engaged_messages.count == 4
-          broadcast_to_web(type: "element", message: "#{AvatarService.jacob_avatar_row}<p>Is it working? Do the questions sound like word salad now? This is where most senior engineers rage quit.</p>", user_generated: false)
+          broadcast_to_web(type: "element", message: "#{AvatarService.jacob_avatar_row}<p class='mb-6'>Is it working? Do the questions sound like word salad now? This is where most senior engineers rage quit.</p>", user_generated: false)
         end
 
         broadcast_to_web(type: "element", message: AvatarService.coach_avatar_row, user_generated: false)
