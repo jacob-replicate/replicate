@@ -44,7 +44,7 @@ module MessageGenerators
         global_message_count = Message.where(user_generated: true, conversation: total_conversations).count
 
         if turn == 3 && Message.where(user_generated: true, conversation: total_conversations).count == 2 && suggested_messages.count == 2
-          broadcast_to_web(type: "element", message: "#{AvatarService.jacob_avatar_row}<p>Don't try to win. <a href='https://gist.github.com/jacob-comer/9bba483ddd9ee3f3c379246bcba17873' class='text-blue-700 font-semibold hover:underline underline-offset-2' target='_blank'>The prompt</a> is a loop. It keeps asking hard SRE questions until you don't have a great reply.</p><p class='mb-6'>Answer this next one without multiple choice if you don't believe me. I know it sounds like vaporware.</p>", user_generated: false)
+          broadcast_to_web(type: "element", message: "#{AvatarService.jacob_avatar_row}<p>Don't try to win. <a href='https://gist.github.com/jacob-comer/9bba483ddd9ee3f3c379246bcba17873' class='text-blue-700 font-semibold hover:underline underline-offset-2' target='_blank'>The prompt</a> is a loop. It keeps asking hard SRE questions until you don't have a great reply.</p><p class='mb-6'>Try answering this next one without multiple choice. How would your ideal system handle the pressure?</p>", user_generated: false)
         end
 
         if engaged_messages.count == 4
