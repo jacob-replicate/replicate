@@ -1,11 +1,12 @@
-- Incident selector on homepage / within the conversation.
-
-- New script to judge the conversation so far, and figure out which elements from the list below to include.
-- Then you can just inject them into "special instructions" + not clog up the prompt with a bunch of formatting instructions it doesn't need.
-- Ask GPT for an array of element types to render, then only pass those into the next prompt to render in full.
-- You have used them the following times already: { "line_graph": 5, "bar_chart": 3, "diff_view": 2 }. Mix it up.
+- "Want to see how your friends will do? This link will drop them into a fresh copy of the same SEV." - Tag the conversation.referring_convo_id
+- Incident library. Get them browsing for more content. Add key article convos into the list. Dark mode on the homepage so it doesn't blend in?
+- QOL improvements to hide beginner tips for people engaged.
+- Difficulty setting (+/- links)
+- Drop an email input ~10 messages into the conversation. The newsletter is free. Reporting is paid. Curating content is paid. Custom tech stacks are paid. Etc.
+- Spin down AWS account. You don't use it for anything, and it's a risk.
 
 - New elements:
+    - QOL: New script to judge the conversation so far, and figure out which elements from the list below to include. Don't clog up the prompt with all the instructions.
     - What kind of elements would land hard with returning users?
         - Want to use this at work? Send this tl;dr to whoever leads the team.
         - Welcome back. What skills are we working on today?
@@ -37,7 +38,6 @@
     - Share this SEV with your friends link (replicate.info/retry-storm)
 
 Quality of life:
-- Scroll to the top of Replicate's message, not to the input box. Focus -> scroll, in that order. Most noticeable in articles with huge replies, but can happen in coaching too.
 - Fix missing "Loading..." after articles load for "What am I missing here?" prompt.
 - Shared validation rules to reject em dashes, semi-colons outside of code blocks, etc. Tiny shit that it often misses.
 - Gsub out ’ characters
