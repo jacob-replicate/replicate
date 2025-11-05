@@ -121,7 +121,8 @@ CREATE TABLE public.conversations (
     subject_line text,
     sequence_count integer DEFAULT 0 NOT NULL,
     fingerprint text,
-    ip_address character varying
+    ip_address character varying,
+    sharing_code character varying
 );
 
 
@@ -359,6 +360,13 @@ CREATE INDEX index_conversations_on_recipient ON public.conversations USING btre
 
 
 --
+-- Name: index_conversations_on_sharing_code; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_conversations_on_sharing_code ON public.conversations USING btree (sharing_code);
+
+
+--
 -- Name: index_members_on_organization_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -393,6 +401,7 @@ CREATE INDEX user_index ON public.audits USING btree (user_id, user_type);
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20251105012750'),
 ('20251022074354'),
 ('20251018193053'),
 ('20251018183734'),
