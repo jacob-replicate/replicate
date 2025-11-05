@@ -21,6 +21,7 @@ Rails.application.routes.draw do
   get "/billing", to: "static#billing"
   get "/security", to: "static#security"
   get '/sev', to: "static#coaching"
+  get '/incidents(/:sharing_code)', to: "conversations#show"
   get '/contacts/:id/unsubscribe', to: "contacts#unsubscribe"
   post '/contacts/:id/unsubscribe', to: "contacts#unsubscribe_confirm"
   get '/contacts/:id/resubscribe', to: "contacts#resubscribe"

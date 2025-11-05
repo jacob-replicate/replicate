@@ -1,13 +1,9 @@
-- "Want to see how your friends will do? <This link> will send them a fresh copy of the same SEV." - Tag the conversation.referring_convo_id
-    - Think about what happens when they click it. They're gonna click it. Don't redirect to a convo ID that gets shared. Load a unique convo, but don't update URL?
-
-- Make "provide feedback" link after turn 10 point to a hidden reddit ad. Seed the post with comments before spending money on it. Lower chance of losers ruining it with dumb comments.
-- Incident library. Get them browsing for more content. Add key article convos into the list. Dark mode on the homepage so it doesn't blend in?
-- Meta questions. "How do you think you're doing right now? Want to dive into any of these areas?" -- "No, let's continue..."
-- QOL improvements to hide beginner tips for people engaged. Hide the multiple choice too. They know how the hint link works.
+What they want:
+- "Want to see how your friends will do? <This link> will send them a fresh copy of the same SEV."
 - Difficulty setting (+/- links)
+- Incident library. Get them browsing for more content. Add key article convos into the list. Dark mode on the homepage so it doesn't blend in?
+- Periodic progress reports throughout the conversation. Visual.
 - Drop an email input ~10 messages into the conversation. The newsletter is free. Reporting is paid. Curating content is paid. Custom tech stacks are paid. Etc.
-- Spin down AWS account. You don't use it for anything, and it's a risk.
 
 - New elements:
     - QOL: New script to judge the conversation so far, and figure out which elements from the list below to include. Don't clog up the prompt with all the instructions.

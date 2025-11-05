@@ -326,7 +326,6 @@
         received(data) {
           if (data.sequence !== undefined) {
             messageQueue[data.sequence] = data;
-            console.log(data.sequence);
             if(data.sequence > 5) {
               document.getElementById("signature")?.remove();
             }

@@ -1,6 +1,38 @@
 class Conversation < ApplicationRecord
   belongs_to :recipient, polymorphic: true, optional: true
+  belongs_to :referring_conversation, class_name: "Conversation", optional: true
+  before_validation :generate_sharing_code
   has_many :messages, dependent: :destroy
+
+  def generate_sharing_code
+    return if sharing_code.present?
+
+    30.times do
+      new_code = SecureRandom.alphanumeric(6).downcase
+      if Conversation.where(sharing_code: new_code).empty?
+        update(sharing_code: new_code)
+        return
+      end
+    end
+  end
+
+  def self.fork(sharing_code)
+    original = Conversation.find_by!(sharing_code: sharing_code)
+    forked = original.dup
+    forked.recipient = nil
+    forked.sharing_code = nil
+    forked.created_at = Time.current
+    forked.updated_at = Time.current
+    forked.sequence_count = 0
+    forked.referring_conversation = original
+    forked.save!
+
+    forked
+  end
+
+  def sharing_url
+    Rails.env.development? ? "http://localhost:3000/incidents/#{sharing_code}" : "https://replicate.info/incidents/#{sharing_code}"
+  end
 
   def duration
     message_times = messages.pluck(:created_at).sort

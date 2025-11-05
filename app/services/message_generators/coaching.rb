@@ -4,8 +4,16 @@ module MessageGenerators
       if @conversation.web?
         broadcast_to_web(type: "element", message: AvatarService.avatar_row(name: "Incident Summary"), user_generated: false)
         broadcast_to_web(type: "loading", user_generated: false)
-        reply = Prompts::CoachingIntro.new(conversation: @conversation).call
-        @conversation.messages.create!(content: "<p>#{AvatarService.avatar_row(name: "Incident Summary")}</p>#{reply}", user_generated: false)
+
+        avatar = "<p>#{AvatarService.avatar_row(name: "Incident Summary")}</p>"
+
+        reply = if @conversation.referring_conversation.present?
+          @conversation.referring_conversation.messages.where(user_generated: false).order(created_at: :asc).first&.content&.gsub(avatar, "")
+        else
+          Prompts::CoachingIntro.new(conversation: @conversation).call
+        end
+
+        @conversation.messages.create!(content: "#{avatar}#{reply}", user_generated: false)
         broadcast_to_web(type: "element", message: reply, user_generated: false)
 
         deliver_multiple_choice_options(3)
@@ -40,7 +48,6 @@ module MessageGenerators
         deliver_article_suggestions if latest_message == "Give me another hint"
 
         total_conversations = Conversation.where(ip_address: @conversation.ip_address)
-        Rails.logger.info "Message Count: #{Message.where(user_generated: true, conversation: total_conversations).count}"
         global_messages = Message.where(user_generated: true, conversation: total_conversations).where("created_at > ?", Time.at(1762053600))
         global_message_count = global_messages.count
 
