@@ -48,10 +48,6 @@ module MessageGenerators
           broadcast_to_web(type: "element", message: "#{AvatarService.jacob_avatar_row}<p>Don't try to win. <a href='https://gist.github.com/jacob-comer/9bba483ddd9ee3f3c379246bcba17873' class='text-blue-700 font-semibold hover:underline underline-offset-2' target='_blank'>The prompt</a> is a loop. It keeps asking hard SRE questions until you don't have a great reply.</p><p>Try answering this next one without multiple choice. How would your <span class='font-semibold'>ideal system</span> handle the pressure?</p><p class='mb-6'>Improv the details, and let GPT poke holes in your best ideas. You learn the most about infra during a SEV-1.</p>", user_generated: false)
         end
 
-        if engaged_messages.count == 5
-          broadcast_to_web(type: "element", message: "#{AvatarService.jacob_avatar_row}<p class='mb-6'>Is it working? Do the questions sound like word salad now? This is where most senior engineers rage quit.</p>", user_generated: false)
-        end
-
         broadcast_to_web(type: "element", message: AvatarService.coach_avatar_row, user_generated: false)
         broadcast_to_web(type: "loading", user_generated: false)
 
@@ -75,7 +71,7 @@ module MessageGenerators
           custom_instructions = "- Try to use a \"code\" element in your reply somehow. You must end with a \"paragraph\" element though. Don't use a \"line_chart\" element unless they asked for it. Just a single \"code\" element and paragraphs. It should have logs in it, or some kind of timeline. Not actual code. Skip this instruction if it doesn't align with the story, or the engineer explicitly asked for another format/piece of data."
           reply = Prompts::CoachingReply.new(conversation: @conversation, context: { custom_instructions: custom_instructions }).call
           hint_link = HINT_LINK
-          multiple_choice_options = 3
+          multiple_choice_options = 2
         elsif (rand(100) < 20)
           custom_instructions = "- Try to use a \"code\" element in your reply somehow. You must end with a \"paragraph\" element though. Don't use a \"line_chart\" element unless they asked for it. Just a single \"code\" element and paragraphs. It should have real code, not logs. Skip this instruction if it doesn't align with the story, or the engineer explicitly asked for another format/piece of data."
           reply = Prompts::CoachingReply.new(conversation: @conversation, context: { custom_instructions: custom_instructions }).call
