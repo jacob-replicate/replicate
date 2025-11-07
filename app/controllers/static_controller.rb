@@ -9,7 +9,7 @@ class StaticController < ApplicationController
   def growth
     @active_trials = Member.where(subscribed: true).pluck(:organization_id).uniq.size # TODO: Filter out auto-unsubscribed
     @relevant_messages = Message.where(user_generated: true)
-    @base_conversations = Conversation.where(id: @relevant_messages.select(:conversation_id).distinct)
+    @base_conversations = Conversation.where(id: @relevant_messages.select(:conversation_id).distinct).where("created_at > ?", Time.at(1762492177))
     @counts_by_ip_address = @base_conversations.group(:ip_address).count.to_h
 
     if params[:min].present?
@@ -81,7 +81,7 @@ class StaticController < ApplicationController
       incident: (WEB_INCIDENTS + INCIDENTS.map { |i| i["prompt"] }).sample
     }
 
-    @conversation = Conversation.create!(context: context, channel: "web")
+    @conversation = Conversation.create!(context: context, channel: "web", ip_address: request.remote_ip)
   end
 
   def set_prices
