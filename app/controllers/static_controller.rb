@@ -3,13 +3,7 @@ class StaticController < ApplicationController
   before_action :verify_admin, only: [:growth]
 
   def index
-    context = {
-      conversation_type: :coaching,
-      difficulty: [session[:difficulty], "senior"].reject(&:blank?).first,
-      incident: (WEB_INCIDENTS + INCIDENTS.map { |i| i["prompt"] }).sample
-    }
-
-    @conversation = Conversation.create!(context: context, channel: "web", ip_address: request.remote_ip)
+    create_sev
   end
 
   def growth
@@ -55,23 +49,7 @@ class StaticController < ApplicationController
   end
 
   def coaching
-    difficulty_prompts = {
-      "junior" => "You're working with a junior engineer. Keep it friendly, concrete, and free of jargon. Talk about systems at a conceptual level, what's happening and why, without deep protocol or infra details. Think mentorship, not mastery. They don't know the big words yet. Don't use them. Assume they suck at resolving SEV-1 incidents.",
-      "mid" => "You’re working with a mid-level engineer. Assume they know the basics but not the edge cases. Use plain technical terms and connect each detail to practical outcomes. Explain tradeoffs and reliability patterns without diving into deep distributed systems theory. They're stronger than juniors, but not by much yet.",
-      "senior" => "You're talking to a senior engineer. Skip the hand-holding. Assume fluency in systems, networking, and incident response. Use concise technical language and emphasize nuance, where guarantees break, where intuition fails, and how design choices cascade under load.",
-      "staff" => "You’re working with a Staff+ engineer. Treat them as a peer. Be exact, economical, and challenging. Focus on causal reasoning, trust boundaries, and system failure modes. Assume they see through hand-waving. Precision and insight matter more than style."
-    }
-
-    difficulty_level = [session[:difficulty], "senior"].reject(&:blank?).first
-
-    context = {
-      conversation_type: :coaching,
-      difficulty: difficulty_level,
-      difficulty_prompt: difficulty_prompts[difficulty_level],
-      incident: (WEB_INCIDENTS + INCIDENTS.map { |i| i["prompt"] }).sample
-    }
-
-    @conversation = Conversation.create!(context: context, channel: "web")
+    create_sev
     redirect_to conversation_path(@conversation)
   end
 
@@ -82,6 +60,28 @@ class StaticController < ApplicationController
   def difficulty
     session[:difficulty] = params[:difficulty].to_s.downcase
     redirect_to "/sev"
+  end
+
+  def difficulty_prompts
+    {
+      "junior" => "You're working with a junior engineer. Keep it friendly, concrete, and free of jargon. Talk about systems at a conceptual level, what's happening and why, without deep protocol or infra details. Think mentorship, not mastery. They don't know the big words yet. Don't use them. Assume they suck at resolving SEV-1 incidents.",
+      "mid" => "You’re working with a mid-level engineer. Assume they know the basics but not the edge cases. Use plain technical terms and connect each detail to practical outcomes. Explain tradeoffs and reliability patterns without diving into deep distributed systems theory. They're stronger than juniors, but not by much yet.",
+      "senior" => "You're talking to a senior engineer. Skip the hand-holding. Assume fluency in systems, networking, and incident response. Use concise technical language and emphasize nuance, where guarantees break, where intuition fails, and how design choices cascade under load.",
+      "staff" => "You’re working with a Staff+ engineer. Treat them as a peer. Be exact, economical, and challenging. Focus on causal reasoning, trust boundaries, and system failure modes. Assume they see through hand-waving. Precision and insight matter more than style."
+    }
+  end
+
+  def create_sev
+    difficulty_level = [session[:difficulty], "senior"].reject(&:blank?).first
+
+    context = {
+      conversation_type: :coaching,
+      difficulty: difficulty_level,
+      difficulty_prompt: difficulty_prompts[difficulty_level],
+      incident: (WEB_INCIDENTS + INCIDENTS.map { |i| i["prompt"] }).sample
+    }
+
+    @conversation = Conversation.create!(context: context, channel: "web")
   end
 
   def set_prices

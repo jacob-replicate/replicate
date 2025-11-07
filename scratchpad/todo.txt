@@ -1,11 +1,5 @@
 What they want:
 - "Want to see how your friends will do? <This link> will send them a fresh copy of the same SEV."
-- Difficulty setting (+/- links)
-    - Block switching difficulties until GPT sent a message.
-    - JS function to "reloadConversation" to kill off old channel connection. Click difficulty -> switch -> switch back.
-    - Set session[:difficulty] when switching.
-    - Figure out how to link these together? What happens when you reload the page?
-    - Update cookie policy to reflect session ID.
 - Action Bar
     - View incident library
     - Switch difficulty
