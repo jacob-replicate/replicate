@@ -10,7 +10,6 @@ class StaticController < ApplicationController
     @active_trials = Member.where(subscribed: true).pluck(:organization_id).uniq.size # TODO: Filter out auto-unsubscribed
     @relevant_messages = Message.where(user_generated: true)
     @base_conversations = Conversation.where(id: @relevant_messages.select(:conversation_id).distinct).where("created_at > ?", Time.at(1762492177))
-    @counts_by_ip_address = @base_conversations.group(:ip_address).count.to_h
 
     if params[:min].present?
       valid_ids = @relevant_messages.group(:conversation_id).count.select { |k, v| v >= params[:min].to_i }.map(&:first)
@@ -18,9 +17,10 @@ class StaticController < ApplicationController
     end
 
     if params[:ip].present?
-      @base_conversations = @base_conversations.where(ip_address: params[:ip])
+      @base_conversations = Conversation.where(ip_address: params[:ip])
     end
 
+    @counts_by_ip_address = @base_conversations.group(:ip_address).count.to_h
 
     @web_conversations = @base_conversations.where(channel: "web")
     @web_messages = Message.where(conversation_id: @web_conversations.map(&:id), user_generated: true).where.not(content: "Give me a hint")
