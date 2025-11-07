@@ -16,6 +16,10 @@ class Conversation < ApplicationRecord
     end
   end
 
+  def difficulty
+    context["difficulty"] || "senior"
+  end
+
   def self.fork(sharing_code)
     original = Conversation.find_by!(sharing_code: sharing_code)
     forked = original.dup

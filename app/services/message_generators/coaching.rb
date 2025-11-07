@@ -38,7 +38,6 @@ module MessageGenerators
       if @conversation.web?
         latest_message = @conversation.latest_user_message.content
         multiple_choice_options = 0
-        generate_article_suggestions = false
         suggested_messages = @conversation.messages.user.where(suggested: true).where.not("content ILIKE ?", "%hint%")
         engaged_messages = @conversation.messages.user.where(suggested: false).where.not("content ILIKE ?", "%hint%").where.not("content ILIKE ?", "%missing here%")
         total_user_message_count = @conversation.messages.user.count

@@ -1,25 +1,32 @@
 <header class="">
   <nav class="flex items-center justify-between pt-2">
     <div class="flex md:flex-1">
-      <a href="<%= root_path %>" class="text-[#111] tracking-tight text-[26px]" style="font-family: 'Reckless Neue'">
+      <a href="<%= root_path %>" class="text-[#111] tracking-tight text-[22px] md:text-[26px]" style="font-family: 'Reckless Neue'">
         replicat<span style="letter-spacing: -0.08em;">e</span><span style="letter-spacing: 0.02em;">.</span>info
       </a>
     </div>
 
     <!-- Desktop menu -->
-    <div class="hidden md:flex md:gap-x-12">
+    <div class="hidden md:flex md:gap-x-10">
       <a href="/billing" class="text-sm text-sky-700 hover:underline hover:underline-offset-8">Team Edition</a>
       <a href="/security" class="text-sm text-sky-700 hover:underline hover:underline-offset-8">Security</a>
-      <a href="mailto:support@replicate.info" class="text-sm text-sky-700 hover:underline hover:underline-offset-8">Support</a>
+      <a href="mailto:support@replicate.info" class="text-sm text-sky-700 hover:underline hover:underline-offset-8 hidden lg:block">Support</a>
     </div>
 
     <div class="flex flex-1 justify-end">
-      <a class="inline-block text-[15px] text-white bg-indigo-600 hover:bg-indigo-800 cursor-pointer font-semibold transition-all rounded-md px-3 py-2" href="/sev">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 inline mr-1">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
-        </svg>
-
-        Fix a new SEV</a>
+      <% if @conversation.present? %>
+        <div class="bg-neutral-400 rounded-md flex" id="difficulty">
+          <% ["Junior", "Mid", "Senior", "Staff+"].each do |difficulty| %>
+            <button type="button" aria-disabled="false" class="px-[10px] py-[6px] text-[13px]">
+              <%= difficulty %>
+            </button>
+          <% end %>
+        </div>
+      <% else %>
+          <a class="inline-block text-[15px] text-white bg-indigo-600 hover:bg-indigo-800 cursor-pointer font-semibold transition-all rounded-md px-3 py-2" href="/sev">
+            Fix a SEV-1
+          </a>
+      <% end %>
     </div>
   </nav>
 

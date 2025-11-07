@@ -9,6 +9,8 @@ module Prompts
       options.shuffle.each do |option|
         context = {
           conversation_type: :article,
+          difficulty: @conversation.difficulty,
+          difficulty_prompt: @conversation.context["difficulty_prompt"],
           title: option["title"],
           description: option["description"],
           parent_conversation_id: @conversation.id

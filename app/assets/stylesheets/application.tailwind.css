@@ -120,3 +120,13 @@ pre code {
   font-size: 14px;
   border-radius: 5px;
 }
+
+#difficulty button:first-child {
+  border-top-left-radius: 6px;
+  border-bottom-left-radius: 6px;
+}
+
+#difficulty button:last-child {
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
+}

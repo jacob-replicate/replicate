@@ -6,7 +6,7 @@ require "rails/all"
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
-module Advance
+module Replicate
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.1
@@ -29,8 +29,6 @@ module Advance
     end
 
     config.active_record.schema_format = :sql
-    config.middleware.delete ActionDispatch::Cookies
-    config.middleware.delete ActionDispatch::Session::CookieStore
     config.active_record.yaml_column_permitted_classes = [Symbol, Date, Time, ActiveSupport::TimeWithZone, ActiveSupport::TimeZone]
   end
 end

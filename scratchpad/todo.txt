@@ -1,9 +1,22 @@
 What they want:
 - "Want to see how your friends will do? <This link> will send them a fresh copy of the same SEV."
 - Difficulty setting (+/- links)
+    - Block switching difficulties until GPT sent a message.
+    - JS function to "reloadConversation" to kill off old channel connection. Click difficulty -> switch -> switch back.
+    - Set session[:difficulty] when switching.
+    - Figure out how to link these together? What happens when you reload the page?
+    - Update cookie policy to reflect session ID.
+- Action Bar
+    - View incident library
+    - Switch difficulty
+    - Share with friends / export screenshot
+    - Fix a new SEV
+    - Timer
+    - End incident + teach me the lesson (i.e., print an article -> make coaching return an ArticleReply if needed).
 - Incident library. Get them browsing for more content. Add key article convos into the list. Dark mode on the homepage so it doesn't blend in?
 - Periodic progress reports throughout the conversation. Visual.
 - Drop an email input ~10 messages into the conversation. The newsletter is free. Reporting is paid. Curating content is paid. Custom tech stacks are paid. Etc.
+- Add conversation.cohort tag for analytics
 
 - New elements:
     - QOL: New script to judge the conversation so far, and figure out which elements from the list below to include. Don't clog up the prompt with all the instructions.
