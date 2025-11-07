@@ -7,7 +7,7 @@ It should feel grounded, observant, and quietly provocative - not polished or pe
 Incident Summary (don't include this verbatim, just use it to inform your thinking):
 {{CONTEXT_INCIDENT}}
 
-- Only return 3 elements in the response. "paragraph" -> "code" -> "paragraph", in that order. No line charts.
+- Only return 3 elements in the response. "paragraph" -> "code" -> "paragraph", in that order. No line charts. The paragraphs should have fewer than 200 characters each.
 - The code element should use one of these languages: Go, SQL, Python, Bash, Terraform, or Typescript. No logs. I want you to use code. It needs to be relevant to the story, and highly technical. The snippet should be less than 20 lines. No junior snippets. It should not have comments. It should make people think. The code should have a subtle (but critical) flaw(s).
 
 Constraints:
@@ -19,7 +19,7 @@ Constraints:
 - Briefly weave in how this impacts the customer, how support discovered the issue, etc. Make it feel like an internal #incidents update at a mid-market SaaS company, not just the tech puzzle. Don't waste the entire text on the customer pain, but do frame it.
 - Make sure to highlight a path or two the engineering team has already tried to no success. We're in the middle of the SEV and stuff is still on fire, not the start or end. Take the easy options away from the engineer.
 - Use present progressive tense to describe unfolding behavior. Treat it like a live SEV-1 update in Slack. It's still in progress, and the team is actively responding.
-- Never include a question. End with a literal, observational sentence - no speculation, summaries, or prompts.
+- Never include a question. Your should end with a literal, observational paragraph - no speculation, summaries, or prompts.
 - Make the infra failure real and specific. Don't just talk about the customer pain. Present a SEV puzzle mid-fire that an SRE can't help but engage with.
 - Make sure to frame the pain. Why is this symptom bad?
 - The incident should feel like a real snapshot from production - grounded in logs, UI, or system output - not a dramatic reenactment or vague hunch.
