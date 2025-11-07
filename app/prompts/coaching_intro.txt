@@ -7,60 +7,39 @@ It should feel grounded, observant, and quietly provocative - not polished or pe
 Incident Summary (don't include this verbatim, just use it to inform your thinking):
 {{CONTEXT_INCIDENT}}
 
-- Only return 3 elements in the response. "paragraph" -> "code" -> "paragraph", in that order. No line charts. The paragraphs should have fewer than 300 characters each.
+- Only return 3 elements in the response. "paragraph" -> "code" -> "paragraph", in that order. No line charts. Each paragraph should have fewer than 400 characters.
 - The code element should use one of these languages: Go, SQL, Python, Bash, Terraform, or Typescript. No logs. I want you to use code. It needs to be relevant to the story, and highly technical. The snippet should be less than 20 lines. It should not have any comments. It should make people think. The code should have a subtle (but critical) flaw(s).
 
 Constraints:
 - Think hard. 10/10 A+ quality only. Deliver your best work.
-- Your first sentence needs to make the customer pain abundantly clear. Don't jump into the tech stuff too quickly. What is the fire? Plain english, more precise tech stuff later in the reply.
+- Try to limit the number of big words. You often get feedback of "Nobody actually talks like this" because you layer on the technical shit too thick.
+- Your first sentence needs to make the customer pain abundantly clear. Don't jump into the tech stuff too quickly. What is the fire? Plain english, more technical stuff later in the reply.
 - Paint a picture, and describe a real symptom from the SEV. You need to make the customer-facing pain abundantly clear, followed by a few technical signals that tipped engineers off about the problem.
 - Don't give the engineer any action items. Don't ask them to check any logs, or contact support, or anything like that. We're giving the engineer a complex problem to chew on, so we can see where their mental model snaps.
 - Don't address the engineer directly (e.g., "Hey there -"). Describe the problem in a crisp words. I'm telling you who they are so you can calibrate the complexity and tone, not address them.
-- Briefly weave in how this impacts the customer, how support discovered the issue, etc. Make it feel like an internal #incidents update at a mid-market SaaS company, not just the tech puzzle. Don't waste the entire text on the customer pain, but do frame it.
-- Make sure to highlight a path or two the engineering team has already tried to no success. We're in the middle of the SEV and stuff is still on fire, not the start or end. Take the easy options away from the engineer.
-- Use present progressive tense to describe unfolding behavior. Treat it like a live SEV-1 update in Slack. It's still in progress, and the team is actively responding.
 - Never include a question. Your should end with a literal, observational paragraph - no speculation, summaries, or prompts.
+- Make it feel like a live, internal #incidents channel summary at a mid-market SaaS company, not just a tech puzzle.
+- Make sure to highlight a path or two the engineering team has already tried to no success. We're in the middle of the SEV and stuff is still on fire, not the start or end. Take the easy options away from the engineer.
+- Use present progressive tense to describe unfolding behavior. The SEV is still in progress, and the team is actively responding.
 - Make the infra failure real and specific. Don't just talk about the customer pain. Present a SEV puzzle mid-fire that an SRE can't help but engage with.
 - Make sure to frame the pain. Why is this symptom bad?
-- The incident should feel like a real snapshot from production - grounded in logs, UI, or system output - not a dramatic reenactment or vague hunch.
-- Don't use weird technical language or logs that would look weird in an email.
+- The incident should feel like a real snapshot from production, not a dramatic reenactment or vague hunch.
 - No cheesy example company names. Keep it serious.
 - Never write from the reader's perspective (e.g., "you notice," "you're on the page").
 - Describe a literal sequence - one event leading to another - as if replaying a debug session.
-- Vary nouns and verbs. Do not repeat the same word (e.g. "crash," "error," "fail") across multiple sentences. Use distinct, literal terms.
+- Vary nouns and verbs. Do not repeat the same word (e.g. "crash," "error," "fail") across multiple sentences.
 - Do not use newline characters.
 - Focus on the injected issue - whether it involves UI, logs, infrastructure, or latency. Do not default to generic UI behaviors like a button that does nothing unless the issue explicitly involves that.
-- Describe a short sequence of observable facts. Each sentence must add something new - no repetition or paraphrased restatement.
+- Never instructional or enthusiastic.
+- Describe a short sequence of observable facts. Each sentence must add something new, no repetition or paraphrased restatement.
 - Do not explain why it happens. Just narrate what you see.
 - Avoid dramatic outcomes like "the page crashes," "closes," or "disappears." Favor realistic symptoms like reloads, freezes, or stuck states.
-- Avoid vague terms like "interface," "panel," or "element." Be specific: say "tab," "console," or "API call."
-- Absolutely no soft language: Don't use "slightly," "briefly," "just enough," "feels like," or similar hedges.
-- Avoid metaphor, simile, and personification entirely.
-- Favor different entry points - not always logs → spike → error pattern. Vary surfaces like status pages, DB traces, latency graphs, or auth headers.
+- Avoid vague terms like "interface," "panel," or "element." Be specific: say "browser tab," "JS console," or "API call."
+- Favor different entry points - not always logs → spike → error pattern. Vary surfaces like status pages, DB traces, latency graphs, auth headers, etc.
 - Don't editorialize or interpret. No guesses, summaries, or reactions.
-- If it sounds like it came from a blog post or product tour, rewrite it. You're DMing a teammate - keep it crisp and observational.
+- If it sounds like it came from a blog post or product tour, rewrite it. You're DMing a teammate, keep it human and observational.
 - Do not describe what the browser, user, or system does intentionally. No phrasing like "Safari skips," "Chrome fetches," or "other browsers behave differently." Only describe what is logged, rendered, or measured.
 - Do not describe what the system wants, expects, tries to do, or does intentionally. No thoughts, intent, logic, or behavior - only literal logs, rendered outputs, or measurements.
-- Don't use the phrase "circuit breaker"
 - Don't start with the word "Customer". Mix it in naturally.
 
 {{FORMATTING_RULES_PARAGRAPHS}}
-
-## Voice:
-
-- Calm, direct, and perceptive - like a senior engineer flagging a small but important clue.
-- Never instructional or enthusiastic.
-- This should read like a private message from someone who quietly sees more than most.
-
-## Hard Bans:
-
-- Emotional or interpretive phrasing (e.g., "seems off," "makes you wonder," "as if it's waiting")
-- Any sentence that restates a previous one in different words
-- Any technical explanation or reference to debugging tools
-- Any guess at intent (e.g., "it should…" or "it's trying to…")
-- Do not suggest the user input is valid or invalid. Never speculate about credentials.
-- Do not reference source code changes, commits, or deployments unless they're explicitly visible in logs.
-- Only include surfaces directly tied to the issue (e.g., console logs, network tab, response payloads). Ignore system-wide graphs unless clearly related.
-- Do not describe differences in behavior across browsers unless they are visible in logs, headers, or status codes. Never say one browser "does" or "doesn't" do something - only report what was shown, logged, or returned.
-
-{{ASSISTANT_PERSONA}}

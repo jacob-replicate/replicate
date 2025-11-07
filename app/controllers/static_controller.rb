@@ -64,9 +64,9 @@ class StaticController < ApplicationController
 
   def difficulty_prompts
     {
-      "junior" => "You're working with a junior full-stack engineer. Keep it friendly, concrete, and free of jargon. Talk about systems at a conceptual level, what's happening and why, without deep protocol or infra details. Think mentorship, not mastery. They don't know the big words yet. Don't use them. Assume they suck at resolving SEV-1 incidents. You need to hand-hold.",
-      "mid" => "You’re working with a mid-level engineer. Assume they know the basics but not the edge cases. Use plain technical terms and connect each detail to practical outcomes. Explain tradeoffs and reliability patterns without diving into deep distributed systems theory. They're stronger than juniors, but not by much yet.",
-      "senior" => "You're talking to a senior engineer. Skip the hand-holding. Assume fluency in systems, networking, and incident response. Use concise technical language and emphasize nuance, where guarantees break, where intuition fails, and how design choices cascade under load.",
+      "junior" => "You're working with a junior full-stack engineer. Keep it friendly, concrete, and free of jargon. Talk about systems at a conceptual level, what's happening and why, without deep protocol or infra details. Think mentorship, not mastery. They don't know the big words yet. Don't use them. Assume they suck at resolving SEV-1 incidents. You need to hand-hold. Dumb it down. No word salad.",
+      "mid" => "You’re working with a mid-level engineer. Assume they know the basics but not the edge cases. Use plain technical terms and connect each detail to practical outcomes. Explain tradeoffs and reliability patterns without diving into deep distributed systems theory. They're stronger than juniors, but not by much yet. No word salad.",
+      "senior" => "You're talking to a senior engineer. Skip the hand-holding. Assume fluency in systems, networking, and incident response, but still weak spots in areas that Staff+ would excel at. Use concise technical language and emphasize nuance, where guarantees break, where intuition fails, and how design choices cascade under load. No word salad.",
       "staff" => "You’re working with a Staff+ engineer. Treat them as a peer. Be exact, economical, and challenging. Focus on causal reasoning, trust boundaries, and system failure modes. Assume they see through hand-waving. Precision and insight matter more than style."
     }
   end
