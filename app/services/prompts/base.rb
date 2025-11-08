@@ -23,7 +23,13 @@ module Prompts
         paragraphs_not_too_long = paragraphs.all? { |p| p.length <= 500 && p.exclude?("*") }
         last_element_is_paragraph = Hash(elements.last)["type"] == "paragraph"
 
-        elements.size > 0 && paragraphs_not_too_long && last_element_is_paragraph
+        paragraphs_not_too_complex = paragraphs.all? do |p|
+          words = p.scan(/\b[a-zA-Z']+\b/)
+          big_word_ratio = words.count { |w| w.length >= 10 }.to_f / [words.size, 1].max
+          big_word_ratio < 0.25
+        end
+
+        elements.size > 0 && paragraphs_not_too_long && paragraphs_not_too_complex && last_element_is_paragraph
       end
     end
 
