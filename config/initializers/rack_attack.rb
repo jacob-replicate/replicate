@@ -1,9 +1,13 @@
+Rack::Attack.safelist('allow from localhost') do |req|
+  '127.0.0.1' == req.ip || '::1' == req.ip
+end
+
 Rack::Attack.blocklist('specific IP addresses') do |req|
   req.ip == '35.146.19.108'
 end
 
-Rack::Attack.safelist('allow from localhost') do |req|
-  '127.0.0.1' == req.ip || '::1' == req.ip
+Rack::Attack.throttle('req/ip', limit: 20, period: 1.minute) do |req|
+  req.ip
 end
 
 # Block suspicious requests for '/etc/password' or wordpress specific paths.
