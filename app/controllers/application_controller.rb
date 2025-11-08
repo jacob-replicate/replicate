@@ -1,6 +1,11 @@
 class ApplicationController < ActionController::Base
   before_action :skip_malicious_users
 
+  rescue_from ActionController::InvalidAuthenticityToken do |exception|
+    Rails.logger.info "Blocked CSRF from #{request.remote_ip} ua=#{request.user_agent}"
+    head :ok
+  end
+
   private
 
   def skip_malicious_users
