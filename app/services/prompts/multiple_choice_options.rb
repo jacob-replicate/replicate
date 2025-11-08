@@ -2,7 +2,6 @@ module Prompts
   class MultipleChoiceOptions < Prompts::Base
     def call
       parallel_batch_process(format: false) do |elements|
-        Rails.logger.info("MultipleChoiceOptions - elements: #{elements.inspect}")
         [2,3].include?(elements.size) && elements.all? { |opt| SanitizeAiContent.call(opt).length <= 100 && opt.exclude?("*") }
       end
     end
