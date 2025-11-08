@@ -25,7 +25,7 @@ class ApplicationController < ActionController::Base
 
     # allow internal/health checks and known good bots
     return if ['127.0.0.1', '::1'].include?(request.remote_ip)
-    return if ua =~ /Googlebot|Bingbot|Slackbot|Healthcheck/i
+    return if ua =~ /Googlebot|Bingbot|Slackbot|Healthcheck|Reddit/i
 
     non_browser = /\b(curl|wget|python-requests|httpie|go-http-client|libwww-perl|php\/|java\/|okhttp|postmanruntime|axios|node-fetch|fetch)\b/i
 
