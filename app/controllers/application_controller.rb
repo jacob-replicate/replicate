@@ -11,7 +11,7 @@ class ApplicationController < ActionController::Base
   def skip_malicious_users
     if banned_ips.include?(request.remote_ip)
       Rails.logger.info "Blocking request from banned IP #{request.remote_ip}"
-      return head(:not_found)
+      return head(:ok)
     end
 
     ua     = request.user_agent.to_s
@@ -27,7 +27,7 @@ class ApplicationController < ActionController::Base
     if (ua.blank? || ua.match?(non_browser) || ua.length < 10) && !accept.include?('text/html')
       Rails.logger.info "Blocking non-browser request from #{request.remote_ip} ua=#{ua.inspect} accept=#{accept.inspect}"
       ban_current_ip
-      return head(:not_found)
+      return head(:ok)
     end
 
     nil
