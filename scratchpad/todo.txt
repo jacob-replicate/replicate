@@ -1,3 +1,10 @@
+- Make sure long messages naturally have more...
+    - Code blocks + telemetry
+    - Declarative paragraphs without questions. Just feedback on the previous thought.
+    - More explanations + nudges to ask for a hint.
+    - Do a "pulse check" every 8 messages? Adjust accordingly?
+    - Figure this out dynamically, don't just base it off turn count.
+
 - Better junior/mid prompts. Are the core incidents too hard for them? Can only scaffold so much around Staff+ SEVs? Incidents by difficulty?
 - Better page <title> tags that match the conversation. Add it to the prompt + update via JS (don't block page load, add ellipsis loading).
 - Max length on input box to prevent lazy copy/pastes burning tokens?

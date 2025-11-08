@@ -16,6 +16,15 @@ class Conversation < ApplicationRecord
     end
   end
 
+  def send_admin_message(message)
+    reload
+    sequence = next_message_sequence
+    broadcasting_context = { type: "element", sequence: sequence, user_generated: false, message: "#{AvatarService.jacob_avatar_row}<p>#{message}</p>" }
+    ConversationChannel.broadcast_to(self, broadcasting_context)
+    ConversationChannel.broadcast_to(self, { type: "done", sequence: sequence + 1 })
+    update!(sequence_count: sequence + 1)
+  end
+
   def difficulty
     context["difficulty"] || "senior"
   end
