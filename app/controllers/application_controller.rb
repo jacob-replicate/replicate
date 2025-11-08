@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
   private
 
   def skip_malicious_users
-    return head(:not_found) if request.remote_ip == '35.146.19.108'
+    return head(:not_found) if banned_ips.include?(request.remote_ip)
 
     ua     = request.user_agent.to_s
     accept = request.headers['Accept'].to_s
@@ -27,5 +27,13 @@ class ApplicationController < ActionController::Base
 
   def verify_admin
     raise "Not found" unless (request.remote_ip == "98.249.45.68" || Rails.env.development?)
+  end
+
+  def banned_ips
+    [
+      '35.146.19.108',
+      '149.34.244.133',
+      '209.127.202.113'
+    ]
   end
 end
