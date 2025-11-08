@@ -40,10 +40,12 @@ module Prompts
       response.choices.first.message[:content]
     end
 
-    def parallel_batch_process(format: true, &validation_block)
+    def parallel_batch_process(starting_batch_size: 6, format: true, &validation_block)
       result = Queue.new
 
-      starting_batch_size = @conversation.turn < 5 ? 8 : 3
+      if @conversation.turn >= 5
+        starting_batch_size = 3
+      end
 
       [starting_batch_size, 6, 8, 10].each do |batch|
         Rails.logger.info "Thread Batch: #{batch}"
