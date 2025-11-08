@@ -6,6 +6,7 @@ class ConversationsController < ApplicationController
 
     if @conversation.blank? && params[:sharing_code].present?
       @conversation = Conversation.fork(params[:sharing_code])
+      @conversation.update(ip_address: request.remote_ip)
     end
 
     @title = @conversation.context["title"] || "replicate.info"
