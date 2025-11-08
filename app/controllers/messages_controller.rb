@@ -9,6 +9,11 @@ class MessagesController < ApplicationController
       SendAdminPushNotification.call("New Conversation", params[:content])
     end
 
+    message = params[:content]
+    if conversation.messages.where(content: message).count >= 3 && message.exclude?("hint") && message.exclude?("What am I missing")
+      return head(:ok)
+    end
+
     message = conversation.messages.create!(content: params[:content], user_generated: true, suggested: params[:suggested].present?)
     head :ok
   end
