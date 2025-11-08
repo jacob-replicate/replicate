@@ -1,4 +1,6 @@
 class ConversationsController < ApplicationController
+  before_action :verify_admin, only: [:destroy]
+
   def show
     @conversation = Conversation.where(channel: "web").find_by(id: params[:id])
 
