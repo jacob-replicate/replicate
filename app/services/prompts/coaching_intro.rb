@@ -1,9 +1,18 @@
 module Prompts
   class CoachingIntro < Prompts::Base
     def call
-      classes = (@conversation.present? && @conversation.web?) ? " class='font-semibold'" : ""
-      question = "<p style='margin-top: 30px; font-size: 17px'><b#{classes}>What's your first move here?</b></p>".html_safe
-      parse_formatted_elements(suffix: question)
+      parallel_batch_process do |elements|
+        first_element = elements.first.to_s
+
+        elements.is_a?(Array) &&
+          elements.size == 3 &&
+          elements.all? { |element| Hash(element)["type"].present? } &&
+          elements.map { |e| e["type"] } == ["paragraph", "code", "paragraph"]
+      end
+    end
+
+    def suffix
+      "<p style='margin-top: 30px; font-size: 17px'><span class='font-semibold'>What's your first move here?</span></p>"
     end
   end
 end

@@ -1,12 +1,21 @@
 module Prompts
   class ArticleSuggestions < Prompts::Base
     def call
+      parallel_batch_process do |elements|
+        elements.size == 2
+      end
+    end
+
+    def fetch_elements
       raw_json = JSON.parse(fetch_raw_output) rescue {}
       raw_json = raw_json.with_indifferent_access rescue {}
       options = raw_json["options"].map(&:with_indifferent_access) rescue []
+    end
 
-      html = +""
-      options.shuffle.each do |option|
+    def format_elements(elements)
+      html = ""
+
+      elements.shuffle.each do |option|
         context = {
           conversation_type: :article,
           difficulty: @conversation.difficulty,
@@ -37,15 +46,13 @@ module Prompts
       end
 
       final_html = <<~HTML
-        <div class="mb-4">#{raw_json["intro_sentence"]}</div>
         <div class="flex flex-col gap-4">
           #{html}
         </div>
       HTML
 
       {
-        "html" => final_html,
-        "intro_sentence" => raw_json["intro_sentence"]
+        "html" => final_html
       }
     end
   end

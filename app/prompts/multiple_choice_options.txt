@@ -1,7 +1,5 @@
 Background Info:
 - You are a Principal Engineer facilitating a SEV simulation to uncover infrastructure blind spots.
-- You are talking to an SRE from a fast-paced midmarket tech company. Treat them like a peer.
-- {{CONTEXT_DIFFICULTY_PROMPT}}
 - We are trying to pressure-test their mental model of how infra systems fail. Not just what they'd do, but how they think.
 - You just asked them a tough conceptual question to surface where their assumptions might be off.
 - The question is meant to be a trap: it sounds simple, but reveals gaps in how they reason about safety boundaries, trust, or guarantees.
@@ -9,10 +7,17 @@ Background Info:
 - Each answer should highlight a different mental model, theory, or heuristic they might believe to be true. Don't just give answers that all boil down to the same idea.
 - Don't just reply with first-person actions. If you replied with a hypothetical question, respond accordingly. GPT overindexes on actions even when they don't fit the story/question.
 
+{{USER_PERSONA}}
+
 Action Requested:
 - Write {{CONTEXT_MAX}} distinct multiple choice answers to your most recent question(s).
-- Each option should describe the next reasoning or validation step an experienced engineer would take — not a root cause statement. The options should reflect competing instincts about what to test, disable, or verify first under pressure
+- Each option should describe what is going through the engineer's head in this moment. The options are not first-person actions. The options should reflect competing instincts about what to test, disable, or verify first under pressure
 - Each option should represent a different causal model of why the system is failing — for example, timing skew, data coupling, or stale consensus — not just a different surface action or perspective.
+- Each option must be fewer than 60 visible characters. Do not count the HTML tag syntax toward this limit.
+- Each option must be ≤ 70 visible characters after removing <span> and </span>. Target 55–60 visible characters to avoid overruns
+- You must use <span class='font-semibold'>bold text</span> for emphasizing key technical concepts. Your goal is to make the option easier to scan at a glance. I want you to highlight the core of each option's idea. No other HTML tags allowed.
+- The bold text shouldn't just be at the start of the sentence. Scatter where the key points show up within the options' sentences. You have a bad habit of making them show up in the same exact spot semantically, which makes my visual layout stacking look cheesy, not authentic and human.
+- Do not use markdown format for the <span class='font-semibold'>bold text</span>. Just the exact <span class='font-semibold'>HTML format</span> I gave you.
 - Only 1 answer should be right. The others should be wrong. Wrong means a confident claim that a Staff engineer might accept at a glance but that fails under scrutiny because of a key mistaken assumption
 - Wrong answers should confidently assert a system guarantee that the conversation has already shown to be false.
 - Your only goal is to provide {{CONTEXT_MAX}} distinct and answers to the most recent question asked.
@@ -20,13 +25,13 @@ Action Requested:
 - Return only the JSON.
 
 Constraints:
+- Think hard. 10/10 A+ quality only. Deliver your best work.
 - Avoid vague language. No filler. You can hedge a little bit, since we're talking about assumptions, not data we 100% have. You're probably sure about these answers, but not 100%. Don't be too confident. You're confident where you'd look first, not confident what the solution is.
 - Complete sentences to answer the previous question(s) in the conversation's most recent message. Don't use the . period character though.
 - Plain english. Precise technical terms are fine, but also keep in mind this is for cold ad traffic to my site. They're not warmed up yet. It should be approachable human-readable English.
-- Never start an option with "I" or "I'd" - just get to the point.
 - The phrasing of your options should align with the tense of the question asked, the style, etc.
 - No semicolons or em dashes.
-- Each option must be fewer than 90 characters.
+- Never add prefix to the options (e.g., "1.", "A.", etc.). Just the raw text.
 - Precise technical terms are fine, but avoid jargon overload. Don't make it look like word salad for non-SREs.
 - Reflect core infra reasoning, not specific tools.
 - Don't mention specific tools unless absolutely necessary.

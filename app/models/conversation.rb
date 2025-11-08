@@ -53,6 +53,10 @@ class Conversation < ApplicationRecord
     channel == "web"
   end
 
+  def turn
+    messages.where(user_generated: true).count + 1
+  end
+
   def latest_user_message
     messages.where(user_generated: true).order(created_at: :desc).first
   end

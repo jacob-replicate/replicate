@@ -14,10 +14,6 @@ class SanitizeAiContent
 
     avatars.each { |avatar| response.gsub!(avatar, "") }
 
-    bold_start_placeholder = "___BOLD_START___"
-    bold_end_placeholder = "___BOLD_END___"
-    bold_start_replacement = "<b class='font-medium'>"
-
     response.gsub!("\n", "")
     response.gsub!(HINT_LINK, "")
     response.gsub!(ANOTHER_HINT_LINK, "")
@@ -27,9 +23,6 @@ class SanitizeAiContent
     response.gsub!("<html>", "")
     response.gsub!(/<script\b[^>]*>[\s\S]*?<\/script>/i, "")
     response = strip_tags(response).squish
-    response.gsub!("Hey Alex,", "")
-    response.gsub!("Hey Taylor,", "")
-    response.gsub!("Hey Casey,", "")
     response.gsub!("```html", "")
     response.gsub!("```", "")
     response.gsub!("“", "\"")
@@ -38,8 +31,6 @@ class SanitizeAiContent
     response.gsub!("’", "'")
     response.gsub!("*", "")
     response.gsub!("`", "")
-    response.gsub!(bold_start_placeholder, "<b class='font-medium'>")
-    response.gsub!(bold_end_placeholder, "</b>")
 
     response.squish.html_safe
   end

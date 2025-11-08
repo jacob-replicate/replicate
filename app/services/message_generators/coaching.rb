@@ -57,16 +57,18 @@ module MessageGenerators
         broadcast_to_web(type: "element", message: AvatarService.coach_avatar_row, user_generated: false)
         broadcast_to_web(type: "loading", user_generated: false)
 
-        custom_instructions = "- Try to return a single \"paragraph\" element. You can include \"code\" and \"line_chart\" elements too if asked, or needed to move the story along. Err on the side of a single concise paragraph most of the time. Never both 'code' and 'line_chart' in the same message. Always include at least one 'paragraph' element though."
+        custom_instructions = "- Aim for concise replies. The perfect reply is one concise paragraph that cuts deep. You can stray from that if needed, just keep in mind that your AI has a tendency to latch onto huge messages from the past, and keep generating them. I don't want that. If you're making a bigger point, split it across multiple elements. I don't want huge paragraphs or giant blocks of code."
 
         hint_link = nil
         reply = ""
 
         if latest_message == "Give me a hint"
+          custom_instructions += "\n- The user is asking for a hint. Keep it concise. Provide a single concise paragraph that guides them toward the next step. Avoid lengthy explanations or multiple paragraphs."
           reply = Prompts::CoachingReply.new(conversation: @conversation, context: { custom_instructions: custom_instructions }).call
           hint_link = ANOTHER_HINT_LINK
           multiple_choice_options = 3
         elsif latest_message == "Give me another hint"
+          custom_instructions += "\n- The user is asking for a hint. Keep it concise. Provide a single concise paragraph that guides them toward the next step. Avoid lengthy explanations or multiple paragraphs."
           reply = Prompts::CoachingReply.new(conversation: @conversation, context: { custom_instructions: custom_instructions }).call
           hint_link = FINAL_HINT_LINK
           multiple_choice_options = 3
@@ -74,12 +76,12 @@ module MessageGenerators
           reply = Prompts::CoachingExplain.new(conversation: @conversation).call
           hint_link = HINT_LINK
         elsif turn == 2
-          custom_instructions = "- Try to use a \"code\" element in your reply somehow. You must end with a \"paragraph\" element though. Don't use a \"line_chart\" element unless they asked for it. Just a single \"code\" element and paragraphs. It should have logs in it, or some kind of timeline. Not actual code. Skip this instruction if it doesn't align with the story, or the engineer explicitly asked for another format/piece of data."
+          custom_instructions = "- You must return 3 elements in this order: \"paragraph\" -> \"code\" -> \"paragraph\". The code block should have telemetry in it, or some kind of timeline. Not actual code."
           reply = Prompts::CoachingReply.new(conversation: @conversation, context: { custom_instructions: custom_instructions }).call
           hint_link = HINT_LINK
           multiple_choice_options = 2
-        elsif (rand(100) < 20)
-          custom_instructions = "- Try to use a \"code\" element in your reply somehow. You must end with a \"paragraph\" element though. Don't use a \"line_chart\" element unless they asked for it. Just a single \"code\" element and paragraphs. It should have real code, not logs. Skip this instruction if it doesn't align with the story, or the engineer explicitly asked for another format/piece of data."
+        elsif [3,4,5].include?(turn) || rand(100) < 60
+          custom_instructions = "- You must return a single \"paragraph\" element. No additional code blocks, logs, or paragraphs (unless they specifically asked for them just now). Just the one concise paragraph that cuts deep with a single hard SRE question."
           reply = Prompts::CoachingReply.new(conversation: @conversation, context: { custom_instructions: custom_instructions }).call
           hint_link = HINT_LINK
         else

@@ -18,128 +18,98 @@ module Prompts
     end
 
     def call
-      fetch_valid_response
-    end
+      parallel_batch_process do |elements|
+        paragraphs = elements.select { |e| Hash(e).with_indifferent_access[:type] == "paragraph" }.map { |e| e.with_indifferent_access[:content].to_s }
+        paragraphs_not_too_long = paragraphs.all? { |p| p.length <= 500 && p.exclude?("*") }
+        last_element_is_paragraph = Hash(elements.last)["type"] == "paragraph"
 
-    def validate(llm_output)
-      nil
-    end
-
-    def fetch_valid_response
-      30.times do
-        llm_output = SanitizeAiContent.call(fetch_raw_output)
-        error = validate(llm_output)
-
-        if error.present?
-          Rails.logger.error "Prompt Failure for #{template_name} - Conversation: #{@conversation&.id || 'N/A'}: #{error}"
-        else
-          return llm_output
-        end
+        elements.size > 0 && paragraphs_not_too_long && last_element_is_paragraph
       end
-
-      nil
     end
 
     def fetch_raw_output
       raise if Rails.env.test?
 
+      start_time = Time.now.to_i
       response = OpenAI::Client.new.chat.completions.create(
         messages: Array(@conversation&.message_history) + [{ role: "system", content: instructions }],
         model: "gpt-5-chat-latest",
       )
+      Rails.logger.info "Prompt Response Time: #{template_name} - #{Time.now.to_i - start_time}"
 
-      content = response.choices.first.message[:content]
+      response.choices.first.message[:content]
+    end
+
+    def parallel_batch_process(format: true, &validation_block)
+      result = Queue.new
+
+      starting_batch_size = @conversation.turn < 5 ? 6 : 3
+
+      [starting_batch_size, 6, 8, 10].each do |batch|
+        Rails.logger.info "Thread Batch: #{batch}"
+        threads = []
+        batch.times do
+          threads << Thread.new do
+            begin
+              elements = fetch_elements
+              if validation_block.call(elements)
+                result << (format ? format_elements(elements) : elements)
+              end
+            rescue => e
+              Rails.logger.error("Thread failed: #{e.message}")
+            end
+          end
+        end
+
+        value = nil
+        begin
+          Timeout.timeout(10) { value = result.pop }
+        rescue Timeout::Error
+        end
+
+        threads.each(&:kill)
+        return value if value
+      end
+
+      []
     end
 
     private
 
-    def parse_formatted_elements(prefix: nil, suffix: nil)
-      30.times do
-        Rails.logger.info "Fetching LLM output for Conversation: #{@conversation&.id || 'N/A'}"
-        raw_json = JSON.parse(fetch_raw_output) rescue {}
-        Rails.logger.info raw_json.to_json
-        raw_json = raw_json.with_indifferent_access
-        elements = parse_elements(raw_json["elements"])
-        return [prefix, elements, suffix].reject(&:blank?).join if elements.present?
-      end
+    def fetch_elements
+      raw_json = JSON.parse(fetch_raw_output) rescue {}
+      Array(raw_json.with_indifferent_access[:elements]).map(&:with_indifferent_access) || []
     end
 
-    def parse_elements(elements)
-      return nil if elements.blank?
-      return nil unless Array(elements).any? { |element| Hash(element)["type"] == "paragraph" }
-      Array(elements).reject(&:blank?).map do |element|
-        element = Hash(element)
-        if element["type"] == "paragraph"
+    def prefix
+      ""
+    end
+
+    def suffix
+      ""
+    end
+
+    def format_elements(elements)
+      formatted_elements = []
+      formatted_elements << prefix unless prefix.blank?
+
+      formatted_elements += Array(elements).reject(&:blank?).map do |element|
+        type = element.is_a?(Hash) ? element.with_indifferent_access[:type] : element.class
+
+        if type == String
+          element
+        elsif type == "paragraph"
           "<p>#{element["content"]}</p>".html_safe
-        elsif element["type"] == "code"
+        elsif type == "code"
           "<pre><code class='language-#{element['language'].to_s.gsub('language-', '')}'>#{element["content"]}</code></pre>".html_safe
-        elsif element["type"] == "line_chart"
-          chart_id = "visual-#{rand(1_000_000)}"
-          content = Hash(element["content"])
-          labels = content["x_axis_labels"].to_json
-          series_data = content["series"] # e.g. [{"name"=>"Retries", "data"=>[...]}, ...]
-
-          highlight_ranges = (content["highlight_ranges"] || [])
-          mark_area_data = highlight_ranges.map do |range|
-            %Q|[
-          { xAxis: "#{range["start"]}" },
-          { xAxis: "#{range["end"]}" }
-        ]|
-          end.join(",\n")
-
-          series_blocks = Array(series_data).map do |s|
-            mark_area = if highlight_ranges.any?
-              %Q|,
-          markArea: {
-            itemStyle: { color: 'rgba(255, 173, 177, 0.4)' },
-            data: [#{mark_area_data}]
-          }|
-            else
-              ""
-            end
-
-            %Q|{
-          name: "#{s["name"]}",
-          type: "line",
-          smooth: true,
-          stack: "Total",
-          data: #{s["data"].to_json}#{mark_area}
-        }|
-          end.join(",\n")
-
-          legend_data = series_data.map { |s| "\"#{s["name"]}\"" }.join(", ")
-
-          line_chart = <<~HTML
-        <div id="#{chart_id}" style="width: 100%; height: 400px;"></div>
-        <script>
-          setTimeout(function() { 
-            var chartDom = document.getElementById("#{chart_id}");
-            var myChart = echarts.init(chartDom);
-            var option = {
-              title: {
-                text: "#{content["title"]}"
-              },
-              tooltip: { trigger: "axis", axisPointer: { type: "cross" } },
-              legend: { data: [#{legend_data}] },
-              xAxis: {
-                type: "category",
-                boundaryGap: false,
-                data: #{labels}
-              },
-              yAxis: {
-                type: "value",
-                axisPointer: { snap: true }
-              },
-              series: [#{series_blocks}]
-            };
-            myChart.setOption(option);
-          }, 100);
-        </script>
-      HTML
-        line_chart.html_safe
-      else nil
+        else
+          nil
         end
-      end.reject(&:blank?).join.html_safe
+      end.reject(&:blank?)
+
+      formatted_elements << suffix unless suffix.blank?
+
+      formatted_elements.join.html_safe
     end
 
     def template_name
@@ -173,6 +143,7 @@ module Prompts
       end
 
       @context.each { |key, val| prompt_instructions.gsub!("{{CONTEXT_#{key.upcase}}}", val.to_s) }
+      prompt_instructions.gsub!("{{CONTEXT_CUSTOM_INSTRUCTIONS}}", "")
 
       prompt_instructions
     end
