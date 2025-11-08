@@ -1,17 +1,23 @@
 - Better junior/mid prompts. Are the core incidents too hard for them? Can only scaffold so much around Staff+ SEVs? Incidents by difficulty?
-- More buttons. Make "Give me a hint" more visible, "Write an article for me."
-
-- Max length on input box to prevent lazy copy/pastes?
-
 - Better page <title> tags that match the conversation. Add it to the prompt + update via JS (don't block page load, add ellipsis loading).
+- Max length on input box to prevent lazy copy/pastes burning tokens?
+- Make article_intro use the base class's call method. Make starting_batch_size a method, don't make it overwrite the call method.
 - "Want to see how your friends will do? <This link> will send them a fresh copy of the same SEV."
-- Action Bar
+
+- Action Bar - Make the CTAs more visible
+    - Give me a hint
+    - Write me an article
     - View incident library
     - Switch difficulty
     - Share with friends / export screenshot
     - Fix a new SEV
     - Timer
     - End incident + teach me the lesson (i.e., print an article -> make coaching return an ArticleReply if needed).
+
+- Mid-conversation Nudges
+    - Make this way more visual. 1920x1080 thumbnails with tags (redis, k8s, linux, etc)
+    - Accordions (Roblox/Fortnite style) that hug the edges of the window with a separate background color. Horizontal scroll through topics.
+
 - Incident library. Get them browsing for more content. Add key article convos into the list. Dark mode on the homepage so it doesn't blend in?
 - Periodic progress reports throughout the conversation. Visual.
 - Add a "change difficulty" nudge in the conversation?
@@ -57,7 +63,6 @@ Quality of life:
 - Fix missing "Loading..." after articles load for "What am I missing here?" prompt.
 - Shared validation rules to reject em dashes, semi-colons outside of code blocks, etc. Tiny shit that it often misses.
 - Gsub out ’ characters
-- Validation to cut out widows and orphans on desktop -- i.e., character count validations at the prompt level.
 - Edit messages + Regenerate button (soft delete everything >= created_at of the message you want to regen from)
 - Make certain technical phrases clickable, and link to an article convo
 - Stop showing a blank conversation when you use the back button.
