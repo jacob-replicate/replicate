@@ -14,6 +14,12 @@ class ApplicationController < ActionController::Base
       return head(:ok)
     end
 
+    if Rails.cache.increment("req:#{request.remote_ip}", 1, expires_in: 1.minute) > 30
+      Rails.logger.info "Blocking excessive requests from #{request.remote_ip}"
+      ban_current_ip
+      return head :ok
+    end
+
     ua     = request.user_agent.to_s
     accept = request.headers['Accept'].to_s
 
@@ -33,20 +39,21 @@ class ApplicationController < ActionController::Base
     nil
   end
 
-  def verify_admin
-    raise "Not found" unless (request.remote_ip == "98.249.45.68" || Rails.env.development?)
-  end
-
   def banned_ips
+    time_range = Rails.env.development? ? 10.seconds.ago : 1.week.ago
     [
       '35.146.19.108',
       '149.34.244.133',
       '209.127.202.113'
-    ] + BannedIp.where("created_at > ?", 1.week.ago).pluck(:address)
+    ] + BannedIp.where("created_at > ?", time_range).pluck(:address)
   end
 
   def ban_current_ip
     Rails.logger.info "Banning IP #{request.remote_ip}"
     BannedIp.create!(address: request.remote_ip) unless banned_ips.include?(request.remote_ip)
+  end
+
+  def verify_admin
+    raise "Not found" unless (request.remote_ip == "98.249.45.68" || Rails.env.development?)
   end
 end
