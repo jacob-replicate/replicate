@@ -82,6 +82,18 @@ ALTER SEQUENCE public.audits_id_seq OWNED BY public.audits.id;
 
 
 --
+-- Name: banned_ips; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.banned_ips (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    address character varying,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
 -- Name: contacts; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -253,6 +265,14 @@ ALTER TABLE ONLY public.audits
 
 
 --
+-- Name: banned_ips banned_ips_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.banned_ips
+    ADD CONSTRAINT banned_ips_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: contacts contacts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -408,6 +428,7 @@ CREATE INDEX user_index ON public.audits USING btree (user_id, user_type);
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20251108011957'),
 ('20251105045745'),
 ('20251105040503'),
 ('20251105012750'),

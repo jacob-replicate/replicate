@@ -1,11 +1,13 @@
 class ApplicationController < ActionController::Base
   before_action :skip_malicious_users
-  skip_before_action :verify_authenticity_token
 
   private
 
   def skip_malicious_users
-    return head(:not_found) if banned_ips.include?(request.remote_ip)
+    if banned_ips.include?(request.remote_ip)
+      Rails.logger.info "Blocking request from banned IP #{request.remote_ip}"
+      return head(:not_found)
+    end
 
     ua     = request.user_agent.to_s
     accept = request.headers['Accept'].to_s
@@ -19,6 +21,7 @@ class ApplicationController < ActionController::Base
     # quick heuristics: block only when UA looks like a CLI and the request is not asking for HTML
     if (ua.blank? || ua.match?(non_browser) || ua.length < 10) && !accept.include?('text/html')
       Rails.logger.info "Blocking non-browser request from #{request.remote_ip} ua=#{ua.inspect} accept=#{accept.inspect}"
+      BannedIp.create!(address: request.remote_ip)
       return head(:not_found)
     end
 
@@ -34,6 +37,6 @@ class ApplicationController < ActionController::Base
       '35.146.19.108',
       '149.34.244.133',
       '209.127.202.113'
-    ]
+    ] + BannedIp.where("created_at > ?", 1.week.ago).pluck(:address)
   end
 end
