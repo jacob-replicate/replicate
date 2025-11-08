@@ -40,7 +40,7 @@ module Prompts
       response.choices.first.message[:content]
     end
 
-    def parallel_batch_process(starting_batch_size: 6, format: true, &validation_block)
+    def parallel_batch_process(starting_batch_size: 4, format: true, &validation_block)
       result = Queue.new
 
       if @conversation.turn >= 5

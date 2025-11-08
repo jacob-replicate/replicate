@@ -2,7 +2,7 @@ module Prompts
   class MultipleChoiceOptions < Prompts::Base
     def call
       parallel_batch_process(format: false) do |elements|
-        [2,3].include?(elements.size) && elements.all? { |opt| SanitizeAiContent.call(opt).length <= 100 && opt.exclude?("*") }
+        [2,3].include?(elements.size) && elements.all? { |opt| SanitizeAiContent.call(opt).length <= 110 && opt.exclude?("*") }
       end
     end
 

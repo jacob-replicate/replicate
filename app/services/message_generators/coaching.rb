@@ -68,7 +68,7 @@ module MessageGenerators
           hint_link = ANOTHER_HINT_LINK
           multiple_choice_options = 3
         elsif latest_message == "Give me another hint"
-          custom_instructions += "\n- The user is asking for a hint. Keep it concise. Provide a single concise paragraph that guides them toward the next step. Avoid lengthy explanations or multiple paragraphs."
+          custom_instructions += "\n- The user is asking for a hint. Provide a single paragraph with less than 250 characters that guides them toward the next step. Avoid lengthy explanations or multiple paragraphs."
           reply = Prompts::CoachingReply.new(conversation: @conversation, context: { custom_instructions: custom_instructions }).call
           hint_link = FINAL_HINT_LINK
           multiple_choice_options = 3
@@ -76,7 +76,7 @@ module MessageGenerators
           reply = Prompts::CoachingExplain.new(conversation: @conversation).call
           hint_link = HINT_LINK
         elsif turn == 2
-          custom_instructions = "- You must return 3 elements in this order: \"paragraph\" -> \"code\" -> \"paragraph\". The code block should have telemetry in it, or some kind of timeline. Not actual code."
+          custom_instructions = "- You must return 3 elements in this order: \"paragraph\" -> \"code\" -> \"paragraph\". The code block should have telemetry in it, or some kind of timeline. Not actual code. The paragraphs should each have fewer than 200 characters."
           reply = Prompts::CoachingReply.new(conversation: @conversation, context: { custom_instructions: custom_instructions }).call
           hint_link = HINT_LINK
           multiple_choice_options = 2
