@@ -55,7 +55,7 @@ module Prompts
         starting_batch_size = 3
       end
 
-      [starting_batch_size, 6, 8, 10].each do |batch|
+      [starting_batch_size, 6, 8, 10, 10, 10].each do |batch|
         Rails.logger.info "Thread Batch: #{batch}"
         threads = []
         batch.times do
