@@ -31,9 +31,9 @@ class ApplicationController < ActionController::Base
 
     # quick heuristics: block only when UA looks like a CLI and the request is not asking for HTML
     if (ua.blank? || ua.match?(non_browser) || ua.length < 10) && !accept.include?('text/html')
-      Rails.logger.info "Blocking non-browser request from #{request.remote_ip} ua=#{ua.inspect} accept=#{accept.inspect}"
-      ban_current_ip
-      return head(:ok)
+      Rails.logger.info "Non-browser request from #{request.remote_ip} ua=#{ua.inspect} accept=#{accept.inspect}"
+      # ban_current_ip
+      # return head(:ok)
     end
 
     nil
