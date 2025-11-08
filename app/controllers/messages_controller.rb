@@ -10,7 +10,10 @@ class MessagesController < ApplicationController
     end
 
     message = params[:content]
-    if conversation.messages.where(content: message).count >= 3 && message.exclude?("hint") && message.exclude?("What am I missing")
+    conversation_ids = Conversation.where(ip_address: request.remote_ip).pluck(:id)
+    total_messages = Message.where(conversation_id: conversation_ids)
+    duplicate_message = conversation.messages.where(content: message).count >= 3 && message.exclude?("hint") && message.exclude?("What am I missing")
+    if duplicate_message || total_messages.where("created_at > ?", 1.minute.ago).count > 12
       return head(:ok)
     end
 
