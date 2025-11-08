@@ -1,3 +1,7 @@
+Rack::Attack.blocklist('specific IP addresses') do |req|
+  req.ip == '35.146.19.108'
+end
+
 Rack::Attack.safelist('allow from localhost') do |req|
   '127.0.0.1' == req.ip || '::1' == req.ip
 end
