@@ -1,3 +1,4 @@
+- Ramp up the IP bans. 30min wait, 3hr wait, 1 day, etc. -- Just on the off chance a real user gets caught.
 - Better page <title> tags that match the conversation. Add it to the prompt + update via JS (don't block page load, add ellipsis loading).
 - "Want to see how your friends will do? <This link> will send them a fresh copy of the same SEV."
 - Action Bar
