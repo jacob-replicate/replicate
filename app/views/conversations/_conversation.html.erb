@@ -27,7 +27,7 @@
     </div>
 
     <div class="flex items-center gap-2 mt-4">
-      <textarea id="message-input" placeholder="<%= @conversation.context["conversation_type"] == "coaching" ? "Test your instincts..." : "Share your thoughts..." %>" class="w-full border border-gray-200 rounded-lg p-2 resize-none disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" rows="1" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px';"></textarea>
+      <textarea id="message-input" placeholder="<%= @conversation.context["conversation_type"] == "coaching" ? "Test your instincts..." : "What do you want to learn?" %>" class="w-full border border-gray-200 rounded-lg p-2 resize-none disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" rows="1" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px';"></textarea>
     </div>
 
 

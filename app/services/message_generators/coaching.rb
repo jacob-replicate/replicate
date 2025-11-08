@@ -44,14 +44,14 @@ module MessageGenerators
         previous_message = @conversation.messages.user.order(created_at: :desc).first&.content || ""
         turn = total_user_message_count + 1
 
-        deliver_article_suggestions if latest_message == "Give me another hint"
+        deliver_article_suggestions if latest_message == "Give me another hint" || [5, 11, 17].include?(turn)
 
         total_conversations = Conversation.where(ip_address: @conversation.ip_address)
         global_messages = Message.where(user_generated: true, conversation: total_conversations).where("created_at > ?", Time.at(1762053600))
         global_message_count = global_messages.count
 
         if turn == 3 && suggested_messages.count == 2
-          broadcast_to_web(type: "element", message: "#{AvatarService.jacob_avatar_row}<p>Don't try to win. <a href='https://gist.github.com/jacob-comer/9bba483ddd9ee3f3c379246bcba17873' class='text-blue-700 font-semibold hover:underline underline-offset-2' target='_blank'>The prompt</a> is a loop. It keeps asking hard SRE questions until you don't have a great reply.</p><p>Try answering this next one without multiple choice. How would your <span class='font-semibold'>ideal system</span> handle the pressure?</p><p class='mb-6'>Improv the details, and let GPT poke holes in your best ideas. You learn the most about infra during a SEV-1.</p>", user_generated: false)
+          broadcast_to_web(type: "element", message: "#{AvatarService.jacob_avatar_row}<p>Don't try to win. <a href='https://gist.github.com/jacob-comer/9bba483ddd9ee3f3c379246bcba17873' class='text-blue-700 font-semibold hover:underline underline-offset-2' target='_blank'>The prompt</a> is a loop. It keeps asking hard SRE questions until you don't have a great reply.</p><p>Try answering this next one without multiple choice. How would your <span class='font-semibold'>ideal system</span> handle the pressure?</p><p class='mb-6'>Improv the details, and let GPT poke holes in your best ideas.</p>", user_generated: false)
         end
 
         broadcast_to_web(type: "element", message: AvatarService.coach_avatar_row, user_generated: false)

@@ -17,7 +17,7 @@ Constraints:
 - Use the correct capilization (e.g., SLO, API), not just all lowercase.
 - Plain english. Precise technical terms are fine, but also keep in mind this is for cold ad traffic to my site. They're not warmed up yet.
 - No semicolons or em dashes.
-- Each option must be fewer than 90 characters.
+- Each option must be fewer than 70 characters. The HTML tags don't count towards the character limit.
 - Precise technical terms are fine, but avoid jargon overload. Don't make it look like word salad for non-SREs.
 - Reflect core infra reasoning, not specific tools.
 - Don't mention specific tools unless absolutely necessary.

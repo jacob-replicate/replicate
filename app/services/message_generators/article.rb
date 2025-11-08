@@ -2,7 +2,7 @@ module MessageGenerators
   class Article < MessageGenerators::Base
     def deliver_intro
       broadcast_to_web(type: "loading", user_generated: false)
-      reply = Prompts::ArticleIntro.new(conversation: @conversation).call + "<p style='margin-top: 20px; font-size: 17px' class='font-semibold'>#{ctas.sample}</span>"
+      reply = Prompts::ArticleIntro.new(conversation: @conversation).call + "<p style='margin-top: 20px; font-size: 17px' class='font-semibold'>#{ctas.sample}</span>".html_safe
       broadcast_to_web(type: "element", message: reply, user_generated: false)
       @conversation.messages.create!(content: "#{reply}", user_generated: false)
       deliver_multiple_choice_options(3)
@@ -12,7 +12,7 @@ module MessageGenerators
     def deliver_reply
       broadcast_to_web(type: "element", message: AvatarService.coach_avatar_row, user_generated: false)
       broadcast_to_web(type: "loading", user_generated: false)
-      reply = Prompts::ArticleReply.new(conversation: @conversation).call + "<p style='margin-top: 20px; font-size: 17px' class='font-semibold'>#{ctas.sample}</span>"
+      reply = Prompts::ArticleReply.new(conversation: @conversation).call + "<p style='margin-top: 20px; font-size: 17px' class='font-semibold'>#{ctas.sample}</span>".html_safe
       broadcast_to_web(type: "element", message: reply, user_generated: false)
       @conversation.messages.create!(content: "<p>#{AvatarService.coach_avatar_row}</p>#{reply}", user_generated: false)
       deliver_multiple_choice_options(3)
@@ -22,13 +22,11 @@ module MessageGenerators
     private
 
     def deliver_multiple_choice_options(count)
-      3.times do
-        options = Prompts::MultipleChoiceOptionsArticle.new(conversation: @conversation, context: { max: count }).call
+      options = Prompts::MultipleChoiceOptionsArticle.new(conversation: @conversation, context: { max: count }).call
 
-        if options.any?
-          broadcast_to_web(message: options, type: "multiple_choice", user_generated: false)
-          return
-        end
+      if options.any?
+        broadcast_to_web(message: options, type: "multiple_choice", user_generated: false)
+        return
       end
     end
 

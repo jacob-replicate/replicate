@@ -91,7 +91,7 @@ module Prompts
 
     def format_elements(elements)
       formatted_elements = []
-      formatted_elements << prefix unless prefix.blank?
+      formatted_elements << prefix.html_safe unless prefix.blank?
 
       formatted_elements += Array(elements).reject(&:blank?).map do |element|
         type = element.is_a?(Hash) ? element.with_indifferent_access[:type] : element.class
@@ -107,7 +107,7 @@ module Prompts
         end
       end.reject(&:blank?)
 
-      formatted_elements << suffix unless suffix.blank?
+      formatted_elements << suffix.html_safe unless suffix.blank?
 
       formatted_elements.join.html_safe
     end

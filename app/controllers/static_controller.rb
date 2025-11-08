@@ -9,7 +9,7 @@ class StaticController < ApplicationController
   def growth
     @active_trials = Member.where(subscribed: true).pluck(:organization_id).uniq.size # TODO: Filter out auto-unsubscribed
     @relevant_messages = Message.where(user_generated: true)
-    @base_conversations = Conversation.where(id: @relevant_messages.select(:conversation_id).distinct).where("created_at > ?", Time.at(1762492177))
+    @base_conversations = Conversation.where(id: @relevant_messages.select(:conversation_id).distinct).where("created_at > ?", Time.at(1762612746))
 
     if params[:min].present?
       valid_ids = @relevant_messages.group(:conversation_id).count.select { |k, v| v >= params[:min].to_i }.map(&:first)
