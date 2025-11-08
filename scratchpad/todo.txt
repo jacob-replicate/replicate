@@ -1,6 +1,6 @@
-- Add reason to IP bans.
-- Cloudflare
-- Keep a pool of pre-generated conversation intros to reduce AI cost, speed up loading, and lower risk of people spamming your homepage and racking up LLM bills.
+- Better junior/mid prompts. Are the core incidents too hard for them? Can only scaffold so much around Staff+ SEVs? Incidents by difficulty?
+- More buttons. Make "Give me a hint" more visible, "Write an article for me."
+
 - Max length on input box to prevent lazy copy/pastes?
 
 - Better page <title> tags that match the conversation. Add it to the prompt + update via JS (don't block page load, add ellipsis loading).
@@ -14,8 +14,12 @@
     - End incident + teach me the lesson (i.e., print an article -> make coaching return an ArticleReply if needed).
 - Incident library. Get them browsing for more content. Add key article convos into the list. Dark mode on the homepage so it doesn't blend in?
 - Periodic progress reports throughout the conversation. Visual.
-- Drop an email input ~10 messages into the conversation. The newsletter is free. Reporting is paid. Curating content is paid. Custom tech stacks are paid. Etc.
-- Add conversation.cohort tag for analytics
+- Add a "change difficulty" nudge in the conversation?
+
+Security / Ops
+- Keep a pool of pre-generated conversation intros to reduce AI cost, speed up loading, and lower risk of people spamming your homepage and racking up LLM bills.
+- Add reason to IP bans.
+- Cloudflare
 
 - New elements:
     - QOL: New script to judge the conversation so far, and figure out which elements from the list below to include. Don't clog up the prompt with all the instructions.

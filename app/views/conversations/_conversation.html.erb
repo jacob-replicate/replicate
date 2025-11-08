@@ -29,7 +29,11 @@
     <div class="flex items-center gap-2 mt-4">
       <textarea id="message-input" placeholder="<%= @conversation.context["conversation_type"] == "coaching" ? "Test your instincts..." : "Share your thoughts..." %>" class="w-full border border-gray-200 rounded-lg p-2 resize-none disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" rows="1" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px';"></textarea>
     </div>
-    <% if params[:action] == "index" %>
+
+
+    <% conversation_ids = Conversation.where(ip_address: request.remote_ip).pluck(:id) %>
+    <% total_messages = Message.user.where(conversation_id: conversation_ids).where("created_at > ?", 1.week.ago) %>
+    <% unless total_messages.count > 5 %>
       <div id="terms-container" class="mt-4 text-xs text-gray-500">
         By submitting, you agree to the <a href="/terms" class="text-blue-500 hover:underline">Terms</a> and <a href="/privacy" class="text-blue-500 hover:underline">Privacy Policy</a>
       </div>

@@ -43,7 +43,7 @@ module Prompts
     def parallel_batch_process(format: true, &validation_block)
       result = Queue.new
 
-      starting_batch_size = @conversation.turn < 5 ? 6 : 3
+      starting_batch_size = @conversation.turn < 5 ? 8 : 3
 
       [starting_batch_size, 6, 8, 10].each do |batch|
         Rails.logger.info "Thread Batch: #{batch}"
