@@ -32,7 +32,7 @@ class StaticController < ApplicationController
       web_threads: "#{@web_conversations.count} - #{(@web_messages.count.to_f / @web_conversations.count).round(2)} - #{@web_duration.to_f.round}min",
       email_threads: "#{@email_conversations.count} (#{(@email_messages.count.to_f / @email_conversations.count).round(2)})",
       active_trials: "#{@active_trials} (#{Member.where(subscribed: true).count})",
-      active_customers: "0 ($0)",
+      banned_ips: BannedIp.count
     }
   end
 
