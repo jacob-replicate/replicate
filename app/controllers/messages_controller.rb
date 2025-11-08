@@ -14,7 +14,7 @@ class MessagesController < ApplicationController
     total_messages = Message.where(conversation_id: conversation_ids)
     duplicate_message = conversation.messages.where(content: message).count >= 5 && message.exclude?("hint") && message.exclude?("What am I missing")
     if duplicate_message || total_messages.where("created_at > ?", 1.minute.ago).count > 10
-      BannedIp.create!(ip_address: request.remote_ip)
+      ban_current_ip
       return head(:ok)
     end
 

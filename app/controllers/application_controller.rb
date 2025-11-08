@@ -21,7 +21,7 @@ class ApplicationController < ActionController::Base
     # quick heuristics: block only when UA looks like a CLI and the request is not asking for HTML
     if (ua.blank? || ua.match?(non_browser) || ua.length < 10) && !accept.include?('text/html')
       Rails.logger.info "Blocking non-browser request from #{request.remote_ip} ua=#{ua.inspect} accept=#{accept.inspect}"
-      BannedIp.create!(address: request.remote_ip)
+      ban_current_ip
       return head(:not_found)
     end
 
@@ -38,5 +38,10 @@ class ApplicationController < ActionController::Base
       '149.34.244.133',
       '209.127.202.113'
     ] + BannedIp.where("created_at > ?", 1.week.ago).pluck(:address)
+  end
+
+  def ban_current_ip
+    Rails.logger.info "Banning IP #{request.remote_ip}"
+    BannedIp.create!(address: request.remote_ip) unless banned_ips.include?(request.remote_ip)
   end
 end
