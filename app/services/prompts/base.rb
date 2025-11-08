@@ -29,7 +29,9 @@ module Prompts
           big_word_ratio < 0.25
         end
 
-        elements.size > 0 && paragraphs_not_too_long && paragraphs_not_too_complex && last_element_is_paragraph
+        paragraphs_avoid_desktop_runts = paragraphs.all? { |p| (p.size < 218 || p.size > 235) && (p.size < 319 || p.size > 340) }
+
+        elements.size > 0 && paragraphs_not_too_long && paragraphs_not_too_complex && paragraphs_avoid_desktop_runts && last_element_is_paragraph
       end
     end
 
@@ -64,7 +66,7 @@ module Prompts
                 result << (format ? format_elements(elements) : elements)
               end
             rescue => e
-              Rails.logger.error("Thread failed: #{e.message}")
+              Rails.logger.error("[#{template_name}] Thread Failed (batch=#{batch}, turn=#{@conversation&.turn}) failed: #{e.class} - #{e.message}")
             end
           end
         end
