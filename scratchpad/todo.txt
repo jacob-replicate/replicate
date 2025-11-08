@@ -1,7 +1,7 @@
-- Ramp up the IP bans. 30min wait, 3hr wait, 1 day, etc. -- Just on the off chance a real user gets caught.
+- Add reason to IP bans.
 - Cloudflare
-- Keep a pool of pre-generated conversation intros to reduce AI cost + risk of people spamming your homepage and racking up bills off initial message.
-    - Generate up to a cap (per incident) every day, and then just fetch from that existing list once it reaches 5 (for that difficulty)?
+- Keep a pool of pre-generated conversation intros to reduce AI cost, speed up loading, and lower risk of people spamming your homepage and racking up LLM bills.
+- Max length on input box to prevent lazy copy/pastes?
 
 - Better page <title> tags that match the conversation. Add it to the prompt + update via JS (don't block page load, add ellipsis loading).
 - "Want to see how your friends will do? <This link> will send them a fresh copy of the same SEV."

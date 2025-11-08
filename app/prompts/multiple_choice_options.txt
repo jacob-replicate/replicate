@@ -17,6 +17,7 @@ Action Requested:
 - Each option must be ≤ 70 visible characters after removing <span> and </span>. Target 55–60 visible characters to avoid overruns
 - You must use <span class='font-semibold'>bold text</span> for emphasizing key technical concepts. Your goal is to make the option easier to scan at a glance. I want you to highlight the core of each option's idea. No other HTML tags allowed.
 - The bold text shouldn't just be at the start of the sentence. Scatter where the key points show up within the options' sentences. You have a bad habit of making them show up in the same exact spot semantically, which makes my visual layout stacking look cheesy, not authentic and human.
+- These answers shouldn't be definitive. A few should use words like "seems", "might", "could", "appears", "likely", "probably", etc. Don't overdo it.
 - Do not use markdown format for the <span class='font-semibold'>bold text</span>. Just the exact <span class='font-semibold'>HTML format</span> I gave you.
 - Only 1 answer should be right. The others should be wrong. Wrong means a confident claim that a Staff engineer might accept at a glance but that fails under scrutiny because of a key mistaken assumption
 - Wrong answers should confidently assert a system guarantee that the conversation has already shown to be false.
