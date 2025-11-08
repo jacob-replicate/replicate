@@ -5,7 +5,9 @@ class ApplicationController < ActionController::Base
   private
 
   def skip_blocked_ips
-    return head(:not_found) if request.remote_ip == '35.146.19.108' || request.remote_ip == "98.249.45.68"
+    if request.remote_ip == '35.146.19.108'
+      return head(:not_found)
+    end
   end
 
   def verify_admin

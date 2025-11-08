@@ -3,7 +3,7 @@ Rack::Attack.safelist('allow from localhost') do |req|
 end
 
 Rack::Attack.blocklist('specific IP addresses') do |req|
-  req.ip == '35.146.19.108' || req.ip == '98.42.254.49'
+  req.ip == '35.146.19.108'
 end
 
 Rack::Attack.throttle('req/ip', limit: 20, period: 1.minute) do |req|
