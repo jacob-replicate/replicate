@@ -44,7 +44,6 @@ module MessageGenerators
         previous_message = @conversation.messages.user.order(created_at: :desc).first&.content || ""
         turn = total_user_message_count + 1
 
-        deliver_article_suggestions if latest_message == "Give me another hint" || [5, 11].include?(turn) || (turn > 11 && rand(100) < 15)
 
         total_conversations = Conversation.where(ip_address: @conversation.ip_address)
         global_messages = Message.where(user_generated: true, conversation: total_conversations).where("created_at > ?", Time.at(1762053600))
@@ -65,6 +64,8 @@ module MessageGenerators
 
         broadcast_to_web(type: "element", message: AvatarService.coach_avatar_row, user_generated: false)
         broadcast_to_web(type: "loading", user_generated: false)
+
+        deliver_article_suggestions if latest_message == "Give me another hint" || [5, 11].include?(turn) || (turn > 11 && rand(100) < 15)
 
         hint_link = nil
         reply = ""
@@ -89,15 +90,15 @@ module MessageGenerators
           multiple_choice_options = 2
         elsif turn > 3 && rand(100) < 40
           custom_instructions = if rand(100) < 80
-            "- You must return a single \"code\" element alongside your concise paragraph(s). The code should be relevant to the story. Use real code that is relevant to the story."
+            "- You must return a single \"code\" element alongside your concise paragraph(s). The code should be relevant to the story. Use real code that is relevant to the story. The snippet should have at least 15 lines, and feel like code written at a cloud-native midmarket orgnaization with ~1k employees. No startup hacks. No enterprise bloat."
           else
-            "- You must return a single \"code\" element alongside your concise paragraph(s). Use telemetry relevant to the story, not real code."
+            "- You must return a single \"code\" element sandwiched between concise paragraph elements. It should contain telemetry that is relevant to the story. The snippet should have at least 8 lines, and feel like it came from the systems at a cloud-native midmarket orgnaization with ~1k employees. No startup hacks. No enterprise bloat."
           end
 
           reply = Prompts::CoachingReply.new(conversation: @conversation, context: { custom_instructions: custom_instructions }).call
           hint_link = HINT_LINK
         elsif turn > 3 && rand(100) < 35
-          custom_instructions = "- You must return #{rand(4) + 1} \"paragraph\" elements. No additional code blocks or logs paragraphs (unless they specifically asked for them just now). Don't ask questions in this one. Just add a ton of clarity to the conversation that's lacking. Don't beat around the push. Teach, don't stress test. Use the <span class='font-semibold'>semibold Tailwind class</span> to highlight key concepts."
+          custom_instructions = "- You must return #{rand(4) + 1} \"paragraph\" elements. No additional code blocks or logs paragraphs (unless they specifically asked for them just now). Add a ton of clarity to the conversation that's lacking. Don't beat around the push. Teach, don't stress test. Use the <span class='font-semibold'>semibold Tailwind class</span> to highlight key concepts. End with a question that moves the conversation forward, and gets the engineer thinking."
           reply = Prompts::CoachingReply.new(conversation: @conversation, context: { custom_instructions: custom_instructions }).call
           hint_link = HINT_LINK
         else
@@ -125,15 +126,11 @@ module MessageGenerators
     end
 
     def deliver_article_suggestions
-      subheader = "<span class='font-semibold tracking-tight'>Recommended Reading</span>"
-      broadcast_to_web(message: subheader, type: "element", user_generated: false)
-      broadcast_to_web(type: "loading", user_generated: false)
-
       10.times do
         response = Prompts::ArticleSuggestions.new(conversation: @conversation).call
         html = response["html"]
         if html.present?
-          @conversation.messages.create!(content: "<p>#{subheader}</p>#{html}", user_generated: false)
+          @conversation.messages.create!(content: html, user_generated: false)
           broadcast_to_web(message: html, type: "article_suggestions", user_generated: false)
           return
         end

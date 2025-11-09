@@ -2,7 +2,7 @@ module Prompts
   class ArticleSuggestions < Prompts::Base
     def call
       parallel_batch_process do |elements|
-        elements.size == 2
+        elements.present?
       end
     end
 
@@ -10,6 +10,7 @@ module Prompts
       raw_json = JSON.parse(fetch_raw_output) rescue {}
       raw_json = raw_json.with_indifferent_access rescue {}
       options = raw_json["options"].map(&:with_indifferent_access) rescue []
+      [options.first]
     end
 
     def format_elements(elements)
@@ -35,10 +36,10 @@ module Prompts
             rel="noopener noreferrer"
             class="text-[16px] p-3 border block border-gray-300 shadow-sm bg-gray-50 rounded-md hover:border-indigo-400 cursor-pointer transition no-underline"
           >
-            <div href="/conversations/#{conversation_id}" target="_blank" class="text-indigo-600 text-[15px] underline underline-offset-4 font-medium">
+            <div href="/conversations/#{conversation_id}" target="_blank" class="text-indigo-600 text-[15px] underline underline-offset-4 font-medium mb-1">
               #{ERB::Util.html_escape(option["title"])}
             </div>
-            <div class="mt-2 text-gray-700 text-[15px]">
+            <div class="text-gray-700 text-[15px]">
               #{ERB::Util.html_escape(option["description"])}
             </div>
           </a>
@@ -46,7 +47,7 @@ module Prompts
       end
 
       final_html = <<~HTML
-        <div class="flex flex-col gap-4">
+        <div class="">
           #{html}
         </div>
       HTML

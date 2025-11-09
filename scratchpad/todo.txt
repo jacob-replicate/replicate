@@ -5,11 +5,13 @@
     - Do a "pulse check" every 8 messages? Adjust accordingly?
     - Figure this out dynamically, don't just base it off turn count.
 
+
 - Better junior/mid prompts. Are the core incidents too hard for them? Can only scaffold so much around Staff+ SEVs? Incidents by difficulty?
 - Better page <title> tags that match the conversation. Add it to the prompt + update via JS (don't block page load, add ellipsis loading).
 - Max length on input box to prevent lazy copy/pastes burning tokens?
 - Make article_intro use the base class's call method. Make starting_batch_size a method, don't make it overwrite the call method.
 - "Want to see how your friends will do? <This link> will send them a fresh copy of the same SEV."
+- Follow up with additional messages like 30 seconds in. Keep them hooked. Thinking hard? Great, I'm typing now at random to anthropomorphize the AI.
 
 - Action Bar - Make the CTAs more visible
     - Give me a hint

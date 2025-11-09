@@ -230,11 +230,8 @@
         const finalClass = isUser ? `${baseClass} ${userClass}` : `${baseClass} w-full`;
 
         if(isArticleSuggestions) {
-          if (loadingEl) loadingEl.remove();
-          if (dotInterval) clearInterval(dotInterval);
-
           activeStreamContainer = null;
-          conversationEl.insertAdjacentHTML("beforeend", "<div class='mt-3 mb-4'>" + data.message + "</div>");
+          conversationEl.insertAdjacentHTML("beforeend", "<div class='mt-6'>" + data.message + "</div>");
           scrollToBottom();
           return;
         } else if(isMultipleChoice) {
