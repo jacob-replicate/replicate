@@ -89,9 +89,9 @@ module MessageGenerators
           multiple_choice_options = 2
         elsif turn > 3 && rand(100) < 40
           custom_instructions = if rand(100) < 80
-            "- You must return a single \"code\" element alongside your concise paragraph(s). The code should be relevant to the story. Use real code, not telemetry."
+            "- You must return a single \"code\" element alongside your concise paragraph(s). The code should be relevant to the story. Use real code that is relevant to the story."
           else
-            "- You must return a single \"code\" element alongside your concise paragraph(s). The code should be relevant to the story. Use real code, not telemetry."
+            "- You must return a single \"code\" element alongside your concise paragraph(s). Use telemetry relevant to the story, not real code."
           end
 
           reply = Prompts::CoachingReply.new(conversation: @conversation, context: { custom_instructions: custom_instructions }).call
