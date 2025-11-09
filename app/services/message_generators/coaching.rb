@@ -46,19 +46,19 @@ module MessageGenerators
 
 
         total_conversations = Conversation.where(ip_address: @conversation.ip_address)
-        global_messages = Message.where(user_generated: true, conversation: total_conversations).where("created_at > ?", Time.at(1762053600))
+        global_messages = Message.where(user_generated: true, conversation: total_conversations)
         global_message_count = global_messages.count
 
-        if turn == 3
+        if turn == 3 && global_message_count < 10
           broadcast_to_web(type: "element", message: "#{AvatarService.jacob_avatar_row}<p>Don't try to win. <a href='https://gist.github.com/jacob-comer/9bba483ddd9ee3f3c379246bcba17873' class='text-blue-700 font-semibold hover:underline underline-offset-2' target='_blank'>The prompt</a> is a loop. It keeps asking hard SRE questions until you don't have a great reply.</p><p>Try answering this next one without multiple choice. How would your <span class='font-semibold'>ideal system</span> handle the pressure?</p><p class='mb-6'>Let GPT poke holes in your best ideas. It's not perfect, but I think it will be a lot sharper than you expect.</p>", user_generated: false)
           multiple_choice_options = 0
         end
 
-        if turn == 8
+        if turn == 8 && global_message_count < 15
           broadcast_to_web(type: "element", message: "#{AvatarService.jacob_avatar_row}<p class='mb-6'>I've put ~800 hours into this project since June 2025. It's just a chat window, and a bunch of LLM orchestration. I don't want to run a SaaS company. I just want an infra/sec coaching tool that doesn't suck. It's getting there.</p>", user_generated: false)
         end
 
-        if turn == 11
+        if turn == 11 && global_message_count < 20
           broadcast_to_web(type: "element", message: "#{AvatarService.jacob_avatar_row}<p class='mb-6'>It's pretty annoying, right? Like it's totally calm and neutral, but you just want to punch the fucking thing.</p>", user_generated: false)
         end
 
@@ -75,12 +75,12 @@ module MessageGenerators
         reply = ""
 
         if latest_message == "Give me a hint"
-          custom_instructions = "- The user is asking for a hint. Keep it concise. Provide a single paragraph that guides them toward the next step with fewer than 300 characters. Avoid lengthy explanations or multiple paragraphs."
+          custom_instructions = "- The user is asking for a hint. Keep it concise. Provide a single paragraph that guides them toward the next step with fewer than 300 characters. Avoid lengthy explanations or multiple paragraphs. End with a question to move the conversation along."
           reply = Prompts::CoachingReply.new(conversation: @conversation, context: { custom_instructions: custom_instructions }).call
           hint_link = ANOTHER_HINT_LINK
           multiple_choice_options = 3
         elsif latest_message == "Give me another hint"
-          custom_instructions = "- The user is asking for a hint. Provide 3 paragraphs with less than 250 characters each that guides them toward clarity. You're not trying to stump them. You're in teaching mode, not quizzing mode now."
+          custom_instructions = "- The user is asking for a hint. Provide 3 paragraphs with less than 250 characters each that guides them toward clarity. You're not trying to stump them. You're in teaching mode, not quizzing mode now. End with a question to move the conversation along."
           reply = Prompts::CoachingReply.new(conversation: @conversation, context: { custom_instructions: custom_instructions }).call
           hint_link = FINAL_HINT_LINK
           multiple_choice_options = 3
