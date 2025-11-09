@@ -14,6 +14,7 @@
 - "Want to see how your friends will do? <This link> will send them a fresh copy of the same SEV."
 - Follow up with additional messages like 30 seconds in. Keep them hooked. Thinking hard? Great, I'm typing now at random to anthropomorphize the AI.
 - Remove the subheader suffix whenever you answer a question (coaching_intro, or any article reply). The big bold subheader should go.
+- Put user agent on BannedIp table + add better logging.
 
 - Action Bar - Make the CTAs more visible
     - Give me a hint
