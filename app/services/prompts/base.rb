@@ -146,9 +146,9 @@ module Prompts
           code = ""
           file_name = element["file"]
           if file_name.present?
-            code += "<div class='file-name'>#{file_name.split("#").map { |x| x.include?("/") ? x : "<span class='font-semibold'>#{x}</span>" }.join("#")}</div>" if file_name
+            code += "<div class='file-name'>#{file_name.split("#").map { |x| x.include?("/") ? x : "<span class='font-semibold'>#{x}</span>" }.join(" - ")}</div>" if file_name
           end
-          code += "<pre><code class='language-#{element['language'].to_s.gsub('language-', '')}'>#{element["content"]}</code></pre>".html_safe
+          code += "<pre><code class='language-#{element['language'].to_s.gsub('language-', '')}'>#{element["content"].gsub("\t", "  ")}</code></pre>".html_safe
           code
         else
           nil

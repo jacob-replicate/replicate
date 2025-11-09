@@ -116,9 +116,14 @@ pre {
 .hljs-ln-n {
   margin-right: 16px;
 }
+
 pre code {
-  font-size: 14px;
+  font-size: 15px;
   border-radius: 5px;
+  font-family: "Source Code Pro", monospace;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
 }
 
 #difficulty button:first-child {
