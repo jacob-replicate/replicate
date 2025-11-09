@@ -98,7 +98,7 @@ module MessageGenerators
           reply = Prompts::CoachingReply.new(conversation: @conversation, context: { custom_instructions: custom_instructions }).call
           hint_link = HINT_LINK
         elsif turn > 3 && rand(100) < 35
-          custom_instructions = "- You must return #{rand(4) + 1} \"paragraph\" elements. No additional code blocks or logs paragraphs (unless they specifically asked for them just now). Add a ton of clarity to the conversation that's lacking. Don't beat around the push. Teach, don't stress test. Use the <span class='font-semibold'>semibold Tailwind class</span> to highlight key concepts. End with a question that moves the conversation forward, and gets the engineer thinking."
+          custom_instructions = "- You must return #{rand(3) + 1} \"paragraph\" elements. No additional code blocks or logs paragraphs (unless they specifically asked for them just now). Add a ton of clarity to the conversation that's lacking. Don't beat around the push. Teach, don't stress test. Use the <span class='font-semibold'>semibold Tailwind class</span> to highlight key concepts. End with a question that moves the conversation forward, and gets the engineer thinking."
           reply = Prompts::CoachingReply.new(conversation: @conversation, context: { custom_instructions: custom_instructions }).call
           hint_link = HINT_LINK
         else
