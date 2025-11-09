@@ -74,11 +74,17 @@ class StaticController < ApplicationController
   def create_sev
     difficulty_level = [session[:difficulty], "senior"].reject(&:blank?).first
 
+    incident = if difficulty_level == "junior"
+      JUNIOR_INCIDENTS.sample
+    else
+      INCIDENTS.sample
+    end
+
     context = {
       conversation_type: :coaching,
       difficulty: difficulty_level,
       difficulty_prompt: difficulty_prompts[difficulty_level],
-      incident: (WEB_INCIDENTS + INCIDENTS.map { |i| i["prompt"] }).sample
+      incident: incident
     }
 
     @conversation = Conversation.create!(context: context, channel: "web", ip_address: request.remote_ip)
