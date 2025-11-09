@@ -55,7 +55,7 @@ module MessageGenerators
         end
 
         if turn == 8 && global_message_count < 15
-          broadcast_to_web(type: "element", message: "#{AvatarService.jacob_avatar_row}<p class='mb-6'>I've put ~800 hours into this project since June 2025. It's just a chat window, and a bunch of LLM orchestration I wanted an excuse to learn about. There's no paid version. At least not yet. Would your team use it?</p>", user_generated: false)
+          broadcast_to_web(type: "element", message: "#{AvatarService.jacob_avatar_row}<p class='mb-6'>I've put ~800 hours into this project since June 2025. It's just this chat UI, and a bunch of LLM orchestration I wanted an excuse to learn about. There's no paid version. At least not yet. Would your team use it?</p>", user_generated: false)
         end
 
         if turn == 15
