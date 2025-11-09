@@ -90,7 +90,7 @@ module MessageGenerators
           multiple_choice_options = 2
         elsif turn > 3 && rand(100) < 40
           custom_instructions = if rand(100) < 80
-            "- You must return a single \"code\" element alongside your concise paragraph(s). The code should be relevant to the story. Use real code that is relevant to the story. The snippet should have at least 15 lines, and feel like code written at a cloud-native midmarket orgnaization with ~1k employees. No startup hacks. No enterprise bloat."
+            "- You must return a single \"code\" element alongside your concise paragraph(s). Use real code that is relevant to the story. The snippet should have at least 15 lines, and feel like code written at a cloud-native midmarket orgnaization with ~1k employees. No startup hacks. No enterprise bloat. The code is for you to illustrate a point, not to quiz."
           else
             "- You must return a single \"code\" element sandwiched between concise paragraph elements. It should contain telemetry that is relevant to the story. The snippet should have at least 8 lines, and feel like it came from the systems at a cloud-native midmarket orgnaization with ~1k employees. No startup hacks. No enterprise bloat."
           end
