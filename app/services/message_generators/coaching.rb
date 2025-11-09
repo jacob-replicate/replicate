@@ -58,11 +58,7 @@ module MessageGenerators
           broadcast_to_web(type: "element", message: "#{AvatarService.jacob_avatar_row}<p class='mb-6'>I've put ~800 hours into this project since June 2025. It's just a chat window, and a bunch of LLM orchestration. I don't want to run a SaaS company. I just want an infra/sec coaching tool that doesn't suck. It's getting there.</p>", user_generated: false)
         end
 
-        if turn == 11 && global_message_count < 20
-          broadcast_to_web(type: "element", message: "#{AvatarService.jacob_avatar_row}<p class='mb-6'>It's pretty annoying, right? Like it's totally calm and neutral, but you just want to punch the fucking thing.</p>", user_generated: false)
-        end
-
-        if turn == 16
+        if turn == 15
           broadcast_to_web(type: "element", message: "#{AvatarService.jacob_avatar_row}<p class='mb-6'>It might be time for a <a href='/sev' class='text-blue-700 font-semibold hover:underline hover:underline-offset-2' target='_blank'>new SEV-1</a>. GPT veers off into meta distributed systems theory around this point.</p>", user_generated: false)
         end
 

@@ -1,10 +1,23 @@
+Paid Version:
+- Login to support@ + jacob@ on your phone just in case.
+- Monthly email report format to Directors. Make it a PDF that Rails renders, which you can attach in Postmark email, that they can forward to VP.
+- Reporting (individual, team, tech leads) - exec optics, "I'm investing into SEV-1 prevention, and have a receipt"
+- Customization of prompts the team uses. Team reports for tech leads + EMs + the team at large. Reports are never bad. Green or yellow, never red.
+- Shared weekly drills so everyone is on the same page.
+- Compliance tracking. -- "I want engineers to experience at least 10 incidents this quarter." -- Make it happen naturally, not forced checklist.
+- Team-wide blind spot insights.
+- Additional tracks? Security, GRC, Go, etc.
+- You need to make logging in as a free user enticing. Once they're logged in (e.g., to view their growth + personalized incidents), it's easier to get EM onboard.
+- IAM + GRC for data/access controls. Public/free site, but you're still typing your data into it.
+
+----------
+
 - Make sure long messages naturally have more...
     - Code blocks + telemetry
     - Declarative paragraphs without questions. Just feedback on the previous thought.
     - More explanations + nudges to ask for a hint.
     - Do a "pulse check" every 8 messages? Adjust accordingly?
     - Figure this out dynamically, don't just base it off turn count.
-
 
 - Shorter conversation window for articles. 30 is too much for huge blocks of text.
 - Better junior/mid prompts. Are the core incidents too hard for them? Can only scaffold so much around Staff+ SEVs? Incidents by difficulty?
@@ -82,14 +95,6 @@ Quality of life:
 - Show multiple choice options in persisted conversation -- can't just generate in JS -- MessageElement, maybe?
 - Figure out why auditing doesn't work
 
-Paid Version
-----------------------
-
-- Login to support@ + jacob@ on your phone just in case.
-
-Paid Version:
-- Monthly email report format to Directors. Make it a PDF that Rails renders, which you can attach in Postmark email, that they can forward to VP.
-- Additional tracks? Security, GRC, etc.
 
 Email:
 - Audit what needs to be ported over once you eventually transition back into the paid version (e.g., multiple choice, article links, etc).
