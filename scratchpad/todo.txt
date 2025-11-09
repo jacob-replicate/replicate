@@ -12,7 +12,6 @@ Paid Version:
 
 ----------
 
-- i18n
 - a11y
 - Preferred tech stack
 
@@ -23,7 +22,6 @@ Paid Version:
     - Do a "pulse check" every 8 messages? Adjust accordingly?
     - Figure this out dynamically, don't just base it off turn count.
 
-- Better page <title> tags that match the conversation. Add it to the prompt + update via JS (don't block page load, add ellipsis loading).
 - Max length on input box to prevent lazy copy/pastes burning tokens?
 - Make article_intro use the base class's call method. Make starting_batch_size a method, don't make it overwrite the call method.
 - "Want to see how your friends will do? <This link> will send them a fresh copy of the same SEV."

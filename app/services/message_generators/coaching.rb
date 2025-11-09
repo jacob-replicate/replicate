@@ -16,8 +16,17 @@ module MessageGenerators
         @conversation.messages.create!(content: "#{avatar}#{reply}", user_generated: false)
         broadcast_to_web(type: "element", message: reply, user_generated: false)
 
+        title = Prompts::CoachingTitle.new(conversation: @conversation).call
+        broadcast_to_web(type: "title", message: title, user_generated: false)
+
         deliver_multiple_choice_options(3)
+
+
         broadcast_to_web(type: "done")
+
+        @conversation.reload
+        @conversation.context["title"] = title
+        @conversation.save!
       elsif @conversation.email?
         elements = ["Hey there,"]
 

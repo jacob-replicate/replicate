@@ -48,6 +48,7 @@
 <script>
   document.addEventListener("DOMContentLoaded", () => {
     // Email form submission
+    document.querySelectorAll('.cta-subheader').forEach(el => el.remove());
     const conversationId = "<%= @conversation.id %>";
     const textarea = document.getElementById("message-input");
     const conversationEl = document.getElementById("conversation");
@@ -140,6 +141,8 @@
         return;
       }
 
+      document.querySelectorAll('.cta-subheader').forEach(el => el.remove());
+
       aiIsTyping = true;
       setInputEnabled(false);
 
@@ -188,6 +191,7 @@
       const isLoading = data.type === "loading";
       const isMultipleChoice = data.type === "multiple_choice";
       const isArticleSuggestions = data.type === "article_suggestions";
+      const isTitle = data.type === "title";
       const isDone = data.type === "done";
 
       if (isLoading) {
@@ -238,6 +242,9 @@
           activeStreamContainer = null;
           conversationEl.insertAdjacentHTML("beforeend", "<div class='mt-6'>" + data.message + "</div>");
           scrollToBottom();
+          return;
+        } else if(isTitle) {
+          document.title = data.message;
           return;
         } else if(isMultipleChoice) {
           const options = Array.isArray(data.message) ? data.message : [];
