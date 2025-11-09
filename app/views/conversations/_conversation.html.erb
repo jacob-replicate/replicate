@@ -104,6 +104,11 @@
       sendMessage("What am I missing here?")
     }
 
+    textarea.addEventListener('paste', (e) => {
+      e.preventDefault();
+      textarea.value = "I took the easy way out, and tried to copy/paste the answer.";
+    });
+
     function sendMessage(message, suggested) {
       let terms = document.getElementById("terms-container")
       if(terms) {
