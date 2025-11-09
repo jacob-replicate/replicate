@@ -12,9 +12,9 @@ Paid Version:
 
 ----------
 
-- File name for code snippet
-- Wrap up + pivot to a new convo visually. Options to choose from.
-
+- i18n
+- a11y
+- Preferred tech stack
 
 - Make sure long messages naturally have more...
     - Code blocks + telemetry
@@ -23,7 +23,6 @@ Paid Version:
     - Do a "pulse check" every 8 messages? Adjust accordingly?
     - Figure this out dynamically, don't just base it off turn count.
 
-- Shorter conversation window for articles. 30 is too much for huge blocks of text.
 - Better page <title> tags that match the conversation. Add it to the prompt + update via JS (don't block page load, add ellipsis loading).
 - Max length on input box to prevent lazy copy/pastes burning tokens?
 - Make article_intro use the base class's call method. Make starting_batch_size a method, don't make it overwrite the call method.
