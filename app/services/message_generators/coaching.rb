@@ -126,6 +126,7 @@ module MessageGenerators
     end
 
     def deliver_article_suggestions
+      return
       10.times do
         response = Prompts::ArticleSuggestions.new(conversation: @conversation).call
         html = response["html"]
