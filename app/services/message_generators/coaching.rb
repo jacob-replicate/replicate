@@ -44,31 +44,34 @@ module MessageGenerators
         previous_message = @conversation.messages.user.order(created_at: :desc).first&.content || ""
         turn = total_user_message_count + 1
 
-        deliver_article_suggestions if latest_message == "Give me another hint" || [5, 11, 17].include?(turn)
+        deliver_article_suggestions if latest_message == "Give me another hint" || [5, 11].include?(turn) || (turn > 11 && rand(100) < 15)
 
         total_conversations = Conversation.where(ip_address: @conversation.ip_address)
         global_messages = Message.where(user_generated: true, conversation: total_conversations).where("created_at > ?", Time.at(1762053600))
         global_message_count = global_messages.count
 
-        if turn == 3 && suggested_messages.count == 2
+        if turn == 3
           broadcast_to_web(type: "element", message: "#{AvatarService.jacob_avatar_row}<p>Don't try to win. <a href='https://gist.github.com/jacob-comer/9bba483ddd9ee3f3c379246bcba17873' class='text-blue-700 font-semibold hover:underline underline-offset-2' target='_blank'>The prompt</a> is a loop. It keeps asking hard SRE questions until you don't have a great reply.</p><p>Try answering this next one without multiple choice. How would your <span class='font-semibold'>ideal system</span> handle the pressure?</p><p class='mb-6'>Let GPT poke holes in your best ideas. It's not perfect, but I think it will be a lot sharper than you expect.</p>", user_generated: false)
+          multiple_choice_options = 0
+        end
+
+        if turn == 10
+          broadcast_to_web(type: "element", message: "#{AvatarService.jacob_avatar_row}<p class='mb-6'>I've put ~800 hours into this project since June 2025. It's just a chat window, and a bunch of LLM orchestration. I don't want to run a SaaS company. I just want an infra/sec coaching tool that doesn't suck. It's getting there.</p>", user_generated: false)
         end
 
         broadcast_to_web(type: "element", message: AvatarService.coach_avatar_row, user_generated: false)
         broadcast_to_web(type: "loading", user_generated: false)
 
-        custom_instructions = "- Aim for concise replies. The perfect reply is one concise paragraph that cuts deep. You can stray from that if needed, just keep in mind that your AI has a tendency to latch onto huge messages from the past, and keep generating them. I don't want that. If you're making a bigger point, split it across multiple elements. I don't want huge paragraphs or giant blocks of code."
-
         hint_link = nil
         reply = ""
 
         if latest_message == "Give me a hint"
-          custom_instructions += "\n- The user is asking for a hint. Keep it concise. Provide a single concise paragraph that guides them toward the next step. Avoid lengthy explanations or multiple paragraphs."
+          custom_instructions = "- The user is asking for a hint. Keep it concise. Provide a single paragraph that guides them toward the next step with fewer than 300 characters. Avoid lengthy explanations or multiple paragraphs."
           reply = Prompts::CoachingReply.new(conversation: @conversation, context: { custom_instructions: custom_instructions }).call
           hint_link = ANOTHER_HINT_LINK
           multiple_choice_options = 3
         elsif latest_message == "Give me another hint"
-          custom_instructions += "\n- The user is asking for a hint. Provide a single paragraph with less than 250 characters that guides them toward the next step. Avoid lengthy explanations or multiple paragraphs."
+          custom_instructions = "- The user is asking for a hint. Provide 3 paragraphs with less than 250 characters each that guides them toward clarity. You're not trying to stump them. You're in teaching mode, not quizzing mode now."
           reply = Prompts::CoachingReply.new(conversation: @conversation, context: { custom_instructions: custom_instructions }).call
           hint_link = FINAL_HINT_LINK
           multiple_choice_options = 3
@@ -80,11 +83,21 @@ module MessageGenerators
           reply = Prompts::CoachingReply.new(conversation: @conversation, context: { custom_instructions: custom_instructions }).call
           hint_link = HINT_LINK
           multiple_choice_options = 2
-        elsif [3,4,5].include?(turn) || rand(100) < 60
+        elsif [3,4,5].include?(turn) || rand(100) < 50
           custom_instructions = "- You must return a single \"paragraph\" element. No additional code blocks, logs, or paragraphs (unless they specifically asked for them just now). Just the one concise paragraph that cuts deep with a single hard SRE question."
           reply = Prompts::CoachingReply.new(conversation: @conversation, context: { custom_instructions: custom_instructions }).call
           hint_link = HINT_LINK
+        elsif turn > 5 && rand(100) < 30
+          custom_instructions = if rand(100) < 80
+            "- You must return a single \"code\" element alongside your concise paragraph(s). The code should be relevant to the story. Use real code, not telemetry."
+          else
+            "- You must return a single \"code\" element alongside your concise paragraph(s). The code should be relevant to the story. Use real code, not telemetry."
+          end
+
+          reply = Prompts::CoachingReply.new(conversation: @conversation, context: { custom_instructions: custom_instructions }).call
+          hint_link = HINT_LINK
         else
+          custom_instructions = "- You must return #{rand(5) + 1} \"paragraph\" elements. No additional code blocks or logs paragraphs (unless they specifically asked for them just now). Don't ask questions in this one. Just make the current blind spot abundantly clear. Don't beat around the push. Teach, don't stress test. Use the <span class='font-semibold'>semibold Tailwind class</span> to highlight key concepts."
           reply = Prompts::CoachingReply.new(conversation: @conversation, context: { custom_instructions: custom_instructions }).call
           hint_link = HINT_LINK
         end

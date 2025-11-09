@@ -31,7 +31,34 @@ module Prompts
 
         paragraphs_avoid_desktop_runts = paragraphs.all? { |p| (p.size < 218 || p.size > 235) && (p.size < 319 || p.size > 340) }
 
-        elements.size > 0 && paragraphs_not_too_long && paragraphs_not_too_complex && paragraphs_avoid_desktop_runts && last_element_is_paragraph
+        avoids_banned_phrases = paragraphs.all? do |p|
+          p.exclude?("—")
+        end
+
+        valid =
+          elements.size.positive? &&
+            paragraphs_not_too_long &&
+            paragraphs_not_too_complex &&
+            paragraphs_avoid_desktop_runts &&
+            last_element_is_paragraph &&
+            avoids_banned_phrases
+
+        # Logging if invalid
+        unless valid
+          failures = []
+          failures << "too_long_or_contains_asterisk" unless paragraphs_not_too_long
+          failures << "too_complex" unless paragraphs_not_too_complex
+          failures << "desktop_runt_length" unless paragraphs_avoid_desktop_runts
+          failures << "last_not_paragraph" unless last_element_is_paragraph
+          failures << "banned_phrase" unless avoids_banned_phrases
+
+          Rails.logger.warn(
+            "Prompt validation failed for #{template_name}: #{failures.join(', ')}" \
+              " | paragraphs=#{paragraphs.inspect.truncate(300)}"
+          )
+        end
+
+        valid
       end
     end
 
@@ -88,7 +115,15 @@ module Prompts
 
     def fetch_elements
       raw_json = JSON.parse(fetch_raw_output) rescue {}
-      Array(raw_json.with_indifferent_access[:elements]).map(&:with_indifferent_access) || []
+      elements = Array(raw_json.with_indifferent_access[:elements]).map(&:with_indifferent_access) || []
+
+      elements.map do |element|
+        if element[:type] == "paragraph"
+          element[:content] = element[:content].gsub("*", "")
+        end
+
+        element
+      end
     end
 
     def prefix
