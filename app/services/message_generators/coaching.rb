@@ -59,6 +59,10 @@ module MessageGenerators
           broadcast_to_web(type: "element", message: "#{AvatarService.jacob_avatar_row}<p class='mb-6'>I've put ~800 hours into this project since June 2025. It's just a chat window, and a bunch of LLM orchestration. I don't want to run a SaaS company. I just want an infra/sec coaching tool that doesn't suck. It's getting there.</p>", user_generated: false)
         end
 
+        if turn == 15
+          broadcast_to_web(type: "element", message: "#{AvatarService.jacob_avatar_row}<p class='mb-6'>It might be time for a <a href='/sev' class='text-blue-700 font-semibold hover:underline hover:underline-offset-2' target='_blank'>new SEV-1</a>. GPT veers off into meta distributed systems theory around this point.</p>", user_generated: false)
+        end
+
         broadcast_to_web(type: "element", message: AvatarService.coach_avatar_row, user_generated: false)
         broadcast_to_web(type: "loading", user_generated: false)
 
@@ -83,11 +87,7 @@ module MessageGenerators
           reply = Prompts::CoachingReply.new(conversation: @conversation, context: { custom_instructions: custom_instructions }).call
           hint_link = HINT_LINK
           multiple_choice_options = 2
-        elsif [3,4,5].include?(turn) || rand(100) < 50
-          custom_instructions = "- You must return a single \"paragraph\" element. No additional code blocks, logs, or paragraphs (unless they specifically asked for them just now). Just the one concise paragraph that cuts deep with a single hard SRE question."
-          reply = Prompts::CoachingReply.new(conversation: @conversation, context: { custom_instructions: custom_instructions }).call
-          hint_link = HINT_LINK
-        elsif turn > 5 && rand(100) < 30
+        elsif turn > 3 && rand(100) < 40
           custom_instructions = if rand(100) < 80
             "- You must return a single \"code\" element alongside your concise paragraph(s). The code should be relevant to the story. Use real code, not telemetry."
           else
@@ -96,8 +96,12 @@ module MessageGenerators
 
           reply = Prompts::CoachingReply.new(conversation: @conversation, context: { custom_instructions: custom_instructions }).call
           hint_link = HINT_LINK
+        elsif turn > 3 && rand(100) < 35
+          custom_instructions = "- You must return #{rand(4) + 1} \"paragraph\" elements. No additional code blocks or logs paragraphs (unless they specifically asked for them just now). Don't ask questions in this one. Just add a ton of clarity to the conversation that's lacking. Don't beat around the push. Teach, don't stress test. Use the <span class='font-semibold'>semibold Tailwind class</span> to highlight key concepts."
+          reply = Prompts::CoachingReply.new(conversation: @conversation, context: { custom_instructions: custom_instructions }).call
+          hint_link = HINT_LINK
         else
-          custom_instructions = "- You must return #{rand(5) + 1} \"paragraph\" elements. No additional code blocks or logs paragraphs (unless they specifically asked for them just now). Don't ask questions in this one. Just make the current blind spot abundantly clear. Don't beat around the push. Teach, don't stress test. Use the <span class='font-semibold'>semibold Tailwind class</span> to highlight key concepts."
+          custom_instructions = "- Try to return a single \"paragraph\" element. No additional code blocks, logs, or paragraphs (unless they specifically asked for them just now). Concise copy that cuts deep and moves the SEV forward."
           reply = Prompts::CoachingReply.new(conversation: @conversation, context: { custom_instructions: custom_instructions }).call
           hint_link = HINT_LINK
         end

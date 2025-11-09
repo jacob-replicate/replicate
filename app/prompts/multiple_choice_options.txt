@@ -25,6 +25,7 @@ Action Requested:
 Constraints:
 - Think hard. 10/10 A+ quality only. Deliver your best work.
 - Avoid vague language. No filler. You can hedge a little bit, since we're talking about assumptions, not data we 100% have. You're probably sure about these answers, but not 100%. Don't be too confident. You're confident where you'd look first, not confident what the solution is.
+- Don't use big words for the sake of sounding smart. Plain english words are always preferrable. No word salad.
 - Complete sentences to answer the previous question(s) in the conversation's most recent message. Don't use the . period character though.
 - Plain english. Precise technical terms are fine, but also keep in mind this is for cold ad traffic to my site. They're not warmed up yet. It should be approachable human-readable English.
 - The phrasing of your options should align with the tense of the question asked, the style, etc.
