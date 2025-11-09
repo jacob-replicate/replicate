@@ -11,7 +11,7 @@ Response Format:
 Response Format Constraints: "code" elements
 - Example: { "elements": [{ "type": "code", "language": "python", "content": "def hello_world():\nprint('Hello, world!')", "file": "payments-api#app/models/customer.py" }] }
 - "code" elements must have a "language" key. It should be in a lowercase format (e.g., "python").
-- "code" elements must have a "file" key, that resembles a full file path you would see in a cloud-native 1k+ employee organization. Make it realistic. It should include a realistic repo name (e.g., payments-api, portal, etc) separated with a # between repo and file, then flashes in the actual path. Don't prefix it with a slash.
+- "code" elements must have a "file" key, that resembles a full file path you would see in a cloud-native 1k+ employee organization with microservices. Make it realistic. The path should align with whatever language/framework they're using. The only thing I care about is slashes. It should include a realistic repo name (e.g., payments-api, portal, etc) separated with a # between repo and file, then flashes in the actual path. Don't prefix it with a slash.
 - Try to re-use repository names you already included earlier in the conversation if possible. That said, don't mix languages in the same repo unless it's realistic to do so. You can still introduce new services throughout the conversation, I just want to make sure you don't do stuff like "payments-api" and "payments-service" that are basically the same thing.
 - Use "plaintext" as the language for logs, CLI output, timelines, metrics, or other non-code snippets. Use the real language for everything else (e.g., python, ruby, javascript, go, sql, etc).
 - "code" elements must not have comments.
