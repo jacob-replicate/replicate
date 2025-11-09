@@ -30,8 +30,14 @@ module Prompts
           big_word_ratio < 0.25
         end
 
+        code_blocks_valid = elements.select { |e| Hash(e).with_indifferent_access[:type] == "code" }.all? do |e|
+          e = e.with_indifferent_access
+          e[:content].is_a?(String) && e[:file].is_a?(String) && e[:file].length <= 100 && e[:language].is_a?(String)
+        end
+
         valid =
           elements.size.positive? &&
+            code_blocks_valid &&
             paragraphs_not_too_long &&
             paragraphs_not_too_complex &&
             first_element_is_paragraph &&
@@ -137,7 +143,13 @@ module Prompts
         elsif type == "paragraph"
           "<p>#{element["content"]}</p>".html_safe
         elsif type == "code"
-          "<pre><code class='language-#{element['language'].to_s.gsub('language-', '')}'>#{element["content"]}</code></pre>".html_safe
+          code = ""
+          file_name = element["file"]
+          if file_name.present?
+            code += "<div class='file-name'>#{file_name.split("#").map { |x| x.include?("/") ? x : "<span class='font-semibold'>#{x}</span>" }.join("#")}</div>" if file_name
+          end
+          code += "<pre><code class='language-#{element['language'].to_s.gsub('language-', '')}'>#{element["content"]}</code></pre>".html_safe
+          code
         else
           nil
         end

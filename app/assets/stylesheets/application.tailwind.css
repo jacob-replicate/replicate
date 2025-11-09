@@ -110,7 +110,7 @@ body {
 }
 
 pre {
-  margin: 15px 0;
+  margin: 5px 0 15px 0;
 }
 
 .hljs-ln-n {
@@ -129,4 +129,14 @@ pre code {
 #difficulty button:last-child {
   border-top-right-radius: 6px;
   border-bottom-right-radius: 6px;
+}
+
+.file-name {
+  background-color: #222831;
+  color: white;
+  display: inline-block;
+  font-size: 14px;
+  margin-top: 15px;
+  padding: 3px 8px;
+  border-radius: 5px;
 }
