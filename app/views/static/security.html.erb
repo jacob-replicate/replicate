@@ -1,118 +1,56 @@
 <div class="py-6">
-  <h1 class="text-3xl font-semibold mb-4">Security</h1>
-  <p class="text-sm text-gray-500 mb-6">Last updated: October 6, 2025</p>
+  <div class="mb-8">
+    <h2 class="font-semibold mb-2 text-2xl tracking-tight">Architecture</h2>
 
-  <p class="mb-6">
-    This tool sends <span class="font-semibold">infra coaching emails</span> to your engineers. <span class="font-semibold">No logins, dashboards,</span> or <span class="font-semibold">SSO.</span>
-  </p>
+    <p>All infra is provisioned/managed by <span class="font-semibold">Heroku</span> (in <span class="font-semibold">US-based</span> AWS regions), and uses their HA failover. Data is encrypted at rest using AES-256, and TLS 1.2+ in transit. The tool is ephemeral, and wipes data older than 3 months. It's a cron job + webhook. DR just means your emails arrive a few minutes late.
 
-  <p class="mb-6">
-    Every Monday, a cron job starts private email threads with your engineers about SEV-1 prevention. The Rails app receives a webhook when they reply, and sends back the results of a few GPT prompts.
-  </p>
+    <h3 class="font-semibold mt-4 mb-1">Audit Logs</h3>
+    <p>Administrative actions (e.g., user provisioning) are logged immutably and retained for 12 months in secure, append-only S3 buckets. Available upon request.</p>
 
-  <p class="mb-6">
-    <span class="font-semibold">No customer data.</span> If users type it anyway, the LLC has <a href="/replicate-coi.pdf" class="text-blue-600 hover:underline font-semibold">$1M E&O</a> + <a href="/replicate-coi.pdf" class="text-blue-600 hover:underline font-semibold">$1M Cyber</a> coverage.
-  </p>
+    <h3 class="font-semibold mt-4 mb-1">Automated Dependency Scanning</h3>
+    <p>The codebase is continuously scanned using <a href="https://docs.github.com/en/code-security/getting-started/dependabot-quickstart-guide" class="text-blue-600 hover:text-blue-700 hover:underline transition font-semibold">GitHub Dependabot</a> to patch vulnerable libraries. Critical vulnernabilities are patched within 7 days of public disclosure.</p>
 
-  <div class="mb-6">
+    <h3 class="font-semibold mt-4 mb-1">Cookie Policy</h3>
+    <p>This site uses a session ID cookie to track which difficulty you selected. No marketing cookies or analytics JS plugins of any kind.</p>
+
+    <h3 class="font-semibold mt-4 mb-1">Database Backups</h3>
+    <p><a href="https://www.heroku.com/postgres" class="text-blue-600 hover:text-blue-700 hover:underline transition font-semibold">Heroku Postgres</a> maintains rolling database backups, and prunes old snapshots automatically over time. Backups can be restored in minutes, and are captured at least once every 24 hours.</p>
   </div>
 
-  <p class="mb-6">
-    You will receive a <a href="/replicate-msa-dpa.pdf" class="text-blue-600 hover:underline font-semibold">pre-signed MSA/DPA</a> during the <a href="/billing" class="text-blue-600 hover:underline font-semibold">trial period</a>. No RFPs, redlines, or vendor portals.
-  </p>
+  <div class="mb-8">
+    <h2 class="font-semibold mb-2 text-2xl tracking-tight">Data Lifecycle</h2>
 
-  <p class="mb-6">Liability is capped at <span class="font-semibold">5x the fees</span> paid across your <span class="font-semibold">entire contract</span>, even if multi-year. Exclusions are uncapped: willful misconduct, gross negligence, IP infringement, and confidentiality breaches.</p>
+    <h3 class="font-semibold mt-6 mb-1">Retention Period</h3>
+    <p>Inactive chats are auto-deleted after 3 months. I'm not training LLMs on the data you enter. <span class="mt-6 md:inline"> Email <a href="mailto:support@replicate.info" class="text-blue-600 hover:text-blue-700 hover:underline transition font-semibold">support@replicate.info</a> to request immediate deletion. It won't get stuck in a Postgres backup forever.</span></p>
+  </div>
 
-  <p class="mb-6">
-    It's likely the simplest SaaS tool you'll approve/reject this year. <span class="font-semibold">SOC 2 - Type I</span> planned for 2026.
-  </p>
+  <div>
+    <h2 class="font-semibold mb-2 text-2xl tracking-tight">Subprocessors</h2>
 
-  <p class="mb-6">
-    <%= render "static/signature" %>
-  </p>
+    <p class="text-sm text-gray-700 mb-2">
+      All vendors are GDPR compliant, offer Standard Contractual Clauses (SCCs), and underwent security review prior to onboarding. This is the complete list. No additional tools (e.g., Google Analytics) are used beyond those listed here.
+    </p>
 
-  <div class="space-y-10 mt-10">
+    <h3 class="font-semibold mt-4 mb-1">Amazon S3</h3>
+    <p>Stores immutable, append-only audits for admin actions (e.g., data removal) with AES-256 at rest.</p>
 
-    <div>
-      <h2 class="font-semibold mb-2 text-2xl tracking-tight">Access Management</h2>
+    <h3 class="font-semibold mt-4 mb-1">Datadog</h3>
+    <p>Used for infrastructure telemetry and monitoring (e.g., CPU, memory, service health).</p>
 
-      <p class="mt-3">Admins manage active users by emailing changes to <a href="mailto:support@replicate.info" class="text-blue-600 hover:text-blue-700 hover:underline transition font-semibold">support@replicate.info</a></p>
-      <p class="mt-3">A simple admin portal to manage Billing + SCIM (via <a href="https://auth0.com" class="text-blue-600 hover:text-blue-700 hover:underline transition font-semibold">Auth0 SSO</a>) will be an <span class="font-semibold">optional</span> enhancement in 2026. GRC and security teams will have unlimited time to approve/deny the process change. It's opt-in.</p>
-    </div>
+    <h3 class="font-semibold mt-4 mb-1">Heroku</h3>
+    <p>Used for application infra and encrypted storage. All workloads run in isolated containers with TLS 1.2+ enforced, and AES-256 encryption at rest. Includes managed Heroku Postgres + Redis instances.</p>
 
+    <h3 class="font-semibold mt-4 mb-1">OpenAI</h3>
+    <p>OpenAI's API powers the real-time content generation for the chat. None of your data is persisted by OpenAI. None of it is used to train their models. The prompting is ephemeral.</p>
 
-    <div>
-      <h2 class="font-semibold mb-2 text-2xl tracking-tight">Architecture</h2>
+    <h3 class="font-semibold mt-4 mb-1">PagerDuty</h3>
+    <p>Used for incident alerting and on-call scheduling. May store system-level alerts with metadata (e.g., timestamps, service names). No user-submitted content.</p>
 
-      <p>All infra is provisioned/managed by <span class="font-semibold">Heroku</span> (in <span class="font-semibold">US-based</span> AWS regions), and uses their HA failover. Data is encrypted at rest using AES-256, and TLS 1.2+ in transit. The tool is ephemeral, and wipes data older than 3 months. It's a cron job + webhook. DR just means your emails arrive a few minutes late.
+    <h3 class="font-semibold mt-4 mb-1">Papertrail</h3>
+    <p>Used for infrastructure log aggregation and retention. Some logs may include metadata related to coaching email delivery (e.g. timestamps, team IDs).</p>
 
-      <h3 class="font-semibold mt-4 mb-1">Audit Logs</h3>
-      <p>Administrative actions (e.g., user provisioning) are logged immutably and retained for 12 months in secure, append-only S3 buckets. Available upon request.</p>
-
-      <h3 class="font-semibold mt-4 mb-1">Automated Dependency Scanning</h3>
-      <p>The codebase is continuously scanned using <a href="https://docs.github.com/en/code-security/getting-started/dependabot-quickstart-guide" class="text-blue-600 hover:text-blue-700 hover:underline transition font-semibold">GitHub Dependabot</a> to patch vulnerable libraries. Critical vulnernabilities are patched within 7 days of public disclosure.</p>
-
-      <h3 class="font-semibold mt-4 mb-1">Cookie Policy</h3>
-      <p>This site does not use cookies. No logins, no Google Analytics, no policy for tech that isn't used. When SCIM is released, admins who opt-in will receive a single Ruby on Rails session ID cookie.</p>
-
-      <h3 class="font-semibold mt-4 mb-1">Database Backups</h3>
-      <p><a href="https://www.heroku.com/postgres" class="text-blue-600 hover:text-blue-700 hover:underline transition font-semibold">Heroku Postgres</a> maintains rolling database backups, and prunes old snapshots automatically over time. Backups can be restored in minutes, and are captured at least once every 24 hours.</p>
-
-      <h3 class="font-semibold mt-4 mb-1">Incident Response</h3>
-      <p>PagerDuty maintains a 24/7 oncall schedule. In the event of a confirmed incident, impacted customers will be notified without undue delay, and receive an RCA (from <%= mail_to 'security@replicate.info', 'security@replicate.info', class: "text-blue-600 hover:text-blue-700 hover:underline transition font-semibold" %>) in 72 hours.</p>
-    </div>
-
-    <div>
-      <h2 class="font-semibold mb-2 text-2xl tracking-tight">Data Lifecycle</h2>
-
-      <h3 class="font-semibold mt-6 mb-1">Email Retention</h3>
-      <p>Inactive conversations are automatically deleted after 3 months. That data is used to recreate email history when engineers reply a few weeks later. No AI training. <span class="mt-6 md:inline"> Email <a href="mailto:support@replicate.info" class="text-blue-600 hover:text-blue-700 hover:underline transition font-semibold">support@replicate.info</a> to request immediate deletion. It won't get stuck in a Postgres backup forever.</span></p>
-
-      <h3 class="font-semibold mt-6 mb-1">End-of-Service Planning</h3>
-      <p>If the product is ever sunset, you will receive advance notice, full source code, all your data, and next steps. Current contracts will be fulfilled (including multi-year terms), and support will remain available.
-
-      <h3 class="font-semibold mt-6 mb-1">Inactivity Handling</h3>
-      <p>Engineers get automatically unsubscribed after 3 weeks without replies. The final email includes a link to resume coaching. The product simply fades away until they want it back.</p>
-    </div>
-
-    <div>
-      <h2 class="font-semibold mb-2 text-2xl tracking-tight">Subprocessors</h2>
-
-      <p class="text-sm text-gray-700 mb-2">
-        All vendors are GDPR compliant, offer Standard Contractual Clauses (SCCs), and underwent security review prior to onboarding. This is the complete list. No additional tools (e.g., Google Analytics) are used beyond those listed here.
-      </p>
-
-      <h3 class="font-semibold mt-4 mb-1">Amazon S3</h3>
-      <p>Stores immutable, append-only audits for admin actions (e.g., billing approvals) with AES-256 at rest.</p>
-
-      <h3 class="font-semibold mt-4 mb-1">Bouncer</h3>
-      <p>Used to validate email addresses to improve deliverability and avoid bounces from invalid addresses. No message content is sent, just the email address itself (and only when needed).</p>
-
-      <h3 class="font-semibold mt-4 mb-1">Datadog</h3>
-      <p>Used for infrastructure telemetry and monitoring (e.g., CPU, memory, service health).</p>
-
-      <h3 class="font-semibold mt-4 mb-1">Heroku</h3>
-      <p>Used for application infra and encrypted storage. All workloads run in isolated containers with TLS 1.2+ enforced, and AES-256 encryption at rest. Includes managed Heroku Postgres + Redis instances.</p>
-
-      <h3 class="font-semibold mt-4 mb-1">OpenAI</h3>
-      <p>OpenAI's API powers the real-time content generation for coaching emails. None of your data is persisted by OpenAI. None of it is used to train their models. The prompting is ephemeral.</p>
-
-      <h3 class="font-semibold mt-4 mb-1">PagerDuty</h3>
-      <p>Used for incident alerting and on-call scheduling. May store system-level alerts with metadata (e.g., timestamps, service names). No customer-submitted content.</p>
-
-      <h3 class="font-semibold mt-4 mb-1">Papertrail</h3>
-      <p>Used for infrastructure log aggregation and retention. Some logs may include metadata related to coaching email delivery (e.g. timestamps, team IDs).</p>
-
-      <h3 class="font-semibold mt-4 mb-1">Postmark</h3>
-      <p>Used for transactional email delivery. No open/click tracking. No marketing newsletters.</p>
-
-      <h3 class="font-semibold mt-4 mb-1">Sentry</h3>
-      <p>Used for internal error tracking and debugging. Some error logs may include technical metadata (e.g., error messages, timestamps, team IDs).</p>
-
-      <h3 class="font-semibold mt-4 mb-1">Stripe</h3>
-      <p>Used for processing invoices. No auto-renewal. You manually approve every payment.</p>
-    </div>
-
+    <h3 class="font-semibold mt-4 mb-1">Sentry</h3>
+    <p>Used for internal error tracking and debugging. Some error logs may include technical metadata (e.g., error messages, timestamps, team IDs).</p>
   </div>
 
   <p class="text-gray-500 mt-10 text-sm">
