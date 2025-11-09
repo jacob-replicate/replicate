@@ -15,6 +15,7 @@ Paid Version:
 - File name for code snippet
 - Wrap up + pivot to a new convo visually. Options to choose from.
 
+
 - Make sure long messages naturally have more...
     - Code blocks + telemetry
     - Declarative paragraphs without questions. Just feedback on the previous thought.
