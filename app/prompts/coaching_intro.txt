@@ -20,6 +20,7 @@ Constraints:
 - Make it feel like a live, internal #incidents channel summary at a mid-market SaaS company, not just a tech puzzle.
 - Make sure to highlight a path or two the engineering team has already tried to no success. We're in the middle of the SEV and stuff is still on fire, not the start or end. Take the easy options away from the engineer.
 - Use present progressive tense to describe unfolding behavior. The SEV is still in progress, and the team is actively responding.
+- It should feel like an incident update from a seasoned engineer at a mid-market company. Think "We've been hard down since 1:37pm."
 - Make the infra failure real and specific. Don't just talk about the customer pain. Present a SEV puzzle mid-fire that an SRE can't help but engage with.
 - Make sure to frame the pain. Why is this symptom bad?
 - The incident should feel like a real snapshot from production, not a dramatic reenactment or vague hunch.
