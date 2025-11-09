@@ -12,7 +12,7 @@ class StaticController < ApplicationController
     @base_conversations = Conversation.where(id: @relevant_messages.select(:conversation_id).distinct).where("created_at > ?", Time.at(1762612746))
 
     if params[:min].present?
-      valid_ids = @relevant_messages.group(:conversation_id).count.select { |k, v| v >= params[:min].to_i }.map(&:first)
+      valid_ids = @relevant_messages.group(:conversation_id).count.select { |k, v| v >= 10 }.map(&:first)
       @base_conversations = @base_conversations.where(id: valid_ids)
     end
 
