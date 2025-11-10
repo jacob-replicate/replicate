@@ -12,8 +12,16 @@ Paid Version:
 
 ----------
 
-- a11y
+- Share button
+- Regenerate button.
+- More explanatory content for juniors -> mids. More multiple choice thrown in. Yes or no questions. Coaching prompts. GPT-style "Want to learn about X?" messages.
+- Light CTAs.
+    - "Do you want to learn more about X?" - sneak in a few ChatGPT-style yes/no questions that don't challenge.
+    - "Should that load be handled by the load balancer, or the application servers?"
+- Timer. "New SEV" / "Keep Going"
 - Preferred tech stack
+- Mobile conversations. Shorter paragraphs, shortr file namees (service on newline, not # character)
+- Meta tags + sharing images/text
 
 - Make sure long messages naturally have more...
     - Code blocks + telemetry
@@ -28,6 +36,7 @@ Paid Version:
 - Follow up with additional messages like 30 seconds in. Keep them hooked. Thinking hard? Great, I'm typing now at random to anthropomorphize the AI.
 - Remove the subheader suffix whenever you answer a question (coaching_intro, or any article reply). The big bold subheader should go.
 - Put user agent on BannedIp table + add better logging.
+- a11y
 
 - Action Bar - Make the CTAs more visible
     - Give me a hint

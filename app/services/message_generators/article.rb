@@ -12,7 +12,7 @@ module MessageGenerators
     def deliver_reply
       broadcast_to_web(type: "element", message: AvatarService.coach_avatar_row, user_generated: false)
       broadcast_to_web(type: "loading", user_generated: false)
-      reply = Prompts::ArticleReply.new(conversation: @conversation).call + "<p class='cta-subheader' style='margin-top: 20px; font-size: 17px' class='font-semibold'>#{ctas.sample}</span>".html_safe
+      reply = Prompts::ArticleReply.new(conversation: @conversation).call + "<p style='margin-top: 20px; font-size: 17px' class='font-semibold'>#{ctas.sample}</span>".html_safe
       broadcast_to_web(type: "element", message: reply, user_generated: false)
       @conversation.messages.create!(content: "<p>#{AvatarService.coach_avatar_row}</p>#{reply}", user_generated: false)
       deliver_multiple_choice_options(3)

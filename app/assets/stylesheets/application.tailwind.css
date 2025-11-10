@@ -126,6 +126,10 @@ pre code {
   font-style: normal;
 }
 
+.hljs {
+  background-color: #181C14 !important;
+}
+
 #difficulty button:first-child {
   border-top-left-radius: 6px;
   border-bottom-left-radius: 6px;
@@ -144,4 +148,8 @@ pre code {
   margin-top: 15px;
   padding: 3px 8px;
   border-radius: 5px;
+}
+
+.hljs-ln-n {
+  color: #888;
 }

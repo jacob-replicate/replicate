@@ -47,8 +47,6 @@
 
 <script>
   document.addEventListener("DOMContentLoaded", () => {
-    // Email form submission
-    document.querySelectorAll('.cta-subheader').forEach(el => el.remove());
     const conversationId = "<%= @conversation.id %>";
     const textarea = document.getElementById("message-input");
     const conversationEl = document.getElementById("conversation");
@@ -140,8 +138,6 @@
         textarea.focus();
         return;
       }
-
-      document.querySelectorAll('.cta-subheader').forEach(el => el.remove());
 
       aiIsTyping = true;
       setInputEnabled(false);
@@ -347,6 +343,9 @@
       { channel: "ConversationChannel", id: conversationId },
       {
         received(data) {
+          if(<%= Rails.env.development? %>) {
+            console.log("Received data:", data);
+          }
           if (data.sequence !== undefined) {
             messageQueue[data.sequence] = data;
             if(data.sequence > 5) {

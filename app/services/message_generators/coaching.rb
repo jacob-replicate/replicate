@@ -19,7 +19,7 @@ module MessageGenerators
         title = Prompts::CoachingTitle.new(conversation: @conversation).call
         broadcast_to_web(type: "title", message: title, user_generated: false)
 
-        deliver_multiple_choice_options(3)
+        deliver_multiple_choice_options(3, reply)
 
 
         broadcast_to_web(type: "done")
@@ -59,7 +59,7 @@ module MessageGenerators
         global_message_count = global_messages.count
 
         if turn == 3 && global_message_count < 10
-          broadcast_to_web(type: "element", message: "#{AvatarService.jacob_avatar_row}<p>Don't try to win. <a href='https://gist.github.com/jacob-comer/9bba483ddd9ee3f3c379246bcba17873' class='text-blue-700 font-semibold hover:underline underline-offset-2' target='_blank'>The prompt</a> is a loop. It keeps asking hard SRE questions until you don't have a great reply.</p><p>Try answering this next one without multiple choice. How would your <span class='font-semibold'>ideal system</span> handle the pressure?</p><p class='mb-6'>Around 60 redditors played for over an hour. I know it sounds like vaporware. I would be skeptical too.</p>", user_generated: false)
+          broadcast_to_web(type: "element", message: "#{AvatarService.jacob_avatar_row}<p>Don't try to win. <a href='https://gist.github.com/jacob-comer/9bba483ddd9ee3f3c379246bcba17873' class='text-blue-700 font-semibold hover:underline underline-offset-2' target='_blank'>The prompt</a> is a loop. It keeps asking hard SRE questions until you don't have a great reply.</p><p>Try answering this next one without multiple choice. How would your <span class='font-semibold'>ideal system</span> handle the pressure?</p><p class='mb-6'>Improv the details, and let GPT poke holes in your best ideas. It catches most SREs within 5 turns.</p>", user_generated: false)
           multiple_choice_options = 0
         end
 
@@ -76,48 +76,38 @@ module MessageGenerators
 
         deliver_article_suggestions if latest_message == "Give me another hint" || [5, 11].include?(turn) || (turn > 11 && rand(100) <= 10)
 
-        hint_link = nil
+        hint_link = HINT_LINK
         reply = ""
+        prompt = Prompts::CoachingReply
 
         if latest_message == "Give me a hint"
           custom_instructions = "- The user is asking for a hint. Keep it concise. Provide a single paragraph that guides them toward the next step with fewer than 300 characters. Avoid lengthy explanations or multiple paragraphs. End with a question to move the conversation along."
-          reply = Prompts::CoachingReply.new(conversation: @conversation, context: { custom_instructions: custom_instructions }).call
           hint_link = ANOTHER_HINT_LINK
           multiple_choice_options = 3
         elsif latest_message == "Give me another hint"
-          custom_instructions = "- The user is asking for a hint. Provide 3 paragraphs with less than 250 characters each that guides them toward clarity. You're not trying to stump them. You're in teaching mode, not quizzing mode now. End with a question to move the conversation along."
-          reply = Prompts::CoachingReply.new(conversation: @conversation, context: { custom_instructions: custom_instructions }).call
+          custom_instructions = "- The user is asking for a hint. Provide 3 paragraphs with less than 250 characters each that guides them toward clarity. You're not trying to stump them. You're in teaching mode, not quizzing mode now."
           hint_link = FINAL_HINT_LINK
           multiple_choice_options = 3
-        elsif latest_message == "What am I missing here?"
-          reply = Prompts::CoachingExplain.new(conversation: @conversation).call
-          hint_link = HINT_LINK
+        elsif latest_message == "What am I missing here?" || (latest_message.length < 8 || latest_message.exclude?(" "))
+          prompt = Prompts::CoachingExplain
         elsif turn == 2
-          custom_instructions = "- You must return 3 elements in this order: \"paragraph\" -> \"code\" -> \"paragraph\". The code block should have telemetry in it, or some kind of timeline. Not actual code. The paragraphs should each have fewer than 200 characters."
-          reply = Prompts::CoachingReply.new(conversation: @conversation, context: { custom_instructions: custom_instructions }).call
-          hint_link = HINT_LINK
+          custom_instructions = "- You must return 2 elements in this order: \"paragraph\" -> \"code\". The code block can have have telemetry in it, or some kind of timeline, if you think that helps move the story. Otherwise use real code. The code block should have around 15 lines. No comments. Don't jump around languages. The paragraph should each have fewer than 200 characters."
           multiple_choice_options = 2
-        elsif turn > 3 && rand(100) < 40
+        elsif turn > 3 && rand(100) < code_cutoff
           custom_instructions = if rand(100) < 80
-            "- You must return a single \"code\" element alongside your concise paragraph(s). Use real code that is relevant to the story. The snippet should have at least 15 lines, and feel like code written at a cloud-native midmarket orgnaization with ~1k employees. No startup hacks. No enterprise bloat. The code is for you to illustrate a point, not to quiz."
+            "- You must return a single \"code\" element alongside your concise paragraph(s). Use real code that is relevant to the story. The snippet should have at least 15 lines, and feel like code written at a cloud-native midmarket orgnaization with ~1k employees. No startup hacks. No enterprise bloat. No comments. The code is for you to illustrate a point, not to quiz."
           else
             "- You must return a single \"code\" element sandwiched between concise paragraph elements. It should contain telemetry that is relevant to the story. The snippet should have at least 8 lines, and feel like it came from the systems at a cloud-native midmarket orgnaization with ~1k employees. No startup hacks. No enterprise bloat."
           end
-
-          reply = Prompts::CoachingReply.new(conversation: @conversation, context: { custom_instructions: custom_instructions }).call
-          hint_link = HINT_LINK
         elsif turn > 3 && rand(100) < 35
-          custom_instructions = "- You must return #{rand(3) + 1} \"paragraph\" elements. No additional code blocks or logs paragraphs (unless they specifically asked for them just now). Add a ton of clarity to the conversation that's lacking. Don't beat around the push. Teach, don't stress test. Use the <span class='font-semibold'>semibold Tailwind class</span> to highlight key concepts. End with a question that moves the conversation forward, and gets the engineer thinking."
-          reply = Prompts::CoachingReply.new(conversation: @conversation, context: { custom_instructions: custom_instructions }).call
-          hint_link = HINT_LINK
+          custom_instructions = "- You must return #{rand(3) + 1} \"paragraph\" elements. No additional code blocks or logs paragraphs (unless they specifically asked for them just now). Add a ton of clarity to the conversation that's lacking. Don't beat around the push. Teach, don't stress test. Use the <span class='font-semibold'>semibold Tailwind class</span> to highlight key concepts."
         else
           custom_instructions = "- Try to return a single \"paragraph\" element. No additional code blocks, logs, or paragraphs (unless they specifically asked for them just now). Concise copy that cuts deep and moves the SEV forward."
-          reply = Prompts::CoachingReply.new(conversation: @conversation, context: { custom_instructions: custom_instructions }).call
-          hint_link = HINT_LINK
         end
 
+        reply = prompt.new(conversation: @conversation, context: { custom_instructions: custom_instructions, cta: question_format }).call
         broadcast_to_web(type: "element", message: reply, user_generated: false)
-        if hint_link.present?
+        if hint_link.present? && turn > 2
           broadcast_to_web(type: "element", message: hint_link, user_generated: false)
         end
 
@@ -125,7 +115,7 @@ module MessageGenerators
           multiple_choice_options = 3
         end
 
-        deliver_multiple_choice_options(multiple_choice_options) if multiple_choice_options.positive?
+        deliver_multiple_choice_options(multiple_choice_options, reply) if multiple_choice_options.positive?
 
         @conversation.messages.create!(content: "<p>#{AvatarService.coach_avatar_row}</p>#{reply}", user_generated: false)
         broadcast_to_web(type: "done")
@@ -147,14 +137,50 @@ module MessageGenerators
       end
     end
 
-    def deliver_multiple_choice_options(count)
+    def deliver_multiple_choice_options(count, reply)
       3.times do
-        options = Prompts::MultipleChoiceOptions.new(conversation: @conversation, context: { max: count }).call
+        options = Prompts::MultipleChoiceOptions.new(conversation: @conversation, context: { max: count, most_recent_message: reply }).call
 
         if options.any?
           broadcast_to_web(message: options, type: "multiple_choice", user_generated: false)
           return
         end
+      end
+    end
+
+    def question_format
+      turn_cutoff = @conversation.difficulty == "junior" ? 4 : 6
+      escalate_cutoff = @conversation.difficulty == "junior" ? 30 : 80
+
+      escalate_cutoff = case @conversation.difficulty
+        when "junior"
+          20
+        when "mid"
+          35
+        when "senior"
+          75
+        else
+          85
+      end
+
+      if @conversation.turn < turn_cutoff || rand(100) < escalate_cutoff || @conversation.latest_user_message.to_s.include?("hint")
+        escalate_prompt = "- Your reply must have a surgical question that cuts deep and declarative sentences to expose fragile reasoning, not long Wikipedia articles that teach. A question that a seasoned SRE can't help but respond to / argue with."
+        escalate_prompt += "\n- Remember, this is a hypothetical infra puzzle. Your questions shouldn't be around \"What control enforces X in your system?\", but moreso \"What control SHOUD enforce X in the system\". You're not asking for details about imaginary infra. I want them to defend their mental model of how infra should be designed. You're asking how a good system should be designed (and using this story as the anchor to diagnose the engineer's blind spots)."
+      else
+        escalate_prompt = "- Your reply must end on a single question, in that ChatGPT style where it asks if you want to learn about X? Short Yes/no CTA that requires minimal effort to say yes to, and will teach the SRE something impactful about infra/sec that's also relevant to the story. The CTA sentence should be fewer than 80 characters. Don't make the question too long. Don't make it too specific on the returned format either. Your next reply might be a single paragraph, it might be 10. Don't box yourself in with this CTA question. Don't make it re-use the same shape you already used earlier in the convo for similar CTAs. "
+      end
+    end
+
+    def code_cutoff
+      case @conversation.difficulty
+      when "junior"
+        60
+      when "mid"
+        50
+      when "senior"
+        40
+      else
+        35
       end
     end
   end

@@ -10,9 +10,8 @@ Background Info:
 {{USER_PERSONA}}
 
 Action Requested:
-- Write {{CONTEXT_MAX}} distinct multiple choice answers to your most recent question(s).
-- Each option should describe what is going through the engineer's head in this moment. The options are not first-person actions. The options should reflect competing instincts about what to test, disable, or verify first under pressure
-- Each option should represent a different causal model of why the system is failing — for example, timing skew, data coupling, or stale consensus — not just a different surface action or perspective.
+- Write {{CONTEXT_MAX}} distinct multiple choice answers to directly answer the question(s) in your most recent message.
+- Each option should expose a different causal model of why the system is failing — for example, timing skew, data coupling, or stale consensus — not just a different surface action or perspective.
 - Each option must have fewer than 80 characters.
 - No bold text.
 - These answers shouldn't be definitive. A few should use words like "seems", "might", "could", "appears", "likely", "probably", etc. Don't overdo it.
@@ -22,11 +21,14 @@ Action Requested:
 - Format must be a single JSON object with an "options" key containing an array of strings. No HTML or markdown formatting.
 - Return only the JSON.
 
+Most Recent Message:
+{{CONTEXT_MOST_RECENT_MESSAGE}}
+
 Constraints:
 - Think hard. 10/10 A+ quality only. Deliver your best work.
 - Avoid vague language. No filler. You can hedge a little bit, since we're talking about assumptions, not data we 100% have. You're probably sure about these answers, but not 100%. Don't be too confident. You're confident where you'd look first, not confident what the solution is.
 - Don't use big words for the sake of sounding smart. Plain english words are always preferrable. No word salad.
-- Complete sentences to answer the previous question(s) in the conversation's most recent message. Don't use the . period character though.
+- You must use complete sentences to answer the previous question(s) in the conversation's most recent message. Don't use the . period character though.
 - Plain english. Precise technical terms are fine, but also keep in mind this is for cold ad traffic to my site. They're not warmed up yet. It should be approachable human-readable English.
 - The phrasing of your options should align with the tense of the question asked, the style, etc.
 - No semicolons or em dashes.
