@@ -17,9 +17,8 @@
   <span class="font-semibold">Trial Domains</span>: <%= Member.where(subscribed: true).pluck(:email_domain).uniq.reject(&:blank?).join(", ") %>
 </div>
 
-<% @base_conversations.order(created_at: :desc).first(25).each do |conversation| %>
+<% @base_conversations.first(25).each do |conversation| %>
     <div class="rounded-md bg-white border-2 border-gray-400 shadow mb-6">
-      <% most_recent_message = conversation.messages.pluck(:created_at).sort.last %>
       <% conversation_count = @counts_by_ip_address[conversation.ip_address] %>
       <div class="p-2">
         <a href="/conversations/<%= conversation.id %>" class="text-blue-600 underline">View</a> - <%= conversation.messages.where(user_generated: true).count %> messages - <%= conversation.channel %> - <%= conversation.difficulty %> - <%= conversation.context['conversation_type'] %> - <a href="/growth?ip=<%= conversation.ip_address %>" class="text-blue-600 hover:underline"><%= conversation.ip_address %></a> - <%= conversation_count > 1 ? "<span class='bg-yellow-200 px-1'>#{conversation_count}</span>".html_safe : conversation_count %> conversations - <a href="/conversations/<%= conversation.id %>/destroy" class="text-red-600 font-semibold hover:underline">Delete</a>

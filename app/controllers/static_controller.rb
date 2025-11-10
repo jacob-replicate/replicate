@@ -17,7 +17,7 @@ class StaticController < ApplicationController
     end
 
     if params[:ip].present?
-      @base_conversations = Conversation.where(ip_address: params[:ip])
+      @base_conversations = Conversation.where(ip_address: params[:ip]).order(updated_at: :desc)
     end
 
     @counts_by_ip_address = @base_conversations.group(:ip_address).count.to_h

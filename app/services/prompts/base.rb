@@ -32,7 +32,7 @@ module Prompts
 
         code_blocks_valid = elements.select { |e| Hash(e).with_indifferent_access[:type] == "code" }.all? do |e|
           e = e.with_indifferent_access
-          e[:content].is_a?(String) && e[:file].is_a?(String) && e[:file].length <= 100 && e[:language].is_a?(String)
+          e[:content].is_a?(String) && e[:file].is_a?(String) && e[:file].length <= 100 && e[:language].is_a?(String) && e[:language].to_s.downcase != "ruby"
         end
 
         valid =
