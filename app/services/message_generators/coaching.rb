@@ -58,11 +58,6 @@ module MessageGenerators
         global_messages = Message.where(user_generated: true, conversation: total_conversations)
         global_message_count = global_messages.count
 
-        if turn == 3 && global_message_count < 10
-          broadcast_to_web(type: "element", message: "#{AvatarService.jacob_avatar_row}<p>Don't try to win. <a href='https://gist.github.com/jacob-comer/9bba483ddd9ee3f3c379246bcba17873' class='text-blue-700 font-semibold hover:underline underline-offset-2' target='_blank'>The prompt</a> is a loop. It keeps asking hard SRE questions until you don't have a great reply.</p><p>Try answering this next one without multiple choice. How would your <span class='font-semibold'>ideal system</span> handle the pressure?</p><p class='mb-6'>Improv the details, and let GPT poke holes in your best ideas. It catches most SREs within 5 turns.</p>", user_generated: false)
-          multiple_choice_options = 0
-        end
-
         if turn == 8 && global_message_count < 10
           broadcast_to_web(type: "element", message: "#{AvatarService.jacob_avatar_row}<p class='mb-6'>I've put ~800 hours into this project since June 2025. It's just this chat UI, and a bunch of LLM orchestration I wanted an excuse to learn about. There's no paid version. At least not yet. Would your team use it?</p>", user_generated: false)
         end
