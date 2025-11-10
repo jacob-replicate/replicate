@@ -40,16 +40,21 @@ module Prompts
             code_blocks_valid &&
             paragraphs_not_too_long &&
             paragraphs_not_too_complex &&
-            first_element_is_paragraph
+            first_element_is_paragraph &&
+            last_element_is_paragraph
 
         # Logging if invalid
         unless valid
           failures = []
           failures << "too_long_or_contains_asterisk" unless paragraphs_not_too_long
           failures << "too_complex" unless paragraphs_not_too_complex
+          failures << "first_element_not_paragraph" unless first_element_is_paragraph
+          failures << "last_element_not_paragraph" unless last_element_is_paragraph
+          failures << "code_blocks_invalid" unless code_blocks_valid
+          failures << "no_elements" if elements.size.zero?
 
           Rails.logger.warn(
-            "Prompt validation failed for #{template_name}: #{failures.join(', ')} | paragraphs=#{paragraphs.inspect.truncate(300)}"
+            "Prompt validation failed for #{template_name}: #{elements.to_json} - #{failures.join(', ')} | paragraphs=#{paragraphs.inspect.truncate(300)}"
           )
         end
 

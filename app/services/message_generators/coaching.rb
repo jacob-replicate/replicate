@@ -80,13 +80,13 @@ module MessageGenerators
           hint_link = ANOTHER_HINT_LINK
           multiple_choice_options = 3
         elsif latest_message == "Give me another hint"
-          custom_instructions = "- The user is asking for a hint. Provide 3 paragraphs with less than 250 characters each that guides them toward clarity. You're not trying to stump them. You're in teaching mode, not quizzing mode now."
+          custom_instructions = "- The user is asking for a hint. You must return a single \"code\" element sandwiched between concise paragraph elements that guides them toward clarity. You're not trying to stump them. You're in teaching mode, not quizzing mode now. Don't end with a question. Leave with clarity, that the engineer can follow up on in their next reply. Tee them up to feel mastery."
           hint_link = FINAL_HINT_LINK
           multiple_choice_options = 3
         elsif latest_message == "What am I missing here?" || (latest_message.length < 8 || latest_message.exclude?(" "))
           prompt = Prompts::CoachingExplain
         elsif turn == 2
-          custom_instructions = "- You must return 2 elements in this order: \"paragraph\" -> \"code\". The code block can have have telemetry in it, or some kind of timeline, if you think that helps move the story. Otherwise use real code. The code block should have around 15 lines. No comments. Don't jump around languages. The paragraph should each have fewer than 200 characters."
+          custom_instructions = "- You must return 3 elements in this order: \"paragraph\" -> \"code\" -> \"paragraph\". The code block can have have telemetry in it, or some kind of timeline, if you think that helps move the story. Otherwise use real code. The code block should have around 15 lines. No comments. Don't jump around languages. The paragraph should each have fewer than 200 characters."
           multiple_choice_options = 2
         elsif turn > 3 && rand(100) < code_cutoff
           custom_instructions = if rand(100) < 80
@@ -102,7 +102,7 @@ module MessageGenerators
 
         reply = prompt.new(conversation: @conversation, context: { custom_instructions: custom_instructions, cta: question_format }).call
         broadcast_to_web(type: "element", message: reply, user_generated: false)
-        if hint_link.present? && turn > 2
+        if hint_link.present? && turn > 1
           broadcast_to_web(type: "element", message: hint_link, user_generated: false)
         end
 

@@ -15,7 +15,7 @@ Response Format Constraints: "code" elements
 - Try to re-use repository names you already included earlier in the conversation if possible. That said, don't mix languages in the same repo unless it's realistic to do so. You can still introduce new services throughout the conversation, I just want to make sure you don't do stuff like "payments-api" and "payments-service" that are basically the same thing.
 - Use "plaintext" as the language for logs, CLI output, timelines, metrics, or other non-code snippets. Use the real language for everything else. Try to aim for one of these cloud-native choices: python, javascript, go, typescript, rust, bash, hcl, json, java, sql, yaml, rego, or kotlin. Don't use Ruby.
 - Elegant code is preferred, but don't go overboard with fancy patterns or abstractions. I want elegant whitespace and exceptional variable/function names, not just a giant wall of text. Use double newlines to separate logical blocks in the code. I want there to be a gap.
-- Never return the same code blocks again verbatim. If you do, something needs to change.
+- Never return the same code blocks again. If you do, something needs to change to illustrate a point you're already talking about. You have a bad habit of repeating code verbatim, which I want to avoid.
 - Indent code with two spaces, not tabs.
 - You don't have to show dates/times. However, if you do, always include the date + time, and use UTC. The current time is {{CONTEXT_CURRENT_TIME}}. Take that into consideration if you're showing timestamps. You don't have to use the exact current time, just don't do anything stupid like show timestamps from 6 months ago.
 
