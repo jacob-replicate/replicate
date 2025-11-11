@@ -145,7 +145,7 @@ module MessageGenerators
 
       escalate_cutoff = case @conversation.difficulty
         when "junior"
-          20
+          25
         when "mid"
           35
         when "senior"
