@@ -17,7 +17,7 @@
   <span class="font-semibold">Trial Domains</span>: <%= Member.where(subscribed: true).pluck(:email_domain).uniq.reject(&:blank?).join(", ") %>
 </div>
 
-<% @base_conversations.first(25).each do |conversation| %>
+<% @base_conversations.order(updated_at: :desc).first(25).each do |conversation| %>
     <div class="rounded-md bg-white border-2 border-gray-400 shadow mb-6">
       <% conversation_count = @counts_by_ip_address[conversation.ip_address] %>
       <div class="p-2">
