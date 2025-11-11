@@ -62,10 +62,6 @@ module MessageGenerators
           broadcast_to_web(type: "element", message: "#{AvatarService.jacob_avatar_row}<p class='mb-6'>I've put ~800 hours into this project since June 2025. It's just this chat UI, and a bunch of LLM orchestration I wanted an excuse to learn about. There's no paid version. At least not yet. <a href='https://forms.gle/2by63BfkbRTYQyvL9' class='text-blue-600 hover:text-blue-700 hover:underline transition font-semibold' target='_blank'>Click here</a> to stay in touch.</p>", user_generated: false)
         end
 
-        if turn == 15
-          broadcast_to_web(type: "element", message: "#{AvatarService.jacob_avatar_row}<p class='mb-6'>It might be time for a <a href='/sev' class='text-blue-700 font-semibold hover:underline hover:underline-offset-2' target='_blank'>new SEV-1</a>. GPT veers off into meta distributed systems theory around this point.</p>", user_generated: false)
-        end
-
         broadcast_to_web(type: "element", message: AvatarService.coach_avatar_row, user_generated: false)
         broadcast_to_web(type: "loading", user_generated: false)
 
