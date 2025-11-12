@@ -26,9 +26,21 @@
       <% end %>
     </div>
 
-    <div class="flex items-center gap-2 mt-4">
-      <textarea id="message-input" placeholder="<%= @conversation.context["conversation_type"] == "coaching" ? "Test your instincts..." : "What do you want to learn?" %>" class="w-full border border-gray-200 rounded-lg p-2 resize-none disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" rows="1" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px';"></textarea>
-    </div>
+    <div class="flex gap-2 mt-4 items-stretch" id="user-input">
+      <div class="flex-1 flex">
+        <textarea
+          id="message-input"
+          placeholder="<%= @conversation.context['conversation_type'] == 'coaching' ? 'Test your instincts...' : 'What do you want to learn?' %>"
+          class="flex-1 border border-gray-200 rounded-lg p-2 resize-none disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+          rows="1"
+          oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px';"
+        ></textarea>
+        </div>
+
+        <div id="timer" class="w-[20%] md:w-[10%] border rounded-lg flex items-center justify-center text-lg font-medium bg-gray-700 text-white" style="font-family: 'Source Code Pro'">
+          30:00
+        </div>
+      </div>
 
 
     <% conversation_ids = Conversation.where(ip_address: request.remote_ip).pluck(:id) %>
@@ -53,6 +65,7 @@
     const tosWrapper = document.getElementById("terms-container");
     let messageQueue = {};
     let expectedSequence = <%= @conversation.next_message_sequence %>;
+    window.timerCompleted = false;
 
     function pastFirstMessage() {
       return expectedSequence > 6;
@@ -82,7 +95,7 @@
     let dotInterval;
 
     function setInputEnabled(enabled) {
-      if(textarea) {
+      if(textarea && !window.timerCompleted) {
         textarea.disabled = !enabled;
         if(pastFirstMessage() || (<%= @conversation.context["conversation_type"] != "article" %> && window.innerWidth >= 1024)) {
           textarea.focus({ preventScroll: true });
@@ -109,6 +122,7 @@
     });
 
     function sendMessage(message, suggested) {
+      if(window.timerCompleted) return;
       let terms = document.getElementById("terms-container")
       if(terms) {
         terms.classList.add("hidden");
@@ -398,4 +412,41 @@
       }
     });
   });
+</script>
+
+<script>
+  const startMinutes = 30;
+  let time = startMinutes * 60;
+  let timerDisplay = document.getElementById("timer");
+
+  // Immediately show initial state
+  updateTimerDisplay();
+
+  const timerInterval = setInterval(() => {
+    time--;
+    updateTimerDisplay();
+
+    if (time <= 0) {
+      clearInterval(timerInterval);
+      onTimerComplete();
+    }
+  }, 1000);
+
+  // Update the display
+  function updateTimerDisplay() {
+    const minutes = Math.floor(time / 60);
+    const seconds = time % 60;
+    let timerDisplay = document.getElementById("timer");
+
+    if(timerDisplay) {
+      timerDisplay.textContent = `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+    } else {
+      timerDisplay = document.getElementById("timer");
+    }
+  }
+
+  function onTimerComplete() {
+    document.getElementById("message-input").disabled = true;
+    window.timerCompleted = true;
+  }
 </script>
