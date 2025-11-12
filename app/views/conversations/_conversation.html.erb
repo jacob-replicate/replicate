@@ -26,7 +26,7 @@
       <% end %>
     </div>
 
-    <div class="flex gap-2 mt-4 items-stretch" id="user-input">
+    <div class="flex gap-3 mt-4 items-stretch" id="user-input">
       <div class="flex-1 flex">
         <textarea
           id="message-input"
@@ -66,6 +66,7 @@
     let messageQueue = {};
     let expectedSequence = <%= @conversation.next_message_sequence %>;
     window.timerCompleted = false;
+    window.sentMessages = false;
 
     function pastFirstMessage() {
       return expectedSequence > 6;
@@ -122,6 +123,7 @@
     });
 
     function sendMessage(message, suggested) {
+      window.sentMessages = true;
       if(window.timerCompleted) return;
       let terms = document.getElementById("terms-container")
       if(terms) {
@@ -425,6 +427,11 @@
   const timerInterval = setInterval(() => {
     time--;
     updateTimerDisplay();
+
+    if(time <= 900 && window.sentMessages == false) {
+      clearInterval(timerInterval);
+      document.getElementById("timer").remove()
+    }
 
     if (time <= 0) {
       clearInterval(timerInterval);
