@@ -14,6 +14,8 @@ Paid Version:
 ----------
 
 - Share button
+- Stop scroling to the top of the last message when you send a new one. Scroll to the actual bottom of the page then.
+- Don't ask yes/no CTA if you're showing multiple choice (or hide the options temporarily)
 - Regenerate button.
 - More explanatory content for juniors -> mids. More multiple choice thrown in. Yes or no questions. Coaching prompts. GPT-style "Want to learn about X?" messages.
 - Light CTAs.
