@@ -14,6 +14,7 @@ Paid Version:
 ----------
 
 - Turn 3 softball: One or the other question (at least during 1st visit). Then drop it in randomly (more for junior, less for staff)
+- Better error handling + retries. Don't just let the loop die.
 - Share button
 - Stop scroling to the top of the last message when you send a new one. Scroll to the actual bottom of the page then.
 - Don't ask yes/no CTA if you're showing multiple choice (or hide the options temporarily)
