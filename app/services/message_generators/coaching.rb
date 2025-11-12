@@ -94,6 +94,10 @@ module MessageGenerators
           custom_instructions = "- You must return #{rand(3) + 1} \"paragraph\" elements. No additional code blocks or logs paragraphs (unless they specifically asked for them just now). Add a ton of clarity to the conversation that's lacking. Don't beat around the push. Teach, don't stress test. Use the <span class='font-semibold'>semibold Tailwind class</span> to highlight key concepts."
         else
           custom_instructions = "- Try to return a single \"paragraph\" element. No additional code blocks, logs, or paragraphs (unless they specifically asked for them just now). Concise copy that cuts deep and moves the SEV forward."
+
+          if turn == 3
+            custom_instructions += "\nRemember, this is only the third turn. The engineer is still getting their bearings. Don't overwhelm them with complexity. Keep it approachable. The question should be a simple one option vs. the other type question. Two choices. One choice should have a subtle (but critical) flaw that most SREs wouldn't catch. Short question, not too long."
+          end
         end
 
         reply = prompt.new(conversation: @conversation, context: { custom_instructions: custom_instructions, cta: question_format }).call

@@ -13,6 +13,7 @@ Paid Version:
 
 ----------
 
+- Turn 3 softball: One or the other question (at least during 1st visit). Then drop it in randomly (more for junior, less for staff)
 - Share button
 - Stop scroling to the top of the last message when you send a new one. Scroll to the actual bottom of the page then.
 - Don't ask yes/no CTA if you're showing multiple choice (or hide the options temporarily)
@@ -21,7 +22,7 @@ Paid Version:
 - Light CTAs.
     - "Do you want to learn more about X?" - sneak in a few ChatGPT-style yes/no questions that don't challenge.
     - "Should that load be handled by the load balancer, or the application servers?"
-- Timer. "New SEV" / "Keep Going"
+- Timer. "New SEV" / "Keep Going" / Invite your friends to this one
 - Preferred tech stack
 - Mobile conversations. Shorter paragraphs, shortr file namees (service on newline, not # character)
 - Meta tags + sharing images/text
