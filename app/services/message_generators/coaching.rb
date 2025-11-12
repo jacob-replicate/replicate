@@ -95,7 +95,7 @@ module MessageGenerators
         else
           custom_instructions = "- Try to return a single \"paragraph\" element. No additional code blocks, logs, or paragraphs (unless they specifically asked for them just now). Concise copy that cuts deep and moves the SEV forward."
 
-          if turn == 3
+          if turn == 3 || rand(100) < 15
             custom_instructions += "\nRemember, this is only the third turn. The engineer is still getting their bearings. Don't overwhelm them with complexity. Keep it approachable. The question should be a simple one option vs. the other type question. Two choices. One choice should have a subtle (but critical) flaw that most SREs wouldn't catch. Short question, not too long."
           end
         end
