@@ -3,6 +3,7 @@ Paid Version:
 - Monthly email report format to Directors. Make it a PDF that Rails renders, which you can attach in Postmark email, that they can forward to VP.
 - Reporting (individual, team, tech leads) - exec optics, "I'm investing into SEV-1 prevention, and have a receipt"
 - Customization of prompts the team uses. Team reports for tech leads + EMs + the team at large. Reports are never bad. Green or yellow, never red.
+- Conversation sharing. -- "This tripped me up. Share the insight in my team's feed, with a link to the full convo if they're curious."
 - Shared weekly drills so everyone is on the same page.
 - Compliance tracking. -- "I want engineers to experience at least 10 incidents this quarter." -- Make it happen naturally, not forced checklist.
 - Team-wide blind spot insights.
