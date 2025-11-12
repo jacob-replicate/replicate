@@ -81,7 +81,7 @@ class StaticController < ApplicationController
     incident = if difficulty_level == "junior"
       JUNIOR_INCIDENTS.sample
     else
-      INCIDENTS.sample
+      WEB_INCIDENTS.sample
     end
 
     context = {
