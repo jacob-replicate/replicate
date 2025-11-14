@@ -72,14 +72,14 @@ module MessageGenerators
         prompt = Prompts::CoachingReply
 
         if latest_message == "Give me a hint"
-          custom_instructions = "- The user is asking for a hint. Keep it concise. Provide a single paragraph that guides them toward the next step with fewer than 300 characters. Avoid lengthy explanations or multiple paragraphs. End with a question to move the conversation along."
+          custom_instructions = "- The user is asking for a hint. Keep it concise. Provide a single paragraph that guides them toward the next step with fewer than 300 characters. Avoid lengthy explanations or multiple paragraphs. End with a question to move the conversation along. I have another prompt that creates 3 multiple choice options as a response, so keep that in mind when framing the question."
           hint_link = ANOTHER_HINT_LINK
           multiple_choice_options = 3
         elsif latest_message == "Give me another hint"
           custom_instructions = "- The user is asking for a hint. You must return a single \"code\" element sandwiched between concise paragraph elements that guides them toward clarity. You're not trying to stump them. You're in teaching mode, not quizzing mode now. Don't end with a question. Leave with clarity, that the engineer can follow up on in their next reply. Tee them up to feel mastery."
           hint_link = FINAL_HINT_LINK
           multiple_choice_options = 3
-        elsif latest_message == "What am I missing here?" || (turn > 4 && (latest_message.length < 8 || latest_message.exclude?(" ")))
+        elsif latest_message == "What am I missing here?" || latest_message.downcase.include?("answer") || (turn > 4 && (latest_message.length < 8 || latest_message.exclude?(" ")))
           prompt = Prompts::CoachingExplain
         elsif turn == 2
           custom_instructions = "- You must return 3 elements in this order: \"paragraph\" -> \"code\" -> \"paragraph\". The code block can have have telemetry in it, or some kind of timeline, if you think that helps move the story. Otherwise use real code. The code block should have around 15 lines. No comments. Don't jump around languages. The paragraph should each have fewer than 200 characters."
