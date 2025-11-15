@@ -1,11 +1,8 @@
 Paid Version:
-- Login to support@ + jacob@ on your phone just in case.
-- Monthly email report format to Directors. Make it a PDF that Rails renders, which you can attach in Postmark email, that they can forward to VP.
-- Reporting (individual, team, tech leads) - exec optics, "I'm investing into SEV-1 prevention, and have a receipt"
+- Monthly email report format for leadership. Make it a PDF that Rails renders, which you can attach in Postmark email, that they can forward to VP.
 - Customization of prompts the team uses. Team reports for tech leads + EMs + the team at large. Reports are never bad. Green or yellow, never red.
 - Conversation sharing. -- "This tripped me up. Share the insight in my team's feed, with a link to the full convo if they're curious."
-- Shared weekly drills so everyone is on the same page.
-- Compliance tracking. -- "I want engineers to experience at least 10 incidents this quarter." -- Make it happen naturally, not forced checklist.
+- Shared weekly drills so everyone is on the same page. Make it part of the UI itself. It should be the default.
 - Team-wide blind spot insights.
 - Additional tracks? Security, GRC, Go, etc.
 - You need to make logging in as a free user enticing. Once they're logged in (e.g., to view their growth + personalized incidents), it's easier to get EM onboard.
@@ -13,6 +10,12 @@ Paid Version:
 
 ----------
 
+
+
+---------
+
+
+- Reddit ad for "SEV-1: MultiXact pressure is stalling the primary database" -- just open with the SEV, not what the site is
 - Make 4th question not super hard yet. You just transitioned off the first text 1v1 question. Needs to still be light.
 - Better error handling + retries. Don't just let the loop die.
 - Give feedback tab (bottom right absolute popup). Just open another conversation window with Jacob?
