@@ -29,10 +29,9 @@ class ApplicationController < ActionController::Base
 
     non_browser = /\b(curl|wget|python-requests|httpie|go-http-client|libwww-perl|php\/|java\/|okhttp|postmanruntime|axios|node-fetch|fetch)\b/i
 
-    # quick heuristics: block only when UA looks like a CLI and the request is not asking for HTML
     if (ua.blank? || ua.match?(non_browser) || ua.length < 10) && !accept.include?('text/html')
       Rails.logger.info "Non-browser request from #{request.remote_ip} ua=#{ua.inspect} accept=#{accept.inspect}"
-      ban_current_ip
+      # ban_current_ip
       return head(:ok)
     end
 
