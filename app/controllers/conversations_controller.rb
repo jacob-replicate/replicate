@@ -13,7 +13,7 @@ class ConversationsController < ApplicationController
       return redirect_to root_path
     end
 
-    @title = @conversation.context["title"] || "replicate.info"
+    @title = [@conversation.context["title"], "replicate.info"].reject(&:blank?).first
   end
 
   def update
