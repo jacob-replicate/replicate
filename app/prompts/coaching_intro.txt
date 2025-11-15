@@ -10,13 +10,13 @@ Incident Summary (don't include this verbatim, just use it to inform your thinki
 
 Constraints:
 - Think hard. 10/10 A+ quality only. Deliver your best work.
-- The code element should have real code, not telemetry. No junior-level code. I want you to use code from the impacted production system. Not code to demonstrate a point, but instead code from what started the fire. It needs to be relevant to the story, and highly technical. The snippet should have more than 10 lines, and less than 50 lines. It should not have any comments. It should make people think. The code should have a subtle (but critical) flaw that most engineers would miss.
+- The code element should have real code, not telemetry. No junior-level code. I want you to use code from the impacted production system. Not code to demonstrate a point, but instead code from what started the fire. It needs to be relevant to the story, and highly technical. The snippet should have more than 10 lines, and less than 25 lines. It should not have any comments. It should make people think. The code should have a subtle (but critical) flaw that most engineers would miss.
 - Try to limit the number of big words. You often get feedback of "Nobody actually talks like this" because you layer on the technical shit too thick.
 - Your first sentence needs to make the customer pain abundantly clear. Don't jump into the tech stuff too quickly. What is the fire? Plain english, more technical stuff later in the reply.
 - Paint a picture, and describe a real symptom from the SEV. You need to make the customer-facing pain abundantly clear, followed by a few technical signals that tipped engineers off about the problem.
 - Don't give the engineer any action items. Don't ask them to check any logs, or contact support, or anything like that. We're giving the engineer a complex problem to chew on, so we can see where their mental model snaps.
 - Don't address the engineer directly (e.g., "Hey there -"). Describe the problem in a crisp words. I'm telling you who they are so you can calibrate the complexity and tone, not address them.
-- Never include a question. Your should end with a literal, observational paragraph - no speculation, summaries, or prompts.
+- Never include a question. It's a literal, observational paragraph. I have another prompt for the question.
 - Make it feel like a live, internal #incidents channel summary at a mid-market SaaS company, not just a tech puzzle.
 - Make sure to highlight a path or two the engineering team has already tried to no success. We're in the middle of the SEV and stuff is still on fire, not the start or end. Take the easy options away from the engineer.
 - Use present progressive tense to describe unfolding behavior. The SEV is still in progress, and the team is actively responding.
@@ -43,4 +43,4 @@ Constraints:
 - Don't start with the word "Customer". Mix it in naturally.
 
 {{FORMATTING_RULES_PARAGRAPHS}}
-- Only return 3 elements in the response. "paragraph" -> "code" -> "paragraph", in that order. No line charts. Each paragraph element should have fewer than 170 characters.
+- Only return 2 elements in the response. "paragraph" -> "code", in that order. The paragraph should have fewer than 250 characters.

@@ -40,8 +40,7 @@ module Prompts
             code_blocks_valid &&
             paragraphs_not_too_long &&
             paragraphs_not_too_complex &&
-            first_element_is_paragraph &&
-            last_element_is_paragraph
+            paragraphs.size >= 1
 
         # Logging if invalid
         unless valid
