@@ -11,5 +11,9 @@ module Prompts
           elements.first["content"].to_s.length < 300
       end
     end
+
+    def suffix
+      "<p style='margin-top: 30px; font-size: 17px'><span class='font-semibold'>What's your first move here?</span></p>"
+    end
   end
 end
