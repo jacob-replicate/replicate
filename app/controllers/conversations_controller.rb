@@ -4,13 +4,13 @@ class ConversationsController < ApplicationController
   def show
     @conversation = Conversation.where(channel: "web").find_by(id: params[:id])
 
-    if @conversation.blank?
-      return redirect_to root_path
-    end
-
     if @conversation.blank? && params[:sharing_code].present?
       @conversation = Conversation.fork(params[:sharing_code])
       @conversation.update(ip_address: request.remote_ip)
+    end
+
+    if @conversation.blank?
+      return redirect_to root_path
     end
 
     @title = @conversation.context["title"] || "replicate.info"

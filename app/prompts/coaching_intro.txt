@@ -43,4 +43,4 @@ Constraints:
 - Don't start with the word "Customer". Mix it in naturally.
 
 {{FORMATTING_RULES_PARAGRAPHS}}
-- Only return 2 elements in the response. "paragraph" -> "code", in that order. The paragraph should have fewer than 250 characters.
+- Only return 2 elements in the response. "paragraph" -> "code", in that order. The paragraph should have fewer than 200 characters.

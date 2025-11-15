@@ -7,7 +7,8 @@ module Prompts
         elements.is_a?(Array) &&
           elements.size == 2 &&
           elements.all? { |element| Hash(element)["type"].present? } &&
-          elements.map { |e| e["type"] } == ["paragraph", "code"]
+          elements.map { |e| e["type"] } == ["paragraph", "code"] &&
+          elements.first["content"].to_s.length < 300
       end
     end
   end
