@@ -72,7 +72,7 @@ module MessageGenerators
           hint_link = ANOTHER_HINT_LINK
           multiple_choice_options = 3
         elsif latest_message == "Give me another hint"
-          custom_instructions = "- The user is asking for a hint. You must return a single \"code\" element sandwiched between concise paragraph elements that guides them toward clarity. You're not trying to stump them. You're in teaching mode, not quizzing mode now. Don't end with a question. Leave with clarity, that the engineer can follow up on in their next reply. Tee them up to feel mastery."
+          custom_instructions = "- The user is asking for a hint. You must return a single \"code\" element sandwiched between concise paragraph elements that guides them toward clarity. You're not trying to stump them. You're in teaching mode, not quizzing mode now. End with a question to move the conversation along. I have another prompt that creates 3 multiple choice options as a response, so keep that in mind when framing the question."
           hint_link = FINAL_HINT_LINK
           multiple_choice_options = 3
         elsif latest_message == "What am I missing here?" || latest_message.downcase.include?("answer") || (turn > 4 && (latest_message.length < 8 || latest_message.exclude?(" ")))
