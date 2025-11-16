@@ -154,12 +154,9 @@ module MessageGenerators
           85
       end
 
-      if @conversation.turn < turn_cutoff || rand(100) < escalate_cutoff || @conversation.latest_user_message.to_s.include?("hint")
-        escalate_prompt = "- Your reply must have a surgical question that cuts deep and declarative sentences to expose fragile reasoning, not long Wikipedia articles that teach. A question that a seasoned SRE can't help but respond to / argue with."
-        escalate_prompt += "\n- Remember, this is a hypothetical infra puzzle. Your questions shouldn't be around \"What control enforces X in your system?\", but moreso \"What control SHOUD enforce X in the system\". You're not asking for details about imaginary infra. I want them to defend their mental model of how infra should be designed. You're asking how a good system should be designed (and using this story as the anchor to diagnose the engineer's blind spots)."
-      else
-        escalate_prompt = "- Your reply must end on a single question, in that ChatGPT style where it asks if you want to learn about X? Short Yes/no CTA that requires minimal effort to say yes to, and will teach the SRE something impactful about infra/sec that's also relevant to the story. The CTA sentence should be fewer than 80 characters. Don't make the question too long. Don't make it too specific on the returned format either. Your next reply might be a single paragraph, it might be 10. Don't box yourself in with this CTA question. Don't make it re-use the same shape you already used earlier in the convo for similar CTAs. "
-      end
+      escalate_prompt = "- Your reply must have a surgical question that cuts deep and declarative sentences to expose fragile reasoning, not long Wikipedia articles that teach. A question that a seasoned SRE can't help but respond to / argue with."
+      escalate_prompt += "\n- Remember, this is a hypothetical infra puzzle. Your questions shouldn't be around \"What control enforces X in your system?\", but moreso \"What control SHOUD enforce X in the system\". You're not asking for details about imaginary infra. I want them to defend their mental model of how infra should be designed. You're asking how a good system should be designed (and using this story as the anchor to diagnose the engineer's blind spots)."
+      escalate_prompt
     end
 
     def code_cutoff
