@@ -78,7 +78,7 @@ module MessageGenerators
         elsif latest_message == "What am I missing here?" || latest_message.downcase.include?("answer") || (turn > 4 && (latest_message.length < 8 || latest_message.exclude?(" ")))
           prompt = Prompts::CoachingExplain
         elsif turn == 2
-          custom_instructions = "- You must return 3 elements in this order: \"paragraph\" -> \"code\" -> \"paragraph\". The code block can have have telemetry in it, or some kind of timeline, if you think that helps move the story. Otherwise use real code. The code block should have around 15 lines. No comments. Don't jump around languages. The paragraph should each have fewer than 200 characters."
+          custom_instructions = "- You must return 3 elements in this order: \"paragraph\" -> \"code\" -> \"paragraph\". The code block can have have telemetry in it, or some kind of timeline, if you think that helps move the story. Otherwise use real code. The code block should have around 15 lines. No comments. Don't jump around languages. The paragraph should each have fewer than 200 characters. You should end with a single question, comparing one correct option vs. the other. Make it a surgical question that most SREs will get wrong. Not a trick question, just ideally one that most people have unchecked confidence around."
           multiple_choice_options = 2
         elsif turn > 3 && rand(100) < code_cutoff
           custom_instructions = if rand(100) < 80

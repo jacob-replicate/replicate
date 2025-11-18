@@ -8,7 +8,7 @@ module Prompts
 
     def fetch_elements
       options = (JSON.parse(fetch_raw_output)["options"] || JSON.parse(fetch_raw_output)[:options]) rescue []
-      options.shuffle.map { |x| x.gsub("*", "") }
+      options.map { |x| x.gsub("*", "") }
     end
   end
 end

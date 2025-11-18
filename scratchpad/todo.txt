@@ -9,6 +9,7 @@ Paid Version:
 - IAM + GRC for data/access controls. Public/free site, but you're still typing your data into it.
 -------------
 
+- Dig into why Turn 1 is failing validation a ton.
 - Turn 4: Multiple choice, but only if short answer? Long answer implies they're ready to type?
 - Stop scroling to the top of the last message when you send a new one. Scroll to the actual bottom of the page then.
 - Stop IP banning scrapers, just malicious rate limits.
@@ -16,7 +17,6 @@ Paid Version:
 - Better error handling + retries. Don't just let the loop die.
 - Share button
 - Don't ask yes/no CTA if you're showing multiple choice (or hide the options temporarily)
-- Regenerate button.
 - More explanatory content for juniors -> mids. More multiple choice thrown in. Yes or no questions. Coaching prompts. GPT-style "Want to learn about X?" messages.
 - Reddit ad for "SEV-1: MultiXact pressure is stalling the primary database" -- just open with the SEV, not what the site is
 - Timer improvements. "New SEV" / "Keep Going" / Invite your friends to this one
