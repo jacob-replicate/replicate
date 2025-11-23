@@ -45,12 +45,11 @@ module Prompts
         # Logging if invalid
         unless valid
           failures = []
-          failures << "too_long_or_contains_asterisk" unless paragraphs_not_too_long
-          failures << "too_complex" unless paragraphs_not_too_complex
-          failures << "first_element_not_paragraph" unless first_element_is_paragraph
-          failures << "last_element_not_paragraph" unless last_element_is_paragraph
-          failures << "code_blocks_invalid" unless code_blocks_valid
           failures << "no_elements" if elements.size.zero?
+          failures << "code_blocks_invalid" unless code_blocks_valid
+          failures << "paragraphs_too_long" unless paragraphs_not_too_long
+          failures << "paragraphs_too_complex" unless paragraphs_not_too_complex
+          failures << "first_element_not_paragraph" unless first_element_is_paragraph
 
           Rails.logger.warn(
             "Prompt validation failed for #{template_name}: #{elements.to_json} - #{failures.join(', ')} | paragraphs=#{paragraphs.inspect.truncate(300)}"
@@ -67,7 +66,7 @@ module Prompts
       start_time = Time.now.to_i
       response = OpenAI::Client.new.chat.completions.create(
         messages: Array(@conversation&.message_history) + [{ role: "system", content: instructions }],
-        model: "gpt-5-chat-latest",
+        model: "gpt-4o-2024-11-20"
       )
       Rails.logger.info "Prompt Response Time: #{template_name} - #{Time.now.to_i - start_time}"
 
@@ -113,7 +112,13 @@ module Prompts
     private
 
     def fetch_elements
-      raw_json = JSON.parse(fetch_raw_output) rescue {}
+      raw_output = fetch_raw_output.gsub("```json", "").gsub("```", "").strip
+
+      if Rails.env.development?
+        Rails.logger.info "[#{template_name}] Raw Output: #{raw_output}"
+      end
+
+      raw_json = JSON.parse(raw_output) rescue {}
       elements = Array(raw_json.with_indifferent_access[:elements]).map(&:with_indifferent_access) || []
 
       elements.map do |element|

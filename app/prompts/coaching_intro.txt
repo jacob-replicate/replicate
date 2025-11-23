@@ -27,11 +27,11 @@ Constraints:
 - No cheesy example company names. Keep it serious.
 - Never write from the reader's perspective (e.g., "you notice," "you're on the page").
 - Describe a literal sequence - one event leading to another - as if replaying a debug session.
-- Vary nouns and verbs. Do not repeat the same word (e.g. "crash," "error," "fail") across multiple sentences.
+- Vary nouns and verbs. Do not repeat the same word (e.g. "crash," "error," "fail") across sentences.
 - Do not use newline characters.
 - Focus on the injected issue - whether it involves UI, logs, infrastructure, or latency. Do not default to generic UI behaviors like a button that does nothing unless the issue explicitly involves that.
 - Never instructional or enthusiastic.
-- Describe a short sequence of observable facts. Each sentence must add something new, no repetition or paraphrased restatement.
+- Describe a short sequence of observable facts. Each sentence must add something new, no repetition or paraphrased restatement. You're dropping them into the SEV. Concise.
 - Do not explain why it happens. Just narrate what you see.
 - Avoid dramatic outcomes like "the page crashes," "closes," or "disappears." Favor realistic symptoms like reloads, freezes, or stuck states.
 - Avoid vague terms like "interface," "panel," or "element." Be specific: say "browser tab," "JS console," or "API call."
