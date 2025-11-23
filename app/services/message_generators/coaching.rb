@@ -140,20 +140,6 @@ module MessageGenerators
     end
 
     def question_format
-      turn_cutoff = @conversation.difficulty == "junior" ? 4 : 6
-      escalate_cutoff = @conversation.difficulty == "junior" ? 30 : 80
-
-      escalate_cutoff = case @conversation.difficulty
-        when "junior"
-          25
-        when "mid"
-          35
-        when "senior"
-          75
-        else
-          85
-      end
-
       escalate_prompt = "- Your reply must have a surgical question that cuts deep and declarative sentences to expose fragile reasoning, not long Wikipedia articles that teach. A question that a seasoned SRE can't help but respond to / argue with."
       escalate_prompt += "\n- Remember, this is a hypothetical infra puzzle. Your questions shouldn't be around \"What control enforces X in your system?\", but moreso \"What control SHOUD enforce X in the system\". You're not asking for details about imaginary infra. I want them to defend their mental model of how infra should be designed. You're asking how a good system should be designed (and using this story as the anchor to diagnose the engineer's blind spots)."
       escalate_prompt

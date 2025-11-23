@@ -9,7 +9,9 @@ Paid Version:
 - IAM + GRC for data/access controls. Public/free site, but you're still typing your data into it.
 -------------
 
+- 7 day cache for coaching_intro response + cron job to hydrate
 - Dig into why Turn 1 is failing validation a ton.
+- Clean up "question_format" for turn 2. You're giving inconsistent instructions in the "reply =" line. Fill the CTA context with that turn 2 instruction.
 - Turn 4: Multiple choice, but only if short answer? Long answer implies they're ready to type?
 - Stop scroling to the top of the last message when you send a new one. Scroll to the actual bottom of the page then.
 - Stop IP banning scrapers, just malicious rate limits.
