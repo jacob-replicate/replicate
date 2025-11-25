@@ -9,6 +9,7 @@ Paid Version:
 - IAM + GRC for data/access controls. Public/free site, but you're still typing your data into it.
 -------------
 
+- Type in a topic you want to learn about. Present topics + make you repeat them back. "What are the core areas of my specialization?" - Like SEV-1, but more quiz like + Goosebumps choose your own adventure style.
 - 7 day cache for coaching_intro response + cron job to hydrate
 - Dig into why Turn 1 is failing validation a ton.
 - Clean up "question_format" for turn 2. You're giving inconsistent instructions in the "reply =" line. Fill the CTA context with that turn 2 instruction.
