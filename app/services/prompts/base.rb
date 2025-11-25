@@ -109,6 +109,33 @@ module Prompts
       []
     end
 
+    def self.build_inputs(conversation_type:, difficulty:, incident:)
+      conversation_type = conversation_type.to_s.strip.downcase.to_sym
+      difficulty = difficulty.to_s.strip.downcase.to_sym
+
+      sanitized_inputs = {
+        conversation_type: conversation_type,
+        difficulty: difficulty,
+        difficulty_prompt: difficulty_prompts[difficulty],
+        incident: incident.to_s.downcase.squish
+      }
+
+      hashed_inputs = Digest::SHA256.hexdigest(sanitized_inputs.to_json)
+      sanitized_inputs[:input_hash] = hashed_inputs
+      sanitized_inputs[:incident] = incident
+
+      sanitized_inputs
+    end
+
+    def self.difficulty_prompts
+      {
+        junior: "You're working with a junior full-stack web application engineer at a fast-paced midmarket company. They don't know much about cloud-native computing at all. Keep it friendly, concrete, and free of jargon. Think mentorship, not mastery. They don't know the big words yet. Don't use them. Assume they suck at resolving SEV-1 incidents. You need to hand-hold. Dumb it down. No word salad.",
+        mid: "You’re working with a mid-level SRE at a fast-paced midmarket company. Assume they know the basics but not the edge cases. Use plain technical terms and connect each detail to practical outcomes. Explain tradeoffs and reliability patterns without diving into deep distributed systems theory. They're stronger than juniors, but not by much yet. No word salad. Dumb it down if you need to.",
+        senior: "You're talking to a senior SRE at a fast-paced midmarket company. Skip the hand-holding. Assume fluency in systems, networking, and incident response, but still weak spots in areas that Staff+ would excel at. Use precise technical language and emphasize nuance (e.g., where guarantees break, where intuition fails, how design choices cascade under load). No word salad.",
+        staff: "You’re working with a Staff+ engineer at a fast-paced midmarket company. Treat them as a peer. Be exact, economical, and challenging. Focus on causal reasoning, trust boundaries, system failure modes, etc. No hand waving. Precision and insight matter more than style. If they don't know something, they'll google it. Assume high levels of technical competence."
+      }.with_indifferent_access
+    end
+
     private
 
     def fetch_elements

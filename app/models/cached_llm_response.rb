@@ -1,0 +1,2 @@
+class CachedLlmResponse < ApplicationRecord
+end

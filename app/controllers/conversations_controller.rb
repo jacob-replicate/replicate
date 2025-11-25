@@ -18,7 +18,6 @@ class ConversationsController < ApplicationController
 
   def update
     @conversation = Conversation.find(params[:id])
-    # @conversation.update(fingerprint: params[:fizzbuzz])
   end
 
   def destroy

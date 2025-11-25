@@ -33,9 +33,7 @@ class StaticController < ApplicationController
     @email_messages = Message.where(conversation_id: @email_conversations.pluck(:id), user_generated: true)
 
     @stats = {
-      web_threads: "#{@web_conversations.count} - #{(@web_messages.count.to_f / @web_conversations.count).round(2)} - #{@web_duration.to_f.round}min",
-      email_threads: "#{@email_conversations.count} (#{(@email_messages.count.to_f / @email_conversations.count).round(2)})",
-      active_trials: "#{@active_trials} (#{Member.where(subscribed: true).count})",
+      conversations: "#{@web_conversations.count} - #{(@web_messages.count.to_f / @web_conversations.count).round(2)} - #{@web_duration.to_f.round}min",
       banned_ips: BannedIp.count
     }
   end
@@ -66,15 +64,6 @@ class StaticController < ApplicationController
     redirect_to "/sev"
   end
 
-  def difficulty_prompts
-    {
-      "junior" => "You're working with a junior full-stack web application engineer at a fast-paced midmarket company. They don't know much about cloud-native computing at all. Keep it friendly, concrete, and free of jargon. Think mentorship, not mastery. They don't know the big words yet. Don't use them. Assume they suck at resolving SEV-1 incidents. You need to hand-hold. Dumb it down. No word salad.",
-      "mid" => "You’re working with a mid-level SRE at a fast-paced midmarket company. Assume they know the basics but not the edge cases. Use plain technical terms and connect each detail to practical outcomes. Explain tradeoffs and reliability patterns without diving into deep distributed systems theory. They're stronger than juniors, but not by much yet. No word salad. Dumb it down if you need to.",
-      "senior" => "You're talking to a senior SRE at a fast-paced midmarket company. Skip the hand-holding. Assume fluency in systems, networking, and incident response, but still weak spots in areas that Staff+ would excel at. Use precise technical language and emphasize nuance (e.g., where guarantees break, where intuition fails, how design choices cascade under load). No word salad.",
-      "staff" => "You’re working with a Staff+ engineer at a fast-paced midmarket company. Treat them as a peer. Be exact, economical, and challenging. Focus on causal reasoning, trust boundaries, system failure modes, etc. No hand waving. Precision and insight matter more than style. If they don't know something, they'll google it. Assume high levels of technical competence."
-    }
-  end
-
   def create_sev
     difficulty_level = [session[:difficulty], "senior"].reject(&:blank?).first
 
@@ -84,14 +73,13 @@ class StaticController < ApplicationController
       WEB_INCIDENTS.sample
     end
 
-    context = {
+    inputs = Prompts::Base.build_inputs(
       conversation_type: :coaching,
       difficulty: difficulty_level,
-      difficulty_prompt: difficulty_prompts[difficulty_level],
       incident: incident
-    }
+    )
 
-    @conversation = Conversation.create!(context: context, channel: "web", ip_address: request.remote_ip)
+    @conversation = Conversation.create!(context: inputs, channel: "web", ip_address: request.remote_ip)
   end
 
   def set_prices

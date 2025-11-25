@@ -94,6 +94,21 @@ CREATE TABLE public.banned_ips (
 
 
 --
+-- Name: cached_llm_responses; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.cached_llm_responses (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    llm_template_name text,
+    inputs jsonb,
+    input_hash text,
+    response jsonb,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
 -- Name: contacts; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -273,6 +288,14 @@ ALTER TABLE ONLY public.banned_ips
 
 
 --
+-- Name: cached_llm_responses cached_llm_responses_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.cached_llm_responses
+    ADD CONSTRAINT cached_llm_responses_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: contacts contacts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -373,6 +396,13 @@ CREATE INDEX index_audits_on_request_uuid ON public.audits USING btree (request_
 
 
 --
+-- Name: index_cached_llm_on_template_and_input_hash; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_cached_llm_on_template_and_input_hash ON public.cached_llm_responses USING btree (llm_template_name, input_hash);
+
+
+--
 -- Name: index_conversations_on_recipient; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -428,6 +458,7 @@ CREATE INDEX user_index ON public.audits USING btree (user_id, user_type);
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20251125181409'),
 ('20251108011957'),
 ('20251105045745'),
 ('20251105040503'),
