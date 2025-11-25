@@ -2,17 +2,21 @@ module Prompts
   class Base
     @@template_cache ||= {}
 
-    def initialize(conversation: nil, context: {})
+    def initialize(conversation: nil, context: {}, cacheable: false)
       @conversation = conversation
       @context = context
 
       if @context.present?
-        @context = @context.merge(@conversation.context || {}) if @conversation.present?
+        @context = @context.merge(@conversation.context || {}).with_indifferent_access if @conversation.present?
       end
 
       if @context.blank? && @conversation.present?
-        @context = @conversation.context || {}
+        @context = @conversation.context&.with_indifferent_access || {}.with_indifferent_access
       end
+
+      @cacheable = cacheable
+
+      @inputs = Prompts::Base.build_inputs(conversation_type: @context["conversation_type"], difficulty: @context["difficulty"], incident: @context["incident"])
 
       @context[:current_time] = Time.current.utc.to_s
     end
@@ -51,9 +55,9 @@ module Prompts
           failures << "paragraphs_too_complex" unless paragraphs_not_too_complex
           failures << "first_element_not_paragraph" unless first_element_is_paragraph
 
-          Rails.logger.warn(
-            "Prompt validation failed for #{template_name}: #{elements.to_json} - #{failures.join(', ')} | paragraphs=#{paragraphs.inspect.truncate(300)}"
-          )
+          if Rails.env.development?
+            Rails.logger.warn("Prompt validation failed for #{template_name}: #{elements.to_json} - #{failures.join(', ')} | paragraphs=#{paragraphs.inspect.truncate(300)}")
+          end
         end
 
         valid
@@ -68,20 +72,27 @@ module Prompts
         messages: Array(@conversation&.message_history) + [{ role: "system", content: instructions }],
         model: "gpt-4o-2024-11-20"
       )
-      Rails.logger.info "Prompt Response Time: #{template_name} - #{Time.now.to_i - start_time}"
 
-      response.choices.first.message[:content]
+      if Rails.env.development?
+        Rails.logger.info "Prompt Response Time: #{template_name} - #{Time.now.to_i - start_time}"
+      end
+
+      response.choices.first.message[:content] rescue nil
     end
 
     def parallel_batch_process(starting_batch_size: 8, format: true, &validation_block)
       result = Queue.new
 
-      if @conversation.turn >= 5
+      if @cacheable
+        cached_response = CachedLlmResponse.where(template_name: template_name, input_hash: @inputs["input_hash"]).order(:updated_at).last
+        return cached_response.response if cached_response.present?
+      end
+
+      if @conversation&.turn.to_i >= 5
         starting_batch_size = 3
       end
 
       [starting_batch_size, 6, 8, 10, 10, 10].each do |batch|
-        Rails.logger.info "Thread Batch: #{batch}"
         threads = []
         batch.times do
           threads << Thread.new do
@@ -91,7 +102,9 @@ module Prompts
                 result << (format ? format_elements(elements) : elements)
               end
             rescue => e
-              Rails.logger.error("[#{template_name}] Thread Failed (batch=#{batch}, turn=#{@conversation&.turn}) failed: #{e.class} - #{e.message}")
+              if Rails.env.development?
+                Rails.logger.error("[#{template_name}] Thread Failed (batch=#{batch}, turn=#{@conversation&.turn}) failed: #{e.class} - #{e.message}")
+              end
             end
           end
         end
@@ -103,37 +116,40 @@ module Prompts
         end
 
         threads.each(&:kill)
-        return value if value
+        if value
+          CachedLlmResponse.create!(template_name: template_name, inputs: @inputs, input_hash: @inputs["input_hash"], response: value) if @cacheable
+          return value
+        end
       end
 
       []
     end
 
     def self.build_inputs(conversation_type:, difficulty:, incident:)
-      conversation_type = conversation_type.to_s.strip.downcase.to_sym
-      difficulty = difficulty.to_s.strip.downcase.to_sym
+      conversation_type = conversation_type.to_s.strip.downcase
+      difficulty = difficulty.to_s.strip.downcase
 
       sanitized_inputs = {
-        conversation_type: conversation_type,
-        difficulty: difficulty,
-        difficulty_prompt: difficulty_prompts[difficulty],
-        incident: incident.to_s.downcase.squish
+        "conversation_type" => conversation_type,
+        "difficulty" => difficulty,
+        "difficulty_prompt" => difficulty_prompts[difficulty],
+        "incident" => incident.to_s.downcase.squish
       }
 
       hashed_inputs = Digest::SHA256.hexdigest(sanitized_inputs.to_json)
-      sanitized_inputs[:input_hash] = hashed_inputs
-      sanitized_inputs[:incident] = incident
+      sanitized_inputs["input_hash"] = hashed_inputs
+      sanitized_inputs["incident"] = incident.to_s.squish
 
       sanitized_inputs
     end
 
     def self.difficulty_prompts
       {
-        junior: "You're working with a junior full-stack web application engineer at a fast-paced midmarket company. They don't know much about cloud-native computing at all. Keep it friendly, concrete, and free of jargon. Think mentorship, not mastery. They don't know the big words yet. Don't use them. Assume they suck at resolving SEV-1 incidents. You need to hand-hold. Dumb it down. No word salad.",
-        mid: "You’re working with a mid-level SRE at a fast-paced midmarket company. Assume they know the basics but not the edge cases. Use plain technical terms and connect each detail to practical outcomes. Explain tradeoffs and reliability patterns without diving into deep distributed systems theory. They're stronger than juniors, but not by much yet. No word salad. Dumb it down if you need to.",
-        senior: "You're talking to a senior SRE at a fast-paced midmarket company. Skip the hand-holding. Assume fluency in systems, networking, and incident response, but still weak spots in areas that Staff+ would excel at. Use precise technical language and emphasize nuance (e.g., where guarantees break, where intuition fails, how design choices cascade under load). No word salad.",
-        staff: "You’re working with a Staff+ engineer at a fast-paced midmarket company. Treat them as a peer. Be exact, economical, and challenging. Focus on causal reasoning, trust boundaries, system failure modes, etc. No hand waving. Precision and insight matter more than style. If they don't know something, they'll google it. Assume high levels of technical competence."
-      }.with_indifferent_access
+        "junior" => "You're working with a junior full-stack web application engineer at a fast-paced midmarket company. They don't know much about cloud-native computing at all. Keep it friendly, concrete, and free of jargon. Think mentorship, not mastery. They don't know the big words yet. Don't use them. Assume they suck at resolving SEV-1 incidents. You need to hand-hold. Dumb it down. No word salad.",
+        "mid" => "You’re working with a mid-level SRE at a fast-paced midmarket company. Assume they know the basics but not the edge cases. Use plain technical terms and connect each detail to practical outcomes. Explain tradeoffs and reliability patterns without diving into deep distributed systems theory. They're stronger than juniors, but not by much yet. No word salad. Dumb it down if you need to.",
+        "senior" => "You're talking to a senior SRE at a fast-paced midmarket company. Skip the hand-holding. Assume fluency in systems, networking, and incident response, but still weak spots in areas that Staff+ would excel at. Use precise technical language and emphasize nuance (e.g., where guarantees break, where intuition fails, how design choices cascade under load). No word salad.",
+        "staff" => "You’re working with a Staff+ engineer at a fast-paced midmarket company. Treat them as a peer. Be exact, economical, and challenging. Focus on causal reasoning, trust boundaries, system failure modes, etc. No hand waving. Precision and insight matter more than style. If they don't know something, they'll google it. Assume high levels of technical competence."
+      }
     end
 
     private

@@ -10,17 +10,16 @@ module MessageGenerators
         reply = if @conversation.referring_conversation.present?
           @conversation.referring_conversation.messages.where(user_generated: false).order(created_at: :asc).first&.content&.gsub(avatar, "")
         else
-          Prompts::CoachingIntro.new(conversation: @conversation).call
+          Prompts::CoachingIntro.new(conversation: @conversation, cacheable: true).call
         end
 
         @conversation.messages.create!(content: "#{avatar}#{reply}", user_generated: false)
         broadcast_to_web(type: "element", message: reply, user_generated: false)
 
-        title = Prompts::CoachingTitle.new(conversation: @conversation).call
+        title = Prompts::CoachingTitle.new(conversation: @conversation, cacheable: true).call
         broadcast_to_web(type: "title", message: title, user_generated: false)
 
-        deliver_multiple_choice_options(3, reply)
-
+        deliver_multiple_choice_options(3, reply, true)
 
         broadcast_to_web(type: "done")
 
@@ -128,9 +127,9 @@ module MessageGenerators
       end
     end
 
-    def deliver_multiple_choice_options(count, reply)
+    def deliver_multiple_choice_options(count, reply, cacheable = false)
       3.times do
-        options = Prompts::MultipleChoiceOptions.new(conversation: @conversation, context: { max: count, most_recent_message: reply }).call
+        options = Prompts::MultipleChoiceOptions.new(conversation: @conversation, context: { max: count, most_recent_message: reply }, cacheable: cacheable).call
 
         if options.any?
           broadcast_to_web(message: options, type: "multiple_choice", user_generated: false)

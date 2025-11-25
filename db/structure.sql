@@ -99,7 +99,7 @@ CREATE TABLE public.banned_ips (
 
 CREATE TABLE public.cached_llm_responses (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
-    llm_template_name text,
+    template_name text,
     inputs jsonb,
     input_hash text,
     response jsonb,
@@ -399,7 +399,7 @@ CREATE INDEX index_audits_on_request_uuid ON public.audits USING btree (request_
 -- Name: index_cached_llm_on_template_and_input_hash; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_cached_llm_on_template_and_input_hash ON public.cached_llm_responses USING btree (llm_template_name, input_hash);
+CREATE INDEX index_cached_llm_on_template_and_input_hash ON public.cached_llm_responses USING btree (template_name, input_hash);
 
 
 --
@@ -458,6 +458,7 @@ CREATE INDEX user_index ON public.audits USING btree (user_id, user_type);
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20251125184913'),
 ('20251125181409'),
 ('20251108011957'),
 ('20251105045745'),

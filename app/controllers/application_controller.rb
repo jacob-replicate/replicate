@@ -9,6 +9,8 @@ class ApplicationController < ActionController::Base
   private
 
   def skip_malicious_users
+    return if Rails.env.development?
+
     if banned_ips.include?(request.remote_ip)
       Rails.logger.info "Blocking request from banned IP #{request.remote_ip}"
       return head(:ok)
