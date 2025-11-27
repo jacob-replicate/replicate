@@ -51,8 +51,6 @@ module MessageGenerators
         total_user_message_count = @conversation.messages.user.count
         previous_message = @conversation.messages.user.order(created_at: :desc).first&.content || ""
         turn = total_user_message_count + 1
-
-
         total_conversations = Conversation.where(ip_address: @conversation.ip_address)
         global_messages = Message.where(user_generated: true, conversation: total_conversations)
         global_message_count = global_messages.count

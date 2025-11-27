@@ -7,9 +7,6 @@
 
     <p>All infra is provisioned/managed by <span class="font-semibold">Heroku</span> (in <span class="font-semibold">US-based</span> AWS regions), and uses their HA failover. Data is encrypted at rest using AES-256, and TLS 1.2+ in transit. The tool is ephemeral, and wipes data older than 3 months.
 
-    <h3 class="font-semibold mt-4 mb-1">Audit Logs</h3>
-    <p>Administrative actions (e.g., user provisioning) are logged immutably and retained for 12 months in secure, append-only S3 buckets. Available upon request.</p>
-
     <h3 class="font-semibold mt-4 mb-1">Automated Dependency Scanning</h3>
     <p>The codebase is continuously scanned using <a href="https://docs.github.com/en/code-security/getting-started/dependabot-quickstart-guide" class="text-blue-600 hover:text-blue-700 hover:underline transition font-semibold">GitHub Dependabot</a> to patch vulnerable libraries. Critical vulnernabilities are patched within 7 days of public disclosure.</p>
 
@@ -59,11 +56,11 @@
   <p class="text-gray-500 mt-10 text-sm">
     <span class="md:hidden">
       <%= link_to 'Terms', '/terms', class: "text-blue-600 hover:underline" %> &nbsp;&nbsp;•&nbsp;&nbsp;
-      <%= link_to 'Privacy', '/privacy', class: "text-blue-600 hover:underline" %> &nbsp;&nbsp;•&nbsp;&nbsp;
+      <%= link_to 'Privacy', '/privacy', class: "text-blue-600 hover:underline" %>
     </span>
     <span class="hidden md:inline">
       <%= link_to 'Terms of Service', '/terms', class: "text-blue-600 hover:underline" %> &nbsp;&nbsp;•&nbsp;&nbsp;
-      <%= link_to 'Privacy Policy', '/privacy', class: "text-blue-600 hover:underline" %> &nbsp;&nbsp;•&nbsp;&nbsp;
+      <%= link_to 'Privacy Policy', '/privacy', class: "text-blue-600 hover:underline" %>
     </span>
   </p>
 </div>
