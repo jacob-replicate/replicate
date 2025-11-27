@@ -80,10 +80,10 @@ module Prompts
       response.choices.first.message[:content] rescue nil
     end
 
-    def parallel_batch_process(starting_batch_size: 8, format: true, &validation_block)
+    def parallel_batch_process(starting_batch_size: 8, format: true, force_cache: false, &validation_block)
       result = Queue.new
 
-      if @cacheable
+      if @cacheable && !force_cache && !(Rails.env.development?)
         cached_response = CachedLlmResponse.where(template_name: template_name, input_hash: @inputs["input_hash"]).order(:updated_at).last
         return cached_response.response if cached_response.present?
       end
@@ -201,11 +201,18 @@ module Prompts
           code += "<pre><code class='language-#{element['language'].to_s.gsub('language-', '')}'>#{element["content"].gsub("\t", "  ")}</code></pre>".html_safe
           code
         else
+          Rails.logger.warn("[#{template_name}] Unknown element type: #{type.inspect}")
           nil
         end
       end.reject(&:blank?)
 
-      formatted_elements << suffix.html_safe unless suffix.blank?
+      Rails.logger.info "[#{template_name}] Formatted Elements Before Suffix: #{formatted_elements.inspect}" if Rails.env.development?
+      Rails.logger.info "suffix: #{suffix.inspect}" if Rails.env.development?
+      unless suffix.blank?
+        formatted_elements << suffix.html_safe
+      end
+
+      Rails.logger.info "[#{template_name}] Formatted Elements: #{formatted_elements.join.truncate(500)}" if Rails.env.development?
 
       formatted_elements.join.html_safe
     end

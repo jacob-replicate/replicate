@@ -1,15 +1,8 @@
-Paid Version:
-- Monthly email report format for leadership. Make it a PDF that Rails renders, which you can attach in Postmark email, that they can forward to VP.
-- Customization of prompts the team uses. Team reports for tech leads + EMs + the team at large. Reports are never bad. Green or yellow, never red.
-- Conversation sharing. -- "This tripped me up. Share the insight in my team's feed, with a link to the full convo if they're curious."
-- Shared weekly drills so everyone is on the same page. Make it part of the UI itself. It should be the default.
-- Team-wide blind spot insights.
-- Additional tracks? Security, GRC, Go, etc.
-- You need to make logging in as a free user enticing. Once they're logged in (e.g., to view their growth + personalized incidents), it's easier to get EM onboard.
-- IAM + GRC for data/access controls. Public/free site, but you're still typing your data into it.
--------------
+- Roblox-style experience cards. -- "AuthZ Fundamentals" / "DNS Deep Dive" / "Advanced PKI"
+- The cache refresh worker isn't going to overwrite the previous cache. You need a force_cache: option in base.rb
+- Cut backticks from paragraphs and multiple choice options.
+- Add orphan and widow validation for intro + make sure you retry (or somehow always have a cached response)
 
-- Type in a topic you want to learn about. Present topics + make you repeat them back. "What are the core areas of my specialization?" - Like SEV-1, but more quiz like + Goosebumps choose your own adventure style.
 - 7 day cache for coaching_intro response + cron job to hydrate
 - Dig into why Turn 1 is failing validation a ton.
 - Clean up "question_format" for turn 2. You're giving inconsistent instructions in the "reply =" line. Fill the CTA context with that turn 2 instruction.
@@ -26,13 +19,6 @@ Paid Version:
 - Mobile conversations. Shorter paragraphs, shortr file namees (service on newline, not # character)
 - Meta tags + sharing images/text
 
-- Make sure long messages naturally have more...
-    - Code blocks + telemetry
-    - Declarative paragraphs without questions. Just feedback on the previous thought.
-    - More explanations + nudges to ask for a hint.
-    - Do a "pulse check" every 8 messages? Adjust accordingly?
-    - Figure this out dynamically, don't just base it off turn count.
-
 - Max length on input box to prevent lazy copy/pastes burning tokens?
 - Make article_intro use the base class's call method. Make starting_batch_size a method, don't make it overwrite the call method.
 - "Want to see how your friends will do? <This link> will send them a fresh copy of the same SEV."
@@ -40,6 +26,18 @@ Paid Version:
 - Remove the subheader suffix whenever you answer a question (coaching_intro, or any article reply). The big bold subheader should go.
 - Put user agent on BannedIp table + add better logging.
 - a11y
+
+-------------
+Paid Version:
+- Monthly email report format for leadership. Make it a PDF that Rails renders, which you can attach in Postmark email, that they can forward to VP.
+- Customization of prompts the team uses. Team reports for tech leads + EMs + the team at large. Reports are never bad. Green or yellow, never red.
+- Conversation sharing. -- "This tripped me up. Share the insight in my team's feed, with a link to the full convo if they're curious."
+- Shared weekly drills so everyone is on the same page. Make it part of the UI itself. It should be the default.
+- Team-wide blind spot insights.
+- Additional tracks? Security, GRC, Go, etc.
+- You need to make logging in as a free user enticing. Once they're logged in (e.g., to view their growth + personalized incidents), it's easier to get EM onboard.
+- IAM + GRC for data/access controls. Public/free site, but you're still typing your data into it.
+-------------
 
 - Action Bar - Make the CTAs more visible
     - Give me a hint
