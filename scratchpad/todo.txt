@@ -3,7 +3,7 @@
       replicate.info
       SEV-1 Drill <change>
 
-    - Hard engineering experiences that go in-depth without the AI hype.
+    - replicate.info - Precise, ephemeral learning experiences for software engineers. One of the fastest ways to find your blind spots, and get clarity.
 
     - You can also tell me a bit about your experience, and we can regenerate the table of contents to fit your experience level.
 
@@ -12,7 +12,6 @@
         - "DNS Deep Dive for SREs"
         - "Advanced data modeling in Ruby"
         - You have infinite Reddit ads, across every single programming subreddit. Charge for reporting + promo packets + tech stack customization + group exercises.
-        - The fastest way to map out your blind spots, and dive deep into high-context learning.
         - Testing is one way. You need something more exploratory, without the GPT hype tone.
 
 - The cache refresh worker isn't going to overwrite the previous cache. You need a force_cache: option in base.rb

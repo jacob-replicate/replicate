@@ -2,7 +2,7 @@ module Prompts
   class Base
     @@template_cache ||= {}
 
-    def initialize(conversation: nil, context: {}, cacheable: false)
+    def initialize(conversation: nil, context: {}, cacheable: false, force_cache: false)
       @conversation = conversation
       @context = context
 
@@ -15,6 +15,7 @@ module Prompts
       end
 
       @cacheable = cacheable
+      @force_cache = force_cache
 
       @inputs = Prompts::Base.build_inputs(conversation_type: @context["conversation_type"], difficulty: @context["difficulty"], incident: @context["incident"])
 
@@ -80,10 +81,10 @@ module Prompts
       response.choices.first.message[:content] rescue nil
     end
 
-    def parallel_batch_process(starting_batch_size: 8, format: true, force_cache: false, &validation_block)
+    def parallel_batch_process(starting_batch_size: 8, format: true, &validation_block)
       result = Queue.new
 
-      if @cacheable && !force_cache && !(Rails.env.development?)
+      if @cacheable && !@force_cache && !(Rails.env.development?)
         cached_response = CachedLlmResponse.where(template_name: template_name, input_hash: @inputs["input_hash"]).order(:updated_at).last
         return cached_response.response if cached_response.present?
       end
