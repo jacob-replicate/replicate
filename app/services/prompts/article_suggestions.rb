@@ -22,7 +22,7 @@ module Prompts
 
         title = raw_json["collection_title"].to_s
         title_without_acronyms = title.split.reject { |word| word.upcase == word }.join(" ").squish
-        failures << "title_too_long" if title.length > 80
+        failures << "title_too_long" if title.length > 65
         failures << "title_wrong_casing" if title_without_acronyms != title_without_acronyms.capitalize
 
         intro = raw_json["intro_sentence"].to_s

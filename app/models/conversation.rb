@@ -80,7 +80,9 @@ class Conversation < ApplicationRecord
   end
 
   def message_history
-    messages.order(created_at: :asc).last(30).map do |message|
+    last_message_count = context["conversation_type"] == "coaching" ? 30 : 6
+
+    messages.order(created_at: :asc).last(last_message_count).map do |message|
       {
         role: (message.user_generated ? "user" : "assistant"),
         content: SanitizeAiContent.call(message.content)
