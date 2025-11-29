@@ -9,24 +9,24 @@ Background Info:
 Action Requested:
 - Each post should reflect a different line of thinking, theory, or heuristic. They don’t have to be actions.
 - Format must be a single JSON object with a  "collection_title" key (string), an "intro_sentence" key (string), and a "posts" key containing an array of objects, each with a "post_title" and "prompt_for_ai" field.
-- The options collection should have 4 elements.
+- The blog collection should have 4 elements.
 - Return only the JSON.
 
 Constraints:
 - Avoid vague language. No hedging, no filler.
 - Complete sentences. Don't just use a bunch of verbose technical words. Keep it approachable. Regular capitalization, not title case.
 - The overarching title should read like a short sentence, fewer than 40 characters, not title case. First letter capitalized.
-- The intro_sentence must not use generic framing like "break down," ‘explore,’ ‘look at,’ or ‘dive into.’ It must state the technical domain and why it matters. The common thread that connects all 4 of the ideas you're offering to explore.
-- The intro_sentence should make it clear what you're about to get out of it. What is the value for the reader?
-- The option titles should read like a normal sentence, not a title case blog post. No hype energy. Just precise technical cliffs notes around what it's going to cover if they click in. Make them want to engage. It should feel like "I should know this", but we know they don't, since it's coming from a blind spot you uncovered earlier.
+- The intro_sentence must not use generic framing like "break down," ‘explore,’ ‘look at,’ or ‘dive into.’
+- The category_title is about the common theme tying the 4 blog posts together. The intro_sentence is about the real-world consequences if you get this wrong. The intro_sentence is not about what you'll learn from the blog posts. It's purely about the consequences of not knowing this. Not dramatic, just factual. These are likely new concepts to them.
+- The blog titles should read like a normal sentence, not a title case blog post. No hype energy. Just precise technical cliffs notes around what it's going to cover if they click in. Make them want to engage. It should feel like "I should know this", but we know they don't, since it's coming from a blind spot you uncovered earlier.
 - Try to avoid using similar phrases in the collection_title / intro sentence / posts. Everything should subtly communicate "This is worth 10min of your time" without being repetitive AI slop.
 - Try to use short tight words when possible. This content has limited screen real estate. Make each word count.
-- The option titles should feel like a new experience, not a multiple choice option for the topic we're already discussing.
+- The blog titles should feel like a new experience, not a multiple choice option for the topic we're already discussing.
 - The user should not be mentioned at all in the title/prompt_for_ai. No "You will learn". It should just describe the technical topic.
 - The intro_sentence should be less than 110 characters.
 - Never include backticks or the word json.
 - The intro_sentence should not reference the number of posts (e.g., "Two articles that..."). They don't care. Just describe the content.
-- The option titles should be under 60 characters.
+- The blog titles should be under 60 characters.
 - No self-congratulatory takes. -- i.e., don't say "Thoughtful take" -- you wrote the blog, just describe the content.
 - No em dashes, no semicolons, no colons. No special characters.
 - Titles should cool, calm, collected, aimed at technical audiences who appreciate precision, not theatrics. No AI hype slop.
