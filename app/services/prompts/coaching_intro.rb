@@ -8,21 +8,20 @@ module Prompts
         failures << "not_array" if !elements.is_a?(Array)
         failures << "wrong_size" if elements.size != 2
         failures << "invalid_element_types" unless elements.all? { |element| Hash(element)["type"].present? }
+        failures << "paragraphs_contain_backticks" if elements.any? { |e| e["type"] == "paragraph" && e["content"].to_s.include?("`") }
         failures << "unexpected_types" unless elements.map { |e| e["type"] } == ["paragraph", "code"]
         failures << "first_element_too_long" if first_element.length > 300
 
-        failures.each do |failure|
-          Rails.logger.info("First element: #{first_element.first(10)}...")
-          Rails.logger.warn(
-            "Prompt validation failed for #{template_name}: - #{failure}"
-          )
+        if Rails.env.development?
+          failures.each do |failure|
+            Rails.logger.info("First element: #{first_element.first(10)}...")
+            Rails.logger.warn(
+              "Prompt validation failed for #{template_name}: - #{failure}"
+            )
+          end
         end
 
-        elements.is_a?(Array) &&
-          elements.size == 2 &&
-          elements.all? { |element| Hash(element)["type"].present? } &&
-          elements.map { |e| e["type"] } == ["paragraph", "code"] &&
-          elements.first["content"].to_s.length < 300
+        failures.empty?
       end
     end
 

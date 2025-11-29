@@ -17,7 +17,13 @@ module Prompts
       @cacheable = cacheable
       @force_cache = force_cache
 
-      @inputs = Prompts::Base.build_inputs(conversation_type: @context["conversation_type"], difficulty: @context["difficulty"], incident: @context["incident"])
+      @inputs = Prompts::Base.build_inputs(
+        conversation_type: @context["conversation_type"],
+        difficulty: @context["difficulty"],
+        incident: @context["incident"],
+        prompt_for_ai: @context["prompt_for_ai"],
+        title: @context["title"]
+      )
 
       @context[:current_time] = Time.current.utc.to_s
     end
@@ -98,13 +104,15 @@ module Prompts
         batch.times do
           threads << Thread.new do
             begin
-              elements = fetch_elements
-              if validation_block.call(elements)
-                result << (format ? format_elements(elements) : elements)
+              raw_response = fetch_raw_response
+              if validation_block.call(raw_response)
+                result << (format ? format_raw_response(raw_response) : raw_response)
               end
             rescue => e
+              Rails.logger.error("[#{template_name}] Thread Failed (batch=#{batch}, turn=#{@conversation&.turn}) failed: #{e.class} - #{e.message}")
+
               if Rails.env.development?
-                Rails.logger.error("[#{template_name}] Thread Failed (batch=#{batch}, turn=#{@conversation&.turn}) failed: #{e.class} - #{e.message}")
+                raise e
               end
             end
           end
@@ -126,7 +134,8 @@ module Prompts
       []
     end
 
-    def self.build_inputs(conversation_type:, difficulty:, incident:)
+    # TODO: Refactor this to GiveCampus "unique_fields"-style concept. Make it a collection or something less hardcoded.
+    def self.build_inputs(conversation_type:, difficulty:, incident: nil, title: nil, prompt_for_ai: nil)
       conversation_type = conversation_type.to_s.strip.downcase
       difficulty = difficulty.to_s.strip.downcase
 
@@ -134,12 +143,18 @@ module Prompts
         "conversation_type" => conversation_type,
         "difficulty" => difficulty,
         "difficulty_prompt" => difficulty_prompts[difficulty],
-        "incident" => incident.to_s.downcase.squish
+        "incident" => incident.to_s.downcase.squish, # TODO: Merge with prompt_for_ai
+        "title" => title.to_s.downcase.squish,
+        "prompt_for_ai" => prompt_for_ai.to_s.downcase.squish
       }
 
       hashed_inputs = Digest::SHA256.hexdigest(sanitized_inputs.to_json)
       sanitized_inputs["input_hash"] = hashed_inputs
       sanitized_inputs["incident"] = incident.to_s.squish
+      sanitized_inputs["prompt_for_ai"] = prompt_for_ai.to_s.squish
+      sanitized_inputs["title"] = title.to_s.squish
+
+      Rails.logger.info "[Prompts::Base] Built Inputs: #{sanitized_inputs.inspect}" if Rails.env.development?
 
       sanitized_inputs
     end
@@ -155,7 +170,7 @@ module Prompts
 
     private
 
-    def fetch_elements
+    def fetch_raw_response
       raw_output = fetch_raw_output.gsub("```json", "").gsub("```", "").strip
 
       if Rails.env.development?
@@ -182,7 +197,7 @@ module Prompts
       ""
     end
 
-    def format_elements(elements)
+    def format_raw_response(elements)
       formatted_elements = []
       formatted_elements << prefix.html_safe unless prefix.blank?
 

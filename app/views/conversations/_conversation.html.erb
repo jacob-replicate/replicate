@@ -62,7 +62,6 @@
     const tosWrapper = document.getElementById("terms-container");
     let messageQueue = {};
     let expectedSequence = <%= @conversation.next_message_sequence %>;
-    window.timerCompleted = false;
     window.sentMessages = false;
 
     function pastFirstMessage() {
@@ -93,11 +92,9 @@
     let dotInterval;
 
     function setInputEnabled(enabled) {
-      if(textarea && !window.timerCompleted) {
+      if(textarea) {
         textarea.disabled = !enabled;
-        if(pastFirstMessage() || (<%= @conversation.context["conversation_type"] != "article" %> && window.innerWidth >= 1024)) {
-          textarea.focus({ preventScroll: true });
-        }
+        textarea.focus({ preventScroll: true });
       }
     }
 
@@ -115,7 +112,6 @@
 
     function sendMessage(message, suggested) {
       window.sentMessages = true;
-      if(window.timerCompleted) return;
       let terms = document.getElementById("terms-container")
       if(terms) {
         terms.classList.add("hidden");
@@ -242,7 +238,7 @@
 
         if(isArticleSuggestions) {
           activeStreamContainer = null;
-          conversationEl.insertAdjacentHTML("beforeend", "<div class='mt-6'>" + data.message + "</div>");
+          conversationEl.insertAdjacentHTML("beforeend", "<div class='mt-8'>" + data.message + "</div>");
           scrollToBottom();
           return;
         } else if(isTitle) {

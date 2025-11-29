@@ -55,10 +55,13 @@ module MessageGenerators
         global_messages = Message.where(user_generated: true, conversation: total_conversations)
         global_message_count = global_messages.count
 
-        broadcast_to_web(type: "element", message: AvatarService.coach_avatar_row, user_generated: false)
-        broadcast_to_web(type: "loading", user_generated: false)
-
-        deliver_article_suggestions if latest_message == "Give me another hint" || [5, 11].include?(turn) || (turn > 11 && rand(100) <= 10)
+        if false && (latest_message == "Give me another hint" || [3, 11].include?(turn) || (turn > 11 && rand(100) <= 15))
+          broadcast_to_web(type: "loading", user_generated: false)
+          deliver_article_suggestions
+        else
+          broadcast_to_web(type: "element", message: AvatarService.coach_avatar_row, user_generated: false)
+          broadcast_to_web(type: "loading", user_generated: false)
+        end
 
         hint_link = HINT_LINK
         reply = ""
@@ -113,15 +116,14 @@ module MessageGenerators
     end
 
     def deliver_article_suggestions
-      return
-      10.times do
-        response = Prompts::ArticleSuggestions.new(conversation: @conversation).call
-        html = response["html"]
-        if html.present?
-          @conversation.messages.create!(content: html, user_generated: false)
-          broadcast_to_web(message: html, type: "article_suggestions", user_generated: false)
-          return
-        end
+      response = Prompts::ArticleSuggestions.new(conversation: @conversation).call
+      if response.present?
+        @conversation.messages.create!(content: response, user_generated: false)
+        broadcast_to_web(message: response, type: "article_suggestions", user_generated: false)
+        broadcast_to_web(type: "done")
+        broadcast_to_web(type: "element", message: AvatarService.coach_avatar_row, user_generated: false)
+        broadcast_to_web(type: "loading", user_generated: false)
+        return
       end
     end
 

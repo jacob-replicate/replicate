@@ -6,7 +6,7 @@ module Prompts
       end
     end
 
-    def fetch_elements
+    def fetch_raw_response
       options = (JSON.parse(fetch_raw_output)["options"] || JSON.parse(fetch_raw_output)[:options]) rescue []
       options.shuffle
     end
