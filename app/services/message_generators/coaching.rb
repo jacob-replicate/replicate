@@ -55,7 +55,7 @@ module MessageGenerators
         global_messages = Message.where(user_generated: true, conversation: total_conversations)
         global_message_count = global_messages.count
 
-        if latest_message == "Give me another hint" || [5, 11, 19, 30].include?(turn) || (turn > 30 && rand(100) <= 15)
+        if latest_message == "Give me a hint" || latest_message == "Give me another hint"
           broadcast_to_web(type: "loading", user_generated: false)
           deliver_article_suggestions
         else
@@ -72,10 +72,9 @@ module MessageGenerators
           hint_link = ANOTHER_HINT_LINK
           multiple_choice_options = 3
         elsif latest_message == "Give me another hint"
-          custom_instructions = "- The user is asking for a hint. You must return a single \"code\" element sandwiched between concise paragraph elements that guides them toward clarity. You're not trying to stump them. You're in teaching mode, not quizzing mode now. End with a question to move the conversation along. I have another prompt that creates 3 multiple choice options as a response, so keep that in mind when framing the question."
-          hint_link = FINAL_HINT_LINK
+          prompt = Prompts::CoachingExplain
           multiple_choice_options = 3
-        elsif latest_message == "What am I missing here?" || latest_message.downcase.include?("answer") || (turn > 4 && (latest_message.length < 8 || latest_message.exclude?(" ")))
+        elsif latest_message.downcase.include?("answer")
           prompt = Prompts::CoachingExplain
         elsif turn == 2
           custom_instructions = "- You must return 3 elements in this order: \"paragraph\" -> \"code\" -> \"paragraph\". The code block can have have telemetry in it, or some kind of timeline, if you think that helps move the story. Otherwise use real code. The code block should have around 15 lines. No comments. Don't jump around languages. The paragraph should each have fewer than 200 characters. You should end with a single question, comparing one correct option vs. the other. Make it a surgical question that most SREs will get wrong. Not a trick question, just ideally one that most people have unchecked confidence around."

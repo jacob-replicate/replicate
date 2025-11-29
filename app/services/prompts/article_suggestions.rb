@@ -59,6 +59,7 @@ module Prompts
         context = Prompts::Base.build_inputs(
           conversation_type: :article,
           difficulty: @conversation.difficulty,
+          incident: @conversation.context["incident"],
           title: option["post_title"],
           prompt_for_ai: option["prompt_for_ai"],
         )
