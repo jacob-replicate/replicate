@@ -55,7 +55,7 @@ module MessageGenerators
         global_messages = Message.where(user_generated: true, conversation: total_conversations)
         global_message_count = global_messages.count
 
-        if latest_message == "Give me a hint" || latest_message == "Give me another hint"
+        if latest_message == "Give me a hint"
           broadcast_to_web(type: "loading", user_generated: false)
           deliver_article_suggestions
         else
