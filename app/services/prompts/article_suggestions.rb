@@ -5,7 +5,7 @@ module Prompts
         failures = []
 
         failures << "raw_json_not_hash" unless raw_json.is_a?(Hash)
-        failures << "missing_title" if raw_json["category_title"].to_s.strip.empty?
+        failures << "missing_title" if raw_json["collection_title"].to_s.strip.empty?
         failures << "missing_intro_sentence" if raw_json["intro_sentence"].to_s.strip.empty?
         failures << "missing_posts" unless raw_json["posts"].is_a?(Array)
 
@@ -20,7 +20,7 @@ module Prompts
           end
         end
 
-        title = raw_json["category_title"].to_s
+        title = raw_json["collection_title"].to_s
         title_without_acronyms = title.split.reject { |word| word.upcase == word }.join(" ").squish
         failures << "title_too_long" if title.length > 80
         failures << "title_wrong_casing" if title_without_acronyms != title_without_acronyms.capitalize
@@ -30,7 +30,7 @@ module Prompts
         failures << "intro_sentence_empty" if intro.strip.empty?
 
         failures << "intro_sentence_has_backticks" if intro.include?("`")
-        failures << "title_has_backticks" if raw_json["category_title"].to_s.include?("`")
+        failures << "title_has_backticks" if raw_json["collection_title"].to_s.include?("`")
         failures << "posts_have_backticks" if raw_json["posts"].to_json.include?("`")
 
         if Rails.env.development?
@@ -86,7 +86,7 @@ module Prompts
         <div class="mt-10">
           <div class="flex flex-row items-center">
             <div class="lg:basis-[60%]">
-              <div class="font-medium text-lg tracking-tight mb-1">#{raw_json["category_title"]}</div>
+              <div class="font-medium text-lg tracking-tight mb-1">#{raw_json["collection_title"]}</div>
               <div class="text-md mb-1">#{raw_json["intro_sentence"]}</div>
               <div>
                 #{element_html}
