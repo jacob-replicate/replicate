@@ -1,4 +1,6 @@
 - Checkbox answers
+- Article suggestion card on mobile to make it standout
+- Persist article suggestions + ignore them when generating AI output?
 
 - North Star: Roblox-style experience cards.
     - Work it into the logo?

@@ -90,7 +90,7 @@ module Prompts
     def parallel_batch_process(starting_batch_size: 8, format: true, &validation_block)
       result = Queue.new
 
-      if @cacheable && !@force_cache && !(Rails.env.development?)
+      if @cacheable && !@force_cache
         cached_response = CachedLlmResponse.where(template_name: template_name, input_hash: @inputs["input_hash"]).order(:updated_at).last
         return cached_response.response if cached_response.present?
       end

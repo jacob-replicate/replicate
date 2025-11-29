@@ -11,15 +11,20 @@ module Prompts
         failures << "missing_options" unless raw_json["options"].is_a?(Array)
 
         if raw_json["options"].is_a?(Array)
-          failures << "wrong_options_size" unless raw_json["options"].size == 3
+          failures << "wrong_options_size" unless raw_json["options"].size == 4
 
           raw_json["options"].each_with_index do |opt, idx|
             failures << "option_#{idx}_not_hash" unless opt.is_a?(Hash)
             failures << "option_#{idx}_missing_title" if opt["title"].to_s.strip.empty?
             failures << "option_#{idx}_missing_prompt_for_ai" if opt["prompt_for_ai"].to_s.strip.empty?
-            failures << "option_#{idx}_title_too_long" if opt["title"].to_s.length > 100
+            failures << "option_#{idx}_title_too_long" if opt["title"].to_s.length > 60
           end
         end
+
+        title = raw_json["title"].to_s
+        title_without_acronyms = title.split.reject { |word| word.upcase == word }.join(" ").squish
+        failures << "title_too_long" if title.length > 80
+        failures << "title_wrong_casing" if title_without_acronyms != title_without_acronyms.capitalize
 
         if raw_json["tags"].is_a?(Array)
           failures << "tag_count_invalid" unless raw_json["tags"].size.between?(3, 6)
@@ -28,7 +33,7 @@ module Prompts
         end
 
         intro = raw_json["intro_sentence"].to_s
-        failures << "intro_sentence_too_long" if intro.length > 250
+        failures << "intro_sentence_too_long" if intro.length > 120
         failures << "intro_sentence_empty" if intro.strip.empty?
 
         failures << "intro_sentence_has_backticks" if intro.include?("`")
@@ -37,7 +42,11 @@ module Prompts
 
         if Rails.env.development?
           failures.each do |failure|
-            Rails.logger.warn("Prompt validation failed for #{template_name}: - #{failure}")
+            Rails.logger.warn("Prompt validation failed for #{template_name}: - #{failure} - #{raw_json.inspect}")
+          end
+
+          if failures.any?
+            Rails.logger.info("END VAIDATION--------------")
           end
         end
 
@@ -46,7 +55,7 @@ module Prompts
     end
 
     def fetch_raw_response
-      JSON.parse(fetch_raw_output).with_indifferent_access rescue {}
+      JSON.parse(fetch_raw_output).with_indifferent_access
     end
 
     def format_raw_response(raw_json)
@@ -81,14 +90,18 @@ module Prompts
       end
 
       <<~HTML
-        <div class="">
-          <div class="font-medium text-lg tracking-tight mb-1">#{raw_json["title"]}</div>
-          <div class="text-md mb-2">#{raw_json["intro_sentence"]}</div>
-          <div class="mb-4">
-            #{Array(raw_json["tags"]).map { |t| "<span class='bg-gray-600 px-2 py-1 mr-2 text-sm text-white inline-block'>#{t}</span>" }.join}
-          </div>
-          <div class="mb-4">
-            #{element_html}
+        <div class="mt-10">
+          <div class="flex flex-row items-center">
+            <div class="lg:basis-[60%]">
+              <div class="font-medium text-lg tracking-tight mb-1">#{raw_json["title"]}</div>
+              <div class="text-md mb-1">#{raw_json["intro_sentence"]}</div>
+              <div>
+                #{element_html}
+              </div>
+            </div>
+            <div class="hidden lg:block lg:basis-[40%] text-center" style="padding: 0 30px">
+              <img src="/learning-0.jpg" class="w-full" />
+            </div>
           </div>
         </div>
       HTML

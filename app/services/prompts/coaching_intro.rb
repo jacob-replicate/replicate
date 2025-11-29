@@ -26,7 +26,7 @@ module Prompts
     end
 
     def suffix
-      "<p style='margin-top: 30px; font-size: 17px'><span class='font-semibold'>What's your first move here?</span></p>"
+      "<p style='margin-top: 25px; font-size: 16px'><span class='font-medium'>What's your first move here?</span></p>"
     end
   end
 end

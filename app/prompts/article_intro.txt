@@ -5,7 +5,7 @@
 - Don't include any links.
 - If you want to share code, it needs to be in its own paragraph. You need to use the <pre>var a = 5;</pre> HTML tag. You can use the \n newline character in the code tag for multiple lines. No JSON or markdown code snippets.
 - Don't mention the post at all. Just keep that in mind when thinking about what they hope to learn. Don't greet them at all. Just get to the content.
-- Never end on an open-ended question that asks them how they want to proceed. I have separate prompts for that.
+- Always end with an open-ended question that asks them how they want to proceed. Keep the conversation flowing. Keep providing emergent, valuable, high-depth technical nuggets of learning.
 - Don't return more than 6 elements.
 
 {{USER_PERSONA}}

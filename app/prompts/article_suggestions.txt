@@ -8,16 +8,22 @@ Background Info:
 Action Requested:
 - Each option should reflect a different line of thinking, theory, or heuristic. They don’t have to be actions.
 - Format must be a single JSON object with an "intro_sentence" key (string), "title" key (string), "tags" key (array of 4 strings relevant to the story), and an "options" key containing an array of objects, each with a "title" and "prompt_for_ai" field.
-- The options collection should have 3 elements.
+- The options collection should have 4 elements.
 - Return only the JSON.
 
 Constraints:
 - Avoid vague language. No hedging, no filler.
 - Complete sentences. Don't just use a bunch of verbose technical words. Keep it approachable. Regular capitalization, not title case.
-- The intro_sentence must not use generic framing like "break down," ‘explore,’ ‘look at,’ or ‘dive into.’ It must state the technical domain and why it matters. The common thread that connects all 3 of the ideas you're offering to explore.
+- The overarching title should read like a short sentence, fewer than 40 characters, not title case. First letter capitalized.
+- The intro_sentence must not use generic framing like "break down," ‘explore,’ ‘look at,’ or ‘dive into.’ It must state the technical domain and why it matters. The common thread that connects all 4 of the ideas you're offering to explore.
+- The intro_sentence should make it clear what you're about to get out of it. What is the value for the reader?
+- The option titles should read like a normal sentence, not a title case blog post. No hype energy. Just precise technical cliffs notes around what it's going to cover if they click in. Make them want to engage. It should feel like "I should know this", but we know they don't, since it's coming from a blind spot you uncovered earlier.
+- The option titles should feel like a new experience, not a multiple choice option for the topic we're already discussing.
 - The user should not be mentioned at all in the title/prompt_for_ai. No "You will learn". It should just describe the technical topic.
-- The intro_sentence should be less than 200 characters.
+- The intro_sentence should be less than 110 characters.
+- Never include backticks or the word json.
 - The intro_sentence should not reference the number of posts (e.g., "Two articles that..."). They don't care. Just describe the content.
+- The option titles should be under 60 characters.
 - No self-congratulatory takes. -- i.e., don't say "Thoughtful take" -- you wrote the blog, just describe the content.
 - No em dashes, no semicolons, no colons. No special characters.
 - The tags can be technical. Use popular cloud-native tech/languages if you want. Just make sure to mention them explicitly in at least one of the prompt_for_ai descriptions, so I'm not lying about what you're going to learn. The tags should reflect the core topics of the options, and include a mixture of tags that an SRE is dying to click on. No hype. Just varied and precise technical tags that are inviting.

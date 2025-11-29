@@ -55,7 +55,7 @@ module MessageGenerators
         global_messages = Message.where(user_generated: true, conversation: total_conversations)
         global_message_count = global_messages.count
 
-        if false && (latest_message == "Give me another hint" || [3, 11].include?(turn) || (turn > 11 && rand(100) <= 15))
+        if latest_message == "Give me another hint" || [5, 11, 19, 30].include?(turn) || (turn > 30 && rand(100) <= 15)
           broadcast_to_web(type: "loading", user_generated: false)
           deliver_article_suggestions
         else
@@ -92,7 +92,7 @@ module MessageGenerators
           custom_instructions = "- Try to return a single \"paragraph\" element. No additional code blocks, logs, or paragraphs (unless they specifically asked for them just now). Concise copy that cuts deep and moves the SEV forward."
 
           if turn == 3 || rand(100) < 15
-            custom_instructions += "\nRemember, this is only the third turn. The engineer is still getting their bearings. Don't overwhelm them with complexity. Keep it approachable. The question should be a simple one option vs. the other type question. Two technical choices. One choice should have a subtle (but critical) flaw that most SREs wouldn't catch. Short question, not too long."
+            custom_instructions += "\n- Remember, the engineer is still getting their bearings. Don't overwhelm them with complexity. Keep it approachable. The question should be a simple one option vs. the other type question. Two technical choices. One choice should have a subtle (but critical) flaw that most SREs wouldn't catch. Short question, not too long."
           end
         end
 
@@ -128,13 +128,11 @@ module MessageGenerators
     end
 
     def deliver_multiple_choice_options(count, reply, cacheable = false)
-      3.times do
-        options = Prompts::MultipleChoiceOptions.new(conversation: @conversation, context: { max: count, most_recent_message: reply }, cacheable: cacheable).call
+      options = Prompts::MultipleChoiceOptions.new(conversation: @conversation, context: { max: count, most_recent_message: reply }, cacheable: cacheable).call
 
-        if options.any?
-          broadcast_to_web(message: options, type: "multiple_choice", user_generated: false)
-          return
-        end
+      if options.any?
+        broadcast_to_web(message: options, type: "multiple_choice", user_generated: false)
+        return
       end
     end
 

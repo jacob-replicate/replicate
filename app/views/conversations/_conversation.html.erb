@@ -238,7 +238,7 @@
 
         if(isArticleSuggestions) {
           activeStreamContainer = null;
-          conversationEl.insertAdjacentHTML("beforeend", "<div class='mt-8'>" + data.message + "</div>");
+          conversationEl.insertAdjacentHTML("beforeend", "<div>" + data.message + "</div>");
           scrollToBottom();
           return;
         } else if(isTitle) {
