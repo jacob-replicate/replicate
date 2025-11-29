@@ -7,7 +7,7 @@ Background Info:
 
 Action Requested:
 - Each post should reflect a different line of thinking, theory, or heuristic. They don’t have to be actions.
-- Format must be a single JSON object with an "intro_sentence" key (string), "category_title" key (string), and a "posts" key containing an array of objects, each with a "blog_title" and "prompt_for_ai" field.
+- Format must be a single JSON object with an "intro_sentence" key (string), "category_title" key (string), and a "posts" key containing an array of objects, each with a "post_title" and "prompt_for_ai" field.
 - The options collection should have 4 elements.
 - Return only the JSON.
 
@@ -35,23 +35,23 @@ Constraints:
 
 Example JSON:
 {
-  "title": "Demystifying DNS",
+  "category_title": "Demystifying DNS",
   "intro_sentence": "Want to explore how modern DNS works under the hood? Resolvers, caching layers, DNSSEC, Anycast, failover, propagation delays, and pitfalls that cause real-world outages.",
-  "options": [
+  "posts": [
     {
-      "title": "<span class='font-semibold'>How a DNS Query Actually Travels</span>: Recursive resolvers, caching layers, and propagation",
+      "post_title": "<span class='font-semibold'>How a DNS Query Actually Travels</span>: Recursive resolvers, caching layers, and propagation",
       "prompt_for_ai": "Recursive resolvers, caching layers, and propagation delays that shape how DNS lookups behave under real traffic. Walk through how stub resolvers forward queries, how recursive resolvers chase delegations, and how cached responses change query paths. Expand on how slow upstreams, missing records, and propagation lag influence lookup latency and failure modes."
     },
     {
-      "title": "Understanding the <span class='font-semibold'>Authoritative Layer</span> and hidden zone issues that break resolution",
+      "post_title": "Understanding the <span class='font-semibold'>Authoritative Layer</span> and hidden zone issues that break resolution",
       "prompt_for_ai": "Hidden zone issues, misconfigured records, and delegation mistakes that quietly break DNS resolution. Describe how authority is established, how SOA and NS records interact, and how mismatched glue or stale zone data introduces subtle correctness problems. Include why small misconfigurations propagate inconsistently across resolvers and why fixes can appear nondeterministic."
     },
     {
-      "title": "Managing <span class='font-semibold'>Caching and TTLs</span> to prevent stale records and ensure smooth record rollouts",
+      "post_title": "Managing <span class='font-semibold'>Caching and TTLs</span> to prevent stale records and ensure smooth record rollouts",
       "prompt_for_ai": "How TTLs, negative caching, and cache invalidation interact to prevent stale records and smooth out record rollouts. Explain how resolvers decide what to cache, how cached NXDOMAIN responses linger, how short TTLs affect load on upstreams, and how long TTLs create rollout drag. Include why partial propagation creates split-brain behavior during transitions."
     },
     {
-      "title": "How providers use <span class='font-semibold'>Anycast DNS</span> to deliver fast, resilient responses across the globe",
+      "post_title": "How providers use <span class='font-semibold'>Anycast DNS</span> to deliver fast, resilient responses across the globe",
       "prompt_for_ai": "Routing tricks and failure modes behind Anycast DNS that deliver fast, resilient responses across the globe. Cover how BGP announcements steer clients to the closest node, how path changes affect latency, and how regional outages cause traffic shifts. Discuss packet steering, convergence delays, and subtle effects when different locations serve slightly different versions of a record."
     }
   ]

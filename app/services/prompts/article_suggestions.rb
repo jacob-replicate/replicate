@@ -5,7 +5,7 @@ module Prompts
         failures = []
 
         failures << "raw_json_not_hash" unless raw_json.is_a?(Hash)
-        failures << "missing_title" if raw_json["title"].to_s.strip.empty?
+        failures << "missing_title" if raw_json["category_title"].to_s.strip.empty?
         failures << "missing_intro_sentence" if raw_json["intro_sentence"].to_s.strip.empty?
         failures << "missing_posts" unless raw_json["posts"].is_a?(Array)
 
@@ -14,7 +14,7 @@ module Prompts
 
           raw_json["posts"].each_with_index do |opt, idx|
             failures << "option_#{idx}_not_hash" unless opt.is_a?(Hash)
-            failures << "option_#{idx}_missing_title" if opt["blog_title"].to_s.strip.empty?
+            failures << "option_#{idx}_missing_title" if opt["post_title"].to_s.strip.empty?
             failures << "option_#{idx}_missing_prompt_for_ai" if opt["prompt_for_ai"].to_s.strip.empty?
             failures << "option_#{idx}_title_too_long" if opt["title"].to_s.length > 60
           end
@@ -59,7 +59,7 @@ module Prompts
         context = Prompts::Base.build_inputs(
           conversation_type: :article,
           difficulty: @conversation.difficulty,
-          title: option["blog_title"],
+          title: option["post_title"],
           prompt_for_ai: option["prompt_for_ai"],
         )
 
@@ -76,7 +76,7 @@ module Prompts
             class="text-[16px] py-2 block #{i < (elements.size - 1) ? 'border-b border-gray-200' : ''} cursor-pointer transition no-underline"
           >
             <div href="/conversations/#{conversation_id}" target="_blank" class="text-indigo-600 text-[15px] hover:underline hover:underline-offset-4">
-              #{ERB::Util.html_escape(option["title"])}
+              #{ERB::Util.html_escape(option["post_title"])}
             </div>
           </a>
         HTML

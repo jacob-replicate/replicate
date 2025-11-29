@@ -247,18 +247,35 @@
         } else if(isMultipleChoice) {
           const options = Array.isArray(data.message) ? data.message : [];
           const uniqueGroupId = "choice_group_" + Math.random().toString(36).substring(2, 10);
+
+// Outer wrapper spacing
           const container = document.createElement("div");
-          container.className = "mt-2 mb-4 flex flex-col gap-[8px] multiple-choice-options";
+          container.className = "mt-2 mb-4";
+
+// Parent card holding all options
+          const parentCard = document.createElement("div");
+          parentCard.className =
+            "flex flex-col bg-gray-50 border border-gray-200 shadow-sm rounded-lg overflow-hidden";
 
           options.forEach((opt, i) => {
             const option = document.createElement("label");
-            option.className = "text-[15px] flex items-center p-[10px] border border-gray-200 bg-gray-50 shadow-sm rounded-lg hover:border-indigo-400 hover:bg-indigo-50 cursor-pointer transition";
+            option.className =
+              "text-[15px] flex items-center p-[12px] cursor-pointer transition hover:bg-indigo-50";
+
+            // Add bottom border except last item
+            if (i < options.length - 1) {
+              option.classList.add("border-b", "border-gray-200");
+            }
 
             const input = document.createElement("input");
             input.type = "radio";
             input.name = uniqueGroupId;
-            input.onclick = function() {
+            input.className = "h-4 w-4 text-indigo-600 border-gray-400 focus:ring-indigo-500";
+            input.value = i;
+
+            input.onclick = function () {
               sendMessage(opt, true);
+
               const radios = document.querySelectorAll(`input[name="${uniqueGroupId}"]`);
               radios.forEach((r) => {
                 r.disabled = true;
@@ -267,25 +284,14 @@
                 const parentLabel = r.closest("label");
 
                 if (r === input) {
-                  parentLabel.classList.remove(
-                    "bg-indigo-50",
-                    "border-indigo-300",
-                    "hover:border-indigo-400"
-                  );
-                  parentLabel.classList.add(
-                    "bg-indigo-100",
-                    "border-indigo-500",
-                    "ring-2",
-                    "ring-indigo-200"
-                  );
+                  parentLabel.classList.remove("hover:bg-indigo-50");
+                  parentLabel.classList.add("bg-indigo-100", "ring-2", "ring-indigo-200");
                 } else {
                   parentLabel.classList.add("opacity-50");
-                  parentLabel.classList.remove("cursor-pointer", "hover:border-indigo-400");
+                  parentLabel.classList.remove("cursor-pointer", "hover:bg-indigo-50");
                 }
               });
-            }
-            input.className = "h-4 w-4 text-indigo-600 border-gray-400 focus:ring-indigo-500";
-            input.value = i;
+            };
 
             const span = document.createElement("span");
             span.className = "ml-2";
@@ -293,11 +299,11 @@
 
             option.appendChild(input);
             option.appendChild(span);
-            container.appendChild(option);
+            parentCard.appendChild(option);
           });
 
+          container.appendChild(parentCard);
           conversationEl.appendChild(container);
-
           return;
         } else if (!activeStreamContainer || data.sequence === 0) {
           const wrapper = document.createElement("div");
