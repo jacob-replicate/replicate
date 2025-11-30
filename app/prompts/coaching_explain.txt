@@ -10,7 +10,7 @@ Root Cause:
 {{USER_PERSONA}}
 
 {{FORMATTING_RULES_PARAGRAPHS}}
-- Paragraphs must never have more than 400 characters.
+- Paragraphs must never have more than 300 characters.
 
 Constraints:
 - Add a lot of clarity to whatever part of the conversation we're at. Don't obscure meaning or withhold context. You're in teaching mode now.

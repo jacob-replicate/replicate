@@ -68,7 +68,7 @@ module MessageGenerators
         prompt = Prompts::CoachingReply
 
         if latest_message == "Give me a hint"
-          custom_instructions = "- The user is asking for a hint. Keep it concise. Provide a single paragraph that guides them toward the next step with fewer than 300 characters. Avoid lengthy explanations or multiple paragraphs. End with a question to move the conversation along. I have another prompt that creates 3 multiple choice options as a response, so keep that in mind when framing the question."
+          custom_instructions = "- The user is asking for a hint. Keep it concise. Provide a single paragraph that guides them toward the next step with fewer than 225 characters. Avoid lengthy explanations or multiple paragraphs. End with a question to move the conversation along. I have another prompt that creates 3 multiple choice options as a response, so keep that in mind when framing the question."
           hint_link = ANOTHER_HINT_LINK
           multiple_choice_options = 3
         elsif latest_message == "Give me another hint"
