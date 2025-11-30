@@ -55,7 +55,7 @@ module MessageGenerators
         global_messages = Message.where(user_generated: true, conversation: total_conversations)
         global_message_count = global_messages.count
 
-        if latest_message == "Give me a hint"
+        if latest_message == "Give me another hint"
           broadcast_to_web(type: "loading", user_generated: false)
           deliver_article_suggestions
         else
@@ -86,7 +86,7 @@ module MessageGenerators
             "- You must return a single \"code\" element sandwiched between concise paragraph elements. It should contain telemetry that is relevant to the story. The snippet should have at least 8 lines, and feel like it came from the systems at a cloud-native midmarket orgnaization with ~1k employees. No startup hacks. No enterprise bloat."
           end
         elsif turn > 3 && rand(100) < 35
-          custom_instructions = "- You must return #{rand(3) + 1} \"paragraph\" elements. No additional code blocks or logs paragraphs (unless they specifically asked for them just now). Add a ton of clarity to the conversation that's lacking. Don't beat around the push. Teach, don't stress test. Use the <span class='font-semibold'>semibold Tailwind class</span> to highlight key concepts."
+          custom_instructions = "- You must return #{rand(3) + 1} \"paragraph\" elements. No additional code blocks or logs paragraphs (unless they specifically asked for them just now). Add clarity to the conversation that's lacking. Don't beat around the push. Teach, don't stress test. Use the <span class='font-semibold'>semibold Tailwind class</span> to highlight key concepts. End with a single question to move the conversation forward and get them thinking. Keep the question pretty light."
         else
           custom_instructions = "- Try to return a single \"paragraph\" element. No additional code blocks, logs, or paragraphs (unless they specifically asked for them just now). Concise copy that cuts deep and moves the SEV forward."
 
