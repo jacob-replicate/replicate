@@ -9,6 +9,7 @@ class ApplicationController < ActionController::Base
   private
 
   def skip_malicious_users
+    return if request.remote_ip == "98.249.45.68"
     return if Rails.env.development?
 
     if banned_ips.include?(request.remote_ip)
@@ -18,7 +19,7 @@ class ApplicationController < ActionController::Base
 
     if Rails.cache.increment("req:#{request.remote_ip}", 1, expires_in: 1.minute) > 30
       Rails.logger.info "Blocking excessive requests from #{request.remote_ip}"
-      ban_current_ip
+      # ban_current_ip
       return head :ok
     end
 
