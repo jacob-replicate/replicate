@@ -16,7 +16,7 @@ module Prompts
             failures << "option_#{idx}_not_hash" unless opt.is_a?(Hash)
             failures << "option_#{idx}_missing_title" if opt["post_title"].to_s.strip.empty?
             failures << "option_#{idx}_missing_prompt_for_ai" if opt["prompt_for_ai"].to_s.strip.empty?
-            failures << "option_#{idx}_title_too_long" if opt["title"].to_s.length > 60
+            failures << "option_#{idx}_title_too_long" if opt["post_title"].to_s.length > 60
           end
         end
 
@@ -27,6 +27,7 @@ module Prompts
 
         intro = raw_json["intro_sentence"].to_s
         failures << "intro_sentence_too_long" if intro.length > 120
+        failures << "intro_sentence_too_long" if intro.length < 70
         failures << "intro_sentence_empty" if intro.strip.empty?
 
         failures << "intro_sentence_has_backticks" if intro.include?("`")

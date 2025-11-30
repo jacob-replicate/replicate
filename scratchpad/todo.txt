@@ -1,3 +1,7 @@
+- List view of incidents to choose from
+    - This will create the framework for "My Inciden History" pages, "Team Incidents", "PostgreSQL Incident Pack", etc.
+
+- Mix in different avatars, not just replicate.info - Replicate is the narrator, other engineers push the story forward.
 - New Element Types:
     - Prompt to ask what type of elements to include, and in what order, and for what reason (so you can manually grade/debug).
     - Transition. Give precise feedback WITHOUT a question in 1st message. Message 2 has a new shape + question. Never leave them hanging, but still move forward.

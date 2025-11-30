@@ -9,6 +9,7 @@ Background Info:
 Action Requested:
 - Each post should reflect a different line of thinking, theory, or heuristic. They don’t have to be actions.
 - Format must be a single JSON object with a  "collection_title" key (string), an "intro_sentence" key (string), and a "posts" key containing an array of objects, each with a "post_title" and "prompt_for_ai" field.
+- The intro_sentence should be somewhere between 80 to 120 characters (including spaces).
 - The blog collection should have 4 elements.
 - Return only the JSON.
 
@@ -23,7 +24,6 @@ Constraints:
 - Try to use short tight words when possible. This content has limited screen real estate. Make each word count.
 - The blog titles should feel like a new experience, not a multiple choice option for the topic we're already discussing.
 - The user should not be mentioned at all in the title/prompt_for_ai. No "You will learn". It should just describe the technical topic.
-- The intro_sentence should be less than 110 characters.
 - Never include backticks or the word json.
 - The intro_sentence should not reference the number of posts (e.g., "Two articles that..."). They don't care. Just describe the content.
 - The blog titles should be under 60 characters.
