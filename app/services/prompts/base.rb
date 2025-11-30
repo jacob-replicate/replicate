@@ -31,7 +31,7 @@ module Prompts
     def call
       parallel_batch_process do |elements|
         paragraphs = elements.select { |e| Hash(e).with_indifferent_access[:type] == "paragraph" }.map { |e| SanitizeAiContent.call(e.with_indifferent_access[:content].to_s) }
-        paragraphs_not_too_long = paragraphs.all? { |p| p.length <= 500 && p.exclude?("*") }
+        paragraphs_not_too_long = paragraphs.all? { |p| p.length <= 500 && p.exclude?("*") && p.exclude?("`") }
         first_element_is_paragraph = Hash(elements.first)["type"] == "paragraph"
         last_element_is_paragraph = Hash(elements.last)["type"] == "paragraph"
 

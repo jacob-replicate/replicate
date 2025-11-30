@@ -8,6 +8,7 @@ Root Cause:
 {{USER_PERSONA}}
 
 {{FORMATTING_RULES_PARAGRAPHS}}
+- Paragraphs must never have more than 225 characters.
 
 Constraints:
 - Think hard. 10/10 A+ quality only. Deliver your best work.
