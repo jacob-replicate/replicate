@@ -81,14 +81,14 @@ module MessageGenerators
           multiple_choice_options = 2
         elsif turn > 3 && rand(100) < code_cutoff
           custom_instructions = if rand(100) < 80
-            "- You must return a single \"code\" element alongside your concise paragraph(s). Use real code that is relevant to the story. The snippet should have at least 15 lines, and feel like code written at a cloud-native midmarket orgnaization with ~1k employees. No startup hacks. No enterprise bloat. No comments. The code is for you to illustrate a point, not to quiz."
+            "- You must return a single \"code\" element alongside your concise paragraph(s). Use real code that is relevant to the story. The snippet should less than 30 lines, and feel like code written at a cloud-native midmarket orgnaization with ~1k employees. No startup hacks. No enterprise bloat. No comments. The code is for you to illustrate a point, not to quiz."
           else
             "- You must return a single \"code\" element sandwiched between concise paragraph elements. It should contain telemetry that is relevant to the story. The snippet should have at least 8 lines, and feel like it came from the systems at a cloud-native midmarket orgnaization with ~1k employees. No startup hacks. No enterprise bloat."
           end
-        elsif turn > 3 && rand(100) < 20
+        elsif turn > 3 && rand(100) < 15
           custom_instructions = "- You must return #{rand(3) + 1} \"paragraph\" elements. No additional code blocks or logs paragraphs (unless they specifically asked for them just now). Add clarity to the conversation that's lacking. Don't beat around the push. Teach, don't stress test. Use the <span class='font-semibold'>semibold Tailwind class</span> to highlight key concepts. End with a single question to move the conversation forward and get them thinking. Keep the question pretty light."
         else
-          custom_instructions = "- Try to return a single \"paragraph\" element with less than 225 characters. No additional code blocks, logs, or paragraphs (unless they specifically asked for them just now). Concise copy that cuts deep and moves the SEV forward."
+          custom_instructions = "- Try to return a single \"paragraph\" element with less than 300 characters. No additional code blocks, logs, or paragraphs (unless they specifically asked for them just now). Concise copy that cuts deep and moves the SEV forward."
 
           if turn == 3 || rand(100) < 15
             custom_instructions += "\n- Remember, the engineer is still getting their bearings. Don't overwhelm them with complexity. Keep it approachable. The question should be a simple one option vs. the other type question. Two technical choices. One choice should have a subtle (but critical) flaw that most SREs wouldn't catch. Short question, not too long."
@@ -146,11 +146,11 @@ module MessageGenerators
       when "junior"
         60
       when "mid"
-        40
-      when "senior"
         30
-      else
+      when "senior"
         25
+      else
+        20
       end
     end
   end
