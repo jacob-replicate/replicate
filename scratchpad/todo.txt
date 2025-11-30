@@ -1,5 +1,8 @@
 - Make "coaching" generator cleaner + easier to swap in experiences.
 
+- Rhetorical questions
+- Don't ask too many questions in one reply.
+
 - List view of incidents to choose from
     - This will create the framework for "My Inciden History" pages, "Team Incidents", "PostgreSQL Incident Pack", etc.
 
