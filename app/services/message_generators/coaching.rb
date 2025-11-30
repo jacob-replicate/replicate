@@ -55,7 +55,7 @@ module MessageGenerators
         global_messages = Message.where(user_generated: true, conversation: total_conversations)
         global_message_count = global_messages.count
 
-        if latest_message == "Give me another hint"
+        if latest_message == "Give me another hint" || [7, 14, 20].include?(turn)
           broadcast_to_web(type: "loading", user_generated: false)
           deliver_article_suggestions
         else
@@ -85,10 +85,10 @@ module MessageGenerators
           else
             "- You must return a single \"code\" element sandwiched between concise paragraph elements. It should contain telemetry that is relevant to the story. The snippet should have at least 8 lines, and feel like it came from the systems at a cloud-native midmarket orgnaization with ~1k employees. No startup hacks. No enterprise bloat."
           end
-        elsif turn > 3 && rand(100) < 35
+        elsif turn > 3 && rand(100) < 20
           custom_instructions = "- You must return #{rand(3) + 1} \"paragraph\" elements. No additional code blocks or logs paragraphs (unless they specifically asked for them just now). Add clarity to the conversation that's lacking. Don't beat around the push. Teach, don't stress test. Use the <span class='font-semibold'>semibold Tailwind class</span> to highlight key concepts. End with a single question to move the conversation forward and get them thinking. Keep the question pretty light."
         else
-          custom_instructions = "- Try to return a single \"paragraph\" element. No additional code blocks, logs, or paragraphs (unless they specifically asked for them just now). Concise copy that cuts deep and moves the SEV forward."
+          custom_instructions = "- Try to return a single \"paragraph\" element with less than 225 characters. No additional code blocks, logs, or paragraphs (unless they specifically asked for them just now). Concise copy that cuts deep and moves the SEV forward."
 
           if turn == 3 || rand(100) < 15
             custom_instructions += "\n- Remember, the engineer is still getting their bearings. Don't overwhelm them with complexity. Keep it approachable. The question should be a simple one option vs. the other type question. Two technical choices. One choice should have a subtle (but critical) flaw that most SREs wouldn't catch. Short question, not too long."
@@ -136,7 +136,7 @@ module MessageGenerators
     end
 
     def question_format
-      escalate_prompt = "- Your reply must have a surgical question that cuts deep and declarative sentences to expose fragile reasoning, not long Wikipedia articles that teach. A question that a seasoned SRE can't help but respond to / argue with."
+      escalate_prompt = "- Your reply must have a single surgical question that cuts deep and declarative sentences to expose fragile reasoning, not long Wikipedia articles that teach. A question that a seasoned SRE can't help but respond to / argue with."
       escalate_prompt += "\n- Remember, this is a hypothetical infra puzzle. Your questions shouldn't be around \"What control enforces X in your system?\", but moreso \"What control SHOUD enforce X in the system\". You're not asking for details about imaginary infra. I want them to defend their mental model of how infra should be designed. You're asking how a good system should be designed (and using this story as the anchor to diagnose the engineer's blind spots)."
       escalate_prompt
     end
@@ -146,11 +146,11 @@ module MessageGenerators
       when "junior"
         60
       when "mid"
-        50
-      when "senior"
         40
+      when "senior"
+        30
       else
-        35
+        25
       end
     end
   end
