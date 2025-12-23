@@ -16,7 +16,7 @@ Constraints:
 - Don't reveal the answer in the title, reveal the failure + pain
 - Make it feel like a technical failure, not a lesson.
 - Favor verbs or mechanisms (e.g., "cache poisoning", "retry storms", "stale tokens") over vague words like "issue" or "problem".
-- If possible, include a clear failure pattern or domain keyword (e.g., “SMTP loop”, “background job flood”, “AOF blocking”, “stale cache hit”).
+- If possible, include a clear failure pattern or domain keyword (e.g., "SMTP loop", "background job flood", "AOF blocking", "stale cache hit").
 
 Incident Context:
 - {{CONTEXT_INCIDENT}}
