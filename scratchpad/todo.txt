@@ -4,21 +4,18 @@ Q1: Curriculums - This is the content unlock that gets you out of the SEV busine
 - "coaching" should be "incident" message generator. It's one way to teach a concept, not the only way.
 
 Experience
-        - title
-        - description
-        - context
+    - context
 
-        has_many :elements
-            - Element.new(type: "Text")
-            - Element.new(type: "Section", context: { name: "Leader Election" })
-                - Conversation.new(parent: section)
-                - Conversation.new(parent: section)
-                - Conversation.new(parent: section)
-            - Element.new(type: "MarketingCallout", call_to_action: "Begin SEV")
+    has_many :elements
+        - Element.new(type: "Text")
+        - Element.new(type: "Section", context: { name: "Leader Election" })
+            - Conversation.new(parent: section)
+            - Conversation.new(parent: section)
+            - Conversation.new(parent: section)
+        - Element.new(type: "MarketingCallout", call_to_action: "Begin SEV")
 
     Long-term:
     - principal_id + principal_type (one day - org, team, user -- not just one person)
-    - experience_type - "course" /
 
 -----------------------
 

@@ -135,7 +135,7 @@ module Prompts
     end
 
     # TODO: Refactor this to GiveCampus "unique_fields"-style concept. Make it a collection or something less hardcoded.
-    def self.build_inputs(conversation_type:, difficulty:, incident: nil, title: nil, topic: nil, prompt_for_ai: nil)
+    def self.build_inputs(conversation_type:, difficulty:, incident: nil, title: nil, prompt_for_ai: nil)
       conversation_type = conversation_type.to_s.strip.downcase
       difficulty = difficulty.to_s.strip.downcase
 
@@ -145,7 +145,6 @@ module Prompts
         "difficulty_prompt" => difficulty_prompts[difficulty],
         "incident" => incident.to_s.downcase.squish, # TODO: Merge with prompt_for_ai
         "title" => title.to_s.downcase.squish,
-        "topic" => topic.to_s.downcase.squish,
         "prompt_for_ai" => prompt_for_ai.to_s.downcase.squish
       }
 
