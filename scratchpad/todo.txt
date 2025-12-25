@@ -1,10 +1,29 @@
 Q1: Curriculums - This is the content unlock that gets you out of the SEV business, and into the core engineering business.
+- Pick a topic. GPT pushes you to explain the invariants, and won’t let up until the hand-waving stops.
 
-- "Okay, I get it. Next question." is the key. Keep the momentum going. The engine cuts deep, but no varety. "I get it" gives a self-timed new experience + progression.
-- "coaching" should be "incident" message generator. It's one way to teach a concept, not the only way.
+- "Okay, I get it. Next." -- Keep the momentum going. The engine cuts deep, but no variety. "I get it" gives a self-timed new experience + progression.
+- Rename "coaching" conversation to "incident" message generator. It's one way to teach a concept, not the only way.
+- Indigo breadcrumb bar at top of conversation whenever you navigate away from experience.
+- "Experience Designer" - "New Experience" - "Discover"
+- Add tags, and then write a script to backfill a million for engineers to search for.
+- Always make a sharing link 100% visible on homepage with a share link. No conversation prompt at the bottom. Just LetsAdvance-style sharing links?
+
+StaticController
+    index
+        redirect_to Experience.random -- experiences#show # TODO: Exclude previous experiences. Create multiple versions.
+
+ExperiencesController
+    index
+        # Roblox browsing
+
+    show
+        # Dig into a specific one
+
+    new
+        # Let people create their own + share online
 
 Experience
-    - context
+    - context JSONB
 
     has_many :elements
         - Element.new(type: "Text")
@@ -12,14 +31,19 @@ Experience
             - Conversation.new(parent: section)
             - Conversation.new(parent: section)
             - Conversation.new(parent: section)
-        - Element.new(type: "MarketingCallout", call_to_action: "Begin SEV")
+        - Element.new(type: "MarketingCallout", context: { call_to_action: "Begin SEV" })
 
-    Long-term:
-    - principal_id + principal_type (one day - org, team, user -- not just one person)
+    Future versions
+        - organization_id
+        - principal_id + principal_type (one day - org, team, user -- not just one person)
+        - public
+        - required_by -- i.e., end of quarter date for compliance
+
+Conversation
+    - Make it parent_id + parent_type, not referring_conversation_id
 
 -----------------------
 
-- Make "coaching" generator cleaner + easier to swap in experiences?
 
 - Rhetorical questions
 - Don't ask too many questions in one reply.
