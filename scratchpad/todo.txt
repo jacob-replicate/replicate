@@ -1,4 +1,24 @@
-Q1: Curriculums - This is the content unlock that gets you out of the SEV business, and into the core engineering business.
+Q1: Experiences - This is the content unlock that gets you out of the SEV business, and into the core engineering business.
+
+- General Categories (show a progress bar? limits your ability to improve it over time)
+    - API Contracts
+    - Auditability
+    - Backpressure
+    - Consistency Guarantees
+    - Control Planes
+    - Data Integrity
+    - Database Internals
+    - Distributed State
+    - IAM (Authentication)
+    - IAM (Authorization)
+    - Incident Command
+    - Operational Signals
+    - Resource Isolation
+    - Secrets Management
+    - System Evolution
+    - Time & Ordering
+    - Trust Boundaries
+
 - Pick a topic. GPT pushes you to explain the invariants, and won't let up until the hand-waving stops.
 - You can do this for any hobby/profession, not just programming.
     - replicate.info (SRE) / replicate.info (JavaScript) / replicate.info (Product) / replicate.info (Public Speaking)
@@ -14,12 +34,36 @@ StaticController
     index
         redirect_to Experience.random -- experiences#show # TODO: Exclude previous experiences.
 
+ApplicationController
+    before_action :initialize_session_variables
+
+    def initialize_session_variables
+        session[:identifier] ||= SecureRandom.uuid
+        session[:seen_experience_ids] ||= []
+    end
+
 ExperiencesController
     index
         # Roblox browsing -- "Discover" button
 
     show
-        # Dig into a specific one
+        base_experience = Experience.find_by(id: params[:id])
+
+        if base_experience.present?
+            @experience = Experience.where(parent: base_experience, principal_id: session[:identifier], principal_type: "Session").first_or_create!
+        else
+            redirect_to "/experiences/random"
+        end
+
+    random
+        base_experiences = Experience.where.not(id: session[:seen_experience_ids])
+
+        if base_experiences.empty?
+            session[:seen_experience_ids] = []
+            base_experiences = Experience.all
+        end
+
+        redirect_to base_experiences.shuffle.first
 
     new
         # Let people create their own + share online
@@ -30,8 +74,8 @@ Experience
     has_many :elements
         - Element.new(type: "Text")
         - Element.new(type: "Section", context: { name: "Leader Election" })
-            - Conversation.new(parent: section)
-            - Conversation.new(parent: section)
+            - Conversation.new(parent: section) -- somehow mark that it's a yes/no question, so you don't create 3 answers for it
+            - Conversation.new(parent: section) -- these probably shouldn't be conversations. Element.new(type: "ConversationStarter")
             - Conversation.new(parent: section)
         - Element.new(type: "MarketingCallout", context: { call_to_action: "Begin SEV" })
 
