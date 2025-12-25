@@ -1,20 +1,22 @@
 Q1: Curriculums - This is the content unlock that gets you out of the SEV business, and into the core engineering business.
-- Pick a topic. GPT pushes you to explain the invariants, and won’t let up until the hand-waving stops.
-
+- Pick a topic. GPT pushes you to explain the invariants, and won't let up until the hand-waving stops.
+- You can do this for any hobby/profession, not just programming.
+    - replicate.info (SRE) / replicate.info (JavaScript) / replicate.info (Product) / replicate.info (Public Speaking)
+    - Write a script to generate categories + all of the experiences they should offer.
+-----------------------
 - "Okay, I get it. Next." -- Keep the momentum going. The engine cuts deep, but no variety. "I get it" gives a self-timed new experience + progression.
 - Rename "coaching" conversation to "incident" message generator. It's one way to teach a concept, not the only way.
 - Indigo breadcrumb bar at top of conversation whenever you navigate away from experience.
-- "Experience Designer" - "New Experience" - "Discover"
 - Add tags, and then write a script to backfill a million for engineers to search for.
-- Always make a sharing link 100% visible on homepage with a share link. No conversation prompt at the bottom. Just LetsAdvance-style sharing links?
+- "You can send replicate.info/raft to your friends. They'll each get a fresh copy." - White on indigo footer, always.
 
 StaticController
     index
-        redirect_to Experience.random -- experiences#show # TODO: Exclude previous experiences. Create multiple versions.
+        redirect_to Experience.random -- experiences#show # TODO: Exclude previous experiences.
 
 ExperiencesController
     index
-        # Roblox browsing
+        # Roblox browsing -- "Discover" button
 
     show
         # Dig into a specific one
