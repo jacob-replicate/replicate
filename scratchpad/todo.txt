@@ -47,6 +47,8 @@ Q1: Experiences - This is the content unlock that gets you out of the SEV busine
     - Autoscaling
     - Backpressure
     - Cost Optimization
+    - Load Shedding
+    - Resource Contention
     - Observability
 
 
