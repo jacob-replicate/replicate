@@ -1,23 +1,54 @@
 Q1: Experiences - This is the content unlock that gets you out of the SEV business, and into the core engineering business.
 
+- Discover page is just an experiences that links to other experiences? It's just elements and linked lists.
 - General Categories (show a progress bar? limits your ability to improve it over time)
-    - API Contracts
+
+    Delivery
+    - Artifact Integrity
+    - Build Reproducibility
+    - CI/CD
+    - Containerization
+    - Deployment Strategies
+    - Environment Management
+    - Rollbacks
+    - Runtime Drift
+
+    Networking
+    - DNS
+    - Load Balancing
+    - Network Identity
+    - Routing
+    - Service Discovery
+    - TLS
+    - Traffic Shaping
+    - VPN / VPC
+
+    Security
     - Auditability
-    - Backpressure
-    - Consistency Guarantees
-    - Control Planes
-    - Data Integrity
-    - Database Internals
-    - Distributed State
+    - Encryption
     - IAM (Authentication)
     - IAM (Authorization)
-    - Incident Command
-    - Operational Signals
-    - Resource Isolation
+    - Incident Response
     - Secrets Management
-    - System Evolution
-    - Time & Ordering
+    - Threat Modeling
     - Trust Boundaries
+
+    State
+    - Caching
+    - Consistency Guarantees
+    - Data Integrity
+    - Distributed State
+    - Disaster Recovery
+    - Event Ordering
+    - Partitioning
+    - Transactions
+
+    System Pressure
+    - Autoscaling
+    - Backpressure
+    - Cost Optimization
+    - Observability
+
 
 - Pick a topic. GPT pushes you to explain the invariants, and won't let up until the hand-waving stops.
 - You can do this for any hobby/profession, not just programming.
