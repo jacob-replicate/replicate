@@ -1,14 +1,24 @@
 Q1: Curriculums - This is the content unlock that gets you out of the SEV business, and into the core engineering business.
 
-Reddit: GPT tests your AuthZ fundamentals, and helps fill in the gaps.
-
-AuthZ Fundamentals
-Learn these concepts, or risk building brittle, over-permissive systems that fail compliance audits.
-
 - "Okay, I get it. Next question." is the key. Keep the momentum going. The engine cuts deep, but no varety. "I get it" gives a self-timed new experience + progression.
 - "coaching" should be "incident" message generator. It's one way to teach a concept, not the only way.
-- Add "I get it" into the regular incident flow once they type > 500 characters. You can still advertise the SEV-1, just make the out a full-blown course.
-    - Add "Your Estimated Level" under each section and underlevel a bit. Piss them off a little. Make them want to prove you wrong.
+
+Experience
+        - title
+        - description
+        - context
+
+        has_many :elements
+            - Element.new(type: "Text")
+            - Element.new(type: "Section", context: { name: "Leader Election" })
+                - Conversation.new(parent: section)
+                - Conversation.new(parent: section)
+                - Conversation.new(parent: section)
+            - Element.new(type: "MarketingCallout", call_to_action: "Begin SEV")
+
+    Long-term:
+    - principal_id + principal_type (one day - org, team, user -- not just one person)
+    - experience_type - "course" /
 
 -----------------------
 

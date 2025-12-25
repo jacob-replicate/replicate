@@ -1,5 +1,5 @@
 module Prompts
-  class GenerateConversationOutine < Prompts::Base
+  class GenerateConversationOutline < Prompts::Base
     def call
       parallel_batch_process(format: false) do |outline|
         true
