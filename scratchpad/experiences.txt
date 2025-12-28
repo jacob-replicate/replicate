@@ -1,5 +1,5 @@
 replicate.info sharpens how you think about risk in complex, distributed systems.
-GPT pressure tests how your instincts might fall apart in production, and helps patch up your blind spots.
+It pressure tests your mental model, and surfaces blind spots *before* you cause the next SEV-1. 😉
 
 ------------------
 
