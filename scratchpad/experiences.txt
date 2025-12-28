@@ -1,0 +1,176 @@
+replicate.info sharpens how you think about risk in complex, distributed systems.
+GPT pressure tests how your instincts might fall apart in production, and helps patch up your blind spots.
+
+------------------
+
+- Discover page is just an experiences that links to other experiences? It's just elements and linked lists.
+- General Categories (show a progress bar? limits your ability to improve it over time)
+
+    Change
+    - Artifact Integrity
+    - Build Reproducibility
+    - CI/CD
+    - Compatibility Guarantees
+    - Configuration Drift
+    - Containerization
+    - Control Planes
+    - Deployment Strategies
+    - Environment Management
+    - Feature Flags
+    - Mixed Versions
+    - Rollbacks
+    - Rolling Upgrades
+    - Runtime Drift
+    - Schema Evolution
+
+    Networking
+    - DNS
+    - Load Balancing
+    - Network Identity
+    - Routing
+    - Service Discovery
+    - TLS
+    - Traffic Shaping
+    - VPN / VPC
+
+    Security
+    - Auditability
+    - Encryption
+    - IAM (Authentication)
+    - IAM (Authorization)
+    - Incident Response
+    - Secrets Management
+    - Threat Modeling
+    - Trust Boundaries
+
+    State
+    - Caching
+    - Consistency Guarantees
+    - Data Integrity
+    - Distributed State
+    - Disaster Recovery
+    - Event Ordering
+    - Partitioning
+    - Transactions
+
+    System Pressure
+    - Autoscaling
+    - Backpressure
+    - Cost Optimization
+    - Load Shedding
+    - Resource Contention
+    - Observability
+
+
+- You can do this for any hobby/profession, not just programming.
+    - replicate.info (SRE) / replicate.info (JavaScript) / replicate.info (Product) / replicate.info (Public Speaking)
+    - Write a script to generate categories + all of the experiences they should offer.
+-----------------------
+- "Okay, I get it. Next." -- Keep the momentum going. The engine cuts deep, but no variety. "I get it" gives a self-timed new experience + progression.
+- Rename "coaching" conversation to "incident" message generator. It's one way to teach a concept, not the only way.
+- Indigo breadcrumb bar at top of conversation whenever you navigate away from experience.
+- Add tags, and then write a script to backfill a million for engineers to search for.
+- "You can send replicate.info/raft to your friends. They'll each get a fresh copy." - White on indigo footer, always.
+
+StaticController
+    index
+        redirect_to Experience.random -- experiences#show # TODO: Exclude previous experiences.
+
+ApplicationController
+    before_action :initialize_session_variables
+
+    def initialize_session_variables
+        session[:identifier] ||= SecureRandom.uuid
+        session[:seen_experience_ids] ||= []
+    end
+
+ExperiencesController
+    index
+        # Roblox browsing -- "Discover" button
+
+    show
+        base_experience = Experience.find_by(id: params[:id])
+
+        if base_experience.present?
+            @experience = Experience.where(parent: base_experience, principal_id: session[:identifier], principal_type: "Session").first_or_create!
+        else
+            redirect_to "/experiences/random"
+        end
+
+    random
+        base_experiences = Experience.where.not(id: session[:seen_experience_ids])
+
+        if base_experiences.empty?
+            session[:seen_experience_ids] = []
+            base_experiences = Experience.all
+        end
+
+        redirect_to base_experiences.shuffle.first
+
+    new
+        # Let people create their own + share online
+Element
+    belongs_to :page
+    belongs_to :element, optional: true
+
+Experience
+    - url_code - replicate.info/raft
+    - state - :published, :archived
+    - principal_id
+    - principal_type
+    - tags - text[] (i.e., "text" with array: true in create_table call)
+
+    def root_level_elements
+
+    def fork(new_principal)
+        ActiveRecord::Transaction.base do
+            new_experiecne = self.dup
+            new_experience.principal = new_principal
+            new_experience.save!
+
+            elements.each { |element| element.fork(new_experience) }
+        end
+    end
+
+    has_many :elements
+        Element
+        - type
+            - Maybe actually use STI? Each element has a .fork method too that takes a principal + handles recursion?
+            - If forking a QuestionTemplate, create a new Conversation + link it. If creating an Incident, create a new Incident? Render each differently?
+        - context
+        - belongs_to :experience
+        - belongs_to :element, optional: true
+        - belongs_to :conversation
+        - has_many :elements
+
+        - Element.new(type: "Text", context: { body: "In a distributed system, leader election is the process by which..." })
+        - Element.new(type: "Section", context: { name: "Leader Election" })
+            - Element.new(type: "ConversationTemplate", element: section, context: { conversation_type: "XYZ" }) -- somehow mark that it's a yes/no question, so you don't create 3 answers for it
+            - Element.new(type: "ConversationTemplate", element: section) -- these probably shouldn't be conversations. Element.new(type: "ConversationStarter")
+            - Convert to "Conversation" during experience.fork(current_session)
+
+        - Element.new(type: "IncidentTemplate", context: { call_to_action: "Begin SEV" })
+
+    Future versions
+        - organization_id
+        - principal_id + principal_type (one day - org, team, user -- not just one person)
+        - public
+        - required_by -- i.e., end of quarter date for compliance
+
+Conversation
+    - Make it parent_id + parent_type, not referring_conversation_id
+
+- Discover page (organize all Experience by tags)
+- Template to fork
+- Organization-level reports
+- Individual reports
+-
+
+-----------------------
+
+
+- Rhetorical questions
+- Don't ask too many questions in one reply.
+
+- List view of incidents to choose from
+    - This will create the framework for "My Inciden History" pages, "Team Incidents", "PostgreSQL Incident Pack", etc.
