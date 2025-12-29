@@ -1,66 +1,59 @@
 replicate.info sharpens how you think about risk in complex, distributed systems.
-*Pick a topic*. GPT asks hard questions until you mess up, then helps you think through the gap. ----- 1st sentence on line links to Discover?
-Failure is the point. It's a pressure test. Find those blind spots *before* you cause the next SEV-1. 😉
+*Pick a topic*. GPT asks hard questions until you mess up. Then it helps you bridge the gap.
 
-------------------
+Change
+- Artifact Integrity
+- Build Reproducibility
+- CI/CD
+- Compatibility Guarantees
+- Configuration Drift
+- Containerization
+- Control Planes
+- Deployment Strategies
+- Environment Management
+- Feature Flags
+- Rollbacks
+- Rolling Upgrades
+- Runtime Drift
+- Schema Evolution
 
-- Discover page is just an experiences that links to other experiences? It's just elements and linked lists.
-- General Categories (show a progress bar? limits your ability to improve it over time)
+Networking
+- DNS
+- Load Balancing
+- Network Identity
+- Routing
+- Service Discovery
+- TLS
+- Traffic Shaping
+- VPN / VPC
 
-    Change
-    - Artifact Integrity
-    - Build Reproducibility
-    - CI/CD
-    - Compatibility Guarantees
-    - Configuration Drift
-    - Containerization
-    - Control Planes
-    - Deployment Strategies
-    - Environment Management
-    - Feature Flags
-    - Mixed Versions
-    - Rollbacks
-    - Rolling Upgrades
-    - Runtime Drift
-    - Schema Evolution
+Security
+- Auditability
+- Encryption
+- IAM (Authentication)
+- IAM (Authorization)
+- Incident Response
+- Secrets Management
+- Threat Modeling
+- Trust Boundaries
 
-    Networking
-    - DNS
-    - Load Balancing
-    - Network Identity
-    - Routing
-    - Service Discovery
-    - TLS
-    - Traffic Shaping
-    - VPN / VPC
+State
+- Caching
+- Consistency Guarantees
+- Data Integrity
+- Distributed State
+- Disaster Recovery
+- Event Ordering
+- Partitioning
+- Transactions
 
-    Security
-    - Auditability
-    - Encryption
-    - IAM (Authentication)
-    - IAM (Authorization)
-    - Incident Response
-    - Secrets Management
-    - Threat Modeling
-    - Trust Boundaries
-
-    State
-    - Caching
-    - Consistency Guarantees
-    - Data Integrity
-    - Distributed State
-    - Disaster Recovery
-    - Event Ordering
-    - Partitioning
-    - Transactions
-
-    System Pressure
-    - Autoscaling
-    - Backpressure
-    - Cost Optimization
-    - Load Shedding
-    - Resource Contention
-    - Observability
+System Pressure
+- Autoscaling
+- Backpressure
+- Cost Optimization
+- Load Shedding
+- Resource Contention
+- Observability
 
 
 - "Okay, I get it. Next." -- Keep the momentum going. The engine cuts deep, but no variety. "I get it" gives a self-timed new experience + progression.
