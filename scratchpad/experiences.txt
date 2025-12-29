@@ -1,5 +1,6 @@
 replicate.info sharpens how you think about risk in complex, distributed systems.
-It pressure tests your mental model, and surfaces blind spots *before* you cause the next SEV-1. 😉
+*Pick a topic*. GPT asks hard questions until you mess up, then helps you think through the gap. ----- 1st sentence on line links to Discover?
+Failure is the point. It's a pressure test. Find those blind spots *before* you cause the next SEV-1. 😉
 
 ------------------
 
@@ -62,14 +63,9 @@ It pressure tests your mental model, and surfaces blind spots *before* you cause
     - Observability
 
 
-- You can do this for any hobby/profession, not just programming.
-    - replicate.info (SRE) / replicate.info (JavaScript) / replicate.info (Product) / replicate.info (Public Speaking)
-    - Write a script to generate categories + all of the experiences they should offer.
------------------------
 - "Okay, I get it. Next." -- Keep the momentum going. The engine cuts deep, but no variety. "I get it" gives a self-timed new experience + progression.
 - Rename "coaching" conversation to "incident" message generator. It's one way to teach a concept, not the only way.
 - Indigo breadcrumb bar at top of conversation whenever you navigate away from experience.
-- Add tags, and then write a script to backfill a million for engineers to search for.
 - "You can send replicate.info/raft to your friends. They'll each get a fresh copy." - White on indigo footer, always.
 
 StaticController
