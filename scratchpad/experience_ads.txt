@@ -7,10 +7,14 @@ Reddit
 
 LinkedIn
 ---------
-👋- new side project for my engineer friends.
-replicate.info sharpens how you think about risk in complex, distributed systems.
-*Pick an infra/sec fundamental* cloud native engineers need to understand deeply.
-GPT asks hard questions until you mess up, and then helps fill in the gaps.
-Even if LLMs are overhyped word guessing machines, I think they're pretty decent at finding blind spots.
+I'm working on a side project for engineers. replicate.info sharpens how you think about risk in complex, distributed systems.
+GPT asks hard infra/sec questions until you mess up, and helps fill in the gaps.
+It covers topics like DNS, multi-region failover, leader election, AuthZ, consistency guarantees, etc.
+100% free. Takes ~30 hours to finish. Think: pop quiz that cuts through hand waving, not a course you read on auto-pilot.
 
-It's free. No logins. Takes ~30 hours if you do the entire curriculum.
+Homepage
+--------
+replicate.info sharpens how you think about risk in complex, distributed systems.
+GPT asks hard questions about **infra/sec fundamentals** until you mess up, and helps fill in the gaps.
+It covers topics like DNS, multi-region failover, leader election, AuthZ, consistency guarantees, etc.
+100% free. Takes ~30 hours to finish. Think: pop quiz that cuts through hand waving, not a course you read on auto-pilot.

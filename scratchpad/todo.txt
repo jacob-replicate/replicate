@@ -1,3 +1,4 @@
+- IBM disclosure. Make sure to update the dates on your terms/privacy/security pages to be recent.
 - Code editor + Run button. Hide the regular textarea.
 
 - Mix in different avatars, not just replicate.info - Replicate is the narrator, other engineers push the story forward.

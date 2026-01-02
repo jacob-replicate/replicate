@@ -1,11 +1,7 @@
-
-- Are you overthinking this? Why not just ship like 10 S-tier experiences? The discover page can just be a list. experiences.rb with an array? No tags?
-    - Why do you even need a discover page in V1? Just "New Topic" + iterate through + don't repeat until you've iterated 100%.
-
-- "Okay, I get it. Next." -- Keep the momentum going. The engine cuts deep, but no variety. "I get it" gives a self-timed new experience + progression.
+- "Okay, I get it. Next." button
 - Rename "coaching" conversation to "incident" message generator. It's one way to teach a concept, not the only way.
 - Indigo breadcrumb bar at top of conversation whenever you navigate away from experience.
-- "You can send replicate.info/raft to your friends. They'll each get a fresh copy." - White on indigo footer, always.
+- "You can send replicate.info/raft to your friends. They'll get a fresh copy." - White on indigo footer, always.
 
 StaticController
     index
