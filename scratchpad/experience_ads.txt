@@ -1,0 +1,16 @@
+Reddit
+-------
+- Think you understand leader election? Prove it.
+- Do you actually know how leader election works?
+- Do you actually know how database indices work?
+- Let's see how well you understand multi-region failover.
+
+LinkedIn
+---------
+👋- new side project for my engineer friends.
+replicate.info sharpens how you think about risk in complex, distributed systems.
+*Pick an infra/sec fundamental* cloud native engineers need to understand deeply.
+GPT asks hard questions until you mess up, and then helps fill in the gaps.
+Even if LLMs are overhyped word guessing machines, I think they're pretty decent at finding blind spots.
+
+It's free. No logins. Takes ~30 hours if you do the entire curriculum.
