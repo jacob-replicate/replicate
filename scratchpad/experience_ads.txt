@@ -5,13 +5,6 @@ Reddit
 - Do you actually know how database indices work?
 - Let's see how well you understand multi-region failover.
 
-LinkedIn
----------
-I'm working on a side project for engineers. replicate.info sharpens how you think about risk in complex, distributed systems.
-GPT asks hard infra/sec questions until you mess up, and helps fill in the gaps.
-It covers topics like DNS, multi-region failover, leader election, AuthZ, consistency guarantees, etc.
-100% free. Takes ~30 hours to finish. Think: pop quiz that cuts through hand waving, not a course you read on auto-pilot.
-
 Homepage
 --------
 replicate.info sharpens how you think about risk in complex, distributed systems.
