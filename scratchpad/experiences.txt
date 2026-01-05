@@ -3,40 +3,6 @@
 - Indigo breadcrumb bar at top of conversation whenever you navigate away from experience.
 - "You can send replicate.info/raft to your friends. They'll get a fresh copy." - White on indigo footer, always.
 
-StaticController
-    index
-        redirect_to Experience.random -- experiences#show # TODO: Exclude previous experiences.
-
-ApplicationController
-    before_action :initialize_session_variables
-
-    def initialize_session_variables
-        session[:identifier] ||= SecureRandom.uuid
-    end
-
-ExperiencesController
-    index
-        redirect_to root_path # V1: don't even ship it -- "New Topic" button, no "Discover" page yet
-
-    show
-        base_experience = Experience.find_by(parent: nil, url_code: params[:id])
-
-        if base_experience.present?
-            @experience = base_experience.fork(principal_id: session[:identifier], principal_type: "Session")
-        else
-            redirect_to root_path
-        end
-
-    random
-        viewed_experience_ids = Experience.where(principal_id: session[:identifier]).pluck(:parent_id)
-        base_experiences = Experience.where.not(id: viewed_experience_ids)
-
-        if base_experiences.empty?
-            base_experiences = Experience.all
-        end
-
-        redirect_to base_experiences.shuffle.first
-
 Element
     belongs_to :page
     belongs_to :element, optional: true
@@ -44,16 +10,16 @@ Element
 Experience
     - url_code - replicate.info/raft
     - state - :published, :archived
-    - principal_id
-    - principal_type
+    - session_id
     - tags - text[] (i.e., "text" with array: true in create_table call)
 
     def root_level_elements
 
-    def fork(new_principal)
+    def fork(session_id)
         ActiveRecord::Transaction.base do
             new_experiecne = self.dup
-            new_experience.principal = new_principal
+            new_experience.template = false
+            new_experience.session_id = session_id
             new_experience.save!
 
             elements.each { |element| element.fork(new_experience) }

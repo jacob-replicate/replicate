@@ -154,6 +154,21 @@ CREATE TABLE public.conversations (
 
 
 --
+-- Name: experiences; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.experiences (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    template boolean,
+    code text,
+    name text,
+    session_id text,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
 -- Name: members; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -312,6 +327,14 @@ ALTER TABLE ONLY public.conversations
 
 
 --
+-- Name: experiences experiences_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.experiences
+    ADD CONSTRAINT experiences_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: members members_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -458,6 +481,7 @@ CREATE INDEX user_index ON public.audits USING btree (user_id, user_type);
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260105025819'),
 ('20251125184913'),
 ('20251125181409'),
 ('20251108011957'),

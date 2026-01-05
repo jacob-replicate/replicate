@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   before_action :skip_malicious_users
+  before_action :set_session_identifier
 
   rescue_from ActionController::InvalidAuthenticityToken do |exception|
     Rails.logger.info "Blocked CSRF from #{request.remote_ip} ua=#{request.user_agent}"
@@ -7,6 +8,10 @@ class ApplicationController < ActionController::Base
   end
 
   private
+
+  def set_session_identifier
+    session[:identifier] ||= SecureRandom.hex(10)
+  end
 
   def skip_malicious_users
     return if request.remote_ip == "98.249.45.68"

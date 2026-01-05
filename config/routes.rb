@@ -14,7 +14,6 @@ Rails.application.routes.draw do
   end
 
   post "/webhooks/postmark", to: "postmark_webhooks#create"
-  post "/webhooks/missive", to: "missive_webhooks#create"
 
   get "/terms", to: "static#terms"
   get "/privacy", to: "static#privacy"
@@ -39,6 +38,7 @@ Rails.application.routes.draw do
   get '/conversations/:id/destroy', to: "conversations#destroy"
   resources :messages, only: [:create]
   resources :organizations, only: [:create]
+  get '/:code', to: "experiences#show", as: "experience"
 
   root "static#index"
 end

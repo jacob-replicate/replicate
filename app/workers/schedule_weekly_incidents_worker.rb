@@ -4,6 +4,8 @@ class ScheduleWeeklyIncidentsWorker
   sidekiq_options retry: false, lock: :until_executed
 
   def perform(organization_ids, start_time, current_day_start)
+    return false # since you pivoted
+
     start_time = start_time.present? ? Time.at(start_time) : Time.at(current_day_start).advance(hours: 12)
     delay_seconds = 0
 
