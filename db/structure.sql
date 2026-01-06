@@ -154,6 +154,22 @@ CREATE TABLE public.conversations (
 
 
 --
+-- Name: elements; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.elements (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    code text,
+    context jsonb,
+    experience_id uuid,
+    element_id uuid,
+    conversation_id uuid,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
 -- Name: experiences; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -327,6 +343,14 @@ ALTER TABLE ONLY public.conversations
 
 
 --
+-- Name: elements elements_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.elements
+    ADD CONSTRAINT elements_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: experiences experiences_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -447,6 +471,27 @@ CREATE INDEX index_conversations_on_sharing_code ON public.conversations USING b
 
 
 --
+-- Name: index_elements_on_conversation_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_elements_on_conversation_id ON public.elements USING btree (conversation_id);
+
+
+--
+-- Name: index_elements_on_element_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_elements_on_element_id ON public.elements USING btree (element_id);
+
+
+--
+-- Name: index_elements_on_experience_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_elements_on_experience_id ON public.elements USING btree (experience_id);
+
+
+--
 -- Name: index_members_on_organization_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -481,6 +526,7 @@ CREATE INDEX user_index ON public.audits USING btree (user_id, user_type);
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260105031841'),
 ('20260105025819'),
 ('20251125184913'),
 ('20251125181409'),

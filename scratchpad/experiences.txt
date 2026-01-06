@@ -8,23 +8,7 @@ Element
     belongs_to :element, optional: true
 
 Experience
-    - url_code - replicate.info/raft
-    - state - :published, :archived
-    - session_id
-    - tags - text[] (i.e., "text" with array: true in create_table call)
-
     def root_level_elements
-
-    def fork(session_id)
-        ActiveRecord::Transaction.base do
-            new_experiecne = self.dup
-            new_experience.template = false
-            new_experience.session_id = session_id
-            new_experience.save!
-
-            elements.each { |element| element.fork(new_experience) }
-        end
-    end
 
     has_many :elements
         Element
