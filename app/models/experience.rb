@@ -1,4 +1,8 @@
 class Experience < ApplicationRecord
+  has_many :elements, dependent: :destroy
+
+  validates :code, :name, presence: true
+
   scope :templates, -> { where(template: true) }
 
   def fork!(session_id)
