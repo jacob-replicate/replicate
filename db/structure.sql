@@ -180,7 +180,8 @@ CREATE TABLE public.experiences (
     name text,
     session_id text,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    description text
 );
 
 
@@ -526,6 +527,7 @@ CREATE INDEX user_index ON public.audits USING btree (user_id, user_type);
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260107042958'),
 ('20260105031841'),
 ('20260105025819'),
 ('20251125184913'),

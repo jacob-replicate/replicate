@@ -1,8 +1,19 @@
-<div class="mb-2 text-lg pt-4">
-  <%= @experience.name %>
+<div class="text-[19px] pt-3">
+  <%= @experience.name.html_safe %>
+</div>
+
+<div class="mt-1 text-[15px]">
+  <%= @experience.description.html_safe %>
+</div>
+
+<div class="bg-neutral-600 text-white p-[7px] mt-2 rounded text-sm">
+  There are more topics on the Discover page, such as <span class="font-semibold underline underline-offset-2">DNS</span>, <span class="font-semibold underline underline-offset-2">Artifact Integrity</span>, and <span class="font-semibold underline underline-offset-2">Configuration Drift</span>
 </div>
 
 <% @experience.elements.root_level.each do |element| %>
-  wtf
   <%= render "elements/#{element.code.underscore}", element: element %>
 <% end %>
+
+<div class="mt-4" style="opacity: 0.90" id="signature">
+  <%= render "static/signature" %>
+</div>

@@ -1,16 +1,27 @@
-<div class="font-medium mt-4 mb-2 text-md">
+<div class="font-medium mt-6 mb-2 text-base text-gray-900">
   <%= element.context["name"] %>
 </div>
 
-<table class="border border-gray-300 rounded-lg bg-white w-full">
-  <% element.elements.each do |list_row_item| %>
-    <tr class="border-b border-gray-300 last:border-0">
-      <td class="p-3 text-sky-600 cursor-pointer">
-        <%= list_row_item.context["name"] %>
-      </td>
-      <td class="p-3">
-        <a href="#">Start</a>
-      </td>
-    </tr>
-  <% end %>
-</table>
+<div class="border border-gray-200 rounded-md overflow-hidden bg-white">
+  <table class="w-full border-collapse">
+    <% element.elements.each do |list_row_item| %>
+      <tr class="border-b border-gray-200 last:border-0 hover:bg-gray-50">
+        <td class="px-3 py-2 text-sky-600 text-sm cursor-pointer align-middle">
+          <%= list_row_item.context["name"].to_s.html_safe %>
+        </td>
+
+        <td class="px-3 py-2 w-px whitespace-nowrap text-right align-middle">
+          <% if list_row_item.conversation_id.present? %>
+            <a class="inline-flex items-center text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded px-2.5 py-1 transition" href="#">
+              Continue
+            </a>
+          <% else %>
+            <a class="inline-flex items-center text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded px-2.5 py-1.5 transition" href="#">
+              Start
+            </a>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+</div>

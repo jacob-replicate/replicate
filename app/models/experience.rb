@@ -7,7 +7,7 @@ class Experience < ApplicationRecord
   scope :templates, -> { where(template: true) }
 
   def fork!(session_id)
-    new_experience = Experience.where(template: false, code: self.code, name: self.name, session_id: session_id).first_or_create
+    new_experience = Experience.where(template: false, code: self.code, name: self.name, description: self.description, session_id: session_id).first_or_create
 
     if new_experience.elements.count == 0
       elements.root_level.each do |element|
