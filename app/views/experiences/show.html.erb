@@ -1,1 +1,8 @@
-<%= @experience.name %>
+<div class="mb-2 text-lg pt-4">
+  <%= @experience.name %>
+</div>
+
+<% @experience.elements.root_level.each do |element| %>
+  wtf
+  <%= render "elements/#{element.code.underscore}", element: element %>
+<% end %>

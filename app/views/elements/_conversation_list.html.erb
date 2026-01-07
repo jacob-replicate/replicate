@@ -1,0 +1,16 @@
+<div class="font-medium mt-4 mb-2 text-md">
+  <%= element.context["name"] %>
+</div>
+
+<table class="border border-gray-300 rounded-lg bg-white w-full">
+  <% element.elements.each do |list_row_item| %>
+    <tr class="border-b border-gray-300 last:border-0">
+      <td class="p-3 text-sky-600 cursor-pointer">
+        <%= list_row_item.context["name"] %>
+      </td>
+      <td class="p-3">
+        <a href="#">Start</a>
+      </td>
+    </tr>
+  <% end %>
+</table>

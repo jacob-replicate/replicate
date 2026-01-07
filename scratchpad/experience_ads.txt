@@ -1,13 +1,26 @@
 Reddit
 -------
+- Let's see how well you understand leader election
+- Do you actually know how leader election works?
+-----------
+- Here are some ways to trigger a database SEV-1
 - Think you understand leader election? Prove it.
 - Do you actually know how leader election works?
 - Do you actually know how database indices work?
 - Let's see how well you understand multi-region failover.
 
+
 Homepage
 --------
-replicate.info sharpens how you think about risk in complex, distributed systems.
-GPT asks hard questions about **infra/sec fundamentals** until you mess up, and helps fill in the gaps.
-It covers topics like DNS, multi-region failover, leader election, AuthZ, consistency guarantees, etc.
-100% free. Takes ~30 hours to finish. Think: pop quiz that cuts through hand waving, not a course you read on auto-pilot.
+GPT asks hard infra/sec questions until you mess up, then helps fill in the gaps.
+Think: AuthZ, consistency guarantees, DNS, leader election, multi-region failover, etc.
+100% free. It's a pop quiz that cuts through hand waving, not a course you read on auto-pilot.
+
+LinkedIn
+--------
+👋 - New side project to help engineers level up their production instincts.
+GPT asks hard infra/sec questions until you mess up, then helps fill in the gaps.
+Think: AuthZ, consistency guarantees, DNS, leader election, multi-region failover, etc.
+100% free. It's a pop quiz that cuts through hand waving, not a course you read on auto-pilot.
+
+https://replicate.info
