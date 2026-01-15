@@ -3,14 +3,7 @@ class StaticController < ApplicationController
   before_action :verify_admin, only: [:growth]
 
   def index
-    if Rails.env.development?
-      viewed_experience_codes = Experience.where(session_id: session[:identifier], template: false).pluck(:code).compact
-      base_experiences = Experience.where(template: true).where.not(code: viewed_experience_codes)
-      base_experiences = Experience.where(template: true) if base_experiences.empty?
-      redirect_to "/#{base_experiences.shuffle.first.code}"
-    else
-      create_sev
-    end
+    create_sev
   end
 
   def growth

@@ -1,45 +1,84 @@
-<div class="max-w-3xl mx-auto py-10 prose">
-  <h1 class="text-3xl font-semibold mb-4">Privacy Policy</h1>
-  <p class="text-gray-500 mb-4">Last updated: November 9, 2025</p>
+<div class="max-w-3xl mx-auto py-8 text-[15px] leading-6 text-gray-800">
 
-  <h2 class="text-xl font-semibold mb-4">I. Information We Collect</h2>
-  <ul class="list-disc pl-6 mb-4">
-    <li><strong>Conversation History</strong> — copies of your coaching threads, stored temporarily to deliver replies. These are automatically deleted after 3 months of inactivity.</li>
+  <h1 class="text-2xl font-medium mb-2 text-gray-900">
+    Privacy Policy
+  </h1>
+  <div class="text-sm text-gray-500 mb-6">
+    Last updated: January 11, 2026
+  </div>
+
+  <h2 class="text-lg font-medium mb-2 text-gray-900">
+    Information Collected
+  </h2>
+  <ul class="list-disc pl-5 mb-6">
+    <li>
+      <strong>Conversation History</strong> — copies of your coaching threads, stored temporarily to deliver replies in case you reopen an old conversation. They're automatically deleted after 3 months of inactivity.
+    </li>
   </ul>
 
-  <h2 class="text-xl font-semibold mt-10 mb-4">II. How We Use Information</h2>
-  <ul class="list-disc pl-6 mb-6">
-    <li>To deliver weekly SEV-1 coaching drills via a web-based chat UI.</li>
-  </ul>
-  <p class="mb-6">We do <strong>not</strong> sell, rent, or share your information for marketing purposes.</p>
+  <h2 class="text-lg font-medium mt-8 mb-2 text-gray-900">
+    Subprocessors
+  </h2>
 
-  <h2 class="text-xl font-semibold mt-10 mb-4">III. Data Retention</h2>
-  <p class="mb-6">
-    Conversation history is ephemeral. All threads are automatically deleted from Replicate's database after 3 months of inactivity. They are never shared with OpenAI for long-term GPT model training.
-  </p>
+  <div class="mb-4">
+    We do <strong>not</strong> sell, rent, or share your information for marketing purposes.
+  </div>
 
-  <h2 class="text-xl font-semibold mt-10 mb-4">IV. Vendors & Service Providers</h2>
-  <p class="mb-6">
-    We use trusted third-party providers (e.g. Postmark for email delivery, Heroku for hosting) to operate the service. These vendors act only under our instruction and do not use your data for any other purpose.
-  </p>
+  <div class="text-sm text-gray-700 mb-4">
+    All vendors are GDPR compliant, offer Standard Contractual Clauses (SCCs), and underwent security review prior to onboarding. This is the complete list. No additional tools (e.g., Google Analytics) are used beyond those listed here.
+  </div>
 
-  <h2 class="text-xl font-semibold mt-10 mb-4">V. Security</h2>
-  <p class="mb-6">
-    All data is encrypted in transit (TLS 1.2+) and at rest (AES-256). We do not store customer data beyond what’s necessary to deliver the service. See our <a href="/security" class="text-blue-600 hover:underline">Security & IT Readiness</a> page for details.
-  </p>
+  <div class="space-y-4">
+    <div>
+      <div class="font-semibold">Amazon S3</div>
+      <div>Stores immutable, append-only audits for admin actions (e.g., data removal) with AES-256 at rest.</div>
+    </div>
 
-  <h2 class="text-xl font-semibold mt-10 mb-4">VI. Children's Privacy</h2>
-  <p class="mb-6">
-    Our service is not directed to individuals under 13, and we do not knowingly collect data from them.
-  </p>
+    <div>
+      <div class="font-semibold">Datadog</div>
+      <div>Used for infrastructure telemetry and monitoring (e.g., CPU, memory, service health).</div>
+    </div>
 
-  <h2 class="text-xl font-semibold mt-10 mb-4">VII. Changes to this Policy</h2>
-  <p class="mb-6">
-    We may update this Privacy Policy at any time. Notable changes will be announced via email.
-  </p>
+    <div>
+      <div class="font-semibold">Heroku</div>
+      <div>
+        Used for application infra and encrypted storage. All workloads run in isolated containers with TLS 1.2+ enforced, and AES-256 encryption at rest. Includes managed Heroku Postgres + Redis instances.
+      </div>
+    </div>
 
-  <h2 class="text-xl font-semibold mt-10 mb-4">VIII. Contact</h2>
-  <p class="mb-6">
-    For questions about this Privacy Policy, contact us at <a href="mailto:support@replicate.info" class="text-blue-600 hover:underline">support@replicate.info</a>.
-  </p>
+    <div>
+      <div class="font-semibold">OpenAI</div>
+      <div>
+        OpenAI's API powers the real-time content generation for the chat. None of your data is persisted by OpenAI. None of it is used to train their models. The prompting is ephemeral.
+      </div>
+    </div>
+
+    <div>
+      <div class="font-semibold">PagerDuty</div>
+      <div>
+        Used for incident alerting and on-call scheduling. May store system-level alerts with metadata (e.g., timestamps, service names). No user-submitted content.
+      </div>
+    </div>
+
+    <div>
+      <div class="font-semibold">Papertrail</div>
+      <div>
+        Used for infrastructure log aggregation and retention. Some logs may include metadata related to coaching email delivery (e.g. timestamps, team IDs).
+      </div>
+    </div>
+
+    <div>
+      <div class="font-semibold">Sentry</div>
+      <div>
+        Used for internal error tracking and debugging. Some error logs may include technical metadata (e.g., error messages, timestamps, team IDs).
+      </div>
+    </div>
+  </div>
+
+  <h2 class="text-lg font-medium mt-8 mb-2 text-gray-900">
+    Children's Privacy
+  </h2>
+  <div class="mb-6">
+    This service service is not directed to individuals under 13, and we do not knowingly collect data from them.
+  </div>
 </div>
