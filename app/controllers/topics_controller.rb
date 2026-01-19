@@ -9,7 +9,8 @@ class TopicsController < ApplicationController
     @topic = Topic.includes(:experiences).find_by!(code: params[:code])
     @experiences = @topic.experiences.templates.order(:name)
     @experience_count = @experiences.size
-    @completed_count = 0 # TODO: Replace with real session-based progress tracking
+    @forked_experience_codes = @topic.experiences.where(template: false, session_id: session[:identifier]).pluck(:code).to_set
+    @completed_count = @forked_experience_codes.size
   end
 
   def populate

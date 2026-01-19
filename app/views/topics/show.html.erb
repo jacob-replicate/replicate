@@ -17,8 +17,9 @@
     <% if @experiences.any? %>
       <div class="border-t border-zinc-100 dark:border-zinc-700">
         <% @experiences.each_with_index do |experience, i| %>
-          <%= link_to topic_experience_path(@topic.code, experience.code), class: "topic-link block px-4 py-2.5 hover:bg-zinc-50 dark:hover:bg-zinc-700/50 #{'border-t border-zinc-100 dark:border-zinc-700' unless i == 0}" do %>
-            <div class="text-[14px]"><%= experience.name.html_safe %></div>
+          <% visited = @forked_experience_codes.include?(experience.code) %>
+          <%= link_to topic_experience_path(@topic.code, experience.code), class: "block px-4 py-2.5 hover:bg-zinc-50 dark:hover:bg-zinc-700/50 #{'border-t border-zinc-100 dark:border-zinc-700' unless i == 0}" do %>
+            <div class="text-[14px] <%= visited ? 'text-purple-600 dark:text-purple-400' : 'text-blue-600 dark:text-blue-400' %>"><%= experience.name.html_safe %></div>
             <div class="text-[13px] text-zinc-500 dark:text-zinc-400 mt-0.5"><%= experience.description.html_safe %></div>
           <% end %>
         <% end %>
