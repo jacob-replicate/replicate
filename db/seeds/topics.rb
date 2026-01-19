@@ -74,19 +74,29 @@ topics_data = {
   },
 
   # === DATA CONSISTENCY ===
-  'consistency' => {
-    name: 'Consistency',
-    description: 'Your read might not see your write, and that breaks more user-facing assumptions than most engineers expect.',
+  'stale-reads' => {
+    name: 'Stale Reads',
+    description: 'Your read didn\'t see your write. The user refreshed and it looked like their action never happened.',
     generation_intent: ''
   },
   'consensus' => {
-    name: 'Distributed Consensus',
-    description: 'Split-brain happens when nodes disagree about who\'s in charge, and both sides keep accepting writes.',
+    name: 'Consensus',
+    description: 'Split-brain is when nodes disagree about who\'s in charge and both sides keep accepting writes.',
     generation_intent: ''
   },
   'idempotency' => {
     name: 'Idempotency',
     description: 'Retries happen. If your code isn\'t idempotent, you\'ll run it twice. If your code isn\'t idempotent, you\'ll run it twice.',
+    generation_intent: ''
+  },
+  'ordering' => {
+    name: 'Ordering',
+    description: 'Events arrived out of order and your system processed the delete before the create.',
+    generation_intent: ''
+  },
+  'transactions' => {
+    name: 'Transactions',
+    description: 'The first write succeeded. The second failed. Now your data is half-committed and no one knows.',
     generation_intent: ''
   },
 

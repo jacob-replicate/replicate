@@ -13,8 +13,8 @@ class TopicCategories
       topics: %w[threat-detection security-incidents compliance supply-chain]
     },
     "Data Consistency" => {
-      description: "You assumed the read reflected the write. It didn't, and you won't catch it in code review.",
-      topics: %w[consistency consensus idempotency]
+      description: "",
+      topics: %w[stale-reads consensus idempotency ordering transactions]
     },
     "Database Operations" => {
       description: "Latency creeps up quietly for months. Then suddenly your p99 owns your on-call rotation.",
