@@ -1,77 +1,100 @@
 CONTEXT:
-You are generating experience intents for a platform that pressure-tests senior engineers on real-world infrastructure and security failures. Your audience aspires to be truly fluent in "big boy" infra/sec - they want to operate at the level of senior SREs at Google, security engineers at Stripe, or principal architects at AWS.
+You are decomposing a technical topic into the distinct failure modes that senior engineers encounter in production.
+
+This page is the cover of a book for senior engineers. It filters for credibility. It is NOT teaching, navigation, or onboarding.
 
 INPUTS:
 - topic_name: {{CONTEXT_TOPIC_NAME}}
 - topic_description: {{CONTEXT_TOPIC_DESCRIPTION}}
 
-CRITICAL: TOPIC RELEVANCE IS MANDATORY
-Every single experience you generate MUST be directly about "{{CONTEXT_TOPIC_NAME}}". Read the topic name and description carefully. If the topic is about IAM policies, EVERY experience must be about IAM policies. If the topic is about database transactions, EVERY experience must be about database transactions.
-
-DO NOT generate experiences about:
-- Unrelated infrastructure concepts (e.g., don't generate "Clock Drift" for an IAM topic)
-- Generic distributed systems problems unless they directly manifest within this topic's domain
-- Tangentially related concepts (e.g., don't generate "Ephemeral Port Exhaustion" for a database topic)
-
-ASK YOURSELF: "Is this experience PRIMARILY about {{CONTEXT_TOPIC_NAME}}?" If you can't answer yes, don't include it.
-
 EXISTING EXPERIENCES (DO NOT DUPLICATE):
 {{CONTEXT_EXISTING_EXPERIENCES}}
 
-If existing experiences are listed above, generate intents that COMPLEMENT the existing coverage, filling gaps rather than duplicating.
+If experiences are listed above, generate intents that fill gaps. Do not duplicate or reframe existing coverage.
 
-YOUR AUDIENCE:
-- Engineers who have read the docs and understand the theory
-- They DON'T need another explanation of how X works
-- They NEED to discover what breaks, why it breaks, and how to debug it at 3am
-- They want to close the gap between "I understand the concept" and "I've been paged for this"
+---
 
-THIS IS NOT:
-- Tutorial content explaining how systems work
-- A list of concepts tangentially related to the topic
-- Generic "best practices" or "advanced topics"
-- Multiple angles on the same core concept (NO: "Replication Lag Causes" + "Replication Lag Effects")
-- Specific bugs or failures as titles (NO: "Broken X", "X Vulnerability", "X Mismatch")
+WHAT EACH EXPERIENCE MUST BE:
 
-THIS IS:
-- Decomposition of "{{CONTEXT_TOPIC_NAME}}" into DISTINCT technical INVARIANTS
-- Each intent targets a principle that MUST hold true for the system to work correctly
-- The experience name is the INVARIANT, not the failure (GOOD: "Token Audience Validation", BAD: "Token Audience Mismatch")
+A. A failure mode, not a feature
+GOOD: "CPU Throttling", "OOMKill Analysis", "PID Exhaustion"
+BAD: "cgroups", "namespaces", "schedulers"
+The name should already imply pain.
+
+B. Breaking a DIFFERENT assumption than every other experience
+Each experience punishes a *distinct belief*. If two experiences break the same belief, merge or delete one.
+
+C. Describing the *lie*
+Every experience must contrast:
+- What the system *appears* to say
+- What is actually happening
+- Why engineers misdiagnose it
+
+D. Not fixable by one command
+If the issue is solved by "just raise the limit" or "just restart it" or "just run X", it doesn't belong.
+
+E. Orthogonal but cumulative
+The full list should feel:
+- Selective
+- Opinionated
+- Incomplete on purpose
+Not exhaustive. Not comforting.
+
+---
+
+SUCCESS TEST:
+A senior engineer should think: "I've dealt with most of these - I'm not sure I actually understood them."
+- If they think "Seems reasonable" → too soft
+- If they think "I know all this" → too generic
+- If they think "That's uncomfortable" → correct
+
+---
+
+TOPIC RELEVANCE:
+Every experience must be *primarily* about "{{CONTEXT_TOPIC_NAME}}". Someone should immediately know it belongs under this topic. Tangential concepts belong elsewhere.
 
 NAMING PHILOSOPHY:
-Experience names must be SHORT (2-4 words max):
-- GOOD: "Session Fixation", "PKCE", "Replica Lag", "CORS Policies"
-- BAD: "Session Fixation Prevention Mechanisms", "PKCE Verification in OAuth Flows"
-- Think: what would a senior engineer call this in Slack?
-- No verbs, no "-ing" words, no "How to...", no fluff
+Experience names are accusations, not labels.
+
+2-4 words max. Shorter is better.
+- GOOD: "CPU Throttling", "Split-Brain", "Replica Lag", "Session Fixation"
+- BAD: "Container Resource Management", "Database Consistency Issues", "Authentication Mechanisms"
+
+The name implies the pain:
+- "Throttling" → you're being slowed down
+- "Split-Brain" → both sides think they're in charge
+- "Replica Lag" → your reads are stale
+
+What would a staff engineer mutter under their breath at 3am?
+
+No verbs. No "-ing" words (except when they ARE the concept, like "Throttling"). No "How to". No adjectives like "Advanced" or "Secure".
 
 REQUIREMENTS:
-
-Topic Relevance (CRITICAL):
-- EVERY experience must be a core concept within "{{CONTEXT_TOPIC_NAME}}"
-- Someone should immediately know it belongs under "{{CONTEXT_TOPIC_NAME}}"
-
-Intent Uniqueness:
-- Each intent MUST produce an experience with a DIFFERENT, SPECIFIC name
-- Names should be 2-4 words, not sentences
 
 Intent Quality:
 Each generation_intent must:
 - Start with: "Create an experience called '[SHORT NAME]' that..."
-- Use a SHORT name (2-4 words max)
+- Use a SHORT name (2-4 words max) that implies the pain
 - Be 250-400 characters total
-- Describe what breaks and why it matters
-- Reference real scenarios engineers face
+- Describe the LIE: what engineers believe vs what actually happens
+- Reference what breaks and when the misunderstanding surfaces
 
-Coverage Strategy for "{{CONTEXT_TOPIC_NAME}}":
-- What are the core concepts every engineer should deeply understand?
-- What breaks in production that surprises people?
-- What do engineers think they understand but actually don't?
-- What shows up in postmortems repeatedly?
+Intent Structure (the lie pattern):
+Each intent should expose a specific lie:
+- What the system APPEARS to say ("monitoring shows 50% CPU")
+- What is ACTUALLY happening ("you're being throttled")
+- Why engineers MISDIAGNOSE it ("they blame application code")
+
+Coverage Strategy:
+- What are the failure modes that haunt production?
+- What do engineers THINK they understand but don't?
+- What beliefs get shattered during incidents?
+- What shows up in postmortems that surprises people?
 
 Number of intents:
-- Generate 6-10 intents (fewer, but each more distinct and impactful)
-- Quality over quantity - each should be worthy of a dedicated on-call rotation
+- Generate 6-10 intents
+- Each must break a DIFFERENT assumption
+- Quality over quantity - each should deserve its own on-call rotation
 
 OUTPUT FORMAT:
 Return a single valid JSON object with this structure:
@@ -85,33 +108,31 @@ Return a single valid JSON object with this structure:
 
 IMPORTANT: Return ONLY the raw JSON object. Do NOT wrap it in markdown code blocks.
 
-EXAMPLE 1 - Database Replication topic:
-Note how names are SHORT (2-4 words):
+EXAMPLE 1 - Container Runtime topic:
 {
   "generation_intents": [
-    "Create an experience called 'Quorum Writes' that explores how distributed databases maintain consistency through quorum. Cover scenarios where quorum is technically met but data is still inconsistent, split-brain detection, and the GitHub 2018 incident.",
-    "Create an experience called 'Leader Election' that examines how databases elect a new primary during failover. Focus on why the 'most up-to-date' replica sometimes isn't, fencing mechanisms, and multiple nodes believing they're leader.",
-    "Create an experience called 'Replica Lag' that investigates how systems handle lag across replica chains. Cover read-your-writes consistency, monitoring that lies about downstream health, and reads routing to stale nodes.",
-    "Create an experience called 'Online DDL' that explores how schema changes flow through replication. Focus on pt-osc vs ghost, timing windows, and maintaining replication during migrations."
+    "Create an experience called 'CPU Throttling' that exposes the lie between reported CPU usage and actual performance. Engineers see '50% CPU' but the container crawls. Throttling hides the truth, warps metrics, and makes debugging a nightmare because the numbers look fine.",
+    "Create an experience called 'Cgroup Isolation' that challenges the belief that containers are isolated. One container leaks memory and suddenly the whole node struggles. The isolation you trust is a polite fiction enforced by soft limits.",
+    "Create an experience called 'PID Limits' that explores silent thread exhaustion. A container has spare CPU and memory but can't spawn threads. PID exhaustion creates deadlocks and stalled throughput with no obvious error.",
+    "Create an experience called 'OOMKill Analysis' that examines why containers get killed. Diagnosing which process triggered the OOM, understanding allocation patterns, and finding the leak that metrics didn't reveal."
   ]
 }
 
 EXAMPLE 2 - Authentication topic:
-Note how names are SHORT - no "Validation", "Verification", "Mechanism" suffixes:
 {
   "generation_intents": [
-    "Create an experience called 'Token Audience' that explores how OIDC tokens must match the intended service. Cover tokens accepted by wrong services, aud vs azp claims, and multi-tenant confusion.",
-    "Create an experience called 'Session Fixation' that examines when session IDs must be rotated. Focus on post-auth regeneration, concurrent sessions, and why pre-auth IDs persisting post-auth is catastrophic.",
-    "Create an experience called 'PKCE' that investigates Proof Key for Code Exchange in OAuth. Cover code_verifier binding, why authorization codes need verifiers, and why PKCE matters even for confidential clients.",
-    "Create an experience called 'Clock Skew' that explores time differences between client and server in auth. Focus on JWT exp/nbf/iat windows, TOTP time steps, and strict validation breaking legitimate requests."
+    "Create an experience called 'Token Audience' that exposes how tokens get accepted by the wrong service. The aud claim is supposed to prevent this, but multi-tenant setups and shared identity providers create confusion that leads to privilege escalation.",
+    "Create an experience called 'Session Fixation' that challenges the belief that login creates a new session. Pre-auth session IDs that survive post-auth let attackers ride along. The 'secure' login flow preserves the compromised state.",
+    "Create an experience called 'Clock Skew' that explores time disagreement in auth. JWT validation, TOTP codes, and certificate expiry all assume clocks agree. Strict validation rejects legitimate requests while lenient validation opens attack windows.",
+    "Create an experience called 'Refresh Tokens' that examines token rotation failures. Refresh tokens are supposed to be single-use, but race conditions and retry logic create scenarios where revoked tokens still work."
   ]
 }
 
-BAD EXAMPLE - Names that are too long:
+BAD EXAMPLES - Names that are too generic or don't imply pain:
 {
   "generation_intents": [
-    "Create an experience called 'Token Audience Validation Across Services'...",  // TOO LONG: just "Token Audience"
-    "Create an experience called 'Session Fixation Prevention Mechanisms'...",     // TOO LONG: just "Session Fixation"
-    "Create an experience called 'Cross-Origin Resource Policy Enforcement'..."    // TOO LONG: just "CORS Policies"
+    "Create an experience called 'Container Security'...",           // TOO BROAD: which failure mode?
+    "Create an experience called 'Authentication Best Practices'...", // NOT A FAILURE MODE: "best practices" is teaching
+    "Create an experience called 'Token Validation Mechanisms'..."    // NO PAIN IMPLIED: what breaks?
   ]
 }

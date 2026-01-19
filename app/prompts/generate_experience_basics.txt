@@ -1,28 +1,17 @@
 CONTEXT:
-You are generating the foundational metadata for a single technical experience inside a larger systems topic.
+You are generating metadata for a single experience - one entry on the cover of a book for senior engineers.
+
+This experience:
+- Names a failure mode, not a feature
+- Exposes a lie engineers believe until production breaks it
+- Assumes competence - no explanations, no comfort, no teaching
 
 This experience is NOT:
-- A blog post, lesson, or tutorial
-- Educational content with step-by-step walkthroughs
-- Marketing material or thought leadership
-- A generic category or broad concept
-- A specific bug or failure mode (BAD: "Broken SAML Validation", "Clock Skew Failures")
-
-This experience IS:
-- A focused pressure test on a SPECIFIC technical INVARIANT - something that must hold true for the system to work correctly
-- Named after the invariant itself, not the failure (GOOD: "SAML Assertion Validation", BAD: "Broken SAML Assertion Validation")
-- A simulation of scenarios where engineers must understand WHY the invariant matters and WHAT happens when it's violated
-
-NAMING PHILOSOPHY:
-Experience names should be INVARIANTS or MECHANISMS, not failures:
-- GOOD: "Token Audience Validation" (the invariant)
-- BAD: "Token Audience Mismatch" (the failure)
-- GOOD: "Session Fixation Prevention" (the mechanism)
-- BAD: "Session Fixation Vulnerability" (the bug)
-- GOOD: "Clock Skew Tolerance" (the invariant)
-- BAD: "Invalid Clock Skew Handling" (the failure)
-
-The experience explores what happens when the invariant is violated, but the NAME is the principle itself.
+- A blog post, tutorial, or lesson
+- A definition or overview of a concept
+- "Best practices" or advice
+- A broad category (BAD: "Authentication", "Caching")
+- Beginner-friendly content
 
 INPUTS:
 - topic_name: {{CONTEXT_TOPIC_NAME}}
@@ -30,63 +19,99 @@ INPUTS:
 - experience_generation_intent: {{CONTEXT_EXPERIENCE_GENERATION_INTENT}}
 
 CRITICAL REQUIREMENT - TOPIC RELEVANCE:
-This experience MUST be directly relevant to "{{CONTEXT_TOPIC_NAME}}". The topic is about "{{CONTEXT_TOPIC_DESCRIPTION}}".
-Every aspect of this experience - name, description, and generation intent - must clearly belong under this topic.
-If the generation intent suggests something unrelated to {{CONTEXT_TOPIC_NAME}}, adapt it to be relevant OR reject it.
+This experience must clearly belong under "{{CONTEXT_TOPIC_NAME}}". If the generation intent drifts to unrelated territory, adapt or reject it.
 
 CRITICAL REQUIREMENT - EXPERIENCE NAMING:
-The generation_intent likely contains a phrase like "Create an experience called '[Name]'..."
-You MUST extract and use this EXACT name as the experience_name. The name was chosen specifically to be unique and distinct from other experiences in this topic.
+The generation_intent likely contains "Create an experience called '[Name]'..."
+Extract and use this EXACT name. It was chosen to be distinct from other experiences.
 
-If no explicit name is provided, derive a SPECIFIC technical name that:
-- Names a concrete failure mode, algorithm, or phenomenon (e.g., "Split-Brain Recovery", "Thundering Herd")
-- Is NOT a broad category (BAD: "Replication Lag", "Consensus", "Caching")
-- Could be the title of a detailed post-mortem or an O'Reilly chapter
-- Would be distinct from any other experience name in the same topic
+If no explicit name is provided, derive a name that:
+- Implies the pain (GOOD: "CPU Throttling", BAD: "CPU Resource Management")
+- Is a failure mode, not a feature (GOOD: "Split-Brain", BAD: "Consensus Algorithms")
+- Would be what a staff engineer mutters at 3am
+- Is 2-4 words maximum
+
+NAMING PHILOSOPHY:
+The name is an accusation, not a label.
+
+GOOD names imply pain:
+- "CPU Throttling" → you're being slowed down and don't know it
+- "Split-Brain" → both sides accepted writes
+- "Session Fixation" → the attacker rode in on your session
+- "Replica Lag" → your read was stale
+
+BAD names are features or mechanisms:
+- "Container Resources" → which failure mode?
+- "Authentication Flow" → what breaks?
+- "Database Consistency" → too broad
 
 REQUIREMENTS:
 
 experience_name:
 - 2-4 words MAX. Shorter is better.
-- Name a specific technical concept, not a sentence
-- GOOD: "CORS Policies", "Input Validation", "Session Fixation"
-- BAD: "Cross-Origin Resource Policy Enforcement", "Input Validation Across Trust Boundaries"
-- No verbs, no "...ing" suffixes, no "How to...", no "Understanding..."
-- Think: what would a senior engineer call this in Slack?
+- The name implies the pain
+- GOOD: "CPU Throttling", "Session Fixation", "Split-Brain", "Replica Lag"
+- BAD: "Resource Management", "Security Mechanisms", "Consistency Patterns"
+- No verbs, no "Understanding...", no "How to..."
+- What would a staff engineer call this in a post-mortem title?
 
 experience_description:
-- MUST NOT repeat or rephrase the experience name
-- MUST NOT start with the same words as the name
-- BAD: Name "Input Validation" → Description "Input validation ensures..."
-- GOOD: Name "Input Validation" → Description "Untrusted data crosses trust boundaries constantly. Failures here enable injection attacks and privilege escalation."
-- Start with the PROBLEM or CONSEQUENCE, not a definition
-- Write like a staff engineer explaining why you should care, not a textbook or Wikipedia
-- 2 sentences, 180-220 characters total (fill out two full lines)
-- Use short, punchy words. No SAT vocabulary. No "synchronization", "propagation", "amplification", "contention", "cascading", "compounding", "mismanaged", "misconfigured"
-- BAD: "Microservices under backpressure amplify retries across chains, triggering cascading failures"
-- GOOD: "One service slows down, retries start piling up, and pretty soon the whole thing falls over."
-- BAD: "Clock drift skews distributed token limits, leading to unexpected rate bursts"
-- GOOD: "Your servers' clocks don't agree, so rate limits don't add up right. Some users get throttled, others slip through."
-- No buzzwords, no "ensuring", no "maintaining", no "leveraging"
+- EXPOSE THE LIE in 1-2 sentences
+- Structure: What you believed → What actually happens
+- Write like a post-incident note, not a textbook
+- 2 sentences, 80-200 characters total (punchy is better)
+
+DESCRIPTION TONE RULES:
+- Assume competence - never explain terminology
+- Never say "best practice"
+- Never comfort the reader
+- Write as if time and credibility were lost
+
+DESCRIPTION ANTI-PATTERNS (never use these words):
+- No "synchronization", "propagation", "amplification", "contention"
+- No "cascading", "compounding", "mismanaged", "misconfigured"
+- No "ensuring", "maintaining", "leveraging", "utilizing"
+- No "can lead to", "may cause", "might result in"
+
+DESCRIPTION PATTERN:
+BAD: "Clock drift across distributed systems can lead to rate limiting inconsistencies."
+GOOD: "Your servers' clocks don't agree, so rate limits don't add up right. Some users get throttled, others slip through."
+
+BAD: "Misconfigured cgroup limits cause cascading CPU throttling issues."
+GOOD: "Your container says 50% CPU, but the app crawls. The kernel is lying to you about available compute."
+
+BAD: "Session fixation vulnerabilities occur when session IDs aren't regenerated."
+GOOD: "The attacker set the session ID before you logged in. Now they're logged in too."
 
 experience_code:
-- Lowercase, hyphen-separated URL slug derived from experience_name
-- Maximum 25 characters (use abbreviations if needed: "split-brain", "ryw-violations")
-- e.g., "split-brain", "thundering-herd", "replica-delays"
+- Lowercase, hyphen-separated URL slug from experience_name
+- Maximum 25 characters (abbreviate if needed)
+- e.g., "cpu-throttling", "split-brain", "session-fixation"
 
 refined_generation_intent:
-- This is CRITICAL - it guides ALL future AI prompts for generating questions, scenarios, design reviews, and incidents
-- Start with: "This experience should be about [specific phenomenon]. It should..."
-- Be EXTREMELY DETAILED and COMPREHENSIVE (5-7 dense sentences minimum)
-- Must explicitly cover:
-  * Which specific failure modes to explore (list 4-6 concrete scenarios)
-  * Which common misconceptions engineers have (be specific about wrong assumptions)
-  * Which edge cases expose knowledge gaps (timing, race conditions, state)
-  * Which real-world incidents exemplify these failures (name companies, dates if known)
-  * Which debugging scenarios reveal misunderstanding (what breaks at 3am)
-  * Which system interactions are commonly overlooked
-- Use concrete technical language throughout
-- End with a sharp observation about the delta between theory and production reality
+- This guides ALL future content generation for this experience
+- Start with: "This experience exposes the lie that [belief]. In reality, [truth]."
+- 5-7 dense sentences minimum. Be EXTREMELY detailed.
+
+THE LIE STRUCTURE (required):
+- What engineers BELIEVE (the comfortable assumption)
+- What ACTUALLY happens (the uncomfortable truth)
+- Why they MISDIAGNOSE it (what they blame instead)
+- When it SURFACES (production conditions that expose it)
+- What it COSTS (time, data, credibility)
+
+MUST INCLUDE:
+- 4-6 concrete failure scenarios (specific, not abstract)
+- Common wrong assumptions engineers hold
+- Edge cases that expose the gap between docs and production
+- Real incidents or companies when known (GitHub 2018, Cloudflare, etc.)
+- What breaks at 3am that isn't on any dashboard
+- The delta between "I understand the concept" and "I've debugged this"
+
+TONE:
+- Post-incident writing
+- No comfort, no "you will learn"
+- Assume the reader has already been burned and wants to understand why
 
 OUTPUT FORMAT:
 Return a single valid JSON object with exactly these keys: experience_name, experience_description, experience_code, refined_generation_intent
@@ -95,16 +120,16 @@ IMPORTANT: Return ONLY the raw JSON object. Do NOT wrap it in markdown code bloc
 
 EXAMPLE OUTPUT:
 {
-  "experience_name": "Split-Brain",
-  "experience_description": "Now you've got two primaries accepting writes. When the partition heals, you get to pick which data to throw away.",
-  "experience_code": "split-brain",
-  "refined_generation_intent": "This experience should be about split-brain recovery scenarios in distributed databases and consensus systems. It should surface gaps in how engineers reason about partition detection, quorum semantics, and conflict resolution when multiple primaries emerge. Engineers should confront scenarios where heartbeat-based failure detection gives false positives, where 'fencing' mechanisms fail to prevent dual-writes, and where automatic failover tools make the wrong choice under network instability. The experience should challenge assumptions like 'my monitoring will detect split-brain immediately', 'STONITH always works', and 'we can just pick the node with more transactions'. Scenarios should include the GitHub 2018 incident where Orchestrator promoted a replica with stale data, cases where application-level writes continued to both sides during partition, and debugging sessions where transaction logs show conflicting commit sequences. Engineers should reason about manual recovery procedures: identifying the authoritative node, reconciling divergent writes, and safely re-establishing replication without data loss. The experience should expose how split-brain is often detected only after the partition heals, when both sides try to replicate to each other and discover conflicts."
+  "experience_name": "CPU Throttling",
+  "experience_description": "Your container says 50% CPU, but the app crawls. The kernel is lying to you about available compute.",
+  "experience_code": "cpu-throttling",
+  "refined_generation_intent": "This experience exposes the lie that CPU metrics tell you how much compute your container is using. In reality, cgroup throttling means your container hits its quota mid-cycle and waits, frozen, while metrics still show 'available' CPU. Engineers blame application code, GC pauses, or network latency because the dashboard says CPU is fine. Scenarios include: a container with 500m CPU that performs worse than the same code with 250m (due to quota timing), latency spikes that correlate with nothing in APM, p99 latency that varies wildly while p50 stays constant, and metrics showing 40% CPU while the process is throttled 30% of the time. Engineers assume 'CPU limit' means 'maximum CPU' when it actually means 'CPU budget per scheduling period.' The throttling counter in cgroup stats is the only honest metric, but nobody looks at it. This surfaces under bursty workloads - request handling that needs 200ms of CPU but gets spread across multiple 100ms scheduling windows, each hitting the quota. The real cost isn't CPU - it's the weeks spent optimizing code that was never slow."
 }
 
-ANOTHER EXAMPLE (showing non-redundant name/description):
+ANOTHER EXAMPLE (showing the lie structure):
 {
-  "experience_name": "CORS Policies",
-  "experience_description": "You set a header wrong and now any website can hit your API. The browser was supposed to stop this, but you told it not to.",
-  "experience_code": "cors",
-  "refined_generation_intent": "..."
+  "experience_name": "Session Fixation",
+  "experience_description": "The attacker set the session ID before you logged in. Now they're logged in too.",
+  "experience_code": "session-fixation",
+  "refined_generation_intent": "This experience exposes the lie that login creates a fresh session. In reality, many frameworks preserve the session ID across authentication boundaries, meaning an attacker who sets the session ID pre-auth gains access post-auth. Engineers believe 'we use a secure framework' provides protection when the framework only provides the tools, not the guarantee. Scenarios include: session IDs passed in URLs that survive login, cookie-based sessions that aren't regenerated on privilege change, and SSO flows where the session predates identity. The fix looks simple (regenerate on login) but breaks applications that store pre-auth state in the session. Real incidents: applications where 'remember me' checkboxes preserved fixated sessions, password reset flows that didn't regenerate, and step-up authentication that kept the original session. Engineers misdiagnose this as 'session hijacking' when the session was never hijacked - it was controlled from the start. The uncomfortable truth: most session implementations are vulnerable by default and only become secure through explicit, tested configuration."
 }
