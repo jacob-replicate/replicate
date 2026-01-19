@@ -1,9 +1,7 @@
-<div class="md:mt-4 text-[15px] text-gray-800 leading-6">
+<div class="md:mt-4 text-[15px] text-gray-800 dark:text-zinc-300 leading-6">
   <%= @experience.description.html_safe %>
 </div>
 
 <% @experience.elements.root_level.includes(elements: :conversation).order(sort_order: :asc).each_with_index do |element, i| %>
-  <% if Rails.env.development? || element.code == "conversation_list" %>
-    <%= render "elements/#{element.code.underscore}", element: element %>
-  <% end %>
+  <%= render "elements/#{element.code.underscore}", element: element %>
 <% end %>
