@@ -166,25 +166,57 @@ topics_data = {
     generation_intent: ''
   },
 
-  # === RELIABILITY ===
-  'capacity' => {
-    name: 'Capacity Management',
-    description: 'Autoscaling reacts to load, but by the time new instances are ready you\'ve already been dropping requests for minutes.',
+  # === OBSERVABILITY ===
+  'logging' => {
+    name: 'Logging',
+    description: 'You\'ll grep for the one log line that matters and find it was the one you didn\'t add.',
     generation_intent: ''
   },
-  'observability' => {
-    name: 'Observability',
-    description: 'Dashboards show you what you expected to break, not what actually broke, so the real problem isn\'t on any graph.',
+  'metrics' => {
+    name: 'Metrics',
+    description: 'The dashboard was green the whole time. The problem was in a dimension you weren\'t slicing by.',
     generation_intent: ''
   },
-  'incidents' => {
-    name: 'Incident Response',
-    description: 'The first ten minutes of an incident determine whether it lasts one hour or six, and most teams waste them.',
+  'tracing' => {
+    name: 'Tracing',
+    description: 'The request took 800ms but every span says 50ms. The gap is where your problem lives.',
+    generation_intent: ''
+  },
+  'alerting' => {
+    name: 'Alerting',
+    description: 'The alert fired at 3am. It had been firing every night for months. No one remembered why.',
+    generation_intent: ''
+  },
+  'debugging' => {
+    name: 'Debugging',
+    description: 'It works locally. It worked yesterday. The diff is three lines. The bug is in none of them.',
+    generation_intent: ''
+  },
+
+  # === GOVERNANCE ===
+  'iam' => {
+    name: 'IAM',
+    description: 'Someone has admin access who shouldn\'t. You\'ll find out when they leave or when the auditor does.',
+    generation_intent: ''
+  },
+  'compliance' => {
+    name: 'Compliance',
+    description: 'Auditors ask for evidence you don\'t have unless you built collection into the system from day one.',
     generation_intent: ''
   },
   'cost' => {
-    name: 'Cost Optimization',
-    description: 'Unused resources don\'t page anyone, so they stick around forever until someone finally looks at the bill.',
+    name: 'Cost',
+    description: 'Unused resources don\'t page anyone, so they stick around forever until someone looks at the bill.',
+    generation_intent: ''
+  },
+  'threat-detection' => {
+    name: 'Threat Detection',
+    description: 'You won\'t notice the breach until someone else tells you. Your alerts are tuned for noise, not signal.',
+    generation_intent: ''
+  },
+  'security-incidents' => {
+    name: 'Security Incidents',
+    description: 'The breach is survivable. The response determines whether you contain it in hours or explain it for months.',
     generation_intent: ''
   }
 }

@@ -1,37 +1,29 @@
 class TopicCategories
   CATEGORIES = {
-    "Traffic" => {
-      description: "A request hits your load balancer and vanishes. The DNS was stale, but you won't know that for an hour.",
-      topics: %w[dns service-discovery load-balancing edge rate-limiting]
-    },
-    "Network Security" => {
-      description: "Every service needs to prove its identity. Misconfigured trust is how breaches happen.",
-      topics: %w[network-security encryption identity]
-    },
-    "Security Operations" => {
-      description: "Audits, compliance, incident response, and proving your security isn't just vibes.",
-      topics: %w[threat-detection security-incidents compliance supply-chain]
-    },
-    "Data Consistency" => {
-      description: "",
-      topics: %w[stale-reads consensus idempotency ordering transactions]
-    },
-    "Storage" => {
-      description: "",
-      topics: %w[database-ops partitioning caching backups]
-    },
-    "Shipping Changes" => {
+    "Change Management" => {
       description: "Shipping is the easy part. Realizing you can't roll back the schema migration is not.",
-      topics: %w[ci-cd migrations feature-flags config-management]
+      topics: %w[ci-cd feature-flags config-management supply-chain]
     },
     "Compute" => {
       description: "",
       topics: %w[resource-limits scheduling isolation workload-state]
     },
-    "Reliability" => {
-      description: "The pager goes off at 3am because someone decided the alert could wait until after launch.",
-      topics: %w[capacity observability incidents cost]
-    }
+    "Storage" => {
+      description: "",
+      topics: %w[database-ops migrations partitioning caching backups stale-reads consensus idempotency ordering transactions]
+    },
+    "Networking" => {
+      description: "",
+      topics: %w[dns service-discovery load-balancing edge rate-limiting network-security encryption identity]
+    },
+    "Observability" => {
+      description: "",
+      topics: %w[logging metrics tracing alerting debugging]
+    },
+    "Governance" => {
+      description: "",
+      topics: %w[iam compliance cost threat-detection security-incidents]
+    },
   }.freeze
 
   def initialize(topics)
