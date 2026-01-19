@@ -5,7 +5,7 @@
 <% placeholder = element.context["input_placeholder"] %>
 <% list_mode = local_assigns[:list_mode] %>
 
-<div class="<%= list_mode ? 'px-5 py-4 bg-white dark:bg-zinc-800' : 'mt-6 rounded-md border-[1.5px] border-[#b0b0b0] dark:border-[#333333] bg-white dark:bg-zinc-800 px-5 py-4 relative' %>">
+<div class="<%= list_mode ? 'px-5 py-4 bg-white dark:bg-zinc-800' : 'mt-6 rounded-md border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 px-5 py-4 relative' %>">
   <% unless list_mode %>
     <div class="absolute left-0 top-0 h-full w-1 rounded-l-md bg-violet-400 dark:bg-violet-500/70"></div>
   <% end %>

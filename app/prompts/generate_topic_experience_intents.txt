@@ -22,7 +22,7 @@ BAD: "cgroups", "namespaces", "schedulers"
 The name should already imply pain.
 
 B. Breaking a DIFFERENT assumption than every other experience
-Each experience punishes a *distinct belief*. If two experiences break the same belief, merge or delete one.
+Each experience punishes a *distinct belief*. Before adding an experience, verify it breaks an assumption not already covered by another.
 
 C. Describing the *lie*
 Every experience must contrast:
@@ -92,9 +92,9 @@ Coverage Strategy:
 - What shows up in postmortems that surprises people?
 
 Number of intents:
-- Generate 6-10 intents
+- Generate 5-7 intents
 - Each must break a DIFFERENT assumption
-- Quality over quantity - each should deserve its own on-call rotation
+- Quality over quantity - fewer distinct failures beats more overlapping ones
 
 OUTPUT FORMAT:
 Return a single valid JSON object with this structure:

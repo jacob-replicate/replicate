@@ -8,8 +8,8 @@ module Prompts
       failures << "not_array" unless intents.is_a?(Array)
 
       if intents.is_a?(Array)
-        failures << "too_few_intents" if intents.length < 6
-        failures << "too_many_intents" if intents.length > 10
+        failures << "too_few_intents" if intents.length < 5
+        failures << "too_many_intents" if intents.length > 7
 
         intents.each_with_index do |intent, idx|
           unless intent.is_a?(String) && !intent.strip.empty?

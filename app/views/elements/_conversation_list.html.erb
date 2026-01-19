@@ -2,7 +2,7 @@
   <%= element.context["name"] %>
 </div>
 
-<div class="rounded-md border-[1.5px] border-[#b0b0b0] dark:border-[#333333] bg-white dark:bg-zinc-800 overflow-hidden">
+<div class="rounded-md border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 overflow-hidden">
   <table class="w-full border-collapse">
     <% element.elements.includes(:conversation).each do |row| %>
       <% conversation = row.conversation %>
