@@ -1,20 +1,20 @@
 <div class="py-6">
-  <h1 class="text-3xl font-semibold mb-4">Billing & Payment Terms</h1>
-  <p class="text-sm text-gray-500 mb-6">Last updated: October 29, 2025</p>
+  <h1 class="text-3xl font-semibold mb-4 text-gray-900 dark:text-gray-100">Billing & Payment Terms</h1>
+  <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">Last updated: October 29, 2025</p>
 
-  <p class="mb-6">
+  <p class="mb-6 text-gray-800 dark:text-gray-200">
     <span class="font-semibold">One annual invoice</span> (USD) due <span class="font-semibold">30 days</span> after your <span class="font-semibold">3-month free trial</span> ends.  Pay by <span class="font-semibold">ACH</span> or <span class="font-semibold">wire</span>.
   </p>
 
-  <p class="mb-6">
-    You'll get a <a href="/replicate-msa-dpa.pdf" class="text-blue-600 hover:underline font-semibold">pre-signed MSA/DPA</a> via DocuSign a few weeks in. <span class="font-semibold">No sales calls</span>. If you do nothing, the emails simply stop, and your data gets wiped. You get <span class="font-semibold">auto-unsubscribed</span> if the tool doesn't click.
+  <p class="mb-6 text-gray-800 dark:text-gray-200">
+    You'll get a <a href="/replicate-msa-dpa.pdf" class="text-blue-600 dark:text-blue-400 hover:underline font-semibold">pre-signed MSA/DPA</a> via DocuSign a few weeks in. <span class="font-semibold">No sales calls</span>. If you do nothing, the emails simply stop, and your data gets wiped. You get <span class="font-semibold">auto-unsubscribed</span> if the tool doesn't click.
   </p>
 
-  <p class="mb-6">
+  <p class="mb-6 text-gray-800 dark:text-gray-200">
     <span class="font-semibold">Sign whenever</span>. Your term starts the 1st of the month <span class="font-semibold">after</span> your trial's end date. You always get 3 months free, along with any gap days. <span class="font-semibold">Prorated terms</span> are an option to align with budget cycles.
   </p>
 
-  <p class="mb-6 md:mb-8">
+  <p class="mb-6 md:mb-8 text-gray-800 dark:text-gray-200">
     You can also prepay <span class="font-semibold">multi-year</span> terms in one check to shave <span class="font-semibold">30%</span> off the <span class="font-semibold">entire contract</span>.
   </p>
 
@@ -30,9 +30,9 @@
 
   <!-- Pricing: desktop table (md+), text-left numbers -->
   <div class="hidden md:block">
-    <div class="overflow-hidden rounded-md border border-gray-200 shadow-sm">
-      <table class="min-w-full divide-y divide-gray-200 text-sm">
-        <thead class="bg-gray-50 text-gray-700">
+    <div class="overflow-hidden rounded-md border border-gray-200 dark:border-gray-700 shadow-sm dark:shadow-gray-900/30">
+      <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700 text-sm">
+        <thead class="bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-300">
         <tr>
           <th class="px-5 py-3 text-left font-semibold">Team Size</th>
           <th class="px-5 py-3 text-left font-semibold">1 Year</th>
@@ -40,10 +40,10 @@
           <th class="px-5 py-3 text-left font-semibold">3 Years</th>
         </tr>
         </thead>
-        <tbody class="divide-y divide-gray-100">
+        <tbody class="divide-y divide-gray-100 dark:divide-gray-700 bg-white dark:bg-[#1a1a1a] text-gray-800 dark:text-gray-200">
         <% @prices.each do |t| %>
           <% p1 = t[:price]; p2 = two_year_total.(p1); p3 = three_year_total.(p1) %>
-          <tr class="hover:bg-gray-50/60">
+          <tr class="hover:bg-gray-50/60 dark:hover:bg-[#252525]">
             <td class="px-5 py-3">
               Up to <span class="font-semibold"><%= seats.(t[:seat_count]) %></span> engineers
             </td>
@@ -58,24 +58,24 @@
   </div>
 
   <!-- Pricing: mobile cards (sm), text-left numbers; hide on md+ -->
-  <div class="md:hidden rounded-md border-2 border-neutral-200">
+  <div class="md:hidden rounded-md border-2 border-neutral-200 dark:border-neutral-700 bg-white dark:bg-[#1a1a1a]">
     <% @prices.each_with_index do |t, idx| %>
       <% p1 = t[:price]; p2 = two_year_total.(p1); p3 = three_year_total.(p1) %>
-      <div class="<%= idx.zero? ? '' : 'border-t'  %> border-gray-200 p-4">
-        <div class="text-sm text-gray-600">
-          Up to <span class="font-semibold text-gray-900"><%= seats.(t[:seat_count]) %></span> engineers
+      <div class="<%= idx.zero? ? '' : 'border-t'  %> border-gray-200 dark:border-gray-700 p-4">
+        <div class="text-sm text-gray-600 dark:text-gray-400">
+          Up to <span class="font-semibold text-gray-900 dark:text-gray-100"><%= seats.(t[:seat_count]) %></span> engineers
         </div>
-        <div class="mt-3 grid grid-cols-3 gap-3 text-sm">
+        <div class="mt-3 grid grid-cols-3 gap-3 text-sm text-gray-800 dark:text-gray-200">
           <div>
-            <div class="text-xs text-gray-500">1 Year</div>
+            <div class="text-xs text-gray-500 dark:text-gray-400">1 Year</div>
             <div class="tabular-nums text-left font-semibold"><%= money.(p1) %></div>
           </div>
           <div>
-            <div class="text-xs text-gray-500">2 Years</div>
+            <div class="text-xs text-gray-500 dark:text-gray-400">2 Years</div>
             <div class="tabular-nums text-left font-semibold"><%= money_k.(p2) %></div>
           </div>
           <div>
-            <div class="text-xs text-gray-500">3 Years</div>
+            <div class="text-xs text-gray-500 dark:text-gray-400">3 Years</div>
             <div class="tabular-nums text-left font-semibold"><%= money_k.(p3) %></div>
           </div>
         </div>
@@ -83,58 +83,58 @@
     <% end %>
   </div>
 
-  <div class="mt-6 md:mt-8 mb-6">
-    <span class="font-semibold text-lg">Enterprise Pricing</span>
+  <div class="mt-6 md:mt-8 mb-6 text-gray-800 dark:text-gray-200">
+    <span class="font-semibold text-lg text-gray-900 dark:text-gray-100">Enterprise Pricing</span>
     <div class="mt-2">
-      <span class="font-semibold">$100</span>/seat/year (SaaS). Email <a href="mailto:support@replicate.info" class="text-blue-600 hover:underline font-semibold">support@replicate.info</a> for an invoice. Prepay multi-year for 30% off.
+      <span class="font-semibold">$100</span>/seat/year (SaaS). Email <a href="mailto:support@replicate.info" class="text-blue-600 dark:text-blue-400 hover:underline font-semibold">support@replicate.info</a> for an invoice. Prepay multi-year for 30% off.
     </div>
   </div>
 
-  <p class="mb-2 font-semibold text-lg">Annual Renewals</p>
-  <p class="mb-6">
+  <p class="mb-2 font-semibold text-lg text-gray-900 dark:text-gray-100">Annual Renewals</p>
+  <p class="mb-6 text-gray-800 dark:text-gray-200">
     There is <span class="font-semibold">no metering</span>, <span class="font-semibold">auto-renewal</span>, or <span class="font-semibold">evergreen clauses</span>. You'll get a renewal reminder 90 days out. You must approve every renewal, or your <span class="font-semibold">fixed-term contract</span> expires.
   </p>
 
-  <p class="font-semibold mb-2 text-lg">Insurance Coverage</p>
-  <p class="mb-6">Replicate Software, LLC maintains <a href="/replicate-coi.pdf" class="text-blue-600 hover:underline font-semibold">$1M Errors & Omissions</a> and <a href="/replicate-coi.pdf" class="text-blue-600 hover:underline font-semibold">$1M Cyber Liability</a> coverage.
+  <p class="font-semibold mb-2 text-lg text-gray-900 dark:text-gray-100">Insurance Coverage</p>
+  <p class="mb-6 text-gray-800 dark:text-gray-200">Replicate Software, LLC maintains <a href="/replicate-coi.pdf" class="text-blue-600 dark:text-blue-400 hover:underline font-semibold">$1M Errors & Omissions</a> and <a href="/replicate-coi.pdf" class="text-blue-600 dark:text-blue-400 hover:underline font-semibold">$1M Cyber Liability</a> coverage.
 
-  <p class="mb-2 font-semibold text-lg">Liability Cap</p>
-  <p class="mb-6">Liability is capped at <span class="font-semibold">5x the fees</span> paid across your <span class="font-semibold">entire contract</span>, even if multi-year. Exclusions are uncapped: willful misconduct, gross negligence, IP infringement, and confidentiality breaches.</p>
+  <p class="mb-2 font-semibold text-lg text-gray-900 dark:text-gray-100">Liability Cap</p>
+  <p class="mb-6 text-gray-800 dark:text-gray-200">Liability is capped at <span class="font-semibold">5x the fees</span> paid across your <span class="font-semibold">entire contract</span>, even if multi-year. Exclusions are uncapped: willful misconduct, gross negligence, IP infringement, and confidentiality breaches.</p>
 
-  <p class="mb-2 font-semibold text-lg">Mid-term Adjustments</p>
-  <div class="mb-6">Rebalance seats and/or modify your term whenever. Your remaining balance rolls into the new contract shape you pick. No penalties. You already paid. It should be easy for you to expand/contract usage.<span class="block mt-3">If you shorten a multi-year plan early, I'll count time used at your original discounted rate. No clawbacks.</span> <span class="block mt-3">Your new contract starts on the 1st of next month. <span class="font-semibold">Upgrades apply immediately</span>. I'll cover the gap days.</span></div>
+  <p class="mb-2 font-semibold text-lg text-gray-900 dark:text-gray-100">Mid-term Adjustments</p>
+  <div class="mb-6 text-gray-800 dark:text-gray-200">Rebalance seats and/or modify your term whenever. Your remaining balance rolls into the new contract shape you pick. No penalties. You already paid. It should be easy for you to expand/contract usage.<span class="block mt-3">If you shorten a multi-year plan early, I'll count time used at your original discounted rate. No clawbacks.</span> <span class="block mt-3">Your new contract starts on the 1st of next month. <span class="font-semibold">Upgrades apply immediately</span>. I'll cover the gap days.</span></div>
 
-  <p class="mb-2 font-semibold text-lg">Refund Policy</p>
-  <p class="mb-6">
+  <p class="mb-2 font-semibold text-lg text-gray-900 dark:text-gray-100">Refund Policy</p>
+  <p class="mb-6 text-gray-800 dark:text-gray-200">
     All sales are final. Think it over for a quarter, and align on why this investment matters (or doesn't).
   </p>
 
-  <p class="font-semibold mb-2 text-lg">Sales Tax</p>
-  <p class="mb-6">
-    Prices include all applicable taxes (calculated via <a href="https://stripe.com/tax" class="text-blue-600 hover:underline font-semibold">Stripe Tax</a>). You pay the flat rates above, and I cover all the taxes. Email exemption certificates to <a href="mailto:support@replicate.info" class="text-blue-600 hover:underline font-semibold">support@replicate.info</a> to apply them <span class="font-semibold">before</span> invoicing.
+  <p class="font-semibold mb-2 text-lg text-gray-900 dark:text-gray-100">Sales Tax</p>
+  <p class="mb-6 text-gray-800 dark:text-gray-200">
+    Prices include all applicable taxes (calculated via <a href="https://stripe.com/tax" class="text-blue-600 dark:text-blue-400 hover:underline font-semibold">Stripe Tax</a>). You pay the flat rates above, and I cover all the taxes. Email exemption certificates to <a href="mailto:support@replicate.info" class="text-blue-600 dark:text-blue-400 hover:underline font-semibold">support@replicate.info</a> to apply them <span class="font-semibold">before</span> invoicing.
   </p>
 
-  <p class="mb-2 font-semibold text-lg">Standard Agreements</p>
-  <p class="mb-6">
+  <p class="mb-2 font-semibold text-lg text-gray-900 dark:text-gray-100">Standard Agreements</p>
+  <p class="mb-6 text-gray-800 dark:text-gray-200">
     No RFPs, redlines, or vendor portals. Contracts are governed by Delaware law, under U.S. jurisdiction.
   </p>
 
-  <p class="mb-2 font-semibold text-lg">Support</p>
-  <p class="mb-6">
+  <p class="mb-2 font-semibold text-lg text-gray-900 dark:text-gray-100">Support</p>
+  <p class="mb-6 text-gray-800 dark:text-gray-200">
     Email support is included for all tiers. Typical response time is 1-2 days.
   </p>
 
-  <p class="text-gray-500 mt-8 text-sm">
+  <p class="text-gray-500 dark:text-gray-400 mt-8 text-sm">
     <span class="md:hidden">
-      <%= link_to 'Terms', '/terms', class: "text-blue-600 hover:underline" %>&nbsp;&nbsp;•&nbsp;&nbsp;
-      <%= link_to 'Privacy', '/privacy', class: "text-blue-600 hover:underline" %>&nbsp;&nbsp;•&nbsp;&nbsp;
+      <%= link_to 'Terms', '/terms', class: "text-blue-600 dark:text-blue-400 hover:underline" %>&nbsp;&nbsp;•&nbsp;&nbsp;
+      <%= link_to 'Privacy', '/privacy', class: "text-blue-600 dark:text-blue-400 hover:underline" %>&nbsp;&nbsp;•&nbsp;&nbsp;
     </span>
     <span class="hidden md:inline">
-      <%= link_to 'Terms of Service', '/terms', class: "text-blue-600 hover:underline" %> &nbsp;&nbsp;•&nbsp;&nbsp;
-      <%= link_to 'Privacy Policy', '/privacy', class: "text-blue-600 hover:underline" %> &nbsp;&nbsp;•&nbsp;&nbsp;
+      <%= link_to 'Terms of Service', '/terms', class: "text-blue-600 dark:text-blue-400 hover:underline" %> &nbsp;&nbsp;•&nbsp;&nbsp;
+      <%= link_to 'Privacy Policy', '/privacy', class: "text-blue-600 dark:text-blue-400 hover:underline" %> &nbsp;&nbsp;•&nbsp;&nbsp;
     </span>
-    <%= link_to 'Security', '/security', class: "text-blue-600 hover:underline" %>&nbsp;&nbsp;•&nbsp;&nbsp;
-    <a href="/replicate-w9.pdf" class="text-blue-600 hover:underline">W-9</a>&nbsp;&nbsp;•&nbsp;&nbsp;
-    <%= link_to 'COI', '/replicate-coi.pdf', class: "text-blue-600 hover:underline" %>
+    <%= link_to 'Security', '/security', class: "text-blue-600 dark:text-blue-400 hover:underline" %>&nbsp;&nbsp;•&nbsp;&nbsp;
+    <a href="/replicate-w9.pdf" class="text-blue-600 dark:text-blue-400 hover:underline">W-9</a>&nbsp;&nbsp;•&nbsp;&nbsp;
+    <%= link_to 'COI', '/replicate-coi.pdf', class: "text-blue-600 dark:text-blue-400 hover:underline" %>
   </p>
 </div>

@@ -25,10 +25,9 @@ class SanitizeAiContent
     response = strip_tags(response).squish
     response.gsub!("```html", "")
     response.gsub!("```", "")
-    response.gsub!("“", "\"")
-    response.gsub!("”", "\"")
+    response.gsub!(/["""]/, '"')
     response.gsub!("&#39;", "'")
-    response.gsub!("’", "'")
+    response.gsub!(/['']/, "'")
     response.gsub!("*", "")
     response.gsub!("`", "")
 

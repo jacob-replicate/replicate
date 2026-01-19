@@ -1,4 +1,6 @@
 class Experience < ApplicationRecord
+  belongs_to :topic, optional: true
+
   has_many :elements, dependent: :destroy
 
   validates :code, :name, presence: true

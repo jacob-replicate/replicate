@@ -1,64 +1,180 @@
-<header class="">
-  <nav class="flex items-center justify-between pt-2">
-    <div class="flex md:flex-1">
-      <a href="<%= root_path %>" class="text-[#111] tracking-tight text-[22px] md:text-[26px]" style="font-family: 'Reckless Neue'">
-        replicat<span style="letter-spacing: -0.08em;">e</span><span style="letter-spacing: 0.02em;">.</span>info
-      </a>
-    </div>
+<header>
+  <nav class="pt-2">
+    <!-- Top row: Brand + Breadcrumb (md+) + Toggle -->
+    <div class="flex items-center justify-between">
+      <!-- Left: Brand -->
+      <div class="flex-shrink-0">
+        <a href="<%= root_path %>"
+           class="text-zinc-800 dark:text-zinc-100 tracking-tight text-[22px] md:text-[25px]"
+           style="font-family: 'Reckless Neue'">
+          replicat<span style="letter-spacing:-0.08em;">e</span><span style="letter-spacing:0.02em;">.</span>info
+        </a>
 
-    <!-- Desktop menu -->
-    <div class="hidden md:flex md:gap-x-10">
-      <a href="/terms" class="text-sm text-sky-700 hover:underline hover:underline-offset-8">Terms</a>
-      <a href="/privacy" class="text-sm text-sky-700 hover:underline hover:underline-offset-8">Privacy</a>
-      <a href="/security" class="text-sm text-sky-700 hover:underline hover:underline-offset-8">Security</a>
-    </div>
-
-    <div class="flex flex-1 justify-end">
-      <% if @conversation.present? %>
-        <div class="bg-neutral-400 rounded-md flex" id="difficulty">
-          <% ["Junior", "Mid", "Senior", "Staff+"].each do |difficulty| %>
-            <button type="button" aria-disabled="false" class="px-[10px] py-[6px] text-[13px]">
-              <%= difficulty %>
-            </button>
+        <div class="text-[13px] flex gap-x-4 mt-[3px]">
+          <% %i[privacy security terms].each do |action| %>
+            <% if controller_name == 'static' && action_name == action.to_s %>
+              <span class="text-zinc-800 dark:text-zinc-100 font-semibold"><%= action.to_s.capitalize %></span>
+            <% else %>
+              <a href="/<%= action %>" class="text-[#0066cc] dark:text-violet-400 hover:text-[#004499] dark:hover:text-violet-300 hover:underline hover:underline-offset-8"><%= action.to_s.capitalize %></a>
+            <% end %>
           <% end %>
         </div>
-      <% else %>
-          <a class="inline-block text-[15px] text-white bg-indigo-600 hover:bg-indigo-800 cursor-pointer font-semibold transition-all rounded-md px-3 py-2" href="/sev">
-            Fix a SEV-1
-          </a>
-      <% end %>
-    </div>
-  </nav>
+      </div>
 
-  <!-- Mobile menu -->
-  <div id="mobile-menu" class="md:hidden hidden fixed inset-0 z-50 overflow-y-auto bg-gray-100 pt-6 px-4 sm:max-w-sm sm:ring-1 sm:ring-white/10" role="dialog" aria-modal="true">
-    <div class="flex items-center justify-between">
-      <div class="flex items-center">
-        <a href="<%= root_path %>" class="text-[#111] tracking-tight text-[26px]" style="font-family: 'Reckless Neue'">
-          replicat<span style="letter-spacing: -0.08em;">e</span><span style="letter-spacing: 0.02em;">.</span>info
-        </a>
+      <!-- Right: Breadcrumb (md+ inline) + Signature (index only) + Theme toggle -->
+      <div class="flex items-center gap-4">
+        <!-- Breadcrumb - hidden on mobile, shown inline on md+ -->
+        <% unless controller_name == 'static' && action_name == 'index' %>
+          <% if @topic.present? || @experience.present? %>
+            <div class="hidden md:inline-flex items-center gap-[3px] rounded-md border border-zinc-200 dark:border-zinc-700/40 bg-zinc-100 dark:bg-zinc-800/50 px-3 py-1 text-[13px] font-mono">
+              <span class="text-zinc-400 dark:text-zinc-500">/</span>
+
+              <a
+                href="<%= root_path %>"
+                class="text-[#0066cc] dark:text-violet-400 hover:text-[#004499] dark:hover:text-violet-300"
+              >
+                home
+              </a>
+
+              <% if @topic.present? %>
+                <span class="text-zinc-400 dark:text-zinc-500">/</span>
+
+                <% if @experience.present? %>
+                  <a
+                    href="<%= topic_path(@topic.code) %>"
+                    class="text-[#0066cc] dark:text-violet-400 hover:text-[#004499] dark:hover:text-violet-300"
+                  >
+                    <%= @topic.code %>
+                  </a>
+
+                  <span class="text-zinc-400 dark:text-zinc-500">/</span>
+
+                  <span class="text-zinc-800 dark:text-zinc-100 font-semibold">
+                    <%= @experience.code %>
+                  </span>
+                <% else %>
+                  <span class="text-zinc-800 dark:text-zinc-100 font-semibold">
+                    <%= @topic.code %>
+                  </span>
+                <% end %>
+              <% elsif @experience.present? %>
+                <span class="text-zinc-400 dark:text-zinc-500">/</span>
+                <span class="text-zinc-800 dark:text-zinc-100 font-semibold">
+                  <%= @experience.code %>
+                </span>
+              <% end %>
+            </div>
+          <% end %>
+        <% end %>
+
+        <!-- Compact signature - only on index page -->
+        <% if controller_name == 'static' && action_name == 'index' %>
+          <div class="hidden md:flex items-center gap-3.5 dark:bg-zinc-700 dark:rounded-full dark:px-4 dark:py-1.5">
+            <span class="text-[15px] font-medium tracking-wide signature text-zinc-700 dark:text-white">Jacob Comer</span>
+            <div class="flex items-center gap-1.5">
+              <%= link_to 'https://linkedin.com/in/jacobcomer', target: "_blank", class: "group relative" do %>
+                <img src="/icons/linkedin.png" class="w-[22px] h-[22px] opacity-80 dark:opacity-100 group-hover:opacity-100 transition-all duration-200 group-hover:scale-110" alt="LinkedIn" />
+              <% end %>
+              <%= link_to 'https://instagram.com/jacob_comer', target: "_blank", class: "group relative" do %>
+                <img src="/icons/instagram.png" class="w-[22px] h-[22px] opacity-80 dark:opacity-100 group-hover:opacity-100 transition-all duration-200 group-hover:scale-110" alt="Instagram" />
+              <% end %>
+              <%= link_to 'https://jacobcomer.medium.com/write-code-faster-in-vim-c564ff9b9f6c', target: "_blank", class: "group relative" do %>
+                <img src="/icons/medium.png" class="w-[22px] h-[22px] opacity-80 dark:opacity-100 group-hover:opacity-100 transition-all duration-200 group-hover:scale-110" alt="Medium" />
+              <% end %>
+              <%= link_to 'https://www.reddit.com/user/jacob_the_snacob', target: "_blank", class: "group relative" do %>
+                <img src="/icons/reddit.png" class="w-[22px] h-[22px] opacity-80 dark:opacity-100 group-hover:opacity-100 transition-all duration-200 group-hover:scale-110" alt="Reddit" />
+              <% end %>
+              <%= link_to 'https://forms.gle/TJY17MyvEUocStD56', target: "_blank", class: "group relative" do %>
+                <img src="/icons/email.png" class="w-[22px] h-[22px] opacity-80 dark:opacity-100 group-hover:opacity-100 transition-all duration-200 group-hover:scale-110" alt="Email" />
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+
+        <!-- Theme toggle -->
+        <button
+          id="theme-toggle"
+          type="button"
+          class="theme-toggle"
+          aria-label="Toggle dark mode"
+          title="Toggle dark mode"
+        >
+          <div class="theme-toggle-knob">
+            <svg class="theme-toggle-icon theme-toggle-sun" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd"></path>
+            </svg>
+            <svg class="theme-toggle-icon theme-toggle-moon" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+          </div>
+        </button>
       </div>
-      <button
-        type="button"
-        class="text-gray-600 hover:text-gray-800 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500"
-        onclick="document.getElementById('mobile-menu').classList.add('hidden')"
-        aria-label="Close menu"
-      >
-        <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <line x1="18" y1="6" x2="6" y2="18" />
-          <line x1="6" y1="6" x2="18" y2="18" />
-        </svg>
-      </button>
     </div>
-    <div class="mt-6 flow-root">
-      <div class="-my-6 divide-y divide-gray-500/25">
-        <div class="space-y-2 py-6">
-          <% mobile_button_classes = "-mx-3 block rounded-lg px-3 py-2 text-base text-sky-700" %>
-          <a href="/terms" class="<%= mobile_button_classes %>">Terms</a>
-          <a href="/privacy" class="<%= mobile_button_classes %>">Privacy</a>
-          <a href="/security" class="<%= mobile_button_classes %>">Security</a>
+
+    <!-- Breadcrumb (mobile only - separate row) -->
+    <% unless controller_name == 'static' && action_name == 'index' %>
+      <% if @topic.present? || @experience.present? %>
+        <div class="mt-3 md:hidden">
+          <div class="inline-flex items-center gap-[3px] rounded-md border border-zinc-200 dark:border-zinc-700/40 bg-zinc-100 dark:bg-zinc-800/50 px-3 py-1 text-[13px] font-mono">
+            <span class="text-zinc-400 dark:text-zinc-500">/</span>
+
+            <a
+              href="<%= root_path %>"
+              class="text-[#0066cc] dark:text-violet-400 hover:text-[#004499] dark:hover:text-violet-300"
+            >
+              home
+            </a>
+
+            <% if @topic.present? %>
+              <span class="text-zinc-400 dark:text-zinc-500">/</span>
+
+              <% if @experience.present? %>
+                <a
+                  href="<%= topic_path(@topic.code) %>"
+                  class="text-[#0066cc] dark:text-violet-400 hover:text-[#004499] dark:hover:text-violet-300"
+                >
+                  <%= @topic.code %>
+                </a>
+
+                <span class="text-zinc-400 dark:text-zinc-500">/</span>
+
+                <span class="text-zinc-800 dark:text-zinc-100 font-semibold">
+                  <%= @experience.code %>
+                </span>
+              <% else %>
+                <span class="text-zinc-800 dark:text-zinc-100 font-semibold">
+                  <%= @topic.code %>
+                </span>
+              <% end %>
+            <% elsif @experience.present? %>
+              <span class="text-zinc-400 dark:text-zinc-500">/</span>
+              <span class="text-zinc-800 dark:text-zinc-100 font-semibold">
+                <%= @experience.code %>
+              </span>
+            <% end %>
+          </div>
         </div>
-      </div>
-    </div>
-  </div>
+      <% end %>
+    <% end %>
+  </nav>
 </header>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const toggle = document.getElementById('theme-toggle');
+    if (!toggle) return;
+
+    toggle.addEventListener('click', function() {
+      const html = document.documentElement;
+      const isDark = html.classList.contains('dark');
+
+      if (isDark) {
+        html.classList.remove('dark');
+        localStorage.setItem('theme', 'light');
+      } else {
+        html.classList.add('dark');
+        localStorage.setItem('theme', 'dark');
+      }
+    });
+  });
+</script>

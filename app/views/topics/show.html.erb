@@ -1,0 +1,39 @@
+<div class="mt-4 space-y-8">
+  <section class="bg-white dark:bg-zinc-800 rounded-lg shadow-sm overflow-hidden border-[1.5px] border-[#b0b0b0] dark:border-[#333333]">
+    <div class="px-4 pt-4 pb-3">
+      <h2 class="text-[15px] font-semibold text-zinc-800 dark:text-zinc-100"><%= @topic.name %></h2>
+      <% if @topic.description.present? %>
+        <p class="text-[13px] text-zinc-500 dark:text-zinc-400 mt-0.5"><%= @topic.description %></p>
+      <% end %>
+    </div>
+
+    <% if @experiences.any? %>
+      <div class="border-t border-zinc-100 dark:border-zinc-700">
+        <% @experiences.each_with_index do |experience, i| %>
+          <%= link_to topic_experience_path(@topic.code, experience.code), class: "topic-link block px-4 py-2.5 hover:bg-zinc-50 dark:hover:bg-zinc-700/50 #{'border-t border-zinc-100 dark:border-zinc-700' unless i == 0}" do %>
+            <div class="text-[14px]"><%= experience.name.html_safe %></div>
+            <div class="text-[13px] text-zinc-500 dark:text-zinc-400 mt-0.5"><%= experience.description.html_safe %></div>
+          <% end %>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="border-t border-zinc-100 dark:border-zinc-700">
+        <div class="p-8 text-center">
+          <p class="text-zinc-600 dark:text-zinc-400 text-sm font-medium mb-1">No experiences yet</p>
+          <p class="text-zinc-500 text-[13px] mb-4">This topic is empty.</p>
+          <% if admin? %>
+            <%= button_to populate_topic_path(@topic.code),
+                method: :post,
+                class: "inline-flex items-center gap-2 rounded-md border border-emerald-300 dark:border-emerald-600 bg-emerald-100 dark:bg-emerald-900/30 hover:bg-emerald-200 dark:hover:bg-emerald-900/50 hover:border-emerald-400 dark:hover:border-emerald-500 px-4 py-2 text-sm font-medium text-emerald-800 dark:text-emerald-300 shadow-sm",
+                data: { turbo_confirm: "Populate #{@topic.name} with new experiences?" } do %>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+              </svg>
+              <span>Populate this topic</span>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </section>
+</div>

@@ -25,9 +25,6 @@ class Conversation < ApplicationRecord
     update!(sequence_count: sequence + 1)
   end
 
-  def difficulty
-    context["difficulty"] || "senior"
-  end
 
   def self.fork(sharing_code)
     original = Conversation.find_by!(sharing_code: sharing_code)
@@ -54,13 +51,6 @@ class Conversation < ApplicationRecord
     [1, ((message_times.last - message_times.first).to_i / 60.0).round].max
   end
 
-  def email?
-    channel == "email"
-  end
-
-  def web?
-    channel == "web"
-  end
 
   def turn
     messages.where(user_generated: true).count + 1
@@ -80,7 +70,7 @@ class Conversation < ApplicationRecord
   end
 
   def message_history
-    last_message_count = context["conversation_type"] == "coaching" ? 30 : 6
+    last_message_count = variant == "incident" ? 30 : 6
 
     messages.order(created_at: :asc).last(last_message_count).map do |message|
       {

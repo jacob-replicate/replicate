@@ -4,5 +4,6 @@ FactoryBot.define do
     session_id { "MyText" }
     template { false }
     name { "MyText" }
+    description { "MyDescription" }
   end
 end

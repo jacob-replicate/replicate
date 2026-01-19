@@ -109,31 +109,6 @@ CREATE TABLE public.cached_llm_responses (
 
 
 --
--- Name: contacts; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.contacts (
-    id uuid DEFAULT gen_random_uuid() NOT NULL,
-    email text,
-    location text,
-    company_domain text,
-    state text,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL,
-    source text,
-    external_id text,
-    score integer DEFAULT 0,
-    score_reason text,
-    metadata jsonb DEFAULT '{}'::jsonb,
-    name text,
-    cohort text,
-    unsubscribed boolean DEFAULT false NOT NULL,
-    email_queued_at timestamp(6) without time zone DEFAULT NULL::timestamp without time zone,
-    contacted_at timestamp(6) without time zone
-);
-
-
---
 -- Name: conversations; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -143,13 +118,15 @@ CREATE TABLE public.conversations (
     recipient_id uuid,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    context jsonb DEFAULT '{}'::jsonb NOT NULL,
     channel character varying,
     subject_line text,
     sequence_count integer DEFAULT 0 NOT NULL,
     ip_address character varying,
     sharing_code character varying,
-    referring_conversation_id uuid
+    referring_conversation_id uuid,
+    generation_intent text,
+    variant character varying,
+    page_title character varying
 );
 
 
@@ -165,7 +142,9 @@ CREATE TABLE public.elements (
     element_id uuid,
     conversation_id uuid,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    generation_intent text,
+    sort_order integer
 );
 
 
@@ -181,7 +160,9 @@ CREATE TABLE public.experiences (
     session_id text,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    description text
+    description text,
+    generation_intent text,
+    topic_id uuid
 );
 
 
@@ -216,20 +197,6 @@ CREATE TABLE public.messages (
     updated_at timestamp(6) without time zone NOT NULL,
     email_message_id_header text,
     suggested boolean DEFAULT false
-);
-
-
---
--- Name: missive_webhooks; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.missive_webhooks (
-    id uuid DEFAULT gen_random_uuid() NOT NULL,
-    webhook_type character varying,
-    content json,
-    processed_at timestamp(6) without time zone,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
 );
 
 
@@ -289,6 +256,21 @@ CREATE TABLE public.sessions (
 
 
 --
+-- Name: topics; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.topics (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    name text,
+    description text,
+    generation_intent text,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL,
+    code text
+);
+
+
+--
 -- Name: audits id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -325,14 +307,6 @@ ALTER TABLE ONLY public.banned_ips
 
 ALTER TABLE ONLY public.cached_llm_responses
     ADD CONSTRAINT cached_llm_responses_pkey PRIMARY KEY (id);
-
-
---
--- Name: contacts contacts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.contacts
-    ADD CONSTRAINT contacts_pkey PRIMARY KEY (id);
 
 
 --
@@ -376,14 +350,6 @@ ALTER TABLE ONLY public.messages
 
 
 --
--- Name: missive_webhooks missive_webhooks_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.missive_webhooks
-    ADD CONSTRAINT missive_webhooks_pkey PRIMARY KEY (id);
-
-
---
 -- Name: organizations organizations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -413,6 +379,14 @@ ALTER TABLE ONLY public.schema_migrations
 
 ALTER TABLE ONLY public.sessions
     ADD CONSTRAINT sessions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: topics topics_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.topics
+    ADD CONSTRAINT topics_pkey PRIMARY KEY (id);
 
 
 --
@@ -493,6 +467,13 @@ CREATE INDEX index_elements_on_experience_id ON public.elements USING btree (exp
 
 
 --
+-- Name: index_experiences_on_topic_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_experiences_on_topic_id ON public.experiences USING btree (topic_id);
+
+
+--
 -- Name: index_members_on_organization_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -527,6 +508,17 @@ CREATE INDEX user_index ON public.audits USING btree (user_id, user_type);
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260119121538'),
+('20260118142846'),
+('20260118142457'),
+('20260118141727'),
+('20260117171029'),
+('20260117170958'),
+('20260117133121'),
+('20260115053037'),
+('20260115053028'),
+('20260115052632'),
+('20260111184622'),
 ('20260107042958'),
 ('20260105031841'),
 ('20260105025819'),
@@ -544,7 +536,6 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20250930004845'),
 ('20250930002309'),
 ('20250929235307'),
-('20250923013123'),
 ('20250918025026'),
 ('20250912005642'),
 ('20250912005635'),

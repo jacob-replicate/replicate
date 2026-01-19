@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe MessageGenerators::Base do
   let(:conversation) { create(:conversation) }
-  let(:generator)    { described_class.new(conversation) }
+  let(:generator) { described_class.new(conversation) }
 
   describe "#deliver" do
     before do
@@ -55,53 +55,48 @@ RSpec.describe MessageGenerators::Base do
   end
 
   describe "#sanitize_response" do
-    it "removes <pre> tags" do
-      html = "<pre>Hello</pre>"
-      expect(generator.sanitize_response(html)).to eq("Hello")
+    it "cleans up text formatting and returns html_safe string" do
+      html = "Hello s world s, and more"
+      result = generator.sanitize_response(html)
+      expect(result).to eq("Hellos worlds, and more")
+      expect(result.html_safe?).to be(true)
+    end
+
+    it "removes duplicate closing p tags" do
+      html = "<p>Hello</p></p>"
+      expect(generator.sanitize_response(html)).to eq("<p>Hello</p>")
     end
   end
 
   describe "#deliver_elements" do
-    let(:conversation) { create(:conversation, channel: "web") }
+    let(:conversation) { create(:conversation, sequence_count: 0) }
     let(:generator) { MessageGenerators::Base.new(conversation) }
 
-    it "broadcasts elements to web" do
-      initial_seq = conversation.next_message_sequence
+    it "broadcasts elements" do
+      allow(ConversationChannel).to receive(:broadcast_to)
 
-      expect(ConversationChannel).to receive(:broadcast_to).with(conversation, { type: "element", sequence: initial_seq, user_generated: false, message: "one" }).ordered
-      expect(ConversationChannel).to receive(:broadcast_to).with(conversation, { type: "loading", sequence: initial_seq + 1, user_generated: false }).ordered
-      expect(ConversationChannel).to receive(:broadcast_to).with(conversation, { type: "element", sequence: initial_seq + 2, user_generated: false, message: "two" }).ordered
-      expect(ConversationChannel).to receive(:broadcast_to).with(conversation, { type: "done", sequence: initial_seq + 3, user_generated: false }).ordered
+      generator.deliver_elements(["one", "two"])
 
-      expect(ConversationChannel).to receive(:broadcast_to).with(conversation, { type: "element", sequence: initial_seq + 6, user_generated: false, message: "three" }).ordered
-      expect(ConversationChannel).to receive(:broadcast_to).with(conversation, { type: "loading", sequence: initial_seq + 7, user_generated: false }).ordered
-      expect(ConversationChannel).to receive(:broadcast_to).with(conversation, { type: "element", sequence: initial_seq + 8, user_generated: false, message: "four" }).ordered
-      expect(ConversationChannel).to receive(:broadcast_to).with(conversation, { type: "done", sequence: initial_seq + 9, user_generated: false }).ordered
+      expect(ConversationChannel).to have_received(:broadcast_to).with(
+        conversation,
+        hash_including(type: "element", message: "one")
+      )
+      expect(ConversationChannel).to have_received(:broadcast_to).with(
+        conversation,
+        hash_including(type: "loading")
+      )
+      expect(ConversationChannel).to have_received(:broadcast_to).with(
+        conversation,
+        hash_including(type: "element", message: "two")
+      )
+      expect(ConversationChannel).to have_received(:broadcast_to).with(
+        conversation,
+        hash_including(type: "done")
+      )
 
-      expect(ConversationChannel).to receive(:broadcast_to).with(conversation, { type: "element", sequence: initial_seq + 12, user_generated: false, message: "five" }).ordered
-      expect(ConversationChannel).to receive(:broadcast_to).with(conversation, { type: "done", sequence: initial_seq + 13, user_generated: false }).ordered
-
-      generator.deliver_elements(["<pre>one", "</pre> two"])
-      generator.deliver_elements(["three", "four"])
-      generator.deliver_elements(["five"])
-
-      expect(conversation.messages.pluck(:content)).to match_array(["one\ntwo", "three\nfour", "five"])
-    end
-
-    it "delivers elements to email" do
-      conversation = create(:conversation, channel: "email", recipient: create(:member))
-      generator = MessageGenerators::Base.new(conversation)
-
-      mailer_double = double("Mailer", deliver_now: true)
-      expect(ConversationMailer).to receive(:drive).with(conversation).and_return(mailer_double)
-      expect(mailer_double).to receive(:deliver_now)
-
-      allow(Prompts::CoachingReply).to receive(:new).with(conversation: conversation).and_return(double(call: "GPT reply"))
-      generator.deliver_elements([Prompts::CoachingReply, Prompts::CoachingReply, "hardcoded signature"])
-
-      message = conversation.messages.last
-      expect(message.content).to eq("GPT reply\n<p>GPT reply</p>\nhardcoded signature")
-      expect(message.email_message_id_header).to eq("<message-#{message.id}@mail.replicate.info>")
+      expect(conversation.messages.count).to eq(1)
+      expect(conversation.messages.last.content).to include("one")
+      expect(conversation.messages.last.content).to include("two")
     end
   end
 end

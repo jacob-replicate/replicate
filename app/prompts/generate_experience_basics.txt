@@ -1,0 +1,110 @@
+CONTEXT:
+You are generating the foundational metadata for a single technical experience inside a larger systems topic.
+
+This experience is NOT:
+- A blog post, lesson, or tutorial
+- Educational content with step-by-step walkthroughs
+- Marketing material or thought leadership
+- A generic category or broad concept
+- A specific bug or failure mode (BAD: "Broken SAML Validation", "Clock Skew Failures")
+
+This experience IS:
+- A focused pressure test on a SPECIFIC technical INVARIANT - something that must hold true for the system to work correctly
+- Named after the invariant itself, not the failure (GOOD: "SAML Assertion Validation", BAD: "Broken SAML Assertion Validation")
+- A simulation of scenarios where engineers must understand WHY the invariant matters and WHAT happens when it's violated
+
+NAMING PHILOSOPHY:
+Experience names should be INVARIANTS or MECHANISMS, not failures:
+- GOOD: "Token Audience Validation" (the invariant)
+- BAD: "Token Audience Mismatch" (the failure)
+- GOOD: "Session Fixation Prevention" (the mechanism)
+- BAD: "Session Fixation Vulnerability" (the bug)
+- GOOD: "Clock Skew Tolerance" (the invariant)
+- BAD: "Invalid Clock Skew Handling" (the failure)
+
+The experience explores what happens when the invariant is violated, but the NAME is the principle itself.
+
+INPUTS:
+- topic_name: {{CONTEXT_TOPIC_NAME}}
+- topic_description: {{CONTEXT_TOPIC_DESCRIPTION}}
+- experience_generation_intent: {{CONTEXT_EXPERIENCE_GENERATION_INTENT}}
+
+CRITICAL REQUIREMENT - TOPIC RELEVANCE:
+This experience MUST be directly relevant to "{{CONTEXT_TOPIC_NAME}}". The topic is about "{{CONTEXT_TOPIC_DESCRIPTION}}".
+Every aspect of this experience - name, description, and generation intent - must clearly belong under this topic.
+If the generation intent suggests something unrelated to {{CONTEXT_TOPIC_NAME}}, adapt it to be relevant OR reject it.
+
+CRITICAL REQUIREMENT - EXPERIENCE NAMING:
+The generation_intent likely contains a phrase like "Create an experience called '[Name]'..."
+You MUST extract and use this EXACT name as the experience_name. The name was chosen specifically to be unique and distinct from other experiences in this topic.
+
+If no explicit name is provided, derive a SPECIFIC technical name that:
+- Names a concrete failure mode, algorithm, or phenomenon (e.g., "Split-Brain Recovery", "Thundering Herd")
+- Is NOT a broad category (BAD: "Replication Lag", "Consensus", "Caching")
+- Could be the title of a detailed post-mortem or an O'Reilly chapter
+- Would be distinct from any other experience name in the same topic
+
+REQUIREMENTS:
+
+experience_name:
+- 2-4 words MAX. Shorter is better.
+- Name a specific technical concept, not a sentence
+- GOOD: "CORS Policies", "Input Validation", "Session Fixation"
+- BAD: "Cross-Origin Resource Policy Enforcement", "Input Validation Across Trust Boundaries"
+- No verbs, no "...ing" suffixes, no "How to...", no "Understanding..."
+- Think: what would a senior engineer call this in Slack?
+
+experience_description:
+- MUST NOT repeat or rephrase the experience name
+- MUST NOT start with the same words as the name
+- BAD: Name "Input Validation" → Description "Input validation ensures..."
+- GOOD: Name "Input Validation" → Description "Untrusted data crosses trust boundaries constantly. Failures here enable injection attacks and privilege escalation."
+- Start with the PROBLEM or CONSEQUENCE, not a definition
+- Write like a staff engineer explaining why you should care, not a textbook or Wikipedia
+- 2 sentences, 180-220 characters total (fill out two full lines)
+- Use short, punchy words. No SAT vocabulary. No "synchronization", "propagation", "amplification", "contention", "cascading", "compounding", "mismanaged", "misconfigured"
+- BAD: "Microservices under backpressure amplify retries across chains, triggering cascading failures"
+- GOOD: "One service slows down, retries start piling up, and pretty soon the whole thing falls over."
+- BAD: "Clock drift skews distributed token limits, leading to unexpected rate bursts"
+- GOOD: "Your servers' clocks don't agree, so rate limits don't add up right. Some users get throttled, others slip through."
+- No buzzwords, no "ensuring", no "maintaining", no "leveraging"
+
+experience_code:
+- Lowercase, hyphen-separated URL slug derived from experience_name
+- Maximum 25 characters (use abbreviations if needed: "split-brain", "ryw-violations")
+- e.g., "split-brain", "thundering-herd", "replica-delays"
+
+refined_generation_intent:
+- This is CRITICAL - it guides ALL future AI prompts for generating questions, scenarios, design reviews, and incidents
+- Start with: "This experience should be about [specific phenomenon]. It should..."
+- Be EXTREMELY DETAILED and COMPREHENSIVE (5-7 dense sentences minimum)
+- Must explicitly cover:
+  * Which specific failure modes to explore (list 4-6 concrete scenarios)
+  * Which common misconceptions engineers have (be specific about wrong assumptions)
+  * Which edge cases expose knowledge gaps (timing, race conditions, state)
+  * Which real-world incidents exemplify these failures (name companies, dates if known)
+  * Which debugging scenarios reveal misunderstanding (what breaks at 3am)
+  * Which system interactions are commonly overlooked
+- Use concrete technical language throughout
+- End with a sharp observation about the delta between theory and production reality
+
+OUTPUT FORMAT:
+Return a single valid JSON object with exactly these keys: experience_name, experience_description, experience_code, refined_generation_intent
+
+IMPORTANT: Return ONLY the raw JSON object. Do NOT wrap it in markdown code blocks.
+
+EXAMPLE OUTPUT:
+{
+  "experience_name": "Split-Brain",
+  "experience_description": "Now you've got two primaries accepting writes. When the partition heals, you get to pick which data to throw away.",
+  "experience_code": "split-brain",
+  "refined_generation_intent": "This experience should be about split-brain recovery scenarios in distributed databases and consensus systems. It should surface gaps in how engineers reason about partition detection, quorum semantics, and conflict resolution when multiple primaries emerge. Engineers should confront scenarios where heartbeat-based failure detection gives false positives, where 'fencing' mechanisms fail to prevent dual-writes, and where automatic failover tools make the wrong choice under network instability. The experience should challenge assumptions like 'my monitoring will detect split-brain immediately', 'STONITH always works', and 'we can just pick the node with more transactions'. Scenarios should include the GitHub 2018 incident where Orchestrator promoted a replica with stale data, cases where application-level writes continued to both sides during partition, and debugging sessions where transaction logs show conflicting commit sequences. Engineers should reason about manual recovery procedures: identifying the authoritative node, reconciling divergent writes, and safely re-establishing replication without data loss. The experience should expose how split-brain is often detected only after the partition heals, when both sides try to replicate to each other and discover conflicts."
+}
+
+ANOTHER EXAMPLE (showing non-redundant name/description):
+{
+  "experience_name": "CORS Policies",
+  "experience_description": "You set a header wrong and now any website can hit your API. The browser was supposed to stop this, but you told it not to.",
+  "experience_code": "cors",
+  "refined_generation_intent": "..."
+}

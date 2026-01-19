@@ -1,0 +1,115 @@
+CONTEXT:
+You are generating a structured list of conversation-starter questions for a technical experience about distributed systems, databases, consensus algorithms, or infrastructure.
+
+These questions are NOT:
+- Trivia or academic quiz questions
+- Tutorial prompts or how-to guides
+- Open-ended discussion starters
+
+These questions ARE:
+- Sharp, focused probes that expose gaps in understanding
+- Scenarios that surface common misconceptions about system behavior
+- "Why" and "What if" questions that make engineers think about failure modes
+- Designed to create "aha" moments when the answer contradicts intuition
+
+INPUTS:
+- experience_name: {{CONTEXT_EXPERIENCE_NAME}}
+- experience_description: {{CONTEXT_EXPERIENCE_DESCRIPTION}}
+- refined_generation_intent: {{CONTEXT_REFINED_GENERATION_INTENT}}
+
+REQUIREMENTS:
+
+Structure:
+- Generate 4-8 thematic categories (e.g., "Elections and Leadership", "Log Replication and Commit", "Cluster Membership")
+- Each category must have 2-6 questions
+- Categories should cover different aspects of the system/algorithm
+- Questions within a category should progress from foundational to edge cases
+
+Category Names:
+- Must be concrete, technical topic areas (e.g., "Log Freshness", "Replication Lag", "Network Partitions")
+- NOT generic (avoid "Advanced Topics", "Deep Dive", "Best Practices")
+- Avoid using "and" - keep names focused on a single concept (use "Leader Election" not "Elections and Leadership")
+- 1-3 words maximum
+- Title case
+- Examples: "Log Freshness", "Cluster Membership", "Commit Safety", "Network Partitions"
+
+Question Quality:
+- Each question should be a complete sentence ending with a question mark
+- Maximum 100 characters per question
+- Focus on:
+  * "Why" questions that expose reasoning gaps (e.g., "Why does Raft require votes to be durably persisted before responding?")
+  * "What if" questions about failure scenarios (e.g., "What failure mode appears if election timeout is too close to your heartbeat interval under jitter?")
+  * "How" questions about mechanisms (e.g., "How can a candidate with the highest lastIndex still lose the election?")
+  * Misconception challenges (e.g., "Can a Raft cluster elect a leader as long as a majority of nodes are healthy?")
+- Questions should be specific to the system/algorithm, not generic distributed systems theory
+- Avoid questions that can be answered with a simple yes/no without deeper reasoning
+1G
+Coverage Strategy:
+- Use the refined_generation_intent to identify which failure modes, edge cases, and misconceptions to target
+- Ensure questions span:
+  * Normal operation and invariants
+  * Common failure scenarios
+  * Edge cases and timing issues
+  * Trade-offs and design decisions
+  * Debugging and operational concerns
+- Don't repeat concepts - each question should probe something distinct
+
+OUTPUT FORMAT:
+Return a single valid JSON object with this structure:
+{
+  "categories": [
+    {
+      "name": "Category Name",
+      "questions": [
+        "Question text?",
+        "Question text?",
+        ...
+      ]
+    },
+    ...
+  ]
+}
+
+IMPORTANT: Return ONLY the raw JSON object. Do NOT wrap it in markdown code blocks (no ```json). Just return the plain JSON.
+
+EXAMPLE OUTPUT:
+{
+  "categories": [
+    {
+      "name": "Leader Election",
+      "questions": [
+        "How can an election keep failing without electing a leader, even if most nodes are healthy?",
+        "What actually prevents two leaders from existing at the same time?",
+        "Why does Raft require votes to be durably persisted before responding?",
+        "Why does Raft use randomized election timeouts?",
+        "Why is 'one vote per term' not sufficient by itself to prevent split-brain? What else must be true?",
+        "What failure mode appears if election timeout is too close to your heartbeat interval under jitter?"
+      ]
+    },
+    {
+      "name": "Log Freshness",
+      "questions": [
+        "Why does a follower compare (lastTerm, lastIndex) before granting a vote?",
+        "Can a newly elected leader delete entries from another node's log? If so, when and why is it safe?",
+        "How can a candidate with the highest lastIndex still lose the election?",
+        "Why does Raft compare lastTerm first (then lastIndex) instead of only lastIndex?"
+      ]
+    },
+    {
+      "name": "Log Commit",
+      "questions": [
+        "What does it mean for an entry to be 'committed' in Raft? What does it explicitly not guarantee?",
+        "Why can a leader not safely 'commit by counting replicas' for entries from older terms?",
+        "Why is the commit index monotonic, and what breaks if it isn't?"
+      ]
+    },
+    {
+      "name": "Cluster Membership",
+      "questions": [
+        "Why is one-step membership change unsafe in Raft? Give the concrete split-brain sequence.",
+        "How does joint consensus prevent two different majorities from each electing a leader?",
+        "During joint consensus, what does 'majority' mean for elections and for committing entries?"
+      ]
+    }
+  ]
+}

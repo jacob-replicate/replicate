@@ -1,6 +1,6 @@
 - A User clicked on a blog post called "{{CONTEXT_TITLE}}" with the description "{{CONTEXT_DESCRIPTION}}". Teach them about that topic.
 {{USER_PERSONA}}
-- They were originally pairing with you on a SEV-1. Here is what the SEV-1 was about (for historical context about their current mind state): "{{CONTEXT_INCIDENT}}"
+- They were originally pairing with you on a SEV-1. Here is what the SEV-1 was about (for historical context about their current mind state): "{{CONTEXT_GENERATION_INTENT}}"
 - 10/10 A+ quality instruction only. Exceptional technical explanations.
 - Don't include any links.
 - Try to make it visual with code blocks if possible, but still omit if it would be too much.

@@ -2,10 +2,85 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
+/* ===== BASE STYLES ===== */
 body {
   background-color: #fbfbfb;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
+}
+
+html.dark body {
+  background-color: #18181b;
+}
+
+/* ===== DARK MODE TOGGLE STYLES ===== */
+.theme-toggle {
+  position: relative;
+  width: 48px;
+  height: 26px;
+  border-radius: 9999px;
+  cursor: pointer;
+  background: #e4e4e7;
+  border: 1px solid #d4d4d8;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.theme-toggle:hover {
+  background: #d4d4d8;
+}
+
+html.dark .theme-toggle {
+  background: #3f3f46;
+  border: 1px solid #52525b;
+}
+
+html.dark .theme-toggle:hover {
+  background: #52525b;
+}
+
+.theme-toggle-knob {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+html.dark .theme-toggle-knob {
+  transform: translateX(22px);
+  background: #a78bfa;
+}
+
+.theme-toggle-icon {
+  width: 14px;
+  height: 14px;
+  transition: opacity 0.2s ease;
+}
+
+.theme-toggle-sun {
+  color: #d97706;
+  opacity: 1;
+}
+
+.theme-toggle-moon {
+  color: #fef3c7;
+  opacity: 0;
+  position: absolute;
+}
+
+html.dark .theme-toggle-sun {
+  opacity: 0;
+}
+
+html.dark .theme-toggle-moon {
+  opacity: 1;
 }
 
 @font-face {
@@ -68,6 +143,18 @@ body {
   overflow-wrap: break-word;
 }
 
+html.dark .message-body {
+  color: #e5e7eb;
+}
+
+html.dark .message-body a {
+  color: #60a5fa;
+}
+
+html.dark .message-body a:hover {
+  color: #93c5fd;
+}
+
 .prompt-output {
   margin-top: 15px;
 }
@@ -103,10 +190,18 @@ body {
   font-weight: 600;
 }
 
+html.dark .message-body strong {
+  color: #f3f4f6;
+}
+
 .message-body hr {
   padding: 0;
   margin: 18px 0 0 0;
   opacity: 0.7;
+}
+
+html.dark .message-body hr {
+  border-color: #374151;
 }
 
 pre {
@@ -127,21 +222,15 @@ pre code {
 }
 
 .hljs {
-  background-color: #181C14 !important;
+  background-color: #1e1e1e !important;
 }
 
-#difficulty button:first-child {
-  border-top-left-radius: 6px;
-  border-bottom-left-radius: 6px;
-}
-
-#difficulty button:last-child {
-  border-top-right-radius: 6px;
-  border-bottom-right-radius: 6px;
+html.dark .hljs {
+  background-color: #1a1a1a !important;
 }
 
 .file-name {
-  background-color: #333;
+  background-color: #374151;
   color: white;
   display: inline-block;
   font-size: 14px;
@@ -150,6 +239,44 @@ pre code {
   border-radius: 5px;
 }
 
+html.dark .file-name {
+  background-color: #3f3f46;
+  color: #f4f4f5;
+}
+
 .hljs-ln-n {
   color: #888;
+}
+
+/* ===== TOPIC LINK STYLES ===== */
+.topic-link {
+  color: #0066cc;
+}
+
+.topic-link:hover {
+  color: #004499;
+}
+
+.topic-link:visited {
+  color: #7c3aed;
+}
+
+.topic-link:visited:hover {
+  color: #6d28d9;
+}
+
+html.dark .topic-link {
+  color: #5fa8ff;
+}
+
+html.dark .topic-link:hover {
+  color: #8fc5ff;
+}
+
+html.dark .topic-link:visited {
+  color: #a78bfa;
+}
+
+html.dark .topic-link:visited:hover {
+  color: #c4b5fd;
 }

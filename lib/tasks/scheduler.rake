@@ -4,6 +4,6 @@ task schedule_weekly_incidents: :environment do
 
   if time.now.wday == 1
     # ScheduleWeeklyIncidentsWorker.perform_async(nil, nil, time.now.beginning_of_day.to_i)
-    CacheCoachingIntroScheduler.call
+    CacheExperienceScheduler.call
   end
 end

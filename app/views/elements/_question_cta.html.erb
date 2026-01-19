@@ -1,0 +1,56 @@
+<% title    = element.context["title"] %>
+<% subtitle = element.context["subtitle"] %>
+<% options  = element.elements.order(:sort_order) %>
+<% list_mode = local_assigns[:list_mode] %>
+
+<% two_up = options.length == 2 %>
+
+<%
+  ctas = [
+    "Test that assumption →",
+    "Follow this reasoning →",
+    "See if the logic holds →"
+  ]
+%>
+
+<div class="<%= list_mode ? 'px-5 py-4 bg-white dark:bg-zinc-800' : 'mt-6 rounded-md border-[1.5px] border-[#b0b0b0] dark:border-[#333333] bg-white dark:bg-zinc-800 px-5 py-4 relative' %>">
+  <div class="text-[15px] font-medium text-zinc-900 dark:text-zinc-100">
+    <%= title %>
+  </div>
+
+  <% if subtitle.present? %>
+    <div class="mt-0.5 text-sm text-zinc-500 dark:text-zinc-400">
+      <%= subtitle %>
+    </div>
+  <% end %>
+
+  <div class="mt-4 grid gap-3 <%= two_up ? 'grid-cols-1 sm:grid-cols-2' : 'grid-cols-1' %>">
+    <% options.each_with_index do |opt, idx| %>
+      <% cta = ctas[idx % ctas.length] %>
+
+      <a href="<%= element_path(opt) %>"
+         class="group relative rounded-md border
+                border-zinc-200/80 dark:border-zinc-500/40 bg-white dark:bg-zinc-700/40
+                px-4 py-3 shadow-sm
+                hover:border-zinc-300 dark:hover:border-zinc-400/50 hover:bg-zinc-50 dark:hover:bg-zinc-700/60 hover:shadow-md">
+
+        <!-- accent rail -->
+        <div class="absolute left-0 top-0 h-full w-1 rounded-l-md bg-[#0066cc]/70 dark:bg-[#5fa8ff]/60 group-hover:bg-[#0066cc] dark:group-hover:bg-[#5fa8ff]/80"></div>
+
+        <div class="text-sm font-semibold text-zinc-800 dark:text-zinc-100">
+          <%= opt.context["title"] %>
+        </div>
+
+        <% if opt.context["body"].present? %>
+          <div class="mt-1 text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed">
+            <%= opt.context["body"] %>
+          </div>
+        <% end %>
+
+        <div class="mt-2 text-sm font-medium text-[#0066cc] dark:text-[#5fa8ff] group-hover:text-[#004499] dark:group-hover:text-[#8fc5ff]">
+          <%= cta %>
+        </div>
+      </a>
+    <% end %>
+  </div>
+</div>

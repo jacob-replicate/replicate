@@ -6,29 +6,6 @@ RSpec.describe Conversation, type: :model do
     it { should have_many(:messages).dependent(:destroy) }
   end
 
-  describe "#email?" do
-    it "returns true when channel is 'email'" do
-      conversation = build(:conversation, channel: "email")
-      expect(conversation.email?).to be(true)
-    end
-
-    it "returns false otherwise" do
-      conversation = build(:conversation, channel: "web")
-      expect(conversation.email?).to be(false)
-    end
-  end
-
-  describe "#web?" do
-    it "returns true when channel is 'web'" do
-      conversation = build(:conversation, channel: "web")
-      expect(conversation.web?).to be(true)
-    end
-
-    it "returns false otherwise" do
-      conversation = build(:conversation, channel: "email")
-      expect(conversation.web?).to be(false)
-    end
-  end
 
   describe "#latest_user_message" do
     it "returns empty string when there are no user messages" do
@@ -124,35 +101,27 @@ RSpec.describe Conversation, type: :model do
   end
 
   describe "#next_message_sequence" do
-    let(:conversation) { create(:conversation) }
+    let(:conversation) { create(:conversation, sequence_count: 0) }
 
-    context "when there are no messages" do
-      it "returns 0" do
-        expect(conversation.next_message_sequence).to eq(0)
+    context "when sequence_count is 0" do
+      it "returns 1" do
+        expect(conversation.next_message_sequence).to eq(1)
       end
     end
 
-    context "with a mix of user/system messages and no fake names" do
-      it "computes sequence from real user/system counts" do
-        create_list(:message, 3, conversation:, user_generated: true)
-        create_list(:message, 2, conversation:, user_generated: false)
-        expect(conversation.next_message_sequence).to eq(18)
+    context "when sequence_count has a value" do
+      it "returns sequence_count + 1" do
+        conversation.update!(sequence_count: 5)
+        expect(conversation.next_message_sequence).to eq(6)
       end
     end
 
-    context "with messages containing fake names (treated as system for weighting)" do
-      it "reclassifies fake-name messages and applies correct weighting" do
-        create(:message, conversation:, user_generated: true,  content: "Hello from a normal user")
-        create(:message, conversation:, user_generated: true,  content: "Ping Taylor Morales about this") # fake name
-        create(:message, conversation:, user_generated: false, content: "I am a system note")
-        expect(conversation.next_message_sequence).to eq(10)
-      end
+    context "with multiple increments" do
+      it "tracks sequence correctly" do
+        conversation.update!(sequence_count: 10)
+        expect(conversation.next_message_sequence).to eq(11)
 
-      it "counts multiple fake-name hits across any roles" do
-        create(:message, conversation:, user_generated: true,  content: "Regular user content")
-        create(:message, conversation:, user_generated: true,  content: "Casey Patel asked for logs")
-        create(:message, conversation:, user_generated: false, content: "Alex Shaw escalated this issue")
-        create(:message, conversation:, user_generated: false, content: "Plain system message")
+        conversation.update!(sequence_count: 15)
         expect(conversation.next_message_sequence).to eq(16)
       end
     end

@@ -1,0 +1,111 @@
+CONTEXT:
+You are generating a single multiple-choice question for a technical experience about distributed systems, databases, consensus algorithms, or infrastructure.
+
+A question CTA presents a conceptual question with 2 or 3 answer options. The learner picks an answer to explore the reasoning further. Questions should test understanding of system behavior, invariants, or common misconceptions.
+
+These questions are NOT:
+- Trivia or memorization questions
+- Code debugging exercises
+- Questions with obvious answers
+
+These questions ARE:
+- Conceptually challenging questions about system behavior
+- Questions where multiple answers seem plausible at first
+- Designed to expose common misconceptions or edge cases
+- Focused on distributed systems invariants, consensus protocols, or operational behavior
+
+INPUTS:
+- experience_name: {{CONTEXT_EXPERIENCE_NAME}}
+- experience_description: {{CONTEXT_EXPERIENCE_DESCRIPTION}}
+- refined_generation_intent: {{CONTEXT_REFINED_GENERATION_INTENT}}
+- previous_questions: {{CONTEXT_PREVIOUS_QUESTIONS}}
+
+REQUIREMENTS:
+
+Question Structure:
+- Title: The question itself (15-25 words, ends with ?)
+- Subtitle: Optional context or constraints (10-20 words, may be empty string)
+- Layout: Either "binary" (for 2 options, yes/no questions) or omit field (for 3 options)
+- Options: Array of 2 or 3 answer choices
+- Generation intent: A brief technical description of the concept being tested
+
+You MUST randomly choose between generating a BINARY question (2 options) or a MULTI-OPTION question (3 options):
+- Binary questions (layout: "binary"): Yes/No questions where one answer is correct
+- Multi-option questions (no layout field): 3 plausible answers exploring different perspectives
+
+Title Guidelines:
+- Should be a clear, direct question
+- 15-25 words, ends with question mark
+- Technical but accessible
+- Examples:
+  - "Can a Raft cluster elect a leader as long as a majority of nodes are healthy?"
+  - "An election keeps failing even though most nodes are healthy. What is the most likely cause?"
+
+Subtitle Guidelines:
+- Provide constraints or context that narrows the question
+- May be empty string if the question is self-contained
+- Examples: "Assume no crashes, no partitions, and that all nodes appear responsive."
+
+Option Guidelines:
+- Each option needs: title, body
+- Title: Short answer (3-10 words)
+- Body: 1-2 sentences explaining the reasoning (25-50 words)
+
+For BINARY questions (2 options):
+- Use layout: "binary"
+- Options should be Yes and No (or similar opposing views)
+
+For MULTI-OPTION questions (3 options):
+- Do NOT include layout field
+- Three distinct perspectives on the problem
+
+OUTPUT FORMAT:
+
+For BINARY questions (randomly chosen ~50% of the time):
+{
+  "question_cta": {
+    "title": "Question ending with ?",
+    "subtitle": "Optional context or empty string",
+    "layout": "binary",
+    "options": [
+      {
+        "title": "Yes",
+        "body": "Explanation of why yes might be correct..."
+      },
+      {
+        "title": "No",
+        "body": "Explanation of why no might be correct..."
+      }
+    ],
+    "generation_intent": "Brief description of the concept being tested"
+  }
+}
+
+For MULTI-OPTION questions (randomly chosen ~50% of the time):
+{
+  "question_cta": {
+    "title": "Question ending with ?",
+    "subtitle": "Optional context or empty string",
+    "options": [
+      {
+        "title": "First perspective",
+        "body": "Explanation of this perspective..."
+      },
+      {
+        "title": "Second perspective",
+        "body": "Explanation of this perspective..."
+      },
+      {
+        "title": "Third perspective",
+        "body": "Explanation of this perspective..."
+      }
+    ],
+    "generation_intent": "Brief description of the concept being tested"
+  }
+}
+
+IMPORTANT:
+- Return ONLY the raw JSON object. Do NOT wrap it in markdown code blocks (no ```json). Just return the plain JSON.
+- Generate exactly ONE question
+- Make it distinct from previous questions: {{CONTEXT_PREVIOUS_QUESTIONS}}
+- Randomly vary between binary (2 option) and multi-option (3 option) formats

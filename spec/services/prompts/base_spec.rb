@@ -1,73 +1,51 @@
 require "rails_helper"
 
 RSpec.describe Prompts::Base do
-  let(:prompt_context) { {} }
-  let(:conversation) { build(:conversation, context: { greeting: "Howdy", name: "Jacob" }) }
-  subject(:prompt) { described_class.new(conversation: conversation, context: prompt_context) }
+  let(:prompt_context) { { name: "Jacob", greeting: "Hey" } }
+  let(:message_history) { [] }
+  subject(:prompt) { described_class.new(context: prompt_context, message_history: message_history) }
 
   describe "#initialize" do
-    context "when explicit context is provided" do
-      let(:prompt_context) { { name: "Overridden" } }
-
-      it "prefers the explicit context over conversation.context" do
-        expect(prompt.instance_variable_get(:@context)).to eq({ name: "Overridden" })
-      end
+    it "stores context with indifferent access and adds current_time" do
+      ctx = prompt.instance_variable_get(:@context)
+      expect(ctx["name"]).to eq("Jacob")
+      expect(ctx[:name]).to eq("Jacob")
+      expect(ctx).to have_key(:current_time)
     end
 
-    context "when explicit context is blank but conversation present" do
-      let(:prompt_context) { {} }
-
-      it "falls back to conversation.context" do
-        expect(prompt.instance_variable_get(:@context)).to eq(conversation.context)
-      end
+    it "stores message_history" do
+      history = [{ role: "user", content: "Hello" }]
+      p = described_class.new(context: {}, message_history: history)
+      expect(p.instance_variable_get(:@message_history)).to eq(history)
     end
 
-    context "when both conversation and context are blank" do
-      let(:conversation) { nil }
+    context "when context is empty" do
       let(:prompt_context) { {} }
 
-      it "initializes with an empty hash" do
-        expect(described_class.new(conversation: nil, context: {}).instance_variable_get(:@context)).to eq({})
+      it "initializes with current_time only" do
+        ctx = prompt.instance_variable_get(:@context)
+        expect(ctx).to have_key(:current_time)
+        expect(ctx.keys).to eq(["current_time"])
       end
     end
   end
 
   describe "#call" do
-    it "delegates to #fetch_valid_response" do
-      allow(prompt).to receive(:fetch_valid_response).and_return("final")
+    it "delegates to #run_batch_process" do
+      allow(prompt).to receive(:run_batch_process).and_return("final")
       expect(prompt.call).to eq("final")
     end
   end
 
-  describe "#fetch_valid_response" do
-    context "when the first attempt validates" do
-      it "returns the sanitized output" do
-        allow(prompt).to receive(:fetch_raw_output).and_return("raw")
-        allow(SanitizeAiContent).to receive(:call).with("raw").and_return("sanitized")
-        allow(prompt).to receive(:validate).with("sanitized").and_return(nil)
-
-        expect(prompt.fetch_valid_response).to eq("sanitized")
-      end
-    end
-
-    context "when validation fails repeatedly" do
-      it "logs the error each time and returns nil after 30 tries" do
-        described_class.class_variable_set(:@@template_cache, {})
-
-        allow(prompt).to receive(:fetch_raw_output).and_return("raw")
-        allow(SanitizeAiContent).to receive(:call).and_return("still-bad")
-        allow(prompt).to receive(:validate).and_return("nope")
-        allow(Rails.logger).to receive(:error)
-
-        expect(prompt.fetch_valid_response).to be_nil
-        expect(Rails.logger).to have_received(:error).exactly(30).times
-      end
+  describe "#run_batch_process" do
+    it "returns empty array in test environment" do
+      expect(prompt.run_batch_process).to eq([])
     end
   end
 
-  describe "#fetch_raw_output" do
+  describe "#fetch_llm_response" do
     it "raises in test env to prevent hitting the network" do
-      expect { prompt.send(:fetch_raw_output) }.to raise_error(StandardError)
+      expect { prompt.send(:fetch_llm_response) }.to raise_error(StandardError)
     end
   end
 
@@ -78,9 +56,12 @@ RSpec.describe Prompts::Base do
   end
 
   describe "#template" do
+    before do
+      described_class.class_variable_set(:@@template_cache, {})
+    end
+
     context "when file does not exist" do
       it "returns nil" do
-        described_class.class_variable_set(:@@template_cache, {})
         allow(File).to receive(:exist?).and_return(false)
 
         expect(prompt.send(:template, name: "anything")).to be_nil
@@ -89,10 +70,8 @@ RSpec.describe Prompts::Base do
 
     context "when file exists and not production" do
       it "reads every time and does not return early from cache" do
-        described_class.class_variable_set(:@@template_cache, {})
-        allow(Rails).to receive_message_chain(:env, :production?).and_return(false)
+        allow(Rails.env).to receive(:production?).and_return(false)
 
-        # first call returns "v1", second call returns "v2"
         allow(File).to receive(:exist?).and_return(true)
         call_count = 0
         allow(File).to receive(:read) do
@@ -110,8 +89,7 @@ RSpec.describe Prompts::Base do
 
     context "when file exists and production" do
       it "returns cached value without re-reading" do
-        described_class.class_variable_set(:@@template_cache, {})
-        allow(Rails).to receive_message_chain(:env, :production?).and_return(true)
+        allow(Rails.env).to receive(:production?).and_return(true)
 
         allow(File).to receive(:exist?).and_return(true)
         allow(File).to receive(:read).and_return("cached-value")
@@ -127,8 +105,7 @@ RSpec.describe Prompts::Base do
 
     context "with shared: true" do
       it "uses an independent cache key from non-shared" do
-        described_class.class_variable_set(:@@template_cache, {})
-        allow(Rails).to receive_message_chain(:env, :production?).and_return(true)
+        allow(Rails.env).to receive(:production?).and_return(true)
         allow(File).to receive(:exist?).and_return(true)
 
         allow(File).to receive(:read).and_return("normal")
@@ -152,13 +129,10 @@ RSpec.describe Prompts::Base do
     end
 
     context "when base template exists with shared placeholders and context tokens" do
-      let(:prompt_context) { { name: "Jacob", greeting: "Hey" } }
-
       it "expands shared partials and interpolates context" do
         base_text   = "Start: {{HEADER}} | {{CONTEXT_GREETING}}, {{CONTEXT_NAME}}!"
         header_text = "TopSection"
 
-        # The first call (no args passed) is the base template; subsequent shared templates by name.
         allow(prompt).to receive(:template) do |args = {}|
           if args.nil? || args == {} || args[:name].nil?
             base_text
@@ -189,6 +163,26 @@ RSpec.describe Prompts::Base do
         expect { prompt.send(:instructions) }.not_to raise_error
         expect(prompt.send(:instructions)).to eq("Hi Jacob")
       end
+    end
+  end
+
+  describe ".extract_json" do
+    it "extracts JSON from code fence" do
+      raw = '```json\n{"key": "value"}\n```'
+      result = described_class.extract_json(raw)
+      expect(result["key"]).to eq("value")
+    end
+
+    it "extracts JSON without code fence" do
+      raw = '{"key": "value"}'
+      result = described_class.extract_json(raw)
+      expect(result["key"]).to eq("value")
+    end
+
+    it "returns empty hash on invalid JSON" do
+      raw = "not json"
+      result = described_class.extract_json(raw)
+      expect(result).to eq({})
     end
   end
 end

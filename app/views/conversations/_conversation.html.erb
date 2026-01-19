@@ -1,23 +1,10 @@
 <% system_message_classes = "w-full" %>
-<% user_message_classes = "bg-neutral-100 rounded-xl border-2 border-gray-300 px-4 py-3 max-w-2xl md:max-w-xl" %>
+<% user_message_classes = "bg-zinc-100 dark:bg-zinc-700/50 rounded-xl border border-zinc-200 dark:border-zinc-600 px-4 py-3 max-w-2xl md:max-w-xl" %>
 <% base_message_classes = "break-words message-body" %>
-<% unselected_difficulty_classes = "bg-transparent text-[#fafafa] hover:bg-gray-600 hover:text-white opacity-[70%]" %>
-<% selected_difficulty_classes = "text-white bg-slate-600 font-medium" %>
 
 <div class="flex flex-col">
-  <div class="flex-1 rounded-lg bg-white p-4 border border-neutral-200 shadow-sm text-[16px]">
-    <div id="conversation" class="relative" data-base-class="<%= base_message_classes %>" data-user-class="<%= user_message_classes %>">
-      <% if @conversation.context['conversation_type'] == 'coaching' %>
-        <div class="absolute top-[-4px] right-[0px]" id="difficulty">
-          <a class="no-underline text-sm text-blue-600 cursor-pointer mt-[8px] pr-[8px] font-medium hover:text-blue-700 hover:underline hover:underline-offset-4 block" href="/sev" target='_blank'>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 inline mr-1">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
-            </svg>
-
-            New SEV
-          </a>
-        </div>
-      <% end %>
+  <div class="flex-1 rounded-lg bg-white dark:bg-zinc-800/50 p-4 border border-zinc-200 dark:border-zinc-700/40 shadow-sm text-[16px]">
+    <div id="conversation" class="relative text-zinc-800 dark:text-zinc-100" data-base-class="<%= base_message_classes %>" data-user-class="<%= user_message_classes %>">
       <% @conversation.messages.order(created_at: :asc).each_with_index do |m, i| %>
         <div class="flex <%= i > 0 ? "mt-8" : "" %> <%= m.user_generated ? 'justify-end' : 'justify-start' %>">
           <% message_classes = "#{base_message_classes} #{system_message_classes unless m.user_generated} #{user_message_classes if m.user_generated}" %>
@@ -30,8 +17,8 @@
       <div class="flex-1 flex">
         <textarea
           id="message-input"
-          placeholder="<%= @conversation.context["conversation_type"] == "coaching" ? "Test your instincts..." : "What's on your mind?" %>"
-          class="flex-1 border border-gray-200 rounded-lg p-2 resize-none disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+          placeholder="<%= @conversation.variant == "incident" ? "Test your instincts..." : "What's on your mind?" %>"
+          class="flex-1 border border-zinc-200 dark:border-zinc-600 bg-white dark:bg-zinc-700/50 text-zinc-800 dark:text-zinc-100 rounded-lg p-2 resize-none disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-violet-500 dark:focus:ring-violet-400 focus:border-violet-500 dark:focus:border-violet-400 placeholder:text-zinc-400 dark:placeholder:text-zinc-500"
           rows="1"
           maxlength="2000"
           oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px';"
@@ -43,14 +30,10 @@
     <% conversation_ids = Conversation.where(ip_address: request.remote_ip).pluck(:id) %>
     <% total_messages = Message.user.where(conversation_id: conversation_ids).where("created_at > ?", 1.week.ago) %>
     <% unless total_messages.count > 5 %>
-      <div id="terms-container" class="mt-4 text-xs text-gray-500">
-        By submitting, you agree to the <a href="/terms" class="text-blue-500 hover:underline">Terms</a> and <a href="/privacy" class="text-blue-500 hover:underline">Privacy Policy</a>
+      <div id="terms-container" class="mt-4 text-xs text-zinc-500 dark:text-zinc-400">
+        By submitting, you agree to the <a href="/terms" class="text-violet-600 dark:text-violet-400 hover:underline">Terms</a> and <a href="/privacy" class="text-violet-600 dark:text-violet-400 hover:underline">Privacy Policy</a>
       </div>
     <% end %>
-  </div>
-
-  <div class="mt-4" style="opacity: 0.90" id="signature">
-    <%= render "static/signature" %>
   </div>
 </div>
 
@@ -248,29 +231,35 @@
           const options = Array.isArray(data.message) ? data.message : [];
           const uniqueGroupId = "choice_group_" + Math.random().toString(36).substring(2, 10);
 
-// Outer wrapper spacing
+// Outer wrapper
           const container = document.createElement("div");
           container.className = "mt-2 mb-4";
 
-// Parent card holding all options
+// Parent card
           const parentCard = document.createElement("div");
-          parentCard.className =
-            "flex flex-col bg-gray-50 border border-gray-200 shadow-sm rounded-lg overflow-hidden";
+          const isDark = document.documentElement.classList.contains('dark');
+          parentCard.className = isDark
+            ? "flex flex-col bg-zinc-800 border border-zinc-600 shadow-sm rounded-lg overflow-hidden"
+            : "flex flex-col bg-gray-50 border border-gray-200 shadow-sm rounded-lg overflow-hidden";
 
           options.forEach((opt, i) => {
             const option = document.createElement("label");
-            option.className =
-              "text-[15px] flex items-center p-[12px] cursor-pointer transition hover:bg-indigo-50";
+            option.className = isDark
+              ? "text-[15px] flex items-center p-[12px] cursor-pointer text-zinc-100 hover:bg-zinc-700"
+              : "text-[15px] flex items-center p-[12px] cursor-pointer hover:bg-indigo-50";
 
             // Add bottom border except last item
             if (i < options.length - 1) {
-              option.classList.add("border-b", "border-gray-200");
+              option.classList.add("border-b");
+              option.classList.add(isDark ? "border-zinc-600" : "border-gray-200");
             }
 
             const input = document.createElement("input");
             input.type = "radio";
             input.name = uniqueGroupId;
-            input.className = "h-4 w-4 text-indigo-600 border-gray-400 focus:ring-indigo-500";
+            input.className = isDark
+              ? "h-4 w-4 text-violet-500 border-zinc-500 bg-zinc-700 focus:ring-violet-400"
+              : "h-4 w-4 text-indigo-600 border-gray-400 focus:ring-indigo-500";
             input.value = i;
 
             input.onclick = function () {
@@ -284,11 +273,12 @@
                 const parentLabel = r.closest("label");
 
                 if (r === input) {
-                  parentLabel.classList.remove("hover:bg-indigo-50");
-                  parentLabel.classList.add("bg-indigo-100");
+                  parentLabel.classList.remove(isDark ? "hover:bg-zinc-700" : "hover:bg-indigo-50");
+                  parentLabel.classList.add(isDark ? "bg-zinc-700" : "bg-indigo-100");
                 } else {
                   parentLabel.classList.add("opacity-50");
-                  parentLabel.classList.remove("cursor-pointer", "hover:bg-indigo-50");
+                  parentLabel.classList.remove("cursor-pointer");
+                  parentLabel.classList.remove(isDark ? "hover:bg-zinc-700" : "hover:bg-indigo-50");
                 }
               });
             };
@@ -364,44 +354,5 @@
         }
       }
     );
-
-    hljs.registerLanguage('terraform', window.hljsDefineTerraform);
-    hljs.registerLanguage('hcl', window.hljsDefineTerraform);
-    hljs.highlightAll();
-    hljs.initLineNumbersOnLoad();
-  });
-</script>
-
-<script>
-  document.addEventListener("DOMContentLoaded", function() {
-    const inactiveTabClassName = "<%= unselected_difficulty_classes %>";
-    const activeTabClassName = "<%= selected_difficulty_classes %>";
-
-    const buttons = document.querySelectorAll('button');
-    window.difficultyInitialized = false;
-
-    buttons.forEach((button, index) => {
-      button.addEventListener("click", function() {
-        if(window.difficultyInitialized) {
-          let urlBase = "<%= Rails.env.development? ? "http://localhost:3000" : "https://replicate.info" %>";
-          let difficulty = this.textContent.trim().toLowerCase().replace("+", "");
-          window.open(`${urlBase}/difficulty/${difficulty}`, "_blank", "noopener,noreferrer");
-        } else {
-          buttons.forEach((b) => {
-            b.classList.remove(...activeTabClassName.split(/\s+/));
-            b.classList.add(...inactiveTabClassName.split(/\s+/));
-          });
-
-          // Set the selected button as active
-          button.classList.add(...activeTabClassName.split(/\s+/));
-          button.classList.remove(...inactiveTabClassName.split(/\s+/));
-        }
-      });
-
-      if(button.textContent.trim().toLowerCase().indexOf("<%= @conversation.difficulty %>") >= 0) {
-        button.click();
-        window.difficultyInitialized = true;
-      }
-    });
   });
 </script>

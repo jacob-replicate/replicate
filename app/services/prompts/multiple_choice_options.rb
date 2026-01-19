@@ -1,14 +1,20 @@
 module Prompts
   class MultipleChoiceOptions < Prompts::Base
-    def call
-      parallel_batch_process(format: false) do |elements|
-        [2,3].include?(elements.size) && elements.all? { |opt| SanitizeAiContent.call(opt).length <= 100 && opt.exclude?("*") && opt.exclude?("`") }
-      end
+    def parse_response(raw)
+      options = Prompts::Base.extract_json(raw)["options"] || []
+      options.map { |x| x.gsub("*", "") }
     end
 
-    def fetch_raw_response
-      options = (JSON.parse(fetch_raw_output)["options"] || JSON.parse(fetch_raw_output)[:options]) rescue []
-      options.map { |x| x.gsub("*", "") }
+    def validate(raw)
+      options = Prompts::Base.extract_json(raw)["options"] || []
+      failures = []
+      failures << "wrong_count" unless [2, 3].include?(options.size)
+      options.each_with_index do |opt, idx|
+        failures << "option_#{idx}_too_long" if SanitizeAiContent.call(opt).length > 100
+        failures << "option_#{idx}_has_asterisks" if opt.include?("*")
+        failures << "option_#{idx}_has_backticks" if opt.include?("`")
+      end
+      failures
     end
   end
 end

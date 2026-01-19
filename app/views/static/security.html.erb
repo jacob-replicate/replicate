@@ -1,28 +1,28 @@
-<div class="max-w-3xl mx-auto py-8 text-[15px] leading-6 text-gray-800">
+<div class="max-w-3xl mx-auto py-8 text-[15px] leading-6 text-gray-800 dark:text-gray-200">
 
-  <h1 class="text-2xl font-medium mb-2 text-gray-900">
+  <h1 class="text-2xl font-medium mb-2 text-gray-900 dark:text-gray-100">
     Security
   </h1>
-  <div class="text-sm text-gray-500 mb-6">
-    Last updated: January 11, 2026
+  <div class="text-sm text-gray-500 dark:text-gray-400 mb-6">
+    Last updated: January 19, 2026
   </div>
 
   <!-- Architecture -->
   <div class="mb-8">
-    <h2 class="text-lg font-medium mb-2 text-gray-900">
+    <h2 class="text-lg font-medium mb-2 text-gray-900 dark:text-gray-100">
       Architecture
     </h2>
 
     <div class="mb-4">
-      All infra is provisioned/managed by <span class="font-medium">Heroku</span> (in <span class="font-medium">US-based</span> AWS regions), and uses their HA failover. Data is encrypted at rest using AES-256, and TLS 1.2+ in transit. The tool is ephemeral, and wipes data older than 3 months.
+      All infra is provisioned/managed by <span class="font-medium dark:text-gray-100">Heroku</span> (in <span class="font-medium dark:text-gray-100">US-based</span> AWS regions), and uses their HA failover. Data is encrypted at rest using AES-256, and TLS 1.2+ in transit. The tool is ephemeral, and wipes data older than 3 months.
     </div>
 
     <div class="mt-4">
-      <div class="font-medium mb-1">Automated Dependency Scanning</div>
+      <div class="font-medium mb-1 dark:text-gray-100">Automated Dependency Scanning</div>
       <div>
         The codebase is continuously scanned using
         <a href="https://docs.github.com/en/code-security/getting-started/dependabot-quickstart-guide"
-           class="text-blue-600 hover:text-blue-700 hover:underline transition font-medium">
+           class="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 hover:underline font-medium">
           GitHub Dependabot
         </a>
         to patch vulnerable libraries. Critical vulnernabilities are patched within 7 days of public disclosure.
@@ -30,17 +30,17 @@
     </div>
 
     <div class="mt-4">
-      <div class="font-medium mb-1">Cookie Policy</div>
+      <div class="font-medium mb-1 dark:text-gray-100">Cookie Policy</div>
       <div>
         This site uses a session ID cookie to track which difficulty you selected. No marketing cookies or analytics JS plugins of any kind.
       </div>
     </div>
 
     <div class="mt-4">
-      <div class="font-medium mb-1">Database Backups</div>
+      <div class="font-medium mb-1 dark:text-gray-100">Database Backups</div>
       <div>
         <a href="https://www.heroku.com/postgres"
-           class="text-blue-600 hover:text-blue-700 hover:underline transition font-medium">
+           class="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 hover:underline font-medium">
           Heroku Postgres
         </a>
         maintains rolling database backups, and prunes old snapshots automatically over time. Backups can be restored in minutes, and are captured at least once every 24 hours.
@@ -50,7 +50,7 @@
 
   <!-- Data Lifecycle -->
   <div class="mb-8">
-    <h2 class="text-lg font-medium mb-2 text-gray-900">
+    <h2 class="text-lg font-medium mb-2 text-gray-900 dark:text-gray-100">
       Data Lifecycle
     </h2>
 
@@ -59,7 +59,7 @@
         Inactive chats are auto-deleted after 3 months.
         Email
         <a href="mailto:support@replicate.info"
-           class="text-blue-600 hover:text-blue-700 hover:underline transition font-medium">
+           class="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 hover:underline font-medium">
           support@replicate.info
         </a>
         to request immediate deletion.
@@ -69,55 +69,55 @@
 
   <!-- Subprocessors -->
   <div>
-    <h2 class="text-lg font-medium mb-2 text-gray-900">
+    <h2 class="text-lg font-medium mb-2 text-gray-900 dark:text-gray-100">
       Subprocessors
     </h2>
 
-    <div class="text-sm text-gray-700 mb-4">
+    <div class="text-sm text-gray-700 dark:text-gray-300 mb-4">
       All vendors are GDPR compliant, offer Standard Contractual Clauses (SCCs), and underwent security review prior to onboarding. This is the complete list. No additional tools (e.g., Google Analytics) are used beyond those listed here.
     </div>
 
     <div class="space-y-4">
       <div>
-        <div class="font-medium">Amazon S3</div>
+        <div class="font-medium dark:text-gray-100">Amazon S3</div>
         <div>Stores immutable, append-only audits for admin actions (e.g., data removal) with AES-256 at rest.</div>
       </div>
 
       <div>
-        <div class="font-medium">Datadog</div>
+        <div class="font-medium dark:text-gray-100">Datadog</div>
         <div>Used for infrastructure telemetry and monitoring (e.g., CPU, memory, service health).</div>
       </div>
 
       <div>
-        <div class="font-medium">Heroku</div>
+        <div class="font-medium dark:text-gray-100">Heroku</div>
         <div>
           Used for application infra and encrypted storage. All workloads run in isolated containers with TLS 1.2+ enforced, and AES-256 encryption at rest. Includes managed Heroku Postgres + Redis instances.
         </div>
       </div>
 
       <div>
-        <div class="font-medium">OpenAI</div>
+        <div class="font-medium dark:text-gray-100">OpenAI</div>
         <div>
           OpenAI's API powers the real-time content generation for the chat. None of your data is persisted by OpenAI. None of it is used to train their models. The prompting is ephemeral.
         </div>
       </div>
 
       <div>
-        <div class="font-medium">PagerDuty</div>
+        <div class="font-medium dark:text-gray-100">PagerDuty</div>
         <div>
           Used for incident alerting and on-call scheduling. May store system-level alerts with metadata (e.g., timestamps, service names). No user-submitted content.
         </div>
       </div>
 
       <div>
-        <div class="font-medium">Papertrail</div>
+        <div class="font-medium dark:text-gray-100">Papertrail</div>
         <div>
           Used for infrastructure log aggregation and retention. Some logs may include metadata related to coaching email delivery (e.g. timestamps, team IDs).
         </div>
       </div>
 
       <div>
-        <div class="font-medium">Sentry</div>
+        <div class="font-medium dark:text-gray-100">Sentry</div>
         <div>
           Used for internal error tracking and debugging. Some error logs may include technical metadata (e.g., error messages, timestamps, team IDs).
         </div>

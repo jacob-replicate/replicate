@@ -1,24 +1,32 @@
-<div class="font-medium mt-6 mb-2 text-base text-gray-900">
+<div class="mt-7 mb-2 text-[16px] font-medium text-zinc-800 dark:text-zinc-200 tracking-tight">
   <%= element.context["name"] %>
 </div>
 
-<div class="border border-gray-200 rounded-md overflow-hidden bg-white">
+<div class="rounded-md border-[1.5px] border-[#b0b0b0] dark:border-[#333333] bg-white dark:bg-zinc-800 overflow-hidden">
   <table class="w-full border-collapse">
-    <% element.elements.each do |list_row_item| %>
-      <tr class="border-b border-gray-200 last:border-0 hover:bg-gray-50">
-        <td class="px-3 py-2 text-sky-600 text-sm cursor-pointer align-middle">
-          <%= list_row_item.context["name"].to_s.html_safe %>
+    <% element.elements.includes(:conversation).each do |row| %>
+      <% conversation = row.conversation %>
+      <% completed    = row.context["completed"].present? %>
+      <% href = conversation.present? ? conversation_path(conversation) : element_path(row) %>
+
+      <tr
+        class="group border-b border-zinc-100 dark:border-zinc-700 last:border-b-0 hover:bg-zinc-50 dark:hover:bg-zinc-700/50"
+      >
+        <!-- Question / main link -->
+        <td class="px-3 py-2.5 align-middle">
+          <a href="<%= href %>" class="topic-link block text-sm">
+            <%= row.context["name"].to_s.html_safe %>
+          </a>
         </td>
 
-        <td class="px-3 py-2 w-px whitespace-nowrap text-right align-middle">
-          <% if list_row_item.conversation_id.present? %>
-            <a class="inline-flex items-center text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded px-2.5 py-1 transition" href="#">
-              Continue
-            </a>
-          <% else %>
-            <a class="inline-flex items-center text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded px-2.5 py-1.5 transition" href="#">
-              Start
-            </a>
+        <!-- CTA -->
+        <td class="px-2 align-middle text-right whitespace-nowrap">
+          <% if completed %>
+            <div class="flex justify-end">
+              <div class="flex h-[20px] w-[20px] items-center justify-center rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 ring-1 ring-emerald-300 dark:ring-emerald-600/50 text-[13px]" >
+                ✓
+              </div>
+            </div>
           <% end %>
         </td>
       </tr>

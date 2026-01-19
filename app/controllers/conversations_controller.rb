@@ -2,7 +2,7 @@ class ConversationsController < ApplicationController
   before_action :verify_admin, only: [:destroy]
 
   def show
-    @conversation = Conversation.where(channel: "web").find_by(id: params[:id])
+    @conversation = Conversation.find_by(id: params[:id])
 
     if @conversation.blank? && params[:sharing_code].present?
       @conversation = Conversation.fork(params[:sharing_code])
@@ -13,7 +13,7 @@ class ConversationsController < ApplicationController
       return redirect_to root_path
     end
 
-    @title = [@conversation.context["title"], "replicate.info"].reject(&:blank?).first
+    @title = [@conversation.page_title, "replicate.info"].reject(&:blank?).first
   end
 
   def update

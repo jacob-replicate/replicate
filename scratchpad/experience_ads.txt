@@ -1,11 +1,9 @@
 Reddit
 -------
-- Let's see how well you understand leader election
+- Let's see if you actually understand DNS
 - Do you actually know how leader election works?
 -----------
-- Here are some ways to trigger a database SEV-1
 - Think you understand leader election? Prove it.
-- Do you actually know how leader election works?
 - Do you actually know how database indices work?
 - Let's see how well you understand multi-region failover.
 

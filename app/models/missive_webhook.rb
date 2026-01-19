@@ -1,2 +1,0 @@
-class MissiveWebhook < ApplicationRecord
-end

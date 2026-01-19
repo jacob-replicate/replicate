@@ -19,12 +19,7 @@ Rails.application.routes.draw do
   get "/privacy", to: "static#privacy"
   get "/billing", to: "static#billing"
   get "/security", to: "static#security"
-  get '/sev', to: "static#coaching"
   get '/incidents(/:sharing_code)', to: "conversations#show"
-  get '/contacts/:id/unsubscribe', to: "contacts#unsubscribe"
-  post '/contacts/:id/unsubscribe', to: "contacts#unsubscribe_confirm"
-  get '/contacts/:id/resubscribe', to: "contacts#resubscribe"
-  post '/contacts/:id/resubscribe', to: "contacts#resubscribe_confirm"
   get '/members/:id/unsubscribe', to: "members#unsubscribe"
   post '/members/:id/unsubscribe', to: "members#unsubscribe_confirm"
   get '/members/:id/resubscribe', to: "members#resubscribe"
@@ -32,13 +27,16 @@ Rails.application.routes.draw do
   post '/sessions/pulse', to: "sessions#pulse"
   get '/growth', to: "static#growth"
 
-  get '/difficulty/:difficulty', to: "static#difficulty"
-
   resources :conversations, only: [:show, :update]
   get '/conversations/:id/destroy', to: "conversations#destroy"
+  resources :elements, only: [:show]
   resources :messages, only: [:create]
   resources :organizations, only: [:create]
-  get '/:code', to: "experiences#show", as: "experience"
+
+  # Topic and Experience routes
+  post '/:code/populate', to: "topics#populate", as: "populate_topic"
+  get '/:topic_code/:experience_code', to: "experiences#show", as: "topic_experience"
+  get '/:code', to: "topics#show", as: "topic"
 
   root "static#index"
 end

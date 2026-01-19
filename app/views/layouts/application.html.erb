@@ -1,6 +1,16 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <script>
+      // Prevent flash: apply theme before render
+      (function() {
+        const stored = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (stored === 'dark' || (!stored && prefersDark)) {
+          document.documentElement.classList.add('dark');
+        }
+      })();
+    </script>
     <title><%= @title || "replicate.info" %></title>
 
     <%= csrf_meta_tags %>
@@ -45,16 +55,24 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.9.0/highlightjs-line-numbers.min.js"></script>
     <script src="/terraform.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        hljs.registerLanguage('terraform', hljsDefineTerraform);
+        hljs.registerLanguage('hcl', hljsDefineTerraform);
+        hljs.highlightAll();
+        hljs.initLineNumbersOnLoad();
+      });
+    </script>
     <%= stylesheet_link_tag "tailwind", as: "style" %>
     <%= javascript_include_tag "application", defer: true %>
     <script src="https://cdn.jsdelivr.net/npm/echarts@latest/dist/echarts.min.js"></script>
     <%= Sentry.get_trace_propagation_meta.html_safe %>
   </head>
 
-  <body>
+  <body class="bg-[#fbfbfb] dark:bg-zinc-900">
     <% if (params[:controller] == "static" && params[:action] == "index") || params[:action] == "growth" || params[:action] == "show" %>
       <div class="container mx-auto">
-        <div class="px-4 pb-6 pt-4 md:pt-6 md:pb-8 lg:px-[90px] xl:px-[218px] 2xl:px-[345px]">
+        <div class="px-4 pb-6 pt-4 md:pt-6 md:pb-8 lg:px-[90px] xl:px-[218px] 2xl:px-[385px]">
           <%= render 'layouts/navbar' %>
 
           <div class="pt-4 md:pt-0 lg:pt-2">

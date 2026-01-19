@@ -1,0 +1,117 @@
+CONTEXT:
+You are generating experience intents for a platform that pressure-tests senior engineers on real-world infrastructure and security failures. Your audience aspires to be truly fluent in "big boy" infra/sec - they want to operate at the level of senior SREs at Google, security engineers at Stripe, or principal architects at AWS.
+
+INPUTS:
+- topic_name: {{CONTEXT_TOPIC_NAME}}
+- topic_description: {{CONTEXT_TOPIC_DESCRIPTION}}
+
+CRITICAL: TOPIC RELEVANCE IS MANDATORY
+Every single experience you generate MUST be directly about "{{CONTEXT_TOPIC_NAME}}". Read the topic name and description carefully. If the topic is about IAM policies, EVERY experience must be about IAM policies. If the topic is about database transactions, EVERY experience must be about database transactions.
+
+DO NOT generate experiences about:
+- Unrelated infrastructure concepts (e.g., don't generate "Clock Drift" for an IAM topic)
+- Generic distributed systems problems unless they directly manifest within this topic's domain
+- Tangentially related concepts (e.g., don't generate "Ephemeral Port Exhaustion" for a database topic)
+
+ASK YOURSELF: "Is this experience PRIMARILY about {{CONTEXT_TOPIC_NAME}}?" If you can't answer yes, don't include it.
+
+EXISTING EXPERIENCES (DO NOT DUPLICATE):
+{{CONTEXT_EXISTING_EXPERIENCES}}
+
+If existing experiences are listed above, generate intents that COMPLEMENT the existing coverage, filling gaps rather than duplicating.
+
+YOUR AUDIENCE:
+- Engineers who have read the docs and understand the theory
+- They DON'T need another explanation of how X works
+- They NEED to discover what breaks, why it breaks, and how to debug it at 3am
+- They want to close the gap between "I understand the concept" and "I've been paged for this"
+
+THIS IS NOT:
+- Tutorial content explaining how systems work
+- A list of concepts tangentially related to the topic
+- Generic "best practices" or "advanced topics"
+- Multiple angles on the same core concept (NO: "Replication Lag Causes" + "Replication Lag Effects")
+- Specific bugs or failures as titles (NO: "Broken X", "X Vulnerability", "X Mismatch")
+
+THIS IS:
+- Decomposition of "{{CONTEXT_TOPIC_NAME}}" into DISTINCT technical INVARIANTS
+- Each intent targets a principle that MUST hold true for the system to work correctly
+- The experience name is the INVARIANT, not the failure (GOOD: "Token Audience Validation", BAD: "Token Audience Mismatch")
+
+NAMING PHILOSOPHY:
+Experience names must be SHORT (2-4 words max):
+- GOOD: "Session Fixation", "PKCE", "Replica Lag", "CORS Policies"
+- BAD: "Session Fixation Prevention Mechanisms", "PKCE Verification in OAuth Flows"
+- Think: what would a senior engineer call this in Slack?
+- No verbs, no "-ing" words, no "How to...", no fluff
+
+REQUIREMENTS:
+
+Topic Relevance (CRITICAL):
+- EVERY experience must be a core concept within "{{CONTEXT_TOPIC_NAME}}"
+- Someone should immediately know it belongs under "{{CONTEXT_TOPIC_NAME}}"
+
+Intent Uniqueness:
+- Each intent MUST produce an experience with a DIFFERENT, SPECIFIC name
+- Names should be 2-4 words, not sentences
+
+Intent Quality:
+Each generation_intent must:
+- Start with: "Create an experience called '[SHORT NAME]' that..."
+- Use a SHORT name (2-4 words max)
+- Be 250-400 characters total
+- Describe what breaks and why it matters
+- Reference real scenarios engineers face
+
+Coverage Strategy for "{{CONTEXT_TOPIC_NAME}}":
+- What are the core concepts every engineer should deeply understand?
+- What breaks in production that surprises people?
+- What do engineers think they understand but actually don't?
+- What shows up in postmortems repeatedly?
+
+Number of intents:
+- Generate 6-10 intents (fewer, but each more distinct and impactful)
+- Quality over quantity - each should be worthy of a dedicated on-call rotation
+
+OUTPUT FORMAT:
+Return a single valid JSON object with this structure:
+{
+  "generation_intents": [
+    "Create an experience called '[Invariant Name]' that...",
+    "Create an experience called '[Invariant Name]' that...",
+    ...
+  ]
+}
+
+IMPORTANT: Return ONLY the raw JSON object. Do NOT wrap it in markdown code blocks.
+
+EXAMPLE 1 - Database Replication topic:
+Note how names are SHORT (2-4 words):
+{
+  "generation_intents": [
+    "Create an experience called 'Quorum Writes' that explores how distributed databases maintain consistency through quorum. Cover scenarios where quorum is technically met but data is still inconsistent, split-brain detection, and the GitHub 2018 incident.",
+    "Create an experience called 'Leader Election' that examines how databases elect a new primary during failover. Focus on why the 'most up-to-date' replica sometimes isn't, fencing mechanisms, and multiple nodes believing they're leader.",
+    "Create an experience called 'Replica Lag' that investigates how systems handle lag across replica chains. Cover read-your-writes consistency, monitoring that lies about downstream health, and reads routing to stale nodes.",
+    "Create an experience called 'Online DDL' that explores how schema changes flow through replication. Focus on pt-osc vs ghost, timing windows, and maintaining replication during migrations."
+  ]
+}
+
+EXAMPLE 2 - Authentication topic:
+Note how names are SHORT - no "Validation", "Verification", "Mechanism" suffixes:
+{
+  "generation_intents": [
+    "Create an experience called 'Token Audience' that explores how OIDC tokens must match the intended service. Cover tokens accepted by wrong services, aud vs azp claims, and multi-tenant confusion.",
+    "Create an experience called 'Session Fixation' that examines when session IDs must be rotated. Focus on post-auth regeneration, concurrent sessions, and why pre-auth IDs persisting post-auth is catastrophic.",
+    "Create an experience called 'PKCE' that investigates Proof Key for Code Exchange in OAuth. Cover code_verifier binding, why authorization codes need verifiers, and why PKCE matters even for confidential clients.",
+    "Create an experience called 'Clock Skew' that explores time differences between client and server in auth. Focus on JWT exp/nbf/iat windows, TOTP time steps, and strict validation breaking legitimate requests."
+  ]
+}
+
+BAD EXAMPLE - Names that are too long:
+{
+  "generation_intents": [
+    "Create an experience called 'Token Audience Validation Across Services'...",  // TOO LONG: just "Token Audience"
+    "Create an experience called 'Session Fixation Prevention Mechanisms'...",     // TOO LONG: just "Session Fixation"
+    "Create an experience called 'Cross-Origin Resource Policy Enforcement'..."    // TOO LONG: just "CORS Policies"
+  ]
+}

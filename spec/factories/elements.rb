@@ -1,9 +1,9 @@
 FactoryBot.define do
   factory :element do
-    code { "MyText" }
-    context { "" }
-    experience_id { "" }
-    element_id { "" }
-    conversation_id { "" }
+    code { "test_element" }
+    context { nil }
+    experience
+    element { nil }
+    conversation { nil }
   end
 end

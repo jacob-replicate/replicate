@@ -2,7 +2,6 @@ module MessageGenerators
   class Base
     def initialize(conversation, min_sequence = nil)
       @conversation = conversation
-      @context = conversation.context || {}
       @message_sequence = [min_sequence, conversation.next_message_sequence].reject(&:blank?).max
     end
 
@@ -23,17 +22,15 @@ module MessageGenerators
       full_response = ""
 
       elements.each_with_index do |element, i|
-        include_p_tag = @conversation&.web? || i > 0
+        include_p_tag = i > 0
         p_start = include_p_tag ? "<p>" : ""
         p_end = include_p_tag ? "</p>" : ""
-        text = element.is_a?(String) ? element.html_safe : "#{p_start}#{element.new(conversation: @conversation).call}#{p_end}"
+        text = element.is_a?(String) ? element.html_safe : "#{p_start}#{element.new(context: {}, message_history: @conversation.message_history).call}#{p_end}"
         text = sanitize_response(text)
         next if text.blank?
 
-        if @conversation.web?
-          broadcast_to_web(message: text, type: "element", user_generated: user_generated)
-          broadcast_to_web(type: "loading", user_generated: user_generated) unless i == elements.length - 1
-        end
+        broadcast_to_web(message: text, type: "element", user_generated: user_generated)
+        broadcast_to_web(type: "loading", user_generated: user_generated) unless i == elements.length - 1
 
         full_response += "#{text}\n"
       end
@@ -42,11 +39,7 @@ module MessageGenerators
       full_response.gsub!(/\n\z/, "")
       message = @conversation.messages.create!(content: full_response, user_generated: user_generated)
 
-      if @conversation.web?
-        broadcast_to_web(type: "done") unless skip_done_message
-      elsif @conversation.email?
-        ConversationMailer.drive(@conversation).deliver_now
-      end
+      broadcast_to_web(type: "done") unless skip_done_message
 
       message
     end
@@ -65,13 +58,6 @@ module MessageGenerators
 
     def sanitize_response(message)
       message.to_s.gsub(" s ", "s ").gsub(" s,", "s,").gsub("</p></p>", "</p>").squish.html_safe
-    end
-
-    private
-
-    def unsubscribe_footer(member)
-      footer = "Replicate Software, LLC - 131 Continental Dr, Suite 305, Newark, DE - <a href='https://replicate.info/members/#{member.id}/unsubscribe'>Unsubscribe</a>"
-      "<p style=\"font-size: 80%; opacity: 0.6\">#{footer}</p>"
     end
   end
 end

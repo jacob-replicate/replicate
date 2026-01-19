@@ -1,33 +1,33 @@
-<div class="leading-relaxed text-gray-800 text-[17px]">
+<div class="leading-relaxed text-zinc-700 dark:text-zinc-200 text-[17px]">
   <div class="flex flex-col lg:flex-row lg:gap-[18px]">
     <div class="lg:basis-3/5 mb-6 lg:mb-0">
       <%= render "static/trial_form" %>
     </div>
     <div class="lg:basis-2/5 md:flex md:flex-row md:gap-6 lg:block">
-      <div class="text-sm border-2 border-gray-200 bg-white rounded-md md:basis-1/2">
-        <div class="bg-neutral-100 border-b border-gray-200 font-semibold px-3 py-2 rounded-t-md">
-          <%= link_to 'Billing & Payment Details&nbsp;&nbsp;&rarr;'.html_safe, '/billing', class: "text-blue-600 hover:underline font-medium" %>
+      <div class="text-sm border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800/50 rounded-md md:basis-1/2">
+        <div class="bg-zinc-100 dark:bg-zinc-700/50 border-b border-zinc-200 dark:border-zinc-700 font-semibold px-3 py-2 rounded-t-md">
+          <%= link_to 'Billing & Payment Details&nbsp;&nbsp;&rarr;'.html_safe, '/billing', class: "text-violet-600 dark:text-violet-400 hover:underline font-medium" %>
         </div>
-        <div class="p-3">
+        <div class="p-3 text-zinc-700 dark:text-zinc-300">
           <div class="mb-1">&bull;&nbsp;<span class="font-semibold">One annual invoice</span> after <span class="font-semibold">3-month</span> trial</div>
-          <div class="mb-1">&bull;&nbsp;Fixed <span class="font-semibold px-1 inline-block bg-yellow-200">$10-50k/yr</span> SaaS plans. <span class="font-semibold md:hidden lg:inline">No metering</span>.</div>
+          <div class="mb-1">&bull;&nbsp;Fixed <span class="font-semibold px-1 inline-block bg-yellow-200 dark:bg-yellow-600/30 dark:text-yellow-200">$10-50k/yr</span> SaaS plans. <span class="font-semibold md:hidden lg:inline">No metering</span>.</div>
           <div class="mb-1">&bull;&nbsp;<span class="font-semibold">30%</span> off multi-year terms via 1 <span class="hidden lg:inline">upfront&nbsp;</span>check</div>
           <div class="mb-1">&bull;&nbsp;<span class="font-semibold">No auto-renewal</span> or <span class="font-semibold">evergreen</span> clauses</div>
-          <div class="mb-1">&bull;&nbsp;Standard, pre-signed <a href="/replicate-msa-dpa.pdf" class="text-blue-600 hover:underline font-semibold" tabindex="-1">MSA/DPA</a>. No redlines.</div>
+          <div class="mb-1">&bull;&nbsp;Standard, pre-signed <a href="/replicate-msa-dpa.pdf" class="text-violet-600 dark:text-violet-400 hover:underline font-semibold" tabindex="-1">MSA/DPA</a>. No redlines.</div>
           <div class="mb-1 md:mb-0">&bull;&nbsp;<span class="font-semibold">5x liability cap</span>, uncapped for misconduct</div>
           <div class="md:hidden">&bull;&nbsp;Prorated terms to align with your budget cycle</div>
         </div>
       </div>
-      <div class="mt-6 md:mt-0 lg:mt-[18px] text-sm border-2 border-gray-200 bg-white rounded-md md:basis-1/2">
-        <div class="bg-neutral-100 border-b border-gray-200 font-semibold px-3 py-2 rounded-t-md">
-          <%= link_to 'Security Posture&nbsp;&rarr;'.html_safe, '/security', class: "text-blue-600 hover:underline font-medium" %>
+      <div class="mt-6 md:mt-0 lg:mt-[18px] text-sm border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800/50 rounded-md md:basis-1/2">
+        <div class="bg-zinc-100 dark:bg-zinc-700/50 border-b border-zinc-200 dark:border-zinc-700 font-semibold px-3 py-2 rounded-t-md">
+          <%= link_to 'Security Posture&nbsp;&rarr;'.html_safe, '/security', class: "text-violet-600 dark:text-violet-400 hover:underline font-medium" %>
         </div>
-        <div class="p-3">
+        <div class="p-3 text-zinc-700 dark:text-zinc-300">
           <div class="mb-1">&bull;&nbsp;<span class="font-semibold">Email only</span>. No SaaS dashboards to manage</div>
           <div class="mb-1">&bull;&nbsp;Zero access to <span class="font-semibold">customer data</span></div>
           <div class="mb-1">&bull;&nbsp;Heroku + AWS (US<span class="hidden md:inline"> infra</span>). AES-256. TLS 1.2+.</div>
           <div class="mb-1">&bull;&nbsp;<span class="font-semibold">No SOC 2</span> yet. Type I in 2026, Type II after.</div>
-          <div class="mb-1">&bull;&nbsp;Insurance coverage: <%= link_to '$1M E&O', '/replicate-coi.pdf', class: "text-blue-600 hover:underline font-semibold" %> + <%= link_to '$1M Cyber', '/replicate-coi.pdf', class: "text-blue-600 hover:underline font-semibold" %></div>
+          <div class="mb-1">&bull;&nbsp;Insurance coverage: <%= link_to '$1M E&O', '/replicate-coi.pdf', class: "text-violet-600 dark:text-violet-400 hover:underline font-semibold" %> + <%= link_to '$1M Cyber', '/replicate-coi.pdf', class: "text-violet-600 dark:text-violet-400 hover:underline font-semibold" %></div>
           <div class="">&bull;&nbsp;<span class="font-semibold">Ephemeral GPT prompts</span>, no training</div>
         </div>
       </div>

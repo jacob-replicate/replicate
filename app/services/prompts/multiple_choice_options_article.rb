@@ -1,14 +1,13 @@
 module Prompts
   class MultipleChoiceOptionsArticle < Prompts::Base
-    def call
-      parallel_batch_process(format: false) do |elements|
-        elements.size == 3
-      end
+    def parse_response(raw)
+      options = Prompts::Base.extract_json(raw)["options"] || []
+      options.shuffle
     end
 
-    def fetch_raw_response
-      options = (JSON.parse(fetch_raw_output)["options"] || JSON.parse(fetch_raw_output)[:options]) rescue []
-      options.shuffle
+    def validate(raw)
+      options = Prompts::Base.extract_json(raw)["options"] || []
+      options.size == 3 ? [] : ["wrong_count"]
     end
   end
 end

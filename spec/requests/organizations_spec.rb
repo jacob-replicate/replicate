@@ -6,10 +6,8 @@ RSpec.describe "OrganizationsController#create", type: :request do
 
   describe "POST /organizations" do
     context "happy path" do
-      it "creates org, owner, engineers and enqueues the scheduling job" do
+      it "creates org, owner, engineers" do
         Timecop.freeze do
-          allow(ScheduleWeeklyIncidentsWorker).to receive(:perform_async)
-
           params = {
             email: "owner@example.com",
             engineer_emails: "\n\neng1@example.com, eng2@example.com ;\n\n ENG3@exaMple.com "
@@ -30,8 +28,6 @@ RSpec.describe "OrganizationsController#create", type: :request do
           engineers = org.members.where(role: "engineer").pluck(:email)
           expect(engineers).to match_array(%w[eng1@example.com eng2@example.com eng3@example.com])
           expect(org.members.pluck(:subscribed).uniq).to eq([true])
-
-          expect(ScheduleWeeklyIncidentsWorker).to have_received(:perform_async).with([org.id], Time.current.to_i, Time.current.beginning_of_day.to_i)
         end
       end
     end
@@ -50,7 +46,6 @@ RSpec.describe "OrganizationsController#create", type: :request do
     context "rescue path on member creation error" do
       it "returns 400 and destroys the org if a member create! raises" do
         allow(EmailExtractor).to receive(:call).with("owner@example.com").and_return(["owner@example.com"])
-        allow(ScheduleWeeklyIncidentsWorker).to receive(:perform_in)
         allow_any_instance_of(OrganizationsController).to receive(:engineer_emails).and_return(["owner@example.com"]) # same as owner → Member uniqueness should raise
 
         post endpoint, params: { name: "Jane Owner", email: "owner@example.com", engineer_emails: "owner@example.com" }, as: :json
@@ -58,7 +53,6 @@ RSpec.describe "OrganizationsController#create", type: :request do
         expect(response).to have_http_status(:bad_request)
         expect(Organization.count).to eq(0)
         expect(Member.count).to eq(0)
-        expect(ScheduleWeeklyIncidentsWorker).not_to have_received(:perform_in)
       end
     end
   end

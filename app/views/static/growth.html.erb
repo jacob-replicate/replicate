@@ -1,11 +1,11 @@
 <div class="flex flex-row items-top space-x-4 mb-6 pt-4">
   <% @stats.each do |key, value| %>
     <div class="basis-1/4">
-      <div class="border-2 border-gray-200 bg-white rounded-md">
-        <div class="bg-gray-700 text-white p-3 rounded-tl-md rounded-tr-md">
+      <div class="border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800/50 rounded-md">
+        <div class="bg-zinc-700 dark:bg-zinc-700 text-white p-3 rounded-tl-md rounded-tr-md">
           <%= key.to_s.humanize.split.map(&:capitalize).join(" ") %>
         </div>
-        <div class="text-center text-2xl py-8">
+        <div class="text-center text-2xl py-8 text-zinc-800 dark:text-zinc-100">
           <%= value %>
         </div>
       </div>
@@ -13,36 +13,31 @@
   <% end %>
 </div>
 
-<div class="mb-4">
+<div class="mb-4 text-zinc-700 dark:text-zinc-200">
   <span class="font-semibold">Trial Domains</span>: <%= Member.where(subscribed: true).pluck(:email_domain).uniq.reject(&:blank?).join(", ") %>
 </div>
 
 <% @base_conversations.order(updated_at: :desc).first(25).each do |conversation| %>
-    <div class="rounded-md bg-white border-2 border-gray-400 shadow mb-6">
+    <div class="rounded-md bg-white dark:bg-zinc-800/50 border border-zinc-300 dark:border-zinc-700 shadow-sm mb-6">
       <% conversation_count = @counts_by_ip_address[conversation.ip_address] %>
-      <div class="p-2">
-        <a href="/conversations/<%= conversation.id %>" class="text-blue-600 underline">View</a> - <%= conversation.messages.where(user_generated: true).count %> messages - <%= conversation.channel %> - <%= conversation.difficulty %> - <%= conversation.context['conversation_type'] %> - <a href="/growth?ip=<%= conversation.ip_address %>" class="text-blue-600 hover:underline"><%= conversation.ip_address %></a> - <%= conversation_count > 1 ? "<span class='bg-yellow-200 px-1'>#{conversation_count}</span>".html_safe : conversation_count %> conversations - <a href="/conversations/<%= conversation.id %>/destroy" class="text-red-600 font-semibold hover:underline">Delete</a>
+      <div class="p-2 text-zinc-700 dark:text-zinc-200">
+        <a href="/conversations/<%= conversation.id %>" class="text-violet-600 dark:text-violet-400 underline">View</a> - <%= conversation.messages.where(user_generated: true).count %> messages - <%= conversation.channel %> - <%= conversation.variant %> - <a href="/growth?ip=<%= conversation.ip_address %>" class="text-violet-600 dark:text-violet-400 hover:underline"><%= conversation.ip_address %></a> - <%= conversation_count > 1 ? "<span class='bg-yellow-200 dark:bg-yellow-600/30 dark:text-yellow-200 px-1'>#{conversation_count}</span>".html_safe : conversation_count %> conversations - <a href="/conversations/<%= conversation.id %>/destroy" class="text-red-600 dark:text-red-400 font-semibold hover:underline">Delete</a>
       </div>
 
       <% conversation.messages.order(created_at: :asc).each_with_index do |m, i| %>
-        <div class="border-t p-2" style="<%= m.user_generated ? "" : "opacity: 0.35" %>">
+        <div class="border-t border-zinc-200 dark:border-zinc-700 p-2 text-zinc-700 dark:text-zinc-200" style="<%= m.user_generated ? "" : "opacity: 0.35" %>">
           <div class="mb-2">
-            <span class="font-semibold"><%= m.user_generated? ? "Engineer" : "Replicate" %></span><%= m.suggested ? "&nbsp;<span class='bg-gray-200 px-1 border border-gray-500 rounded text-sm'>Suggested</span>".html_safe : "" %> - <%= m.created_at.in_time_zone("America/New_York").strftime("%A, %b %e - <span class='font-medium'>%l:%M%P</span>").html_safe %>
+            <span class="font-semibold"><%= m.user_generated? ? "Engineer" : "Replicate" %></span><%= m.suggested ? "&nbsp;<span class='bg-zinc-200 dark:bg-zinc-700 px-1 border border-zinc-400 dark:border-zinc-600 rounded text-sm'>Suggested</span>".html_safe : "" %> - <%= m.created_at.in_time_zone("America/New_York").strftime("%A, %b %e - <span class='font-medium'>%l:%M%P</span>").html_safe %>
           </div>
           <% if m.user_generated %>
-            <%= SanitizeAiContent.call(m.content) %></div>
+            <div><%= SanitizeAiContent.call(m.content) %></div>
           <% else %>
-            <%= m.content.html_safe.gsub(FINAL_HINT_LINK, "").gsub(ANOTHER_HINT_LINK, "").gsub(HINT_LINK, "").html_safe %></div>
+            <div><%= m.content.html_safe.gsub(FINAL_HINT_LINK, "").gsub(ANOTHER_HINT_LINK, "").gsub(HINT_LINK, "").html_safe %></div>
           <% end %>
+        </div>
       <% end %>
     </div>
 <% end %>
-<div class="underline-offset-4 gap-4 my-4 bg-gray-600 inline-block mr-2 px-2 lg:basis-[60%] lg:basis-[40%]">
+<div class="underline-offset-4 gap-4 my-4 bg-zinc-600 inline-block mr-2 px-2 lg:basis-[60%] lg:basis-[40%]">
   <!-- for article suggestion title classes-->
 </div>
-
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    hljs.highlightAll();
-  });
-</script>

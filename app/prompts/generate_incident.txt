@@ -1,0 +1,89 @@
+CONTEXT:
+You are generating a single incident scenario for a technical experience about distributed systems, databases, consensus algorithms, or infrastructure.
+
+An incident presents a production outage or degradation scenario where the learner must diagnose what went wrong. The scenario should be realistic, technically plausible, and focused on a specific failure mode or operational mistake.
+
+These incidents are NOT:
+- Code bugs or syntax errors
+- Performance optimization exercises
+- Generic "the system is slow" scenarios
+
+These incidents ARE:
+- Realistic production failures that could actually happen
+- Scenarios with enough clues to diagnose the root cause
+- Situations that expose gaps in understanding of system invariants
+- Based on common operational mistakes or misconceptions
+- Focused on distributed systems failures, consensus protocol violations, or data integrity issues
+
+INPUTS:
+- experience_name: {{CONTEXT_EXPERIENCE_NAME}}
+- experience_description: {{CONTEXT_EXPERIENCE_DESCRIPTION}}
+- refined_generation_intent: {{CONTEXT_REFINED_GENERATION_INTENT}}
+- previous_incidents: {{CONTEXT_PREVIOUS_INCIDENTS}}
+
+REQUIREMENTS:
+
+Incident Structure:
+- Title: A descriptive statement of the observable symptom (8-15 words)
+- Body: A concise incident description with BOTH technical failure AND customer impact
+- Generation intent: A detailed technical description of the failure mode (3-5 sentences). This is NOT a summary — it's the full technical context that will be used downstream to generate conversation content. Include: what failed, why it failed, what assumptions were violated, what the blast radius was, and any notable operational details.
+
+Body Guidelines:
+- Plain text only (no HTML)
+- Target 200 characters, hard cap at 215 characters
+- Use present progressive tense - the incident is still unfolding ("Customers are seeing...", "Writes are completing but...")
+- Start with customer pain in plain english, then add technical signals
+- Make it feel like a live #incidents channel update, not a post-mortem
+- Be direct, concise, and information-dense
+- Include specific details: timestamps, lag values, config states
+- No editorializing or interpretation - just observable facts
+- Vary nouns and verbs, don't repeat words
+
+Signals Guidelines (NEW):
+- Generate 2-4 observable signals that an on-call engineer would see in dashboards/logs
+- Each signal should be a single line of realistic output (log line, metric, query result, error message)
+- Mix signal types: error messages, metrics, log snippets, CLI output, query results
+- Make them feel like real production data with realistic values
+- These should provide diagnostic clues without giving away the answer
+
+Title Guidelines:
+- Should describe the visible symptom, not the root cause
+- 8-12 words, maximum 70 characters
+- Sound like a real incident alert
+- Examples: "Cascading replication lag during high write load causes inconsistent query results", "Stale cache entries despite database updates causing data inconsistency"
+
+OUTPUT FORMAT:
+Return a single valid JSON object with this structure:
+{
+  "incident": {
+    "title": "Descriptive title of observable symptom",
+    "body": "Plain text description under 220 characters with technical failure and customer impact.",
+    "signals": [
+      "ERROR: connection timeout after 30000ms (pool exhausted)",
+      "pg_stat_activity: 847 connections in 'idle in transaction' state",
+      "Datadog: p99 latency spiked from 45ms to 12.4s at 02:41 UTC"
+    ],
+    "generation_intent": "Detailed technical description of the failure mode (3-5 sentences)"
+  }
+}
+
+IMPORTANT:
+- Return ONLY the raw JSON object. Do NOT wrap it in markdown code blocks (no ```json). Just return the plain JSON.
+- Generate exactly ONE incident
+- Make it distinct from previous incidents: {{CONTEXT_PREVIOUS_INCIDENTS}}
+- The scenario should be realistic enough that an experienced engineer would find it plausible
+- Include enough clues to diagnose the issue but don't give away the answer
+
+EXAMPLE OUTPUT:
+{
+  "incident": {
+    "title": "Privileged actions executed through fallback login path after IdP outage",
+    "body": "Audit logs show admin commands bypassing SSO and MFA. The identity provider went down and the app fell back to a legacy local login table.",
+    "signals": [
+      "auth.log: LOGIN_SUCCESS user=admin@corp.com method=local_db mfa=SKIPPED",
+      "SELECT count(*) FROM audit_events WHERE auth_method='legacy' → 847",
+      "PagerDuty: 'IdP Health Check Failed' triggered 3h ago, auto-resolved"
+    ],
+    "generation_intent": "During peak traffic, the identity provider went down. Instead of failing closed, the application exposed a legacy public login path tied to a local user table. Dormant admin accounts that were never fully offboarded could still authenticate there, bypassing SSO and MFA. Audit logs now show privileged actions executed through this fallback path, raising concerns that external actors could have exploited it."
+  }
+}

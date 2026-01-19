@@ -1,0 +1,35 @@
+- Generate the individual experience first. You already have the mockup, and can send ads to that.
+
+- GenerateTopicDescription
+    - input: topic_name
+    - output:
+        - topic_description
+        - context_for_ai
+    - Persistence
+        - "Topic" records have_many "Experience" records, along with a #show page with an indigo "Back to discover" header link.
+
+- GenerateExperience
+  - Ruby Input:
+    - topic_id (consensus, load shedding)
+    - experience_description (for the prompt, not the end-user)
+  - LLM Input:
+    - topic_name
+    - experience_description (for the prompt, not the end-user)
+  - Output:
+      - experience_title
+      - experience_description
+      - context (around what to lean into within follow-up prompts)
+  - Persistence:
+    - Experience.new(topic_id: topic.id, title: title, description: description, context: context).save!
+
+- Populate experience...
+  - GenerateDescription
+  - GenerateQuestionCategories
+  - GenerateQuestions
+  - GenerateMultipleChoiceOptions
+  - GenerateIncidents
+
+
+- GenerateDesignReviewExperience
+"Give me another component. I want it to be a "design review" where the only option is a free-form text box (around 2-3 lines) to provide feedback on a paragraph or two from a fictitious teamate (use "/profile-photo-1.jpg" as the image path for the teammate's avatar).
+ It should feel realistic. Layered idea that incorporates leader election somehow. Shouldn't use the phrase "Raft" explicitly. But somebody who finished this entire page should be able to find a fatal flaw. It should sound like a valid design, but fail due to a commonly missed

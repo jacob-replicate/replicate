@@ -1,4 +1,4 @@
-Change
+Change Management
 - Artifact Integrity
 - Build Reproducibility
 - CI/CD

@@ -1,19 +1,9 @@
-<div class="text-[19px] pt-3">
-  <%= @experience.name.html_safe %>
-</div>
-
-<div class="mt-1 text-[15px]">
+<div class="md:mt-4 text-[15px] text-gray-800 leading-6">
   <%= @experience.description.html_safe %>
 </div>
 
-<div class="bg-neutral-600 text-white p-[7px] mt-2 rounded text-sm">
-  There are more topics on the Discover page, such as <span class="font-semibold underline underline-offset-2">DNS</span>, <span class="font-semibold underline underline-offset-2">Artifact Integrity</span>, and <span class="font-semibold underline underline-offset-2">Configuration Drift</span>
-</div>
-
-<% @experience.elements.root_level.each do |element| %>
-  <%= render "elements/#{element.code.underscore}", element: element %>
+<% @experience.elements.root_level.includes(elements: :conversation).order(sort_order: :asc).each_with_index do |element, i| %>
+  <% if Rails.env.development? || element.code == "conversation_list" %>
+    <%= render "elements/#{element.code.underscore}", element: element %>
+  <% end %>
 <% end %>
-
-<div class="mt-4" style="opacity: 0.90" id="signature">
-  <%= render "static/signature" %>
-</div>

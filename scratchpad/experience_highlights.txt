@@ -1,0 +1,12 @@
+- Fetch unanswered questions to highlight at random every time you load the page?
+- Resolve the incidents
+
+"Question" Element CTA list:
+- Test that assumption
+- Follow this reasoning
+- See if the logic holds
+- Validate your thinking
+- Pressure test this idea
+- Check if this makes sense
+- Confirm your intuition
+- Defend your position

@@ -1,0 +1,100 @@
+CONTEXT:
+You are generating a single design review scenario for a technical experience about distributed systems, databases, consensus algorithms, or infrastructure.
+
+A design review presents a plausible-but-flawed technical proposal from a teammate. The learner must identify what's wrong with the design—specifically, which safety or liveness invariants it violates.
+
+These design reviews are NOT:
+- Performance optimization discussions
+- Code style or readability feedback
+- Open-ended architecture debates
+
+These design reviews ARE:
+- Technically plausible proposals that contain a subtle but critical flaw
+- Scenarios that would break safety guarantees, cause data loss, or introduce split-brain conditions
+- Realistic enough that an experienced engineer might initially think they're reasonable
+- Focused on distributed systems invariants, consensus protocols, or data integrity
+
+INPUTS:
+- experience_name: {{CONTEXT_EXPERIENCE_NAME}}
+- experience_description: {{CONTEXT_EXPERIENCE_DESCRIPTION}}
+- refined_generation_intent: {{CONTEXT_REFINED_GENERATION_INTENT}}
+- previous_design_reviews: {{CONTEXT_PREVIOUS_DESIGN_REVIEWS}}
+
+REQUIREMENTS:
+
+Design Review Structure:
+- Title: A concise description of what the proposal aims to achieve (5-10 words, max 60 characters)
+- Subtitle: The customer-facing problem we're solving (max 80 characters). NO tech jargon - focus on user impact.
+- Body: The full proposal with code examples
+- Input placeholder: A hint that guides the learner toward the flaw
+- Generation intent: A brief technical description of the flaw for internal use
+
+Title Guidelines:
+- Should sound like a real feature or improvement proposal
+- Focus on the benefit or goal, not the implementation
+- Max 60 characters
+- Examples: "Faster failover for stateful services", "Reducing checkout timeouts during peak traffic"
+
+Subtitle Guidelines:
+- Max 80 characters
+- Describe the CUSTOMER PAIN, not the technical approach
+- Bad: "Proposal to fallback to root servers if recursive resolvers fail"
+- Good: "Users are timing out when our DNS provider has issues"
+- Make the reader immediately understand why this matters
+
+Body Content:
+- Start with 1 paragraph (~200 characters) describing the TECHNICAL PROPOSAL - what are we changing and why? This should NOT repeat the subtitle's customer pain.
+- Include a file-name header (service_name#filename format, snake_case) followed by the code snippet
+- End with 1 paragraph (~200 characters) explaining the expected behavior - what will improve once this ships?
+- Use HTML formatting: wrap paragraphs in <div> tags
+- For code: use <div class="file-name"><span class='font-semibold'>service_name</span> - filename.go</div> followed by <pre><code class="language-X">
+- Total body text OUTSIDE of code blocks must be ~400 characters (two ~200 char paragraphs)
+
+Paragraph Guidelines:
+- First paragraph: Describe the TECHNICAL APPROACH. "We can add a fallback layer that..." or "By introducing a grace period before..." Don't repeat the customer pain from the subtitle.
+- Second paragraph: Explain the expected outcome. "Once deployed, users will see..." or "This ensures requests complete even when..."
+- The subtitle already covers the "why" (customer pain), so paragraphs cover the "what" (proposal) and "result" (improvement)
+- Avoid dry technical descriptions - make it feel like a real conversation with a teammate
+
+Code Guidelines:
+- Keep code snippets to 10-12 lines maximum
+- Include a file-name header before the code block.
+- Use snake_case for both service name and filename
+- NO COMMENTS in the code - the code should speak for itself
+- Use clear, self-documenting variable and function names
+- The flaw should be visible in the code but not immediately obvious
+- Choose from these languages only: python, go, typescript, bash, hcl, json, sql, yaml. Don't use Ruby or Java.
+
+Common Flaw Categories:
+- Violating safety invariants (e.g., allowing two leaders, losing committed data)
+- Race conditions or timing assumptions
+- Incorrect quorum logic
+- Bypassing required consensus steps
+- Optimizations that break correctness guarantees
+- Misunderstanding failure modes
+
+Input Placeholder:
+- Should guide the learner to think critically about the flaw
+- Examples: "Does this violate a safety invariant?", "What happens during a partition?", "Can this lose committed writes?"
+
+OUTPUT FORMAT:
+Return a single valid JSON object with this structure:
+{
+  "design_review": {
+    "title": "Short descriptive title",
+    "subtitle": "Customer-facing problem we're solving - no tech jargon.",
+    "body": '<div>~200 char paragraph about the technical proposal. What are we changing?</div>\n\n<div class="file-name"><span class="font-semibold">service_name</span> - filename.go</div>\n<pre><code class="language-go">func example() {\n\t// code here\n}\n</code></pre>\n\n<div>~200 char paragraph about expected improvement. What gets better?</div>',
+    "input_placeholder": "Guiding question?",
+    "generation_intent": "Brief description of the flaw being tested"
+  }
+}
+
+IMPORTANT:
+- Return ONLY the raw JSON object. Do NOT wrap it in markdown code blocks (no ```json). Just return the plain JSON.
+- Generate exactly ONE design review
+- Make it distinct from previous design reviews: {{CONTEXT_PREVIOUS_DESIGN_REVIEWS}}
+- The proposal should be realistic enough that it seems initially plausible
+- NO COMMENTS in the code block - zero comments allowed
+- Each paragraph ~200 characters (total ~400 chars outside code)
+- Code block must be 10-12 lines maximum
+- SUBTITLE must describe user pain, NOT technical approach

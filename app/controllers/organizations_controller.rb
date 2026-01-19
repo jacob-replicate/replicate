@@ -7,7 +7,6 @@ class OrganizationsController < ApplicationController
     org = Organization.create!(access_end_date: 3.months.from_now.end_of_month)
     members_to_create.each { |member_info| org.members.create!(email: member_info[:email], role: member_info[:role]) }
 
-    ScheduleWeeklyIncidentsWorker.perform_async([org.id], Time.current.to_i, Time.current.beginning_of_day.to_i)
 
     engineers = engineer_emails.size == 1 ? "1 engineer" : "#{engineer_emails.size} engineers"
     SendAdminPushNotification.call("New Trial", "#{owner_email} signed up #{engineers}")
