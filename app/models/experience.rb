@@ -5,6 +5,7 @@ class Experience < ApplicationRecord
 
   validates :code, :name, presence: true
   validates :template, inclusion: { in: [true, false] }
+  validates :description, length: { maximum: 100 }
 
   scope :templates, -> { where(template: true) }
 

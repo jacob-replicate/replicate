@@ -56,10 +56,10 @@ experience_name:
 - What would a staff engineer call this in a post-mortem title?
 
 experience_description:
-- EXPOSE THE LIE in 1-2 sentences
+- EXPOSE THE LIE in 1 sentence
 - Structure: What you believed → What actually happens
 - Write like a post-incident note, not a textbook
-- 2 sentences, 80-200 characters total (punchy is better)
+- Maximum 100 characters (be punchy)
 
 DESCRIPTION TONE RULES:
 - Assume competence - never explain terminology

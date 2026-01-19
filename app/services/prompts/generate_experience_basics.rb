@@ -17,7 +17,7 @@ module Prompts
       failures << "code_too_long" if code.length > 25
 
       failures << "name_too_long" if raw_json["experience_name"].to_s.length > 100
-      failures << "description_too_long" if raw_json["experience_description"].to_s.length > 210
+      failures << "description_too_long" if raw_json["experience_description"].to_s.length > 100
 
       intent_length = raw_json["refined_generation_intent"].to_s.length
       failures << "refined_intent_too_short" if intent_length < 400
