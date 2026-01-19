@@ -8,6 +8,8 @@ class TopicsController < ApplicationController
   def show
     @topic = Topic.includes(:experiences).find_by!(code: params[:code])
     @experiences = @topic.experiences.templates.order(:name)
+    @experience_count = @experiences.size
+    @completed_count = 0 # TODO: Replace with real session-based progress tracking
   end
 
   def populate
