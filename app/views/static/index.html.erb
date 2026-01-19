@@ -14,8 +14,8 @@
   <div class="space-y-8 mt-2 md:mt-4">
     <% @categories.each do |category| %>
       <section>
-        <h2 class="text-[13px] font-medium text-zinc-700 dark:text-zinc-300 tracking-wide mb-2 px-1"><%= category.name %></h2>
-        <div class="bg-white dark:bg-zinc-800 rounded-lg shadow-sm overflow-hidden border-[1.5px] border-[#b0b0b0] dark:border-[#333333]">
+        <h2 class="text-[14px] font-medium text-zinc-700 dark:text-zinc-300 tracking-wide mb-2 px-1"><%= category.name %></h2>
+        <div class="bg-white dark:bg-zinc-800 rounded-lg shadow-sm overflow-hidden border border-zinc-200 dark:border-zinc-700">
           <% category.topics.each_with_index do |topic, i| %>
             <% progress = @topic_progress[topic.id] || { completed: 0, total: 0 } %>
             <% done = progress[:completed] == progress[:total] && progress[:total] > 0 %>
