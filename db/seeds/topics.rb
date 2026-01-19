@@ -13,7 +13,7 @@ topics_data = {
   },
   'service-discovery' => {
     name: 'Service Discovery',
-    description: 'The gap between "deploy finished" and "traffic actually shifted" is where requests die waiting for registries to catch up.',
+    description: 'The gap between "deploy finished" and "traffic shifted" is where requests die waiting for registries.',
     generation_intent: ''
   },
   'load-balancing' => {
@@ -23,19 +23,19 @@ topics_data = {
   },
   'edge' => {
     name: 'Edge',
-    description: 'Your CDN config is probably caching things it shouldn\'t or missing things it should, and you won\'t notice until it matters.',
+    description: 'Your CDN config is probably caching wrong things or missing right ones, and you won\'t notice until it matters.',
     generation_intent: ''
   },
   'rate-limiting' => {
     name: 'Rate Limiting',
-    description: 'Without limits, one bad client can take down your whole system, and you\'ll spend the incident figuring out who to block.',
+    description: 'Without limits, one bad client can take down your whole system while you scramble to figure out who to block.',
     generation_intent: ''
   },
 
   # === NETWORK SECURITY ===
   'network-security' => {
     name: 'Network Segmentation',
-    description: 'Flat networks let attackers move laterally after they get in, turning one compromised host into access to everything.',
+    description: 'Flat networks let attackers move laterally, turning one compromised host into access to everything.',
     generation_intent: ''
   },
   'encryption' => {
@@ -47,7 +47,7 @@ topics_data = {
   # === IDENTITY & ACCESS ===
   'identity' => {
     name: 'Service Identity',
-    description: 'If your services authenticate with shared secrets, you can\'t revoke access to one without rotating credentials everywhere.',
+    description: 'If services authenticate with shared secrets, you can\'t revoke one without rotating credentials everywhere.',
     generation_intent: ''
   },
 
@@ -69,7 +69,7 @@ topics_data = {
   },
   'supply-chain' => {
     name: 'Supply Chain Security',
-    description: 'Your dependencies have dependencies, and somewhere in that tree is a package that hasn\'t been updated since 2019.',
+    description: 'Your dependencies have dependencies, and somewhere in that tree is a package last updated in 2019.',
     generation_intent: ''
   },
 
@@ -135,7 +135,7 @@ topics_data = {
   },
   'feature-flags' => {
     name: 'Feature Flags',
-    description: 'Flags let you ship code without shipping risk, until you have a thousand of them and nobody knows which ones matter.',
+    description: 'Flags let you ship code without shipping risk, until you have a thousand and nobody knows which matter.',
     generation_intent: ''
   },
   'config-management' => {

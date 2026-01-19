@@ -17,9 +17,18 @@
         <h2 class="text-[13px] font-medium text-zinc-700 dark:text-zinc-300 tracking-wide mb-2 px-1"><%= category.name %></h2>
         <div class="bg-white dark:bg-zinc-800 rounded-lg shadow-sm overflow-hidden border-[1.5px] border-[#b0b0b0] dark:border-[#333333]">
           <% category.topics.each_with_index do |topic, i| %>
+            <% progress = @topic_progress[topic.id] || { completed: 0, total: 0 } %>
+            <% done = progress[:completed] == progress[:total] && progress[:total] > 0 %>
             <%= link_to topic_path(topic.code), class: "topic-link block px-4 py-2.5 hover:bg-zinc-50 dark:hover:bg-zinc-700/50 #{'border-t border-zinc-100 dark:border-zinc-700' unless i == 0}" do %>
-              <div class="text-[14px]"><%= topic.name %></div>
-              <div class="text-[13px] text-zinc-500 dark:text-zinc-400 mt-0.5"><%= topic.description %></div>
+              <div class="flex items-center justify-between gap-3">
+                <div class="flex-1 min-w-0">
+                  <div class="text-[14px]"><%= topic.name %></div>
+                  <div class="text-[13px] text-zinc-500 dark:text-zinc-400 mt-0.5"><%= topic.description %></div>
+                </div>
+                <span class="text-[11px] tabular-nums flex-shrink-0 <%= done ? 'text-emerald-600 dark:text-emerald-400' : 'text-zinc-400 dark:text-zinc-500' %>">
+                  <%= progress[:completed] %>/<%= progress[:total] %>
+                </span>
+              </div>
             <% end %>
           <% end %>
         </div>
@@ -31,9 +40,18 @@
         <h2 class="text-[13px] font-medium text-red-500 dark:text-red-400 tracking-wide mb-2 px-1">Uncategorized</h2>
         <div class="bg-white dark:bg-zinc-800 rounded-lg shadow-sm ring-1 ring-red-200/50 dark:ring-red-800/50 overflow-hidden">
           <% @uncategorized_topics.each_with_index do |topic, i| %>
+            <% progress = @topic_progress[topic.id] || { completed: 0, total: 0 } %>
+            <% done = progress[:completed] == progress[:total] && progress[:total] > 0 %>
             <%= link_to topic_path(topic.code), class: "block px-4 py-2.5 hover:bg-red-50 dark:hover:bg-red-900/30 #{'border-t border-red-100 dark:border-red-900/50' unless i == 0}" do %>
-              <div class="text-[14px] text-red-600 dark:text-red-400"><%= topic.name %></div>
-              <div class="text-[13px] text-zinc-500 dark:text-zinc-400 mt-0.5"><%= topic.description %></div>
+              <div class="flex items-center justify-between gap-3">
+                <div class="flex-1 min-w-0">
+                  <div class="text-[14px] text-red-600 dark:text-red-400"><%= topic.name %></div>
+                  <div class="text-[13px] text-zinc-500 dark:text-zinc-400 mt-0.5"><%= topic.description %></div>
+                </div>
+                <span class="text-[11px] tabular-nums flex-shrink-0 <%= done ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-400 dark:text-red-500' %>">
+                  <%= progress[:completed] %>/<%= progress[:total] %>
+                </span>
+              </div>
             <% end %>
           <% end %>
         </div>

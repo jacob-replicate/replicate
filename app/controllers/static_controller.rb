@@ -7,6 +7,24 @@ class StaticController < ApplicationController
 
     @categories = topic_categories.categorized
     @uncategorized_topics = topic_categories.uncategorized
+
+    # Progress data for each topic (completed / total experiences)
+    if Rails.env.development?
+      # Fake data for development
+      @topic_progress = topics.each_with_object({}) do |topic, hash|
+        total = rand(8..20)
+        completed = rand(0..total)
+        hash[topic.id] = { completed: completed, total: total }
+      end
+    else
+      # Real counts in production (single query)
+      experience_counts = Experience.templates.where(topic_id: topics.pluck(:id)).group(:topic_id).count
+      @topic_progress = topics.each_with_object({}) do |topic, hash|
+        total = experience_counts[topic.id] || 0
+        completed = 0 # TODO: Replace with real session-based progress tracking
+        hash[topic.id] = { completed: completed, total: total }
+      end
+    end
   end
 
   def growth
