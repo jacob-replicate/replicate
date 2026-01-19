@@ -134,25 +134,25 @@ topics_data = {
     generation_intent: ''
   },
 
-  # === CONTAINER ORCHESTRATION ===
-  'containers' => {
-    name: 'Container Fundamentals',
-    description: 'Containers share the kernel with the host. The isolation you assume exists is a polite fiction enforced by cgroups.',
+  # === COMPUTE ===
+  'resource-limits' => {
+    name: 'Resource Limits',
+    description: 'OOMKilled means you hit the wall. Throttled means you\'re being lied to about how much CPU you have.',
     generation_intent: ''
   },
-  'orchestration' => {
-    name: 'Orchestration',
-    description: 'Scheduling is easy until every node claims it\'s full and your workload has nowhere to go.',
+  'scheduling' => {
+    name: 'Scheduling',
+    description: 'The platform decides where your code runs. When it picks wrong, you find out during the incident.',
     generation_intent: ''
   },
-  'container-runtime' => {
-    name: 'Container Runtime',
-    description: 'OOMKilled means you ran out of memory. CPU throttling means the kernel is lying to you about available compute.',
+  'isolation' => {
+    name: 'Isolation',
+    description: 'Workloads share more than you think. The boundary you trust is a polite fiction enforced by the kernel.',
     generation_intent: ''
   },
-  'stateful-workloads' => {
-    name: 'Stateful Workloads',
-    description: 'Orchestrators assume your containers are disposable, but your database can\'t just restart somewhere else.',
+  'workload-state' => {
+    name: 'Workload State',
+    description: 'Stateless is easy to scale. Stateful is where your data lives. Confusing them is how you lose both.',
     generation_intent: ''
   },
 

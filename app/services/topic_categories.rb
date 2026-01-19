@@ -24,9 +24,9 @@ class TopicCategories
       description: "Shipping is the easy part. Realizing you can't roll back the schema migration is not.",
       topics: %w[ci-cd migrations feature-flags config-management]
     },
-    "Container Orchestration" => {
-      description: "You thought the scheduler was deterministic. It isn't when a node disappears mid-deploy.",
-      topics: %w[containers orchestration container-runtime stateful-workloads]
+    "Compute" => {
+      description: "",
+      topics: %w[resource-limits scheduling isolation workload-state]
     },
     "Reliability" => {
       description: "The pager goes off at 3am because someone decided the alert could wait until after launch.",
