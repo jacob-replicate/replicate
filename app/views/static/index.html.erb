@@ -1,3 +1,16 @@
+<% if Rails.env.production? || true %>
+  <div class="mt-16 md:mt-24 text-center">
+    <div class="inline-block bg-white dark:bg-zinc-800 rounded-lg shadow-sm border-[1.5px] border-[#b0b0b0] dark:border-[#333333] px-8 py-10 max-w-lg">
+      <h1 class="text-2xl font-semibold text-zinc-800 dark:text-zinc-100 mb-4">Work in Progress</h1>
+      <p class="text-[15px] text-zinc-600 dark:text-zinc-300 leading-relaxed">
+        Browser-based infrastructure and security puzzles. No installs, just broken systems to debug.
+      </p>
+      <p class="text-[13px] text-zinc-400 dark:text-zinc-500 mt-6">
+        Check back soon.
+      </p>
+    </div>
+  </div>
+<% else %>
 <div class="space-y-6 mt-2 md:mt-4">
   <% @categories.each do |category| %>
     <section class="bg-white dark:bg-zinc-800 rounded-lg shadow-sm overflow-hidden border-[1.5px] border-[#b0b0b0] dark:border-[#333333]">
@@ -33,3 +46,4 @@
     </section>
   <% end %>
 </div>
+<% end %>
