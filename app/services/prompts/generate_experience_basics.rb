@@ -31,6 +31,7 @@ module Prompts
         failures << "#{field}_contains_double_quote" if value.include?('"')
         # Single quotes used for sectioning (not apostrophes in contractions)
         failures << "#{field}_contains_single_quote" if value.match?(/'[^']+'/)
+      end
 
       failures
     end
