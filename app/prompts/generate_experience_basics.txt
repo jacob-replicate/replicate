@@ -73,6 +73,13 @@ DESCRIPTION ANTI-PATTERNS (never use these words):
 - No "ensuring", "maintaining", "leveraging", "utilizing"
 - No "can lead to", "may cause", "might result in"
 
+FORBIDDEN PUNCTUATION:
+- Never use em dashes (—). Use commas, periods, or rewrite the sentence.
+- Never use semicolons (;). Split into separate sentences instead.
+- Never use single quotes (') to set off phrases or content. Apostrophes in contractions are fine.
+- Never use double quotes (") to set off phrases or content.
+- Only use commas, periods, and apostrophes (in contractions like "don't").
+
 DESCRIPTION PATTERN:
 BAD: "Clock drift across distributed systems can lead to rate limiting inconsistencies."
 GOOD: "Your servers' clocks don't agree, so rate limits don't add up right. Some users get throttled, others slip through."
