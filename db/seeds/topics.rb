@@ -142,7 +142,7 @@ topics_data = {
   },
   'orchestration' => {
     name: 'Orchestration',
-    description: 'Your workload is stuck in Pending and kubectl won\'t tell you why. The scheduler knows. It\'s not sharing.',
+    description: 'Scheduling is easy until every node claims it\'s full and your workload has nowhere to go.',
     generation_intent: ''
   },
   'container-runtime' => {
