@@ -16,8 +16,8 @@ class TopicCategories
       description: "",
       topics: %w[stale-reads consensus idempotency ordering transactions]
     },
-    "Database Operations" => {
-      description: "Latency creeps up quietly for months. Then suddenly your p99 owns your on-call rotation.",
+    "Storage" => {
+      description: "",
       topics: %w[database-ops partitioning caching backups]
     },
     "Shipping Changes" => {
