@@ -1,11 +1,30 @@
 <%# MOCKUP: Hardcoded intro card for phantom-nxdomains experience %>
 <% if @experience.code == "phantom-nxdomains" %>
-  <div class="mb-12 pb-10 border-b border-slate-200 dark:border-slate-800">
-    <p class="text-xs uppercase tracking-[0.2em] text-slate-400 dark:text-slate-500 mb-4">25 min · 16 challenges</p>
-    <h1 class="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white tracking-tight mb-6">Why does NXDOMAIN lie to you?</h1>
-    <p class="text-lg text-slate-600 dark:text-slate-400 leading-relaxed max-w-2xl">
-      It's 2am. PagerDuty screams. DNS says your database doesn't exist—except it does. Welcome to <strong class="text-slate-900 dark:text-white font-semibold">phantom NXDOMAIN</strong>.
-    </p>
+  <div class="mt-6 mb-8">
+    <p class="text-[10px] uppercase tracking-[0.2em] text-slate-400 dark:text-slate-500 mb-2">25 min · 16 challenges</p>
+    <h1 class="text-xl md:text-2xl font-bold text-slate-900 dark:text-white tracking-tight mb-3"><%= @experience.name %></h1>
+
+    <div x-data="{ expanded: false }" class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed max-w-2xl">
+      <p>
+        It's 2am. PagerDuty screams. DNS says your database "doesn't exist"—except it does. You've stumbled into the <strong class="text-slate-900 dark:text-white font-semibold">phantom NXDOMAIN</strong>.
+      </p>
+
+      <div class="relative mt-3">
+        <p :class="expanded ? '' : 'line-clamp-2'">
+          DNS caches are distributed, TTLs are inconsistent, and resolvers don't always agree. When you migrate a database or update a record, there's a window where different parts of your infrastructure see different realities. One resolver says the record exists. Another says NXDOMAIN. Your load balancer routes traffic to a ghost.
+        </p>
+        <div x-show="!expanded" @click="expanded = true" class="absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-white dark:from-slate-950 to-transparent cursor-pointer flex items-end justify-center pb-0">
+          <span class="text-xs text-sky-600 dark:text-sky-400 hover:text-sky-700 dark:hover:text-sky-300 font-medium">Read more</span>
+        </div>
+      </div>
+
+      <div x-show="expanded" x-collapse class="mt-4">
+        <div class="flex gap-2">
+          <input type="text" placeholder="Ask a question..." class="flex-1 px-3 py-2 text-sm rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent">
+          <button class="px-3 py-2 text-sm bg-sky-500 hover:bg-sky-600 text-white font-medium rounded-md transition-colors">Send</button>
+        </div>
+      </div>
+    </div>
   </div>
 <% end %>
 
