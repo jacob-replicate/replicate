@@ -21,7 +21,7 @@ RSpec.describe Prompts::GenerateTopicExperienceIntents do
 
     context "with valid response" do
       it "passes validation" do
-        failures = prompt.validate(raw_json(Array.new(8) { valid_intent }))
+        failures = prompt.validate(raw_json(Array.new(6) { valid_intent }))
         expect(failures).to be_empty
       end
     end
@@ -38,12 +38,12 @@ RSpec.describe Prompts::GenerateTopicExperienceIntents do
       end
 
       it "fails when intent is not a string" do
-        failures = prompt.validate(raw_json(Array.new(8) { |i| i == 0 ? nil : valid_intent }))
+        failures = prompt.validate(raw_json(Array.new(6) { |i| i == 0 ? nil : valid_intent }))
         expect(failures).to include("intent_0_not_string")
       end
 
       it "fails when generation_intent is too short" do
-        failures = prompt.validate(raw_json(Array.new(8) { "Create an experience about DNS." }))
+        failures = prompt.validate(raw_json(Array.new(6) { "Create an experience about DNS." }))
         expect(failures).to include("intent_0_too_short")
       end
     end

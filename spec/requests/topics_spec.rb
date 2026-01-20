@@ -58,8 +58,24 @@ RSpec.describe "TopicsController", type: :request do
     context "when topic has experiences" do
       let!(:experience) { create(:experience, topic: topic, template: true) }
 
-      it "shows the topic page" do
+      it "redirects to a random experience on first visit" do
         get topic_path(topic.code)
+
+        expect(response).to redirect_to(topic_experience_path(topic.code, experience.code))
+      end
+
+      it "shows the topic page when user has forked experiences" do
+        # Use a fixed session identifier for this test
+        fixed_session_id = "test_session_12345"
+        allow_any_instance_of(ApplicationController).to receive(:set_session_identifier) do |controller|
+          controller.session[:identifier] = fixed_session_id
+        end
+
+        # Create a forked experience for this session
+        create(:experience, topic: topic, template: false, code: experience.code, session_id: fixed_session_id)
+
+        get topic_path(topic.code)
+
 
         expect(response).to have_http_status(:ok)
         expect(response.body).to include(experience.name)

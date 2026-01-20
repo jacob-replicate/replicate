@@ -12,6 +12,10 @@
   </div>
 <% else %>
   <div class="space-y-8 mt-2 md:mt-4">
+    <div class="bg-white dark:bg-zinc-800/50 border-2 border-zinc-300 dark:border-zinc-700 rounded-lg px-4 py-3">
+      <p class="text-[15px] text-zinc-600 dark:text-zinc-300">Pick a topic you don't get to practice much outside of production fires. GPT asks hard infra/sec questions until you mess up, then coaches through the blind spot. <span class="font-semibold">100% free</span>. Side project, not a SaaS company.</p>
+    </div>
+
     <% @categories.each do |category| %>
       <section>
         <h2 class="text-[14px] font-medium text-zinc-700 dark:text-zinc-300 tracking-wide mb-2 px-1"><%= category.name %></h2>
