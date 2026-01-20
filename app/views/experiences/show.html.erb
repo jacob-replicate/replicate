@@ -1,3 +1,14 @@
+<%# MOCKUP: Hardcoded intro card for phantom-nxdomains experience %>
+<% if @experience.code == "phantom-nxdomains" %>
+  <div class="mb-12 pb-10 border-b border-slate-200 dark:border-slate-800">
+    <p class="text-xs uppercase tracking-[0.2em] text-slate-400 dark:text-slate-500 mb-4">25 min · 16 challenges</p>
+    <h1 class="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white tracking-tight mb-6">Why does NXDOMAIN lie to you?</h1>
+    <p class="text-lg text-slate-600 dark:text-slate-400 leading-relaxed max-w-2xl">
+      It's 2am. PagerDuty screams. DNS says your database doesn't exist—except it does. Welcome to <strong class="text-slate-900 dark:text-white font-semibold">phantom NXDOMAIN</strong>.
+    </p>
+  </div>
+<% end %>
+
 <% @experience.elements.root_level.includes(elements: :conversation).order(sort_order: :asc).each_with_index do |element, i| %>
   <%= render "elements/#{element.code.underscore}", element: element %>
 <% end %>
