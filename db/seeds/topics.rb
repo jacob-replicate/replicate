@@ -38,8 +38,8 @@ topics_data = {
     description: 'Flat networks let attackers move laterally, turning one compromised host into access to everything.',
     generation_intent: ''
   },
-  'encryption' => {
-    name: 'Encryption',
+  'transport-security' => {
+    name: 'Transport Security',
     description: 'Expired certs cause more outages than attackers do.',
     generation_intent: ''
   },
@@ -186,6 +186,21 @@ topics_data = {
   'threat-detection' => {
     name: 'Threat Detection',
     description: 'You won\'t notice the breach until someone else tells you. Your alerts are tuned for noise, not signal.',
+    generation_intent: ''
+  },
+  'change-approval' => {
+    name: 'Change Approval',
+    description: 'The system can deploy safely. The process assumes it can\'t.',
+    generation_intent: ''
+  },
+  'data-retention' => {
+    name: 'Data Retention',
+    description: 'Legal holds, right to be forgotten, and retention policies that conflict with your backup strategy.',
+    generation_intent: ''
+  },
+  'vendor-risk' => {
+    name: 'Vendor Risk',
+    description: 'Approved vendor doesn\'t mean safe vendor. Trust by PDF is still the industry standard.',
     generation_intent: ''
   },
 }

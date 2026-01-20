@@ -9,26 +9,15 @@ class StaticController < ApplicationController
     @uncategorized_topics = topic_categories.uncategorized
 
     # Progress data for each topic (completed / total experiences)
-    if Rails.env.development?
-      # Fake data for development - mostly 0 completions with a few started
-      @topic_progress = topics.each_with_object({}) do |topic, hash|
-        total = rand(8..20)
-        completed = rand < 0.2 ? rand(1..[total, 3].min) : 0
-        hash[topic.id] = { completed: completed, total: total }
-      end
-      @started_topic_ids = @topic_progress.select { |_, v| v[:completed] > 0 }.keys.to_set
-    else
-      # Real counts in production (single query)
-      topic_ids = topics.pluck(:id)
-      experience_counts = Experience.templates.where(topic_id: topic_ids).group(:topic_id).count
-      forked_counts = Experience.where(template: false, topic_id: topic_ids, session_id: session[:identifier]).group(:topic_id).count
-      @topic_progress = topics.each_with_object({}) do |topic, hash|
-        total = experience_counts[topic.id] || 0
-        completed = forked_counts[topic.id] || 0
-        hash[topic.id] = { completed: completed, total: total }
-      end
-      @started_topic_ids = forked_counts.keys.to_set
+    topic_ids = topics.pluck(:id)
+    experience_counts = Experience.templates.where(topic_id: topic_ids).group(:topic_id).count
+    forked_counts = Experience.where(template: false, topic_id: topic_ids, session_id: session[:identifier]).group(:topic_id).count
+    @topic_progress = topics.each_with_object({}) do |topic, hash|
+      total = experience_counts[topic.id] || 0
+      completed = forked_counts[topic.id] || 0
+      hash[topic.id] = { completed: completed, total: total }
     end
+    @started_topic_ids = forked_counts.keys.to_set
   end
 
   def growth
