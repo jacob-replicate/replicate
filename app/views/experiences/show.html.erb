@@ -3,29 +3,9 @@
   <div class="mt-6 mb-8 bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6">
     <h1 class="text-xl md:text-2xl font-bold text-slate-900 dark:text-white tracking-tight mb-3"><%= @experience.name %></h1>
 
-    <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-5">
-      DNS caches lie. When you update a record, some resolvers see the new value while others insist it doesn't exist—returning NXDOMAIN for a domain that's clearly alive. This "phantom" effect causes mysterious outages during migrations. Explore the mechanics below, or ask anything to go deeper.
+    <p class="text-[15px] text-slate-600 dark:text-slate-400 leading-relaxed mb-5">
+      DNS caches lie. When you update a record, some resolvers see the new value while others insist it doesn't exist. This phantom effect causes mysterious outages during migrations, where one part of your infrastructure thinks a service is alive and another thinks it vanished into thin air.
     </p>
-
-    <% if @experience.topic.present? %>
-      <% other_experiences = @experience.topic.experiences.templates.where.not(id: @experience.id).limit(3) %>
-      <% if other_experiences.any? %>
-        <div class="mb-5 px-4 py-3 bg-indigo-600 dark:bg-indigo-700 rounded-lg flex items-center gap-3 text-sm">
-          <%= link_to topic_path(@experience.topic.code), class: "text-white font-medium hover:text-indigo-100 transition-colors" do %>
-            <%= @experience.topic.name %> →
-          <% end %>
-          <span class="text-indigo-300">|</span>
-          <% other_experiences.each_with_index do |exp, idx| %>
-            <%= link_to topic_experience_path(@experience.topic.code, exp.code), class: "text-indigo-100 hover:text-white transition-colors" do %>
-              <%= exp.name %>
-            <% end %>
-            <% if idx < other_experiences.length - 1 %>
-              <span class="text-indigo-400">·</span>
-            <% end %>
-          <% end %>
-        </div>
-      <% end %>
-    <% end %>
 
     <input
       type="text"
@@ -33,6 +13,18 @@
       autofocus
       class="w-full px-3 py-2 text-sm rounded-md border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:ring-sky-500 focus:border-transparent"
     >
+
+    <% if @experience.topic.present? %>
+      <% other_experiences = @experience.topic.experiences.templates.where.not(code: @experience.code).limit(3) %>
+      <% if other_experiences.any? %>
+        <p class="mt-4 text-[14px] text-slate-500 dark:text-slate-400">
+          You might also be interested in
+          <% other_experiences.each_with_index do |exp, idx| %>
+            <%= link_to exp.name, topic_experience_path(@experience.topic.code, exp.code), class: "text-indigo-600 dark:text-indigo-400 hover:underline" %><% if idx < other_experiences.length - 2 %>,<% elsif idx == other_experiences.length - 2 %><% if other_experiences.length > 2 %>,<% end %> and<% end %>
+          <% end %>.
+        </p>
+      <% end %>
+    <% end %>
   </div>
 <% end %>
 
