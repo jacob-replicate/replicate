@@ -56,17 +56,22 @@ experience_name:
 - What would a staff engineer call this in a post-mortem title?
 
 experience_description:
-- EXPOSE THE LIE in 1 sentence
-- Use second-person ("Your", "You") - speak directly to the reader
-- Describe the concrete consequence, not the abstract problem
-- End with a twist, bitter observation, or the punchline
-- Maximum 100 characters (be punchy)
+- MUST be 240-290 characters. No shorter. This is critical.
+- Start with a punchy observation that names the lie (1 sentence)
+- Continue the thought with concrete consequences (1-2 more sentences)
+- Write as one flowing paragraph, not choppy statements
+- Use second-person ("your", "you") - speak directly to the reader
+- End with a vivid image of the failure state
 
-DESCRIPTION TONE - Match these examples from topics:
-- "Your read didn't see your write. The user refreshed and it looked like their action never happened."
-- "Retries happen. If your code isn't idempotent, you'll run it twice. If your code isn't idempotent, you'll run it twice."
-- "Expired certs cause more outages than attackers do."
-- "Caches hide latency problems until they fail, then the database gets hit with two years of deferred load at once."
+DESCRIPTION LENGTH GUIDANCE:
+- Count characters carefully. Aim for 260-280 to hit the sweet spot.
+- If under 240, add another concrete detail or extend the consequence
+- If over 290, tighten word choice but keep the full thought
+
+DESCRIPTION EXAMPLES (note the length and flow):
+- "DNS caches lie. When you update a record, some resolvers see the new value while others insist it doesn't exist. This phantom effect causes mysterious outages during migrations, where one part of your infrastructure thinks a service is alive and another thinks it vanished into thin air." (289 chars)
+- "Your container shows 50% CPU but the app crawls. The kernel is throttling you mid-cycle while metrics claim resources are available. Engineers blame application code for weeks because nothing on the dashboard points to the scheduler." (254 chars)
+- "The attacker set your session ID before you logged in. Your framework preserved it across the authentication boundary, so when you authenticated, you authenticated them too. Now two people share your identity." (241 chars)
 
 DESCRIPTION TONE RULES:
 - Assume competence - never explain terminology
@@ -88,14 +93,14 @@ FORBIDDEN PUNCTUATION:
 - Only use commas, periods, and apostrophes (in contractions like "don't").
 
 DESCRIPTION PATTERN:
-BAD: "Clock drift across distributed systems can lead to rate limiting inconsistencies."
-GOOD: "Your servers disagree about what time it is. Rate limits don't add up and nobody knows who to trust."
+BAD (too short, choppy): "Clock drift across distributed systems can lead to rate limiting inconsistencies."
+GOOD (flows, 240-290 chars): "Your servers disagree about what time it is. Rate limits calculated on one machine don't match another, requests get rejected that should pass, and audit logs show events in impossible orders. Nobody trusts the timestamps anymore."
 
-BAD: "Misconfigured cgroup limits cause cascading CPU throttling issues."
-GOOD: "Your container shows 50% CPU but the app crawls. The kernel is lying about available compute."
+BAD (too short, choppy): "Misconfigured cgroup limits cause cascading CPU throttling issues."
+GOOD (flows, 240-290 chars): "Your container shows 50% CPU but the app crawls. The kernel is throttling you mid-cycle while metrics claim resources are available. Engineers blame application code for weeks because nothing on the dashboard points to the scheduler."
 
-BAD: "Session fixation vulnerabilities occur when session IDs aren't regenerated."
-GOOD: "The attacker set your session ID before you logged in. Now they're logged in too."
+BAD (too short, choppy): "Session fixation vulnerabilities occur when session IDs aren't regenerated."
+GOOD (flows, 240-290 chars): "The attacker set your session ID before you logged in. Your framework preserved it across the authentication boundary, so when you authenticated, you authenticated them too. Now two people share your identity."
 
 experience_code:
 - Lowercase, hyphen-separated URL slug from experience_name
@@ -135,15 +140,15 @@ IMPORTANT: Return ONLY the raw JSON object. Do NOT wrap it in markdown code bloc
 EXAMPLE OUTPUT:
 {
   "experience_name": "CPU Throttling",
-  "experience_description": "Your container shows 50% CPU but the app crawls. The kernel is lying about available compute.",
+  "experience_description": "Your container shows 50% CPU but the app crawls. The kernel is throttling you mid-cycle while metrics claim resources are available. Engineers blame application code for weeks because nothing on the dashboard points to the scheduler.",
   "experience_code": "cpu-throttling",
-  "refined_generation_intent": "This experience exposes the lie that CPU metrics tell you how much compute your container is using. In reality, cgroup throttling means your container hits its quota mid-cycle and waits, frozen, while metrics still show 'available' CPU. Engineers blame application code, GC pauses, or network latency because the dashboard says CPU is fine. Scenarios include: a container with 500m CPU that performs worse than the same code with 250m (due to quota timing), latency spikes that correlate with nothing in APM, p99 latency that varies wildly while p50 stays constant, and metrics showing 40% CPU while the process is throttled 30% of the time. Engineers assume 'CPU limit' means 'maximum CPU' when it actually means 'CPU budget per scheduling period.' The throttling counter in cgroup stats is the only honest metric, but nobody looks at it. This surfaces under bursty workloads - request handling that needs 200ms of CPU but gets spread across multiple 100ms scheduling windows, each hitting the quota. The real cost isn't CPU - it's the weeks spent optimizing code that was never slow."
+  "refined_generation_intent": "This experience exposes the lie that CPU metrics tell you how much compute your container is using. In reality, cgroup throttling means your container hits its quota mid-cycle and waits, frozen, while metrics still show 'available' CPU. Engineers blame application code, GC pauses, or network latency because the dashboard says CPU is fine. Scenarios include: a container with 500m CPU that performs worse than the same code with 250m (due to quota timing), latency spikes that correlate with nothing in APM, p99 latency that varies wildly while p50 stays constant, and metrics showing 40% CPU while the process is throttled 30% of the time. Engineers assume 'CPU limit' means 'maximum CPU' when it actually means 'CPU budget per scheduling period.' The throttling counter in cgroup stats is the only honest metric, but nobody looks at it. This surfaces under bursty workloads - request handling that needs 200ms of CPU but gets spread across multiple scheduling windows, each hitting the quota. The real cost isn't CPU - it's the weeks spent optimizing code that was never slow."
 }
 
 ANOTHER EXAMPLE (showing the lie structure):
 {
   "experience_name": "Session Fixation",
-  "experience_description": "The attacker set your session ID before you logged in. Now they're logged in too.",
+  "experience_description": "The attacker set your session ID before you logged in. Your framework preserved it across the authentication boundary, so when you authenticated, you authenticated them too. Now two people share your identity.",
   "experience_code": "session-fixation",
   "refined_generation_intent": "This experience exposes the lie that login creates a fresh session. In reality, many frameworks preserve the session ID across authentication boundaries, meaning an attacker who sets the session ID pre-auth gains access post-auth. Engineers believe 'we use a secure framework' provides protection when the framework only provides the tools, not the guarantee. Scenarios include: session IDs passed in URLs that survive login, cookie-based sessions that aren't regenerated on privilege change, and SSO flows where the session predates identity. The fix looks simple (regenerate on login) but breaks applications that store pre-auth state in the session. Real incidents: applications where 'remember me' checkboxes preserved fixated sessions, password reset flows that didn't regenerate, and step-up authentication that kept the original session. Engineers misdiagnose this as 'session hijacking' when the session was never hijacked - it was controlled from the start. The uncomfortable truth: most session implementations are vulnerable by default and only become secure through explicit, tested configuration."
 }
