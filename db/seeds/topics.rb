@@ -33,7 +33,7 @@ topics_data = {
   },
 
   # === NETWORK SECURITY ===
-  'network-security' => {
+  'network-segmentation' => {
     name: 'Network Segmentation',
     description: 'Flat networks let attackers move laterally, turning one compromised host into access to everything.',
     generation_intent: ''
@@ -44,24 +44,8 @@ topics_data = {
     generation_intent: ''
   },
 
-  # === IDENTITY & ACCESS ===
-  'identity' => {
-    name: 'Service Identity',
-    description: 'If services authenticate with shared secrets, you can\'t revoke one without rotating credentials everywhere.',
-    generation_intent: ''
-  },
 
   # === SECURITY OPERATIONS ===
-  'threat-detection' => {
-    name: 'Threat Detection',
-    description: 'You won\'t notice the breach until someone else tells you about it, because your alerts are tuned for noise, not signal.',
-    generation_intent: ''
-  },
-  'security-incidents' => {
-    name: 'Security Incidents',
-    description: 'The breach itself is survivable; the response is what determines whether you contain it in hours or explain it for months.',
-    generation_intent: ''
-  },
   'compliance' => {
     name: 'Compliance',
     description: 'Auditors ask for evidence you probably don\'t have unless you built collection into the system from day one.',
@@ -101,11 +85,6 @@ topics_data = {
   },
 
   # === DATABASE OPERATIONS ===
-  'database-ops' => {
-    name: 'Database Internals',
-    description: 'Slow queries usually aren\'t the query\'s fault. It\'s the missing index, bloated table, or lock you didn\'t know about.',
-    generation_intent: ''
-  },
   'partitioning' => {
     name: 'Partitioning',
     description: 'Pick the wrong partition key and all your writes hit one shard while the rest of the cluster sits idle.',
@@ -117,7 +96,7 @@ topics_data = {
     generation_intent: ''
   },
   'backups' => {
-    name: 'Backup Recovery',
+    name: 'Backups',
     description: 'Backups only matter if you\'ve actually tested the restore, under pressure, with someone watching.',
     generation_intent: ''
   },
@@ -155,7 +134,7 @@ topics_data = {
     description: 'The platform decides where your code runs. When it picks wrong, you find out during the incident.',
     generation_intent: ''
   },
-  'isolation' => {
+  'workload-isolation' => {
     name: 'Isolation',
     description: 'Workloads share more than you think. The boundary you trust is a polite fiction enforced by the kernel.',
     generation_intent: ''
@@ -187,11 +166,6 @@ topics_data = {
     description: 'The alert fired at 3am. It had been firing every night for months. No one remembered why.',
     generation_intent: ''
   },
-  'debugging' => {
-    name: 'Debugging',
-    description: 'It works locally. It worked yesterday. The diff is three lines. The bug is in none of them.',
-    generation_intent: ''
-  },
 
   # === GOVERNANCE ===
   'iam' => {
@@ -204,8 +178,8 @@ topics_data = {
     description: 'Auditors ask for evidence you don\'t have unless you built collection into the system from day one.',
     generation_intent: ''
   },
-  'cost' => {
-    name: 'Cost',
+  'cost-optimization' => {
+    name: 'Cost Optimization',
     description: 'Unused resources don\'t page anyone, so they stick around forever until someone looks at the bill.',
     generation_intent: ''
   },
@@ -214,11 +188,6 @@ topics_data = {
     description: 'You won\'t notice the breach until someone else tells you. Your alerts are tuned for noise, not signal.',
     generation_intent: ''
   },
-  'security-incidents' => {
-    name: 'Security Incidents',
-    description: 'The breach is survivable. The response determines whether you contain it in hours or explain it for months.',
-    generation_intent: ''
-  }
 }
 
 # Use topic-specific description/intent if present; otherwise fall back to the previous generic template.

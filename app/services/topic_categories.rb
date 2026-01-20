@@ -1,29 +1,11 @@
 class TopicCategories
   CATEGORIES = {
-    "Change Management" => {
-      description: "Shipping is the easy part. Realizing you can't roll back the schema migration is not.",
-      topics: %w[ci-cd feature-flags config-management supply-chain]
-    },
-    "Compute" => {
-      description: "",
-      topics: %w[resource-limits scheduling isolation workload-state]
-    },
-    "Storage" => {
-      description: "",
-      topics: %w[database-ops migrations partitioning caching backups stale-reads consensus idempotency ordering transactions]
-    },
-    "Networking" => {
-      description: "",
-      topics: %w[dns service-discovery load-balancing edge rate-limiting network-security encryption identity]
-    },
-    "Observability" => {
-      description: "",
-      topics: %w[logging metrics tracing alerting debugging]
-    },
-    "Governance" => {
-      description: "",
-      topics: %w[iam compliance cost threat-detection security-incidents]
-    },
+    "Change Management" => %w[ci-cd feature-flags config-management migrations supply-chain],
+    "Compute" => %w[resource-limits scheduling workload-isolation workload-state],
+    "Storage" => %w[partitioning caching backups stale-reads consensus idempotency ordering transactions],
+    "Networking" => %w[dns service-discovery load-balancing edge rate-limiting network-segmentation encryption],
+    "Observability" => %w[logging metrics tracing alerting],
+    "Governance" => %w[iam compliance cost-optimization threat-detection],
   }.freeze
 
   def initialize(topics)
@@ -31,22 +13,21 @@ class TopicCategories
   end
 
   def categorized
-    @categorized ||= CATEGORIES.map do |name, config|
-      category_topics = config[:topics].map { |code| @topics_by_code[code] }.compact.sort_by(&:name)
+    @categorized ||= CATEGORIES.map do |name, topic_codes|
+      category_topics = topic_codes.map { |code| @topics_by_code[code] }.compact.sort_by(&:name)
       next if category_topics.empty?
 
       CategoryPresenter.new(
         name: name,
-        description: config[:description],
         topics: category_topics
       )
     end.compact.sort_by(&:name)
   end
 
   def uncategorized
-    categorized_codes = CATEGORIES.values.flat_map { |c| c[:topics] }
+    categorized_codes = CATEGORIES.values.flatten
     @topics_by_code.values.reject { |t| categorized_codes.include?(t.code) }
   end
 
-  CategoryPresenter = Struct.new(:name, :description, :topics, keyword_init: true)
+  CategoryPresenter = Struct.new(:name, :topics, keyword_init: true)
 end
