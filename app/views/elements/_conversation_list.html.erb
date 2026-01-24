@@ -2,36 +2,27 @@
   <h3 class="text-[15px] font-medium text-zinc-700 dark:text-zinc-300">
     <%= element.context["name"] %>
   </h3>
-  <% completed_count = element.elements.count { |e| e.context["completed"].present? } %>
-  <% total_count = element.elements.size %>
-  <% if total_count > 0 && completed_count > 0 %>
-    <span class="text-[11px] text-zinc-300 dark:text-zinc-600 tabular-nums"><%= completed_count %> of <%= total_count %></span>
-  <% end %>
 </div>
 
 <div class="space-y-px">
-  <% element.elements.includes(:conversation).each_with_index do |row, index| %>
-    <% conversation = row.conversation %>
-    <% completed    = row.context["completed"].present? %>
-    <% href = conversation.present? ? conversation_path(conversation) : element_path(row) %>
+  <% element.elements.includes(:conversation).order(Arel.sql("conversation_id IS NULL DESC"), updated_at: :desc).each_with_index do |row, index| %>
+    <% conversation = row.conversation_id %>
+    <% visited = conversation.present? %>
+    <% href = element_path(row) %>
 
-    <a href="<%= href %>" class="topic-link group flex items-center gap-4 py-3 border-b border-zinc-100/80 dark:border-zinc-800 last:border-b-0 transition-colors">
-      <%# Minimal left accent that appears on hover %>
-      <div class="w-0.5 h-5 rounded-full bg-transparent group-hover:bg-blue-500 transition-colors"></div>
+    <a href="<%= href %>" class="topic-link group flex items-center gap-4 py-3 pr-2 border-b border-zinc-100/80 dark:border-zinc-800 last:border-b-0 transition-colors">
+      <%# Left accent: blue when unvisited, gray when visited %>
+      <div class="w-0.5 h-5 rounded-full <%= visited ? 'bg-zinc-300 dark:bg-zinc-600' : 'bg-blue-500 dark:bg-blue-400' %> transition-colors"></div>
 
-      <span class="flex-1 text-[14px] leading-relaxed <%= completed ? 'text-zinc-400 dark:text-zinc-500' : 'text-blue-600 dark:text-blue-400 group-hover:text-blue-700 dark:group-hover:text-blue-300' %> transition-colors">
+      <span class="flex-1 text-[14px] leading-relaxed <%= visited ? 'text-purple-600 dark:text-purple-400' : 'text-blue-600 dark:text-blue-400 group-hover:text-blue-700 dark:group-hover:text-blue-300' %> transition-colors">
         <%= row.context["name"].to_s.html_safe %>
       </span>
 
-      <% if completed %>
-        <span class="text-[11px] text-zinc-300 dark:text-zinc-600">Done</span>
-      <% else %>
-        <span class="text-zinc-300 dark:text-zinc-600 opacity-0 group-hover:opacity-100 transition-opacity">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-          </svg>
-        </span>
-      <% end %>
+      <span class="text-zinc-400 dark:text-zinc-600 opacity-0 group-hover:opacity-100 transition-opacity">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+        </svg>
+      </span>
     </a>
   <% end %>
 </div>
