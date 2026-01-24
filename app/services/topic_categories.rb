@@ -38,7 +38,7 @@ class TopicCategories
     all_codes = CATEGORIES.values.flatten
     missing_codes = all_codes - @topics_by_code.keys
     if missing_codes.any?
-      raise "TopicCategories contains codes that don't exist in the database: #{missing_codes.join(', ')}"
+      Rails.logger.warn "TopicCategories contains codes that don't exist in the database: #{missing_codes.join(', ')}"
     end
   end
 
