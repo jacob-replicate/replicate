@@ -1,35 +1,37 @@
-<div class="mt-7 mb-2 text-[16px] font-medium text-zinc-800 dark:text-zinc-200 tracking-tight">
-  <%= element.context["name"] %>
+<div class="mt-8 mb-3 flex items-baseline justify-between">
+  <h3 class="text-[15px] font-medium text-zinc-700 dark:text-zinc-300">
+    <%= element.context["name"] %>
+  </h3>
+  <% completed_count = element.elements.count { |e| e.context["completed"].present? } %>
+  <% total_count = element.elements.size %>
+  <% if total_count > 0 && completed_count > 0 %>
+    <span class="text-[11px] text-zinc-300 dark:text-zinc-600 tabular-nums"><%= completed_count %> of <%= total_count %></span>
+  <% end %>
 </div>
 
-<div class="rounded-md border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 overflow-hidden">
-  <table class="w-full border-collapse">
-    <% element.elements.includes(:conversation).each do |row| %>
-      <% conversation = row.conversation %>
-      <% completed    = row.context["completed"].present? %>
-      <% href = conversation.present? ? conversation_path(conversation) : element_path(row) %>
+<div class="space-y-px">
+  <% element.elements.includes(:conversation).each_with_index do |row, index| %>
+    <% conversation = row.conversation %>
+    <% completed    = row.context["completed"].present? %>
+    <% href = conversation.present? ? conversation_path(conversation) : element_path(row) %>
 
-      <tr
-        class="group border-b border-zinc-100 dark:border-zinc-700 last:border-b-0 hover:bg-zinc-50 dark:hover:bg-zinc-700/50"
-      >
-        <!-- Question / main link -->
-        <td class="px-3 py-2.5 align-middle">
-          <a href="<%= href %>" class="topic-link block text-sm">
-            <%= row.context["name"].to_s.html_safe %>
-          </a>
-        </td>
+    <a href="<%= href %>" class="topic-link group flex items-center gap-4 py-3 border-b border-zinc-100/80 dark:border-zinc-800 last:border-b-0 transition-colors">
+      <%# Minimal left accent that appears on hover %>
+      <div class="w-0.5 h-5 rounded-full bg-transparent group-hover:bg-blue-500 transition-colors"></div>
 
-        <!-- CTA -->
-        <td class="px-2 align-middle text-right whitespace-nowrap">
-          <% if completed %>
-            <div class="flex justify-end">
-              <div class="flex h-[20px] w-[20px] items-center justify-center rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 ring-1 ring-emerald-300 dark:ring-emerald-600/50 text-[13px]" >
-                ✓
-              </div>
-            </div>
-          <% end %>
-        </td>
-      </tr>
-    <% end %>
-  </table>
+      <span class="flex-1 text-[14px] leading-relaxed <%= completed ? 'text-zinc-400 dark:text-zinc-500' : 'text-blue-600 dark:text-blue-400 group-hover:text-blue-700 dark:group-hover:text-blue-300' %> transition-colors">
+        <%= row.context["name"].to_s.html_safe %>
+      </span>
+
+      <% if completed %>
+        <span class="text-[11px] text-zinc-300 dark:text-zinc-600">Done</span>
+      <% else %>
+        <span class="text-zinc-300 dark:text-zinc-600 opacity-0 group-hover:opacity-100 transition-opacity">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+          </svg>
+        </span>
+      <% end %>
+    </a>
+  <% end %>
 </div>
