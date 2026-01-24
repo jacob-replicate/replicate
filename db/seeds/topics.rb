@@ -109,12 +109,12 @@ topics_data = {
   },
   'migrations' => {
     name: 'Schema Migrations',
-    description: 'Rollback doesn\'t undo the data changes your migration already made, and the deploy after that assumes it did.',
+    description: 'The migration ran. The rollback didn\'t undo it. Now you\'re writing SQL by hand at 2:00am.',
     generation_intent: ''
   },
   'feature-flags' => {
     name: 'Feature Flags',
-    description: 'Flags let you ship code without shipping risk, until you have a thousand and nobody knows which matter.',
+    description: 'They let you ship code without shipping risk, until you have a thousand and don\'t know which ones matter.',
     generation_intent: ''
   },
   'config-management' => {
@@ -185,22 +185,22 @@ topics_data = {
   },
   'threat-detection' => {
     name: 'Threat Detection',
-    description: 'You won\'t notice the breach until someone else tells you. Your alerts are tuned for noise, not signal.',
+    description: 'The attacker was in your system for 6 months. You found out from a journalist, not your SIEM.',
     generation_intent: ''
   },
   'change-approval' => {
     name: 'Change Approval',
-    description: 'The system can deploy safely. The process assumes it can\'t.',
+    description: 'The hotfix sat in a queue for hours while the incident raged, because nobody with the right role was awake.',
     generation_intent: ''
   },
   'data-retention' => {
     name: 'Data Retention',
-    description: 'Legal holds, right to be forgotten, and retention policies that conflict with your backup strategy.',
+    description: 'Legal says keep it for years. GRC says to delete it now. Your backups don\'t know the difference.',
     generation_intent: ''
   },
   'vendor-risk' => {
     name: 'Vendor Risk',
-    description: 'Approved vendor doesn\'t mean safe vendor. Trust by PDF is still the industry standard.',
+    description: 'You filled out the security questionnaire. They filled out theirs. Neither of you read the other\'s.',
     generation_intent: ''
   },
 }
