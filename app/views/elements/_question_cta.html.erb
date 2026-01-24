@@ -24,18 +24,34 @@
     </div>
   <% end %>
 
+  <%
+    # Neutral background colors - no red/green to avoid yes/no implications
+    card_colors = [
+      "bg-teal-50 dark:bg-teal-900/40 border-teal-300 dark:border-teal-600/60 hover:bg-teal-100 dark:hover:bg-teal-900/50",
+      "bg-amber-50/70 dark:bg-amber-900/20 border-amber-200/60 dark:border-amber-700/40 hover:bg-amber-100/80 dark:hover:bg-amber-900/30",
+      "bg-indigo-50 dark:bg-indigo-900/30 border-indigo-200 dark:border-indigo-700/50 hover:bg-indigo-100 dark:hover:bg-indigo-900/40"
+    ]
+    accent_colors = [
+      "bg-teal-500 dark:bg-teal-400 group-hover:bg-teal-600 dark:group-hover:bg-teal-300",
+      "bg-amber-400/70 dark:bg-amber-500/60 group-hover:bg-amber-500 dark:group-hover:bg-amber-400/80",
+      "bg-violet-400/70 dark:bg-violet-500/60 group-hover:bg-violet-500 dark:group-hover:bg-violet-400/80"
+    ]
+  %>
+
   <div class="mt-4 grid gap-3 <%= two_up ? 'grid-cols-1 sm:grid-cols-2' : 'grid-cols-1' %>">
     <% options.each_with_index do |opt, idx| %>
       <% cta = ctas[idx % ctas.length] %>
+      <% card_color = card_colors[idx % card_colors.length] %>
+      <% accent_color = accent_colors[idx % accent_colors.length] %>
 
       <a href="<%= element_path(opt) %>"
          class="group relative rounded-md border
-                border-zinc-200/80 dark:border-zinc-500/40 bg-white dark:bg-zinc-700/40
+                <%= card_color %>
                 px-4 py-3 shadow-sm
-                hover:border-zinc-300 dark:hover:border-zinc-400/50 hover:bg-zinc-50 dark:hover:bg-zinc-700/60 hover:shadow-md">
+                hover:shadow-md">
 
         <!-- accent rail -->
-        <div class="absolute left-0 top-0 h-full w-1 rounded-l-md bg-[#0066cc]/70 dark:bg-[#5fa8ff]/60 group-hover:bg-[#0066cc] dark:group-hover:bg-[#5fa8ff]/80"></div>
+        <div class="absolute left-0 top-0 h-full w-1 rounded-l-md <%= accent_color %>"></div>
 
         <div class="text-sm font-semibold text-zinc-800 dark:text-zinc-100">
           <%= opt.context["title"] %>
