@@ -15,7 +15,7 @@
             <% if controller_name == 'static' && action_name == action.to_s %>
               <span class="text-zinc-800 dark:text-zinc-100 font-semibold"><%= action.to_s.capitalize %></span>
             <% else %>
-              <a href="/<%= action %>" class="text-[#0066cc] dark:text-violet-400 hover:text-[#004499] dark:hover:text-violet-300 hover:underline hover:underline-offset-8"><%= action.to_s.capitalize %></a>
+              <a href="/<%= action %>" class="text-[#0066cc] dark:text-blue-400 hover:text-[#004499] dark:hover:text-blue-300 hover:underline hover:underline-offset-8"><%= action.to_s.capitalize %></a>
             <% end %>
           <% end %>
         </div>
@@ -31,7 +31,7 @@
 
               <a
                 href="<%= root_path %>"
-                class="text-[#0066cc] dark:text-violet-400 hover:text-[#004499] dark:hover:text-violet-300"
+                class="text-[#0066cc] dark:text-blue-400 hover:text-[#004499] dark:hover:text-blue-300"
               >
                 home
               </a>
@@ -42,7 +42,7 @@
                 <% if @experience.present? %>
                   <a
                     href="<%= topic_path(@topic.code) %>"
-                    class="text-[#0066cc] dark:text-violet-400 hover:text-[#004499] dark:hover:text-violet-300"
+                    class="text-[#0066cc] dark:text-blue-400 hover:text-[#004499] dark:hover:text-blue-300"
                   >
                     <%= @topic.code %>
                   </a>
@@ -67,8 +67,8 @@
           <% end %>
         <% end %>
 
-        <!-- Compact signature - only on index page -->
-        <% if controller_name == 'static' && action_name == 'index' %>
+        <!-- Compact signature - on index and static pages -->
+        <% if controller_name == 'static' && %w[index privacy security terms].include?(action_name) %>
           <div class="hidden md:flex items-center gap-3.5">
             <span class="text-[15px] font-medium tracking-wide signature text-zinc-700 dark:text-white">Jacob Comer</span>
             <div class="flex items-center gap-2.5">
@@ -121,7 +121,7 @@
 
             <a
               href="<%= root_path %>"
-              class="text-[#0066cc] dark:text-violet-400 hover:text-[#004499] dark:hover:text-violet-300"
+              class="text-[#0066cc] dark:text-blue-400 hover:text-[#004499] dark:hover:text-blue-300"
             >
               home
             </a>
@@ -132,7 +132,7 @@
               <% if @experience.present? %>
                 <a
                   href="<%= topic_path(@topic.code) %>"
-                  class="text-[#0066cc] dark:text-violet-400 hover:text-[#004499] dark:hover:text-violet-300"
+                  class="text-[#0066cc] dark:text-blue-400 hover:text-[#004499] dark:hover:text-blue-300"
                 >
                   <%= @topic.code %>
                 </a>

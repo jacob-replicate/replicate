@@ -1,18 +1,7 @@
 CONTEXT:
-You are generating a single multiple-choice question for a technical experience about distributed systems, databases, consensus algorithms, or infrastructure.
+You are generating a question that will make a senior engineer stop and think. Not a quiz. Not trivia. A question that pokes at something they think they understand but maybe don't.
 
-A question CTA presents a conceptual question with 2 or 3 answer options. The learner picks an answer to explore the reasoning further. Questions should test understanding of system behavior, invariants, or common misconceptions.
-
-These questions are NOT:
-- Trivia or memorization questions
-- Code debugging exercises
-- Questions with obvious answers
-
-These questions ARE:
-- Conceptually challenging questions about system behavior
-- Questions where multiple answers seem plausible at first
-- Designed to expose common misconceptions or edge cases
-- Focused on distributed systems invariants, consensus protocols, or operational behavior
+This is the kind of question that comes up at 2am during an incident, or in a design review when someone says "wait, but what about..." and the room goes quiet.
 
 INPUTS:
 - experience_name: {{CONTEXT_EXPERIENCE_NAME}}
@@ -20,92 +9,175 @@ INPUTS:
 - refined_generation_intent: {{CONTEXT_REFINED_GENERATION_INTENT}}
 - previous_questions: {{CONTEXT_PREVIOUS_QUESTIONS}}
 
-REQUIREMENTS:
+---
 
-Question Structure:
-- Title: The question itself (15-25 words, ends with ?)
-- Subtitle: Optional context or constraints (10-20 words, may be empty string)
-- Layout: Either "binary" (for 2 options, yes/no questions) or omit field (for 3 options)
-- Options: Array of 2 or 3 answer choices
-- Generation intent: A brief technical description of the concept being tested
+THE GOAL:
 
-You MUST randomly choose between generating a BINARY question (2 options) or a MULTI-OPTION question (3 options):
-- Binary questions (layout: "binary"): Yes/No questions where one answer is correct
-- Multi-option questions (no layout field): 3 plausible answers exploring different perspectives
+Every question must expose a gap between what engineers assume and what's actually true.
 
-Title Guidelines:
-- Should be a clear, direct question
-- 15-25 words, ends with question mark
-- Technical but accessible
-- Examples:
-  - "Can a Raft cluster elect a leader as long as a majority of nodes are healthy?"
-  - "An election keeps failing even though most nodes are healthy. What is the most likely cause?"
+The best questions target a specific belief that works 90% of the time but breaks in edge cases. You're not testing knowledge. You're surfacing the uncomfortable edge where intuition fails.
 
-Subtitle Guidelines:
-- Provide constraints or context that narrows the question
-- May be empty string if the question is self-contained
-- Examples: "Assume no crashes, no partitions, and that all nodes appear responsive."
+Ask yourself: What do engineers THINK they know about this topic that isn't quite right? What assumption gets people burned in production?
 
-Option Guidelines:
-- Each option needs: title, body
-- Title: Short answer (3-10 words)
-- Body: 1-2 sentences explaining the reasoning (25-50 words)
+---
 
-For BINARY questions (2 options):
-- Use layout: "binary"
-- Options should be Yes and No (or similar opposing views)
+QUESTION DESIGN:
 
-For MULTI-OPTION questions (3 options):
-- Do NOT include layout field
-- Three distinct perspectives on the problem
+Title (the question itself):
+- 12-20 words. Ends with a question mark.
+- Should feel like something a sharp teammate would ask during a design review.
+- Avoid "textbook" phrasing. No "Which of the following..." or "What is the primary..."
+- Good questions often start with: "Can...", "Does...", "What happens when...", "Why would..."
+- The question should make them want to answer immediately, then second-guess themselves.
+
+Subtitle (optional context):
+- Sets up the scenario. Constraints that make the question interesting.
+- Should feel like clarifying details, not hints.
+- If the question stands alone, leave it empty.
+- Max 80 characters.
+
+---
+
+OPTION DESIGN:
+
+This is where most questions fail. The options need to feel like real positions that smart people hold.
+
+For BINARY questions (2 options, layout: "binary"):
+- One option is the "comfortable assumption" that most engineers hold.
+- The other is the "uncomfortable truth" that reveals deeper understanding.
+- Both must sound reasonable. If one is obviously wrong, the question fails.
+- Don't use "Yes" and "No" as titles. Use the actual position: "It can", "It can't", "Always safe", "Sometimes unsafe".
+
+For MULTI-OPTION questions (3 options, omit layout field):
+- Each option should represent a coherent mental model, not random guesses.
+- Include: the obvious answer, the experienced engineer's instinct, and the edge case awareness.
+- All three should be defensible in some context. The learner should feel uncertain.
+
+Option body guidelines:
+- 20-40 words. One to two sentences.
+- Don't explain why it's right or wrong. Present it as a reasonable position someone might hold.
+- Use concrete language. No hedging with "might", "could", "sometimes".
+- Should sound like something you'd hear in a Slack debate, not a textbook.
+
+---
+
+WHAT MAKES A BAD QUESTION:
+
+- Questions with obviously wrong options (e.g., "Replicas can't serve reads")
+- Questions that test vocabulary instead of understanding
+- Questions where all options sound the same with minor word changes
+- Questions that feel like certification exam filler
+- Options that hedge or waffle ("It depends on the situation")
+
+WHAT MAKES A GREAT QUESTION:
+
+- The learner's gut reaction is immediate, then doubt creeps in
+- Each option represents a belief held by real engineers
+- Getting it wrong reveals a specific, fixable gap in understanding
+- The question sticks with you after you answer
+
+---
 
 OUTPUT FORMAT:
 
-For BINARY questions (randomly chosen ~50% of the time):
+Randomly choose binary (~50%) or multi-option (~50%):
+
+BINARY (2 options):
 {
   "question_cta": {
-    "title": "Question ending with ?",
-    "subtitle": "Optional context or empty string",
+    "title": "Question that makes them pause?",
+    "subtitle": "Scenario constraints if needed",
+    "layout": "binary",
+    "options": [
+      {
+        "title": "Position A",
+        "body": "Why this position makes sense..."
+      },
+      {
+        "title": "Position B",
+        "body": "Why this position makes sense..."
+      }
+    ],
+    "generation_intent": "What assumption this question challenges, and what understanding it tests"
+  }
+}
+
+MULTI-OPTION (3 options):
+{
+  "question_cta": {
+    "title": "Question that makes them pause?",
+    "subtitle": "Scenario constraints if needed",
+    "options": [
+      {
+        "title": "First position",
+        "body": "Why this position makes sense..."
+      },
+      {
+        "title": "Second position",
+        "body": "Why this position makes sense..."
+      },
+      {
+        "title": "Third position",
+        "body": "Why this position makes sense..."
+      }
+    ],
+    "generation_intent": "What assumption this question challenges, and what understanding it tests"
+  }
+}
+
+---
+
+EXAMPLES:
+
+Binary example:
+{
+  "question_cta": {
+    "title": "Can a kernel vulnerability let one container read another container's memory?",
+    "subtitle": "Assume a shared kernel running untrusted workloads.",
     "layout": "binary",
     "options": [
       {
         "title": "Yes",
-        "body": "Explanation of why yes might be correct..."
+        "body": "Kernel bugs like Spectre or Meltdown can bypass isolation. Containers share a kernel, so they inherit its vulnerabilities."
       },
       {
         "title": "No",
-        "body": "Explanation of why no might be correct..."
+        "body": "Container isolation through namespaces and cgroups prevents memory access across boundaries."
       }
     ],
-    "generation_intent": "Brief description of the concept being tested"
+    "generation_intent": "Tests whether they understand that container isolation depends on kernel integrity. The 'No' answer reflects the assumption that namespaces provide hard boundaries."
   }
 }
 
-For MULTI-OPTION questions (randomly chosen ~50% of the time):
+Multi-option example:
 {
   "question_cta": {
-    "title": "Question ending with ?",
-    "subtitle": "Optional context or empty string",
+    "title": "A leader election keeps failing even though most nodes are healthy. What's the most likely cause?",
+    "subtitle": "Logs show no crashes, just repeated election timeouts.",
     "options": [
       {
-        "title": "First perspective",
-        "body": "Explanation of this perspective..."
+        "title": "Network partition",
+        "body": "Healthy nodes might be split across network boundaries. Majority exists but can't reach each other."
       },
       {
-        "title": "Second perspective",
-        "body": "Explanation of this perspective..."
+        "title": "Clock skew",
+        "body": "Timeouts depend on synchronized clocks. Significant drift could cause nodes to disagree on election timing."
       },
       {
-        "title": "Third perspective",
-        "body": "Explanation of this perspective..."
+        "title": "Split vote",
+        "body": "Multiple candidates keep splitting the vote. No one gets a majority because everyone keeps trying at once."
       }
     ],
-    "generation_intent": "Brief description of the concept being tested"
+    "generation_intent": "Challenges the assumption that 'nodes healthy = election should work'. Tests understanding that connectivity matters more than health."
   }
 }
 
+---
+
 IMPORTANT:
-- Return ONLY the raw JSON object. Do NOT wrap it in markdown code blocks (no ```json). Just return the plain JSON.
-- Generate exactly ONE question
-- Make it distinct from previous questions: {{CONTEXT_PREVIOUS_QUESTIONS}}
-- Randomly vary between binary (2 option) and multi-option (3 option) formats
+- Return ONLY raw JSON. No markdown code blocks.
+- Generate exactly ONE question.
+- Must be distinct from: {{CONTEXT_PREVIOUS_QUESTIONS}}
+- If it sounds like a certification exam question, rewrite it.
+- If the options feel like filler, rewrite them.
+- 10/10 quality only. This question will be seen by thousands of engineers.
