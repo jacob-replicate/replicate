@@ -49,9 +49,18 @@
 
                   <span class="text-zinc-400 dark:text-zinc-500">/</span>
 
-                  <span class="text-zinc-800 dark:text-zinc-100 font-semibold">
-                    <%= @experience.code %>
-                  </span>
+                  <% if controller_name == 'experiences' %>
+                    <span class="text-zinc-800 dark:text-zinc-100 font-semibold">
+                      <%= @experience.code %>
+                    </span>
+                  <% else %>
+                    <a
+                      href="<%= topic_experience_path(@topic.code, @experience.code) %>"
+                      class="text-[#0066cc] dark:text-blue-400 hover:text-[#004499] dark:hover:text-blue-300"
+                    >
+                      <%= @experience.code %>
+                    </a>
+                  <% end %>
                 <% else %>
                   <span class="text-zinc-800 dark:text-zinc-100 font-semibold">
                     <%= @topic.code %>
@@ -139,9 +148,18 @@
 
                 <span class="text-zinc-400 dark:text-zinc-500">/</span>
 
-                <span class="text-zinc-800 dark:text-zinc-100 font-semibold">
-                  <%= @experience.code %>
-                </span>
+                <% if controller_name == 'experiences' %>
+                  <span class="text-zinc-800 dark:text-zinc-100 font-semibold">
+                    <%= @experience.code %>
+                  </span>
+                <% else %>
+                  <a
+                    href="<%= topic_experience_path(@topic.code, @experience.code) %>"
+                    class="text-[#0066cc] dark:text-blue-400 hover:text-[#004499] dark:hover:text-blue-300"
+                  >
+                    <%= @experience.code %>
+                  </a>
+                <% end %>
               <% else %>
                 <span class="text-zinc-800 dark:text-zinc-100 font-semibold">
                   <%= @topic.code %>

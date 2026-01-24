@@ -13,6 +13,13 @@ class ConversationsController < ApplicationController
       return redirect_to root_path
     end
 
+    # Find the element and experience that created this conversation (for navbar breadcrumb)
+    element = Element.find_by(conversation_id: @conversation.id)
+    if element.present?
+      @experience = element.experience
+      @topic = @experience&.topic
+    end
+
     @title = [@conversation.page_title, "replicate.info"].reject(&:blank?).first
   end
 
