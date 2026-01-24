@@ -20,8 +20,8 @@
         category_pct = category_total > 0 ? (category_completed.to_f / category_total * 100).round : 0
       %>
       <section>
-        <div class="flex items-center justify-between mb-2 px-1">
-          <h2 class="text-[14px] font-medium text-zinc-700 dark:text-zinc-300 tracking-wide"><%= category.name %></h2>
+        <div class="flex items-center justify-between mb-2">
+          <h2 class="text-[15px] font-medium text-zinc-700 dark:text-zinc-300 tracking-wide"><%= category.name %></h2>
           <% if category_total > 0 %>
             <div class="flex items-center gap-2.5">
               <div class="w-28 h-2 bg-zinc-200 dark:bg-zinc-700 rounded-full overflow-hidden">
@@ -54,7 +54,7 @@
 
     <% if @uncategorized_topics.any? %>
       <section>
-        <h2 class="text-[13px] font-medium text-red-500 dark:text-red-400 tracking-wide mb-2 px-1">Uncategorized</h2>
+        <h2 class="text-[13px] font-medium text-red-500 dark:text-red-400 tracking-wide mb-2">Uncategorized</h2>
         <div class="bg-white dark:bg-zinc-800 rounded-md shadow ring-2 ring-red-300/60 dark:ring-red-700/60 overflow-hidden">
           <% @uncategorized_topics.each_with_index do |topic, i| %>
             <% progress = @topic_progress[topic.id] || { completed: 0, total: 0 } %>

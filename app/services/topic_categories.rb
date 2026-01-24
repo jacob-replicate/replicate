@@ -1,11 +1,11 @@
 class TopicCategories
   CATEGORIES = {
-    "Change Management" => %w[ci-cd feature-flags config-management migrations supply-chain],
     "Compute" => %w[resource-limits scheduling workload-isolation workload-state],
-    "Storage" => %w[partitioning caching backups stale-reads consensus idempotency ordering transactions],
-    "Networking" => %w[dns service-discovery load-balancing edge rate-limiting network-segmentation transport-security],
-    "Observability" => %w[logging metrics tracing alerting],
+    "Delivery" => %w[ci-cd feature-flags config-management migrations supply-chain],
     "Governance" => %w[iam compliance cost-optimization threat-detection change-approval data-retention vendor-risk],
+    "Observability" => %w[logging metrics tracing alerting],
+    "Networking" => %w[dns service-discovery load-balancing edge rate-limiting network-segmentation transport-security],
+    "Storage" => %w[partitioning caching backups stale-reads consensus idempotency ordering transactions],
   }.freeze
 
   def initialize(topics)
