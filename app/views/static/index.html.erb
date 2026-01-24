@@ -14,8 +14,21 @@
   <div class="space-y-8 mt-4">
 
     <% @categories.each do |category| %>
+      <%
+        category_completed = category.topics.sum { |t| (@topic_progress[t.id] || { completed: 0 })[:completed] }
+        category_total = category.topics.sum { |t| (@topic_progress[t.id] || { total: 0 })[:total] }
+        category_pct = category_total > 0 ? (category_completed.to_f / category_total * 100).round : 0
+      %>
       <section>
-        <h2 class="text-[14px] font-medium text-zinc-700 dark:text-zinc-300 tracking-wide mb-2 px-1"><%= category.name %></h2>
+        <div class="flex items-center justify-between mb-2 px-1">
+          <h2 class="text-[14px] font-medium text-zinc-700 dark:text-zinc-300 tracking-wide"><%= category.name %></h2>
+          <div class="flex items-center gap-2">
+            <div class="w-24 h-1.5 bg-zinc-200 dark:bg-zinc-700 rounded-full overflow-hidden">
+              <div class="h-full <%= category_pct == 100 ? 'bg-emerald-500' : 'bg-blue-500' %> rounded-full transition-all" style="width: <%= category_pct %>%"></div>
+            </div>
+            <span class="text-[11px] tabular-nums <%= category_pct == 100 ? 'text-emerald-600 dark:text-emerald-400' : 'text-zinc-500 dark:text-zinc-400' %>"><%= category_completed %>/<%= category_total %></span>
+          </div>
+        </div>
         <div class="bg-white dark:bg-zinc-800 rounded-md shadow overflow-hidden border-2 border-zinc-300 dark:border-zinc-600">
           <% category.topics.each_with_index do |topic, i| %>
             <% progress = @topic_progress[topic.id] || { completed: 0, total: 0 } %>
