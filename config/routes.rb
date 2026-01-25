@@ -33,7 +33,13 @@ Rails.application.routes.draw do
   resources :messages, only: [:create]
   resources :organizations, only: [:create]
 
-  # Topic and Experience routes
+  # OAuth routes - must be before wildcard routes
+  post '/auth/:provider', to: lambda { |_| [404, {}, ['Not Found']] } # OmniAuth intercepts this
+  get '/auth/:provider/callback', to: "sessions#oauth_create"
+  get '/auth/failure', to: "sessions#oauth_failure"
+  delete '/logout', to: "sessions#destroy"
+
+  # Topic and Experience routes (wildcards - keep last)
   post '/:code/populate', to: "topics#populate", as: "populate_topic"
   post '/:topic_code/:experience_code/populate', to: "experiences#populate", as: "populate_experience"
   delete '/:topic_code/:experience_code', to: "experiences#destroy", as: "destroy_experience"

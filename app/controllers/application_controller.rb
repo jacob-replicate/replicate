@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   before_action :skip_malicious_users
   before_action :set_session_identifier
-  helper_method :admin?
+  helper_method :admin?, :current_user, :logged_in?
 
   rescue_from ActionController::InvalidAuthenticityToken do |exception|
     Rails.logger.info "Blocked CSRF from #{request.remote_ip} ua=#{request.user_agent}"
@@ -12,6 +12,14 @@ class ApplicationController < ActionController::Base
 
   def set_session_identifier
     session[:identifier] ||= SecureRandom.hex(10)
+  end
+
+  def current_user
+    @current_user ||= User.find_by(id: session[:user_id]) if session[:user_id]
+  end
+
+  def logged_in?
+    current_user.present?
   end
 
   def admin?

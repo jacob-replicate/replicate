@@ -15,6 +15,14 @@ const CategorySection = ({ name, topics, variant = 'default', expandedTopicCode,
   // Check if any topic in this category is expanded
   const expandedTopic = topics.find(t => t.code === expandedTopicCode)
 
+  const handleTopicClick = (topicCode) => {
+    onTopicClick(name, topicCode)
+  }
+
+  const handleBack = () => {
+    onBackToCategory(name)
+  }
+
   return (
     <section>
       {!expandedTopic && <h2 className={headerClass}>{name}</h2>}
@@ -24,7 +32,7 @@ const CategorySection = ({ name, topics, variant = 'default', expandedTopicCode,
           <TopicDetail
             topic={expandedTopic}
             categoryName={name}
-            onBack={onBackToCategory}
+            onBack={handleBack}
             onRefetch={onRefetch}
           />
         ) : (
@@ -35,7 +43,7 @@ const CategorySection = ({ name, topics, variant = 'default', expandedTopicCode,
                 key={topic.code}
                 topic={topic}
                 index={i}
-                onTopicClick={onTopicClick}
+                onTopicClick={handleTopicClick}
               />
             ))}
           </CardBody>

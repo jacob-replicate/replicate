@@ -273,6 +273,22 @@ CREATE TABLE public.topics (
 
 
 --
+-- Name: users; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.users (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    provider text,
+    uid text,
+    email text,
+    name text,
+    avatar_url text,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
 -- Name: audits id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -392,6 +408,14 @@ ALTER TABLE ONLY public.topics
 
 
 --
+-- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: associated_index; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -497,6 +521,13 @@ CREATE INDEX index_messages_on_conversation_id ON public.messages USING btree (c
 
 
 --
+-- Name: index_users_on_provider_and_uid; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_users_on_provider_and_uid ON public.users USING btree (provider, uid);
+
+
+--
 -- Name: user_index; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -510,6 +541,7 @@ CREATE INDEX user_index ON public.audits USING btree (user_id, user_type);
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260125163148'),
 ('20260125014759'),
 ('20260124184729'),
 ('20260119121538'),

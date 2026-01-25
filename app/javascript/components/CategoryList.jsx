@@ -5,14 +5,20 @@ import useGraphPolling from '../hooks/useGraphPolling'
 
 const CategoryList = () => {
   const [data, refetch] = useGraphPolling()
-  const [expandedTopicCode, setExpandedTopicCode] = useState(null)
+  const [expandedByCategory, setExpandedByCategory] = useState({})
 
-  const handleTopicClick = useCallback((topicCode) => {
-    setExpandedTopicCode(topicCode)
+  const handleTopicClick = useCallback((categoryName, topicCode) => {
+    setExpandedByCategory(prev => ({
+      ...prev,
+      [categoryName]: topicCode
+    }))
   }, [])
 
-  const handleBackToCategory = useCallback(() => {
-    setExpandedTopicCode(null)
+  const handleBackToCategory = useCallback((categoryName) => {
+    setExpandedByCategory(prev => ({
+      ...prev,
+      [categoryName]: null
+    }))
   }, [])
 
   if (!data) return null
@@ -24,7 +30,7 @@ const CategoryList = () => {
           key={category.name}
           name={category.name}
           topics={category.topics}
-          expandedTopicCode={expandedTopicCode}
+          expandedTopicCode={expandedByCategory[category.name]}
           onTopicClick={handleTopicClick}
           onBackToCategory={handleBackToCategory}
           onRefetch={refetch}
@@ -36,7 +42,7 @@ const CategoryList = () => {
           name="Uncategorized"
           topics={data.uncategorized}
           variant="uncategorized"
-          expandedTopicCode={expandedTopicCode}
+          expandedTopicCode={expandedByCategory['Uncategorized']}
           onTopicClick={handleTopicClick}
           onBackToCategory={handleBackToCategory}
           onRefetch={refetch}
