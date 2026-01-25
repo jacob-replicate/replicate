@@ -2,6 +2,8 @@
  * TopicManager - Fetches topic data and renders the entire experiences UI
  * Single source of truth - ERB just provides the topic code
  */
+import { buttons, icons, postForm } from './ui_helpers'
+
 class TopicManager {
   constructor(container, topicCode) {
     this.container = container
@@ -121,19 +123,12 @@ class TopicManager {
     if (isPopulating) {
       actions = `
         <div class="flex items-center gap-2 text-zinc-400 dark:text-zinc-500">
-          ${this.spinnerSvg}
+          ${icons.spinner}
           <span class="text-xs">Generating...</span>
         </div>
       `
     } else if (window.isAdmin) {
-      actions = `
-        <form action="/${this.topicCode}/${exp.code}/populate" method="post">
-          <input type="hidden" name="authenticity_token" value="${this.csrfToken}">
-          <button type="submit" class="inline-flex items-center gap-1.5 rounded-md bg-zinc-600 hover:bg-zinc-700 px-3 py-1.5 text-xs font-medium text-white shadow-sm transition-colors">
-            Generate
-          </button>
-        </form>
-      `
+      actions = postForm(`/${this.topicCode}/${exp.code}/populate`, buttons.primary('Generate'))
     }
 
     const hoverClass = !isPopulating ? 'hover:bg-zinc-50 dark:hover:bg-zinc-700/50' : ''
@@ -145,7 +140,7 @@ class TopicManager {
             ${content}
             <div class="flex items-center gap-2">
               ${actions}
-              ${this.renderDeleteButton(exp)}
+              ${buttons.delete(`data-delete-experience data-topic-code="${this.topicCode}" data-experience-code="${exp.code}" data-experience-name="${exp.name}"`)}
             </div>
           </div>
         </div>
@@ -153,29 +148,12 @@ class TopicManager {
     `
   }
 
-  get spinnerSvg() {
-    return `<svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
-      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"></circle>
-      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-    </svg>`
-  }
-
-  renderDeleteButton(exp) {
-    return `
-      <button type="button" class="flex-shrink-0 bg-slate-600 hover:bg-slate-700 rounded transition-colors" style="padding: 5px 6px;"
-              data-delete-experience data-topic-code="${this.topicCode}" data-experience-code="${exp.code}" data-experience-name="${exp.name}">
-        <svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-        </svg>
-      </button>
-    `
-  }
 
   renderGeneratingFooter() {
     return `
       <div class="border-t border-zinc-100 dark:border-zinc-700">
         <div class="px-4 py-3 flex items-center justify-center gap-2 text-zinc-500 dark:text-zinc-400">
-          ${this.spinnerSvg}
+          ${icons.spinner}
           <span class="text-sm">Generating experiences...</span>
         </div>
       </div>
@@ -183,14 +161,9 @@ class TopicManager {
   }
 
   renderEmptyState() {
-    const populateButton = window.isAdmin ? `
-      <form action="/${this.topicCode}/populate" method="post" class="inline">
-        <input type="hidden" name="authenticity_token" value="${this.csrfToken}">
-        <button type="submit" class="rounded bg-zinc-600 hover:bg-zinc-700 px-2.5 py-1 text-xs font-medium text-white transition-colors">
-          Generate
-        </button>
-      </form>
-    ` : ''
+    const populateButton = window.isAdmin
+      ? postForm(`/${this.topicCode}/populate`, buttons.primary('Generate'))
+      : ''
     return `
       <div class="border-t border-zinc-100 dark:border-zinc-700">
         <div class="px-4 py-3 flex items-center justify-between">
@@ -205,17 +178,11 @@ class TopicManager {
     return `
       <div class="flex justify-center">
         <button type="button" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-white bg-blue-500 hover:bg-blue-600 rounded-md shadow-sm transition-colors">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-          </svg>
+          ${icons.plus}
           <span>Add more experiences</span>
         </button>
       </div>
     `
-  }
-
-  get csrfToken() {
-    return document.querySelector('meta[name="csrf-token"]')?.content || ''
   }
 }
 
