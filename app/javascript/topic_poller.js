@@ -150,7 +150,7 @@ class TopicManager {
 
   renderDeleteButton(exp) {
     return `
-      <button type="button" class="flex-shrink-0 bg-red-500 hover:bg-red-600 rounded transition-colors" style="padding: 5px 6px;"
+      <button type="button" class="flex-shrink-0 bg-slate-600 hover:bg-slate-700 rounded transition-colors" style="padding: 5px 6px;"
               data-delete-experience data-topic-code="${this.topicCode}" data-experience-code="${exp.code}" data-experience-name="${exp.name}">
         <svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
@@ -177,18 +177,18 @@ class TopicManager {
     const populateButton = window.isAdmin ? `
       <form action="/${this.topicCode}/populate" method="post">
         <input type="hidden" name="authenticity_token" value="${this.csrfToken}">
-        <button type="submit" class="inline-flex items-center gap-1.5 rounded-md border border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-700 px-3 py-1.5 text-sm font-medium text-zinc-700 dark:text-zinc-300 transition-colors">
-          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4v16m8-8H4"/>
+        <button type="submit" class="inline-flex items-center gap-1.5 rounded-md bg-gradient-to-r from-violet-500 to-purple-500 hover:from-violet-600 hover:to-purple-600 px-3.5 py-2 text-sm font-semibold text-white shadow-sm hover:shadow-md transition-all duration-200 hover:scale-105">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>
           </svg>
-          <span>Populate</span>
+          <span>Generate Experiences</span>
         </button>
       </form>
     ` : ''
     return `
       <div class="border-t border-zinc-100 dark:border-zinc-700">
-        <div class="px-4 py-3 flex items-center justify-between">
-          <p class="text-zinc-500 dark:text-zinc-400 text-sm">No experiences yet</p>
+        <div class="px-4 py-6 flex flex-col items-center justify-center gap-3">
+          <p class="text-zinc-500 dark:text-zinc-400 text-sm">Ready to explore this topic?</p>
           ${populateButton}
         </div>
       </div>
