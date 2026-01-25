@@ -25,13 +25,14 @@ document.addEventListener('DOMContentLoaded', () => {
         method: 'DELETE',
         headers: {
           'X-CSRF-Token': csrfToken,
-          'Accept': 'text/html'
+          'Accept': 'application/json'
         }
       });
 
       if (response.ok) {
         // Remove the experience row from the DOM
-        const experienceRow = button.closest('[data-experience-code]');
+        // Go up to button's parent first, then find the row container
+        const experienceRow = button.parentElement.closest('[data-experience-code]');
         if (experienceRow) {
           experienceRow.remove();
         }

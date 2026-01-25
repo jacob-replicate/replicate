@@ -30,6 +30,6 @@ class ExperiencesController < ApplicationController
     @topic = Topic.find_by!(code: params[:topic_code])
     @experience = Experience.templates.find_by!(code: params[:experience_code])
     @experience.destroy!
-    redirect_to topic_path(@topic.code)
+    head :no_content
   end
 end

@@ -3,7 +3,7 @@ import { XIcon } from './Icons'
 
 export const Button = ({ children, variant = 'primary', size = 'md', className = '', ...props }) => {
   const variants = {
-    h
+    primary: 'bg-indigo-400 hover:bg-indigo-500 active:bg-indigo-600 text-white',
     secondary: 'bg-slate-400 hover:bg-slate-500 active:bg-slate-600 text-white',
     danger: 'bg-slate-500 hover:bg-rose-600 active:bg-rose-700 text-white',
   }
@@ -27,8 +27,8 @@ export const Button = ({ children, variant = 'primary', size = 'md', className =
 
 export const IconButton = ({ children, variant = 'primary', className = '', ...props }) => {
   const variants = {
-    primary: 'bg-slate-200 hover:bg-slate-300 active:bg-slate-400 text-slate-500',
-    danger: 'bg-slate-500 hover:bg-rose-600 active:bg-rose-700 text-white',
+    primary: 'bg-slate-600 hover:bg-slate-700 active:bg-slate-800 text-white',
+    danger: 'bg-slate-600 hover:bg-rose-600 active:bg-rose-700 text-white',
     ghost: 'hover:bg-slate-100 dark:hover:bg-slate-700/50',
   }
 
