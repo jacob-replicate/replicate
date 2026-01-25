@@ -19,36 +19,7 @@ const ExperienceRow = ({ exp, index, topicCode, onRefetch }) => {
     ? (exp.visited ? linkStyles.visited : linkStyles.unvisited)
     : (isPopulating ? linkStyles.muted : linkStyles.default)
 
-  useEffect(() => {
-    if (confirmingDelete) {
-      setCountdown(5)
-      timerRef.current = setInterval(() => {
-        setCountdown(prev => {
-          if (prev <= 1) {
-            clearInterval(timerRef.current)
-            setConfirmingDelete(false)
-            return 5
-          }
-          return prev - 1
-        })
-      }, 1000)
-    }
-
-    return () => {
-      if (timerRef.current) {
-        clearInterval(timerRef.current)
-      }
-    }
-  }, [confirmingDelete])
-
-  const handleDeleteClick = () => {
-    setConfirmingDelete(true)
-  }
-
-  const handleConfirmDelete = async () => {
-    clearInterval(timerRef.current)
-    setConfirmingDelete(false)
-
+  const performDelete = async () => {
     const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content
 
     try {
@@ -68,6 +39,44 @@ const ExperienceRow = ({ exp, index, topicCode, onRefetch }) => {
     } catch (error) {
       console.error('Delete failed:', error)
     }
+  }
+
+  useEffect(() => {
+    if (confirmingDelete) {
+      setCountdown(5)
+      timerRef.current = setInterval(() => {
+        setCountdown(prev => {
+          if (prev <= 1) {
+            clearInterval(timerRef.current)
+            setConfirmingDelete(false)
+            performDelete()
+            return 5
+          }
+          return prev - 1
+        })
+      }, 1000)
+    }
+
+    return () => {
+      if (timerRef.current) {
+        clearInterval(timerRef.current)
+      }
+    }
+  }, [confirmingDelete])
+
+  const handleDeleteClick = () => {
+    setConfirmingDelete(true)
+  }
+
+  const handleConfirmDelete = () => {
+    clearInterval(timerRef.current)
+    setConfirmingDelete(false)
+    performDelete()
+  }
+
+  const handleCancelDelete = () => {
+    clearInterval(timerRef.current)
+    setConfirmingDelete(false)
   }
 
   if (isPopulated) {
@@ -108,7 +117,7 @@ const ExperienceRow = ({ exp, index, topicCode, onRefetch }) => {
                   }
                 `}</style>
               </button>
-              <IconButton variant="primary" onClick={() => { clearInterval(timerRef.current); setConfirmingDelete(false) }}>
+              <IconButton variant="primary" onClick={handleCancelDelete}>
                 <UndoIcon className="w-3.5 h-3.5 text-white" />
               </IconButton>
             </>
