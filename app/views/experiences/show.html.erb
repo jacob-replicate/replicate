@@ -1,9 +1,22 @@
 <div class="mt-4 mb-8 bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6">
-  <h1 class="text-xl md:text-2xl font-bold text-slate-900 dark:text-white tracking-tight mb-3"><%= @experience.name %></h1>
+  <div class="flex items-start justify-between gap-4">
+    <div>
+      <h1 class="text-xl md:text-2xl font-bold text-slate-900 dark:text-white tracking-tight mb-3"><%= @experience.name %></h1>
 
-  <p class="text-[15px] text-slate-600 dark:text-slate-400 leading-relaxed mb-5">
-    <%= @experience.description %>
-  </p>
+      <p class="text-[15px] text-slate-600 dark:text-slate-400 leading-relaxed mb-5">
+        <%= @experience.description %>
+      </p>
+    </div>
+    <%= button_to destroy_experience_path(params[:topic_code], params[:experience_code]),
+        method: :delete,
+        class: "flex-shrink-0 bg-red-500 hover:bg-red-600 rounded transition-colors",
+        style: "padding: 5.5px;",
+        data: { turbo_confirm: "Delete \"#{@experience.name}\"?" } do %>
+      <svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+      </svg>
+    <% end %>
+  </div>
 
   <input
     type="text"

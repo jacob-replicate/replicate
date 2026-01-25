@@ -16,6 +16,8 @@ class TopicsController < ApplicationController
     if request.xhr?
       render json: {
         topic_state: @topic.state,
+        topic_name: @topic.name,
+        topic_description: @topic.description,
         experience_count: @experience_count,
         completed_count: @completed_count,
         experiences: @experiences.map do |exp|
@@ -42,6 +44,6 @@ class TopicsController < ApplicationController
     @topic = Topic.find_by!(code: params[:code])
     @topic.update!(state: "populating")
     PopulateTopicWorker.perform_async(@topic.id)
-    redirect_to topic_path(@topic.code), notice: "Populating #{@topic.name}..."
+    redirect_to topic_path(@topic.code)
   end
 end

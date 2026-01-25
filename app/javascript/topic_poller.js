@@ -1,199 +1,124 @@
 /**
- * TopicPoller - Polls for topic/experience updates with exponential backoff
+ * TopicManager - Fetches topic data and renders the entire experiences UI
+ * Single source of truth - ERB just provides the topic code
  */
-class TopicPoller {
-  constructor(url, options = {}) {
-    this.url = url
-    this.minInterval = options.minInterval || 500
-    this.maxInterval = options.maxInterval || 8000
-    this.backoffMultiplier = options.backoffMultiplier || 1.5
+class TopicManager {
+  constructor(container, topicCode) {
+    this.container = container
+    this.topicCode = topicCode
+    this.url = `/${topicCode}`
+    this.minInterval = 500
+    this.maxInterval = 8000
+    this.backoffMultiplier = 1.5
     this.currentInterval = this.minInterval
     this.timeoutId = null
-    this.isAdmin = options.isAdmin || false
-    this.topicCode = options.topicCode
-    this.lastExperienceStates = new Map()
+    this.previousStates = new Map()
   }
 
-  start() {
-    // Initialize state tracking from existing DOM elements
-    this.initializeStateFromDOM()
-    this.poll()
+  async init() {
+    await this.fetch()
   }
 
-  initializeStateFromDOM() {
-    const list = document.querySelector('[data-experiences-list]')
-    if (!list) return
-
-    list.querySelectorAll('[data-experience-code]').forEach(row => {
-      const code = row.getAttribute('data-experience-code')
-      const state = row.getAttribute('data-experience-state')
-      if (code && state) {
-        this.lastExperienceStates.set(code, state)
-      }
-    })
-  }
-
-  stop() {
-    if (this.timeoutId) {
-      clearTimeout(this.timeoutId)
-      this.timeoutId = null
-    }
-  }
-
-  async poll() {
+  async fetch() {
     try {
       const response = await fetch(this.url, {
         headers: { 'X-Requested-With': 'XMLHttpRequest' }
       })
-
       if (!response.ok) throw new Error(`HTTP ${response.status}`)
 
       const data = await response.json()
-      const changed = this.updateUI(data)
+      this.render(data)
 
-      // Reset interval if something changed, otherwise backoff
-      if (changed) {
-        this.currentInterval = this.minInterval
-      } else {
-        this.currentInterval = Math.min(
-          this.currentInterval * this.backoffMultiplier,
-          this.maxInterval
-        )
+      const needsPolling = data.topic_state === 'populating' ||
+        data.experiences.some(exp => exp.state === 'populating')
+
+      if (needsPolling) {
+        this.scheduleNext(data)
       }
-
-      // Stop polling if fully populated
-      if (this.isFullyPopulated(data)) {
-        this.hideGeneratingFooter()
-        return
-      }
-
-      this.scheduleNext()
     } catch (error) {
-      console.error('TopicPoller error:', error)
+      console.error('TopicManager fetch error:', error)
       this.currentInterval = Math.min(this.currentInterval * 2, this.maxInterval)
-      this.scheduleNext()
+      this.timeoutId = setTimeout(() => this.fetch(), this.currentInterval)
     }
   }
 
-  scheduleNext() {
-    this.timeoutId = setTimeout(() => this.poll(), this.currentInterval)
-  }
-
-  isFullyPopulated(data) {
-    return data.topic_state === 'populated' &&
-      data.experiences.every(exp => exp.state === 'populated')
-  }
-
-  updateUI(data) {
+  scheduleNext(data) {
     let changed = false
-
-    // Update counter
-    changed = this.updateCounter(data) || changed
-
-    // Update experiences list
-    changed = this.updateExperiences(data) || changed
-
-    return changed
-  }
-
-  updateCounter(data) {
-    const counter = document.querySelector('[data-topic-counter]')
-    if (!counter) return false
-
-    const newText = `${data.completed_count}/${data.experience_count}`
-    if (counter.textContent.trim() === newText) return false
-
-    counter.textContent = newText
-
-    // Update color if complete
-    if (data.completed_count === data.experience_count) {
-      counter.classList.remove('text-zinc-400', 'dark:text-zinc-500')
-      counter.classList.add('text-emerald-600', 'dark:text-emerald-400')
-    }
-
-    return true
-  }
-
-  updateExperiences(data) {
-    const list = document.querySelector('[data-experiences-list]')
-    if (!list) return false
-
-    let changed = false
-
-    // Check for new experiences or state changes
     for (const exp of data.experiences) {
-      const existingRow = list.querySelector(`[data-experience-code="${exp.code}"]`)
-
-      if (!existingRow) {
-        // New experience - append it
-        const row = this.createExperienceRow(exp)
-        list.appendChild(row)
-        changed = true
-      } else {
-        // Check for state change
-        const prevState = this.lastExperienceStates.get(exp.code)
-        if (prevState && prevState !== exp.state) {
-          // State changed - replace the row
-          const newRow = this.createExperienceRow(exp)
-          existingRow.replaceWith(newRow)
-          changed = true
-        }
-      }
-
-      this.lastExperienceStates.set(exp.code, exp.state)
+      if (this.previousStates.get(exp.code) !== exp.state) changed = true
+      this.previousStates.set(exp.code, exp.state)
     }
-
-
-    // Show/hide generating footer based on topic state
-    if (data.topic_state === 'populating' && data.experiences.length > 0) {
-      this.showExperiencesGeneratingFooter()
-    } else if (data.topic_state === 'populated') {
-      this.hideGeneratingFooter()
-    }
-
-    return changed
+    this.currentInterval = changed ? this.minInterval : Math.min(this.currentInterval * this.backoffMultiplier, this.maxInterval)
+    this.timeoutId = setTimeout(() => this.fetch(), this.currentInterval)
   }
 
-  createExperienceRow(exp) {
-    const div = document.createElement('div')
-    div.setAttribute('data-experience-code', exp.code)
-    div.setAttribute('data-experience-state', exp.state)
-    div.className = 'border-t border-zinc-100 dark:border-zinc-700'
+  render(data) {
+    const isComplete = data.completed_count === data.experience_count && data.experience_count > 0
+    const counterColor = isComplete ? 'text-emerald-600 dark:text-emerald-400' : 'text-zinc-400 dark:text-zinc-500'
+    const showGenerating = data.topic_state === 'populating'
+    const showEmpty = data.experiences.length === 0 && !showGenerating
+    const showAddMore = data.experiences.length > 0 && !showGenerating
 
-    if (exp.state === 'populated') {
-      const textColor = exp.visited
-        ? 'text-purple-600 dark:text-purple-400'
-        : 'text-blue-600 dark:text-blue-400'
-
-      div.innerHTML = `
-        <a href="${exp.url}" class="block px-4 py-2.5 hover:bg-zinc-50 dark:hover:bg-zinc-700/50">
-          <div class="text-[14px] ${textColor}">${exp.name}</div>
-          <div class="text-[13px] text-zinc-500 dark:text-zinc-400 mt-0.5">${exp.description}</div>
-        </a>
-      `
-    } else if (exp.state === 'populating') {
-      div.innerHTML = `
-        <div class="px-4 py-2.5">
+    this.container.className = 'mt-4 space-y-8'
+    this.container.innerHTML = `
+      <section class="bg-white dark:bg-zinc-800 rounded-md shadow-xs overflow-hidden border-2 border-zinc-300 dark:border-zinc-700">
+        <div class="px-4 pt-4 pb-3">
           <div class="flex items-center justify-between gap-3">
             <div>
-              <div class="text-[14px] text-zinc-500 dark:text-zinc-400">${exp.name}</div>
-              <div class="text-[13px] text-zinc-400 dark:text-zinc-500 mt-0.5">${exp.description}</div>
+              <h2 class="text-[15px] font-semibold text-zinc-800 dark:text-zinc-100">${data.topic_name}</h2>
+              ${data.topic_description ? `<p class="text-[13px] text-zinc-500 dark:text-zinc-400 mt-0.5">${data.topic_description}</p>` : ''}
             </div>
-            <div class="flex items-center gap-2 text-zinc-400 dark:text-zinc-500">
-              <svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
-                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"></circle>
-                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-              </svg>
-              <span class="text-xs">Populating...</span>
+            ${data.experience_count > 0 ? `<span class="text-[11px] tabular-nums flex-shrink-0 ${counterColor}">${data.completed_count}/${data.experience_count}</span>` : ''}
+          </div>
+        </div>
+        <div class="border-t border-zinc-100 dark:border-zinc-700">
+          ${data.experiences.map((exp, i) => this.renderExperienceRow(exp, i)).join('')}
+        </div>
+        ${showGenerating ? this.renderGeneratingFooter() : ''}
+        ${showEmpty ? this.renderEmptyState() : ''}
+      </section>
+      ${showAddMore ? this.renderAddMoreButton() : ''}
+    `
+  }
+
+  renderExperienceRow(exp, index) {
+    const borderClass = index > 0 ? 'border-t border-zinc-100 dark:border-zinc-700' : ''
+
+    if (exp.state === 'populated') {
+      const textColor = exp.visited ? 'text-purple-600 dark:text-purple-400' : 'text-blue-600 dark:text-blue-400'
+      return `
+        <div data-experience-code="${exp.code}" class="${borderClass}">
+          <a href="${exp.url}" class="block px-4 py-2.5 hover:bg-zinc-50 dark:hover:bg-zinc-700/50">
+            <div class="text-[14px] ${textColor}">${exp.name}</div>
+            <div class="text-[13px] text-zinc-500 dark:text-zinc-400 mt-0.5">${exp.description}</div>
+          </a>
+        </div>
+      `
+    } else if (exp.state === 'populating') {
+      return `
+        <div data-experience-code="${exp.code}" class="${borderClass}">
+          <div class="px-4 py-2.5">
+            <div class="flex items-center justify-between gap-3">
+              <div class="flex-1 min-w-0">
+                <div class="text-[14px] text-zinc-500 dark:text-zinc-400">${exp.name}</div>
+                <div class="text-[13px] text-zinc-400 dark:text-zinc-500 mt-0.5">${exp.description}</div>
+              </div>
+              <div class="flex items-center gap-2 text-zinc-400 dark:text-zinc-500">
+                <svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"></circle>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <span class="text-xs">Populating...</span>
+              </div>
+              ${this.renderDeleteButton(exp)}
             </div>
           </div>
         </div>
       `
     } else {
-      // Pending state
-      const adminButton = this.isAdmin ? `
-        <form action="/${this.topicCode}/${exp.code}/populate" method="post" data-turbo-confirm="Populate ${exp.name} with elements?">
-          <input type="hidden" name="authenticity_token" value="${this.getCSRFToken()}">
+      const populateButton = window.isAdmin ? `
+        <form action="/${this.topicCode}/${exp.code}/populate" method="post">
+          <input type="hidden" name="authenticity_token" value="${this.csrfToken}">
           <button type="submit" class="inline-flex items-center gap-1.5 rounded-md border border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-700 px-2.5 py-1 text-xs font-medium text-zinc-700 dark:text-zinc-300 transition-colors">
             <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4v16m8-8H4"/>
@@ -201,53 +126,95 @@ class TopicPoller {
             <span>Populate</span>
           </button>
         </form>
-      ` : '<span class="text-xs text-zinc-400 dark:text-zinc-500">Coming soon</span>'
-
-      div.innerHTML = `
-        <div class="px-4 py-2.5">
-          <div class="flex items-center justify-between gap-3">
-            <div>
-              <div class="text-[14px] text-zinc-500 dark:text-zinc-400">${exp.name}</div>
-              <div class="text-[13px] text-zinc-400 dark:text-zinc-500 mt-0.5">${exp.description}</div>
+      ` : ''
+      return `
+        <div data-experience-code="${exp.code}" class="${borderClass}">
+          <div class="px-4 py-2.5">
+            <div class="flex items-center justify-between gap-3">
+              <div class="flex-1 min-w-0">
+                <div class="text-[14px] text-zinc-500 dark:text-zinc-400">${exp.name}</div>
+                <div class="text-[13px] text-zinc-400 dark:text-zinc-500 mt-0.5">${exp.description}</div>
+              </div>
+              <div class="flex items-center gap-2">
+                ${populateButton}
+                ${this.renderDeleteButton(exp)}
+              </div>
             </div>
-            ${adminButton}
           </div>
         </div>
       `
     }
-
-    return div
   }
 
-  showExperiencesGeneratingFooter() {
-    const footer = document.querySelector('[data-generating-footer]')
-    if (footer) footer.classList.remove('hidden')
+  renderDeleteButton(exp) {
+    return `
+      <button type="button" class="flex-shrink-0 bg-red-500 hover:bg-red-600 rounded transition-colors" style="padding: 5px 6px;"
+              data-delete-experience data-topic-code="${this.topicCode}" data-experience-code="${exp.code}" data-experience-name="${exp.name}">
+        <svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      </button>
+    `
   }
 
-  hideGeneratingFooter() {
-    const footer = document.querySelector('[data-generating-footer]')
-    if (footer) footer.classList.add('hidden')
+  renderGeneratingFooter() {
+    return `
+      <div class="border-t border-zinc-100 dark:border-zinc-700">
+        <div class="px-4 py-3 flex items-center justify-center gap-2 text-zinc-500 dark:text-zinc-400">
+          <svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          <span class="text-sm">Generating experiences...</span>
+        </div>
+      </div>
+    `
   }
 
-  getCSRFToken() {
-    const meta = document.querySelector('meta[name="csrf-token"]')
-    return meta ? meta.getAttribute('content') : ''
+  renderEmptyState() {
+    const populateButton = window.isAdmin ? `
+      <form action="/${this.topicCode}/populate" method="post">
+        <input type="hidden" name="authenticity_token" value="${this.csrfToken}">
+        <button type="submit" class="inline-flex items-center gap-1.5 rounded-md border border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-700 px-3 py-1.5 text-sm font-medium text-zinc-700 dark:text-zinc-300 transition-colors">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4v16m8-8H4"/>
+          </svg>
+          <span>Populate</span>
+        </button>
+      </form>
+    ` : ''
+    return `
+      <div class="border-t border-zinc-100 dark:border-zinc-700">
+        <div class="px-4 py-3 flex items-center justify-between">
+          <p class="text-zinc-500 dark:text-zinc-400 text-sm">No experiences yet</p>
+          ${populateButton}
+        </div>
+      </div>
+    `
+  }
+
+  renderAddMoreButton() {
+    return `
+      <div class="flex justify-center">
+        <button type="button" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-white bg-blue-500 hover:bg-blue-600 rounded-md shadow-sm transition-colors">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+          </svg>
+          <span>Add more experiences</span>
+        </button>
+      </div>
+    `
+  }
+
+  get csrfToken() {
+    return document.querySelector('meta[name="csrf-token"]')?.content || ''
   }
 }
 
-// Auto-initialize if data attribute present
 document.addEventListener('DOMContentLoaded', () => {
-  const container = document.querySelector('[data-topic-poller]')
+  const container = document.querySelector('[data-topic-code]')
   if (!container) return
-
-  const url = container.dataset.topicPollerUrl
-  const isAdmin = container.dataset.topicPollerAdmin === 'true'
-  const topicCode = container.dataset.topicPollerCode
-
-  if (!url) return
-
-  const poller = new TopicPoller(url, { isAdmin, topicCode })
-  poller.start()
+  new TopicManager(container, container.dataset.topicCode).init()
 })
 
-export default TopicPoller
+export default TopicManager

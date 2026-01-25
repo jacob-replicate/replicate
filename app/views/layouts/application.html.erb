@@ -64,6 +64,7 @@
       });
     </script>
     <%= stylesheet_link_tag "tailwind", as: "style" %>
+    <script>window.isAdmin = <%= admin? %>;</script>
     <%= javascript_include_tag "application", defer: true %>
     <script src="https://cdn.jsdelivr.net/npm/echarts@latest/dist/echarts.min.js"></script>
     <%= Sentry.get_trace_propagation_meta.html_safe %>
@@ -76,6 +77,16 @@
           <%= render 'layouts/navbar' %>
 
           <div class="pt-4 md:pt-0 lg:pt-2">
+            <% if flash[:notice] %>
+              <div class="mb-4 px-4 py-3 rounded-md bg-emerald-50 dark:bg-emerald-900/30 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300 text-sm">
+                <%= flash[:notice] %>
+              </div>
+            <% end %>
+            <% if flash[:alert] %>
+              <div class="mb-4 px-4 py-3 rounded-md bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-300 text-sm">
+                <%= flash[:alert] %>
+              </div>
+            <% end %>
             <%= yield %>
           </div>
         </div>
