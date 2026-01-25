@@ -1,4 +1,5 @@
-<div class="mt-4 space-y-8">
+<% needs_polling = @topic.populating? || @experiences.any? { |e| e.populating? } %>
+<div class="mt-4 space-y-8" <%= "data-topic-poller data-topic-poller-url=#{topic_path(@topic.code)} data-topic-poller-admin=#{admin?} data-topic-poller-code=#{@topic.code}".html_safe if needs_polling %>>
   <section class="bg-white dark:bg-zinc-800 rounded-md shadow-xs overflow-hidden border-2 border-zinc-300 dark:border-zinc-700">
     <div class="px-4 pt-4 pb-3">
       <div class="flex items-center justify-between gap-3">
@@ -9,7 +10,7 @@
           <% end %>
         </div>
         <% if @experience_count > 0 %>
-          <span class="text-[11px] tabular-nums flex-shrink-0 <%= @completed_count == @experience_count ? 'text-emerald-600 dark:text-emerald-400' : 'text-zinc-400 dark:text-zinc-500' %>">
+          <span data-topic-counter class="text-[11px] tabular-nums flex-shrink-0 <%= @completed_count == @experience_count ? 'text-emerald-600 dark:text-emerald-400' : 'text-zinc-400 dark:text-zinc-500' %>">
             <%= @completed_count %>/<%= @experience_count %>
           </span>
         <% end %>
@@ -17,10 +18,10 @@
     </div>
 
     <% if @experiences.any? %>
-      <div class="border-t border-zinc-100 dark:border-zinc-700">
+      <div data-experiences-list class="border-t border-zinc-100 dark:border-zinc-700">
         <% @experiences.each_with_index do |experience, i| %>
           <% visited = @forked_experience_codes.include?(experience.code) %>
-          <div class="<%= 'border-t border-zinc-100 dark:border-zinc-700' unless i == 0 %>">
+          <div data-experience-code="<%= experience.code %>" data-experience-state="<%= experience.state %>" class="<%= 'border-t border-zinc-100 dark:border-zinc-700' unless i == 0 %>">
             <% if experience.populated? %>
               <%= link_to topic_experience_path(@topic.code, experience.code), class: "block px-4 py-2.5 hover:bg-zinc-50 dark:hover:bg-zinc-700/50" do %>
                 <div class="text-[14px] <%= visited ? 'text-purple-600 dark:text-purple-400' : 'text-blue-600 dark:text-blue-400' %>"><%= experience.name.html_safe %></div>
@@ -68,8 +69,20 @@
           </div>
         <% end %>
       </div>
+      <% if @topic.populating? %>
+        <div data-generating-footer class="border-t border-zinc-100 dark:border-zinc-700">
+          <div class="px-4 py-3 flex items-center justify-center gap-2 text-zinc-500 dark:text-zinc-400">
+            <svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            <span class="text-sm">Generating experiences...</span>
+          </div>
+        </div>
+      <% end %>
     <% elsif @topic.populating? %>
-      <div class="border-t border-zinc-100 dark:border-zinc-700">
+      <div data-experiences-list class="border-t border-zinc-100 dark:border-zinc-700"></div>
+      <div data-generating-footer class="border-t border-zinc-100 dark:border-zinc-700">
         <div class="p-8 text-center">
           <div class="flex items-center justify-center gap-2 text-zinc-500 dark:text-zinc-400">
             <svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">

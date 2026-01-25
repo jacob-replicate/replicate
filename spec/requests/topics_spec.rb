@@ -90,5 +90,26 @@ RSpec.describe "TopicsController", type: :request do
         expect(response.body).to include("No experiences yet")
       end
     end
+
+    context "when requesting via XHR" do
+      let!(:experience) { create(:experience, topic: topic, template: true, state: "populated", name: "Test Experience") }
+
+      it "returns JSON with topic and experience data" do
+        get topic_path(topic.code), headers: { "X-Requested-With" => "XMLHttpRequest" }
+
+        expect(response).to have_http_status(:ok)
+        expect(response.content_type).to include("application/json")
+
+        json = JSON.parse(response.body)
+        expect(json["topic_state"]).to eq(topic.state)
+        expect(json["experience_count"]).to eq(1)
+        expect(json["completed_count"]).to eq(0)
+        expect(json["experiences"]).to be_an(Array)
+        expect(json["experiences"].first["code"]).to eq(experience.code)
+        expect(json["experiences"].first["name"]).to eq("Test Experience")
+        expect(json["experiences"].first["state"]).to eq("populated")
+        expect(json["experiences"].first["visited"]).to eq(false)
+      end
+    end
   end
 end
