@@ -1,11 +1,27 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
 import ReactDOM from 'react-dom/client'
 import CategorySection from './CategorySection'
 import useGraphPolling from '../hooks/useGraphPolling'
 
+const STORAGE_KEY = 'expandedTopics'
+
+const getStoredExpanded = () => {
+  try {
+    const stored = sessionStorage.getItem(STORAGE_KEY)
+    return stored ? JSON.parse(stored) : {}
+  } catch {
+    return {}
+  }
+}
+
 const CategoryList = () => {
   const [data, refetch] = useGraphPolling()
-  const [expandedByCategory, setExpandedByCategory] = useState({})
+  const [expandedByCategory, setExpandedByCategory] = useState(getStoredExpanded)
+
+  // Persist to sessionStorage whenever expanded state changes
+  useEffect(() => {
+    sessionStorage.setItem(STORAGE_KEY, JSON.stringify(expandedByCategory))
+  }, [expandedByCategory])
 
   const handleTopicClick = useCallback((categoryName, topicCode) => {
     setExpandedByCategory(prev => ({

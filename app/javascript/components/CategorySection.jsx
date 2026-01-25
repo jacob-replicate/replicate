@@ -26,18 +26,18 @@ const CategorySection = ({ name, topics, variant = 'default', expandedTopicCode,
   return (
     <section>
       {!expandedTopic && <h2 className={headerClass}>{name}</h2>}
-      <Card className={cardClass}>
-        {expandedTopic ? (
-          // Show expanded topic detail inline
-          <TopicDetail
-            topic={expandedTopic}
-            categoryName={name}
-            onBack={handleBack}
-            onRefetch={onRefetch}
-            isAdmin={isAdmin}
-          />
-        ) : (
-          // Show topic list
+      {expandedTopic ? (
+        // Show expanded topic detail - TopicDetail handles its own Card + external button
+        <TopicDetail
+          topic={expandedTopic}
+          categoryName={name}
+          onBack={handleBack}
+          onRefetch={onRefetch}
+          isAdmin={isAdmin}
+        />
+      ) : (
+        // Show topic list
+        <Card className={cardClass}>
           <CardBody>
             {topics.map((topic, i) => (
               <TopicRow
@@ -48,8 +48,8 @@ const CategorySection = ({ name, topics, variant = 'default', expandedTopicCode,
               />
             ))}
           </CardBody>
-        )}
-      </Card>
+        </Card>
+      )}
     </section>
   )
 }

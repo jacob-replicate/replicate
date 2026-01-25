@@ -39,13 +39,8 @@ module MessageGenerators
       global_messages = Message.where(user_generated: true, conversation: total_conversations)
       global_message_count = global_messages.count
 
-      if latest_message == "Give me another hint"
-        broadcast_to_web(type: "loading", user_generated: false)
-        deliver_article_suggestions
-      else
-        broadcast_to_web(type: "element", message: AvatarService.coach_avatar_row, user_generated: false)
-        broadcast_to_web(type: "loading", user_generated: false)
-      end
+      broadcast_to_web(type: "element", message: AvatarService.coach_avatar_row, user_generated: false)
+      broadcast_to_web(type: "loading", user_generated: false)
 
       hint_link = HINT_LINK
       reply = ""
@@ -95,17 +90,6 @@ module MessageGenerators
       broadcast_to_web(type: "done")
     end
 
-    def deliver_article_suggestions
-      response = Prompts::ArticleSuggestions.new(context: {}, message_history: @conversation.message_history).call
-      if response.present?
-        @conversation.messages.create!(content: response, user_generated: false)
-        broadcast_to_web(message: response, type: "article_suggestions", user_generated: false)
-        broadcast_to_web(type: "done")
-        broadcast_to_web(type: "element", message: AvatarService.coach_avatar_row, user_generated: false)
-        broadcast_to_web(type: "loading", user_generated: false)
-        return
-      end
-    end
 
     def deliver_multiple_choice_options(count, reply, cacheable = false)
       options = if cacheable

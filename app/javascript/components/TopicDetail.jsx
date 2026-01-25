@@ -4,7 +4,7 @@ import {
   Spinner, PlusIcon,
   Button,
   PostForm,
-  CardBody, CardFooter,
+  Card, CardBody, CardFooter,
 } from './ui'
 
 const TopicDetail = ({ topic, categoryName, onBack, onRefetch, isAdmin }) => {
@@ -36,74 +36,78 @@ const TopicDetail = ({ topic, categoryName, onBack, onRefetch, isAdmin }) => {
     : 'text-zinc-400 dark:text-zinc-500'
 
   return (
-    <div ref={containerRef}>
-      {/* Topic header with back button */}
-      <div className="px-4 pt-3 pb-2 border-b border-zinc-100 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800/50">
-        <div className="flex items-center justify-between gap-3">
-          <div className="flex items-center gap-2 min-w-0">
-            <button
-              onClick={onBack}
-              className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 text-[13px] flex-shrink-0"
-            >
-              ← {categoryName || 'Back'}
-            </button>
-            <span className="text-zinc-300 dark:text-zinc-600">•</span>
-            <span className="text-[14px] font-medium text-zinc-800 dark:text-zinc-100 truncate">
-              {topic.name}
-            </span>
+    <>
+      <Card>
+        <div ref={containerRef}>
+          {/* Topic header */}
+          <div className="px-4 pt-4 pb-3 border-b border-zinc-100 dark:border-zinc-700">
+            <div className="flex items-start justify-between gap-3">
+              <div className="min-w-0">
+                <h2 className="text-[15px] font-semibold text-zinc-900 dark:text-zinc-50 tracking-tight">
+                  {topic.name}
+                </h2>
+                {topic.description && (
+                  <p className="text-[12px] text-zinc-500 dark:text-zinc-400 mt-0.5 leading-relaxed">
+                    {topic.description}
+                  </p>
+                )}
+                <button
+                  onClick={onBack}
+                  className="text-zinc-500 dark:text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-300 text-[12px] mt-2.5 inline-flex items-center gap-1.5 px-2 py-1 -ml-2 rounded hover:bg-zinc-100 dark:hover:bg-zinc-700/50 transition-colors"
+                >
+                  <span>←</span>
+                  <span>Back to {categoryName || 'topics'}</span>
+                </button>
+              </div>
+              {counter && (
+                <span className={`text-[11px] tabular-nums flex-shrink-0 font-medium ${counterColor}`}>
+                  {counter}
+                </span>
+              )}
+            </div>
           </div>
-          {counter && (
-            <span className={`text-[11px] tabular-nums flex-shrink-0 ${counterColor}`}>
-              {counter}
-            </span>
-          )}
-        </div>
-        {topic.description && (
-          <p className="text-[13px] text-zinc-500 dark:text-zinc-400 mt-1 ml-0">
-            {topic.description}
-          </p>
+
+          {/* Conversation list */}
+          {conversations.length > 0 && (
+          <CardBody>
+            {conversations.map((convo, i) => (
+              <ConversationRow key={convo.code} conversation={convo} index={i} topicCode={topic.code} onRefetch={onRefetch} isAdmin={isAdmin} />
+            ))}
+          </CardBody>
         )}
-      </div>
 
-      {/* Conversation list */}
-      {conversations.length > 0 && (
-        <CardBody>
-          {conversations.map((convo, i) => (
-            <ConversationRow key={convo.code} conversation={convo} index={i} topicCode={topic.code} onRefetch={onRefetch} isAdmin={isAdmin} />
-          ))}
-        </CardBody>
-      )}
+        {/* Generating state */}
+        {showGenerating && (
+          <CardFooter centered>
+            <Spinner />
+            <span className="text-sm text-zinc-500 dark:text-zinc-400">Generating conversations...</span>
+          </CardFooter>
+        )}
 
-      {/* Generating state */}
-      {showGenerating && (
-        <CardFooter centered>
-          <Spinner />
-          <span className="text-sm text-zinc-500 dark:text-zinc-400">Generating conversations...</span>
-        </CardFooter>
-      )}
+        {/* Empty state - only show generate button if admin */}
+        {showEmpty && (
+          <CardFooter>
+            <span className="text-zinc-500 dark:text-zinc-400 text-sm">No conversations yet.</span>
+            {isAdmin && (
+              <PostForm action={`/${topic.code}/populate`} onSuccess={onRefetch}>
+                <Button>Generate</Button>
+              </PostForm>
+            )}
+          </CardFooter>
+        )}
+        </div>
+      </Card>
 
-      {/* Empty state - only show generate button if admin */}
-      {showEmpty && (
-        <CardFooter>
-          <span className="text-zinc-500 dark:text-zinc-400 text-sm">No conversations yet.</span>
-          {isAdmin && (
-            <PostForm action={`/${topic.code}/populate`} onSuccess={onRefetch}>
-              <Button>Generate</Button>
-            </PostForm>
-          )}
-        </CardFooter>
-      )}
-
-      {/* Add more button - only show if admin */}
+      {/* Add more button - outside card, only show if admin */}
       {isAdmin && conversations.length > 0 && !showGenerating && (
-        <div className="px-4 py-3 border-t border-zinc-100 dark:border-zinc-700 flex justify-center">
-          <Button variant="secondary" className="inline-flex items-center gap-1.5">
+        <div className="mt-3 flex justify-end">
+          <button className="inline-flex items-center gap-1.5 px-3 py-1.5 text-[12px] font-medium rounded-md bg-slate-800 text-white hover:bg-slate-700 dark:bg-slate-600 dark:hover:bg-slate-500 transition-colors">
             <PlusIcon />
             <span>Add more conversations</span>
-          </Button>
+          </button>
         </div>
       )}
-    </div>
+    </>
   )
 }
 

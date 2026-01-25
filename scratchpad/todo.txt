@@ -1,10 +1,8 @@
-- Let's see if you actually understand DNS
-- Do you actually know how leader election works?
-------
 - IBM disclosure. Make sure to update the dates on your terms/privacy/security pages to be recent.
 - Make the conversation descriptions closer to incidents, not invariants?
 - Review the list of topics again. Do they all align with incident-focused conversations in V1?
 - Add another engineer during a handoff. Hey Jacob, I can take this one over. Want to try another incident?
+- Replace the navbar filesystem breadcrumbs. Not as relevant anymore. Make a callout to other incidents somehow.
 - Meta tags + sharing images/text
 - Add language tags (e.g., "Go", "Python", etc) to the conversations
 - Better error handling + retries. Don't just let the loop die.
@@ -17,3 +15,10 @@
 - Show multiple choice options in persisted conversation -- can't just generate in JS -- MessageElement, maybe?
 - Protect your S3 credentials from misuse -- spin down old keys, or just delete it?
 - If still a thing, disable all radio button on clicks when sending message. You can click give me a hint + answer old radios.
+
+
+Ads
+- Let's see if you actually understand DNS
+- Let's see if you can debug DNS under pressure
+- Can you debug DNS under pressure?
+- Do you actually know how leader election works?
