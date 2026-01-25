@@ -36,7 +36,7 @@
             </div>
           <% end %>
         </div>
-        <div class="bg-white dark:bg-zinc-800 rounded-md shadow overflow-hidden border-2 border-zinc-300 dark:border-zinc-600">
+        <div class="bg-white dark:bg-zinc-800 rounded-md shadow-sm overflow-hidden border-2 border-zinc-400 dark:border-zinc-600">
           <% category.topics.each_with_index do |topic, i| %>
             <% progress = @topic_progress[topic.id] || { completed: 0, total: 0 } %>
             <% done = progress[:completed] == progress[:total] && progress[:total] > 0 %>

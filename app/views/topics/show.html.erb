@@ -1,5 +1,5 @@
 <div class="mt-4 space-y-8">
-  <section class="bg-white dark:bg-zinc-800 rounded-lg shadow-sm overflow-hidden border border-zinc-200 dark:border-zinc-700">
+  <section class="bg-white dark:bg-zinc-800 rounded-lg shadow-sm overflow-hidden border-2 border-zinc-400 dark:border-zinc-700">
     <div class="px-4 pt-4 pb-3">
       <div class="flex items-center justify-between gap-3">
         <div>
@@ -24,6 +24,18 @@
           <% end %>
         <% end %>
       </div>
+    <% elsif @topic.populating? %>
+      <div class="border-t border-zinc-100 dark:border-zinc-700">
+        <div class="p-8 text-center">
+          <div class="flex items-center justify-center gap-2 text-zinc-500 dark:text-zinc-400">
+            <svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            <span class="text-sm">Generating experiences...</span>
+          </div>
+        </div>
+      </div>
     <% else %>
       <div class="border-t border-zinc-100 dark:border-zinc-700">
         <div class="p-8 text-center">
@@ -32,12 +44,12 @@
           <% if admin? %>
             <%= button_to populate_topic_path(@topic.code),
                 method: :post,
-                class: "inline-flex items-center gap-2 rounded-md border border-emerald-300 dark:border-emerald-600 bg-emerald-100 dark:bg-emerald-900/30 hover:bg-emerald-200 dark:hover:bg-emerald-900/50 hover:border-emerald-400 dark:hover:border-emerald-500 px-4 py-2 text-sm font-medium text-emerald-800 dark:text-emerald-300 shadow-sm",
+                class: "inline-flex items-center gap-2 rounded-md border border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-700 px-4 py-2 text-sm font-medium text-zinc-700 dark:text-zinc-300 transition-colors",
                 data: { turbo_confirm: "Populate #{@topic.name} with new experiences?" } do %>
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4v16m8-8H4"/>
               </svg>
-              <span>Populate this topic</span>
+              <span>Populate</span>
             <% end %>
           <% end %>
         </div>

@@ -266,7 +266,8 @@ CREATE TABLE public.topics (
     generation_intent text,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    code text
+    code text,
+    state text
 );
 
 
@@ -508,6 +509,7 @@ CREATE INDEX user_index ON public.audits USING btree (user_id, user_type);
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260124184729'),
 ('20260119121538'),
 ('20260118142846'),
 ('20260118142457'),

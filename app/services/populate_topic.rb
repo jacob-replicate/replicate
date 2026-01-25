@@ -9,6 +9,8 @@ class PopulateTopic
     rescue StandardError
       nil
     end
+  ensure
+    @topic.update!(state: "populated")
   end
 
   def generation_intents

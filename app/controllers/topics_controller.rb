@@ -21,6 +21,7 @@ class TopicsController < ApplicationController
 
   def populate
     @topic = Topic.find_by!(code: params[:code])
+    @topic.update!(state: "populating")
     PopulateTopicWorker.perform_async(@topic.id)
     redirect_to topic_path(@topic.code), notice: "Populating #{@topic.name}..."
   end

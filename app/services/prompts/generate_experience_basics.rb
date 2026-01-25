@@ -25,8 +25,8 @@ module Prompts
       intent_length = raw_json["refined_generation_intent"].to_s.length
       failures << "refined_intent_too_short" if intent_length < 400
 
-      # Reject forbidden punctuation in any text field
-      text_fields = ["experience_name", "experience_description", "refined_generation_intent"]
+      # Reject forbidden punctuation in user-facing text fields
+      text_fields = ["experience_name", "experience_description"]
       text_fields.each do |field|
         value = raw_json[field].to_s
         failures << "#{field}_contains_em_dash" if value.include?("—")
