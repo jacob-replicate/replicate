@@ -58,13 +58,20 @@ RSpec.describe "TopicsController", type: :request do
     context "when topic has experiences" do
       let!(:experience) { create(:experience, topic: topic, template: true, state: "populated") }
 
-      it "redirects to a random experience on first visit" do
+      it "returns JSON with topic and experience data" do
         get topic_path(topic.code)
 
-        expect(response).to redirect_to(topic_experience_path(topic.code, experience.code))
+        expect(response).to have_http_status(:ok)
+        expect(response.content_type).to include("application/json")
+
+        json = JSON.parse(response.body)
+        expect(json["topic_state"]).to eq(topic.state)
+        expect(json["experience_count"]).to eq(1)
+        expect(json["experiences"]).to be_an(Array)
+        expect(json["experiences"].first["code"]).to eq(experience.code)
       end
 
-      it "shows the topic page when user has forked experiences" do
+      it "shows completed count when user has forked experiences" do
         # Use a fixed session identifier for this test
         fixed_session_id = "test_session_12345"
         allow_any_instance_of(ApplicationController).to receive(:set_session_identifier) do |controller|
@@ -76,18 +83,21 @@ RSpec.describe "TopicsController", type: :request do
 
         get topic_path(topic.code)
 
-
         expect(response).to have_http_status(:ok)
-        expect(response.body).to include(experience.name)
+        json = JSON.parse(response.body)
+        expect(json["completed_count"]).to eq(1)
+        expect(json["experiences"].first["visited"]).to eq(true)
       end
     end
 
     context "when topic has no experiences" do
-      it "shows the empty state" do
+      it "returns JSON with empty experiences array" do
         get topic_path(topic.code)
 
         expect(response).to have_http_status(:ok)
-        expect(response.body).to include("No experiences yet")
+        json = JSON.parse(response.body)
+        expect(json["experiences"]).to eq([])
+        expect(json["experience_count"]).to eq(0)
       end
     end
 

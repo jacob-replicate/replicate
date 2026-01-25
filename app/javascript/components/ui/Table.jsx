@@ -1,7 +1,7 @@
 import React from 'react'
 
 // Table row wrapper with hover and border
-export const TableRow = ({ children, href, isFirst = false, className = '' }) => {
+export const TableRow = ({ children, href, onClick, isFirst = false, className = '' }) => {
   const borderClass = !isFirst ? 'border-t border-zinc-100 dark:border-zinc-700' : ''
   const hoverClass = 'hover:bg-zinc-50 dark:hover:bg-zinc-700/50'
 
@@ -11,6 +11,20 @@ export const TableRow = ({ children, href, isFirst = false, className = '' }) =>
         <a href={href} className={`flex items-center px-4 py-2.5 ${hoverClass} ${className}`}>
           {children}
         </a>
+      </div>
+    )
+  }
+
+  if (onClick) {
+    return (
+      <div className={borderClass}>
+        <button
+          type="button"
+          onClick={onClick}
+          className={`w-full text-left flex items-center px-4 py-2.5 ${hoverClass} cursor-pointer ${className}`}
+        >
+          {children}
+        </button>
       </div>
     )
   }

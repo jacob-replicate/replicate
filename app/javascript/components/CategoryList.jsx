@@ -1,23 +1,18 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import ReactDOM from 'react-dom/client'
 import CategorySection from './CategorySection'
 
 const CategoryList = () => {
   const [data, setData] = useState(null)
+  const [expandedTopicCode, setExpandedTopicCode] = useState(null)
 
   useEffect(() => {
-    console.log('CategoryList: useEffect running')
     const fetchData = async () => {
-      console.log('CategoryList: fetching /')
       try {
         const res = await fetch('/', { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
-        console.log('CategoryList: response status', res.status)
         if (res.ok) {
           const json = await res.json()
-          console.log('CategoryList: data received', json)
           setData(json)
-        } else {
-          console.log('CategoryList: response not ok')
         }
       } catch (err) {
         console.error('CategoryList: fetch error', err)
@@ -26,17 +21,38 @@ const CategoryList = () => {
     fetchData()
   }, [])
 
-  console.log('CategoryList: rendering, data =', data)
+  const handleTopicClick = useCallback((topicCode) => {
+    setExpandedTopicCode(topicCode)
+  }, [])
+
+  const handleBackToCategory = useCallback(() => {
+    setExpandedTopicCode(null)
+  }, [])
+
   if (!data) return null
 
   return (
     <div className="space-y-8 mt-6">
       {data.categories.map((category) => (
-        <CategorySection key={category.name} name={category.name} topics={category.topics} />
+        <CategorySection
+          key={category.name}
+          name={category.name}
+          topics={category.topics}
+          expandedTopicCode={expandedTopicCode}
+          onTopicClick={handleTopicClick}
+          onBackToCategory={handleBackToCategory}
+        />
       ))}
 
       {data.uncategorized.length > 0 && (
-        <CategorySection name="Uncategorized" topics={data.uncategorized} variant="uncategorized" />
+        <CategorySection
+          name="Uncategorized"
+          topics={data.uncategorized}
+          variant="uncategorized"
+          expandedTopicCode={expandedTopicCode}
+          onTopicClick={handleTopicClick}
+          onBackToCategory={handleBackToCategory}
+        />
       )}
     </div>
   )

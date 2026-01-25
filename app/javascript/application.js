@@ -2,7 +2,6 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import "./components"
 import "./channels/consumer"
-import "./components/TopicManager"
 import "./components/CategoryList"
 import "./delete_experience"
 

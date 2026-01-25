@@ -73,13 +73,5 @@ const TopicManager = ({ topicCode }) => {
   )
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  const container = document.querySelector('[data-topic-code]')
-  if (!container) return
-
-  const topicCode = container.dataset.topicCode
-  const root = ReactDOM.createRoot(container)
-  root.render(<TopicManager topicCode={topicCode} />)
-})
 
 export default TopicManager
