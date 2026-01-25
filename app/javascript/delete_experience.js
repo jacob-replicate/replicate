@@ -11,10 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const experienceCode = button.dataset.experienceCode;
     const experienceName = button.dataset.experienceName;
 
-    console.log('Delete request:', { topicCode, experienceCode, experienceName });
-
     if (!topicCode || !experienceCode) {
-      console.error('Missing topicCode or experienceCode');
       alert('Failed to delete experience');
       return;
     }

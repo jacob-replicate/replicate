@@ -26,8 +26,7 @@ class ExperiencesController < ApplicationController
   def destroy
     @topic = Topic.find_by!(code: params[:topic_code])
     @experience = Experience.templates.find_by!(code: params[:experience_code])
-    experience_name = @experience.name
     @experience.destroy!
-    redirect_to topic_path(@topic.code), notice: "#{experience_name} deleted."
+    redirect_to topic_path(@topic.code)
   end
 end
