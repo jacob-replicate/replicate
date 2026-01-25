@@ -35,6 +35,7 @@ Rails.application.routes.draw do
 
   # Topic and Experience routes
   post '/:code/populate', to: "topics#populate", as: "populate_topic"
+  post '/:topic_code/:experience_code/populate', to: "experiences#populate", as: "populate_experience"
   get '/:topic_code/:experience_code', to: "experiences#show", as: "topic_experience"
   get '/:code', to: "topics#show", as: "topic"
 

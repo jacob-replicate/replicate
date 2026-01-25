@@ -56,7 +56,7 @@ RSpec.describe "TopicsController", type: :request do
 
   describe "GET /:code" do
     context "when topic has experiences" do
-      let!(:experience) { create(:experience, topic: topic, template: true) }
+      let!(:experience) { create(:experience, topic: topic, template: true, state: "populated") }
 
       it "redirects to a random experience on first visit" do
         get topic_path(topic.code)

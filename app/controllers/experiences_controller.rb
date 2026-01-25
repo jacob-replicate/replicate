@@ -1,5 +1,6 @@
 class ExperiencesController < ApplicationController
   protect_from_forgery with: :null_session
+  before_action :verify_admin, only: [:populate]
 
   def show
     @topic = Topic.find_by!(code: params[:topic_code])
@@ -12,5 +13,13 @@ class ExperiencesController < ApplicationController
     else
       redirect_to root_path
     end
+  end
+
+  def populate
+    @topic = Topic.find_by!(code: params[:topic_code])
+    @experience = Experience.templates.find_by!(code: params[:experience_code])
+    @experience.update!(state: "populating")
+    PopulateExperienceWorker.perform_async(@experience.id)
+    redirect_to topic_path(@topic.code), notice: "Populating #{@experience.name}..."
   end
 end
