@@ -30,7 +30,7 @@
       <%# Left accent: blue when unvisited, gray when visited %>
       <div class="w-0.5 h-5 rounded-full <%= visited ? 'bg-zinc-300 dark:bg-zinc-600' : 'bg-blue-500 dark:bg-blue-400' %> transition-colors"></div>
 
-      <span class="flex-1 text-[14px] leading-relaxed <%= visited ? 'text-purple-600 dark:text-purple-400' : 'text-blue-600 dark:text-blue-400 group-hover:underline underline-offset-8' %> transition-colors">
+      <span class="flex-1 text-[14px] leading-relaxed group-hover:underline underline-offset-4 <%= visited ? 'text-purple-600 dark:text-purple-400' : 'text-blue-600 dark:text-blue-400' %> transition-colors">
         <%= row.context["name"].to_s.html_safe %>
       </span>
 
