@@ -20,6 +20,7 @@ export const useCountdownDelete = ({ onDelete, duration = 5 }) => {
 
   const performDelete = useCallback(async () => {
     await onDeleteRef.current?.()
+    setIsConfirming(false)
   }, [])
 
   useEffect(() => {
@@ -29,7 +30,6 @@ export const useCountdownDelete = ({ onDelete, duration = 5 }) => {
         setCountdown(prev => {
           if (prev <= 1) {
             clearInterval(timerRef.current)
-            setIsConfirming(false)
             performDelete()
             return duration
           }
@@ -51,7 +51,6 @@ export const useCountdownDelete = ({ onDelete, duration = 5 }) => {
 
   const confirm = useCallback(() => {
     clearInterval(timerRef.current)
-    setIsConfirming(false)
     performDelete()
   }, [performDelete])
 

@@ -28,6 +28,7 @@ export const Button = ({ children, variant = 'primary', size = 'md', className =
 export const IconButton = ({ children, variant = 'primary', className = '', ...props }) => {
   const variants = {
     primary: 'bg-slate-600 hover:bg-slate-700 active:bg-slate-800 text-white',
+    accent: 'bg-indigo-400 hover:bg-indigo-500 active:bg-indigo-600 text-white',
     danger: 'bg-slate-600 hover:bg-rose-600 active:bg-rose-700 text-white',
     ghost: 'hover:bg-slate-100 dark:hover:bg-slate-700/50',
   }
@@ -63,10 +64,10 @@ export const CountdownConfirmButton = ({
   <>
     <button
       onClick={onConfirm}
-      className={`relative h-8 ${width} text-xs font-medium tracking-wide text-white rounded-lg overflow-hidden bg-slate-700 hover:bg-slate-800 transition-colors`}
+      className={`relative h-8 ${width} text-xs font-medium tracking-wide text-white rounded-lg overflow-hidden bg-amber-500 hover:brightness-95 transition-all`}
     >
       <span
-        className="absolute inset-0 bg-slate-500 origin-right animate-countdown-shrink"
+        className="absolute inset-0 bg-slate-400 origin-right animate-countdown-drain"
         style={{ animationDuration: `${duration}s` }}
       />
       <span className="relative">{label}</span>
@@ -75,12 +76,12 @@ export const CountdownConfirmButton = ({
       <UndoIcon className="w-3.5 h-3.5 text-white" />
     </IconButton>
     <style>{`
-      @keyframes countdown-shrink {
+      @keyframes countdown-drain {
         from { transform: scaleX(1); }
         to { transform: scaleX(0); }
       }
-      .animate-countdown-shrink {
-        animation: countdown-shrink linear forwards;
+      .animate-countdown-drain {
+        animation: countdown-drain linear forwards;
       }
     `}</style>
   </>
