@@ -13,7 +13,7 @@
 <% else %>
 
   <div class="mt-3 text-[15px] text-zinc-600 dark:text-zinc-400 leading-relaxed">
-    It's a pressure test for engineers who want to drill their SRE fundamentals. Prove you understand each area. GPT will push back if you hand wave through the details. <span class="font-semibold">100% free</span>. It helps find gaps in your mental model.
+    It's a pressure test for engineers who want to drill their SRE fundamentals. Prove you understand each area. GPT will push back if you hand wave through the details. <span class="font-semibold dark:text-white">100% free</span>. It helps find gaps in your mental model.
   </div>
 
   <div class="space-y-8 mt-6">
@@ -25,18 +25,8 @@
         category_pct = category_total > 0 ? (category_completed.to_f / category_total * 100).round : 0
       %>
       <section>
-        <div class="flex items-center justify-between mb-2">
-          <h2 class="text-[15px] font-medium text-zinc-700 dark:text-zinc-300 tracking-wide"><%= category.name %></h2>
-          <% if category_total > 0 %>
-            <div class="flex items-center gap-2.5">
-              <div class="w-28 h-2 bg-zinc-200 dark:bg-zinc-700 rounded-full overflow-hidden">
-                <div class="h-full <%= category_pct == 100 ? 'bg-emerald-500' : 'bg-blue-500' %> rounded-full transition-all" style="width: <%= category_pct %>%"></div>
-              </div>
-              <span class="text-[12px] font-medium tabular-nums <%= category_pct == 100 ? 'text-emerald-600 dark:text-emerald-400' : 'text-zinc-500 dark:text-zinc-400' %>"><%= category_pct %>%</span>
-            </div>
-          <% end %>
-        </div>
-        <div class="bg-white dark:bg-zinc-800 rounded-md shadow-sm overflow-hidden border-2 border-zinc-400 dark:border-zinc-600">
+        <h2 class="mb-2 text-[15px] font-medium dark:text-white tracking-wide"><%= category.name %></h2>
+        <div class="bg-white dark:bg-zinc-800 rounded-md shadow-xs overflow-hidden border-2 border-zinc-300 dark:border-zinc-600">
           <% category.topics.each_with_index do |topic, i| %>
             <% progress = @topic_progress[topic.id] || { completed: 0, total: 0 } %>
             <% done = progress[:completed] == progress[:total] && progress[:total] > 0 %>
