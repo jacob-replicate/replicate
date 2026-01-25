@@ -5,7 +5,7 @@ import { useState, useEffect, useRef, useCallback } from 'react'
  *
  * @param {string} url - endpoint to fetch
  * @param {function} shouldPoll - (data) => boolean, return true to keep polling
- * @returns {object|null} - the fetched data
+ * @returns {[object|null, function]} - the fetched data and a refetch function
  */
 const usePollingFetch = (url, shouldPoll) => {
   const [data, setData] = useState(null)
@@ -31,12 +31,18 @@ const usePollingFetch = (url, shouldPoll) => {
     }
   }, [url, shouldPoll])
 
+  const refetch = useCallback(() => {
+    clearTimeout(timeoutRef.current)
+    intervalRef.current = 500
+    poll()
+  }, [poll])
+
   useEffect(() => {
     poll()
     return () => clearTimeout(timeoutRef.current)
   }, [poll])
 
-  return data
+  return [data, refetch]
 }
 
 export default usePollingFetch

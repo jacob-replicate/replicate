@@ -14,7 +14,7 @@ export const CardHeader = ({ title, description, counter, counterComplete }) => 
     : 'text-zinc-400 dark:text-zinc-500'
 
   return (
-    <div className="px-4 pt-4 pb-3">
+    <div className="px-4 pt-4 pb-3 border-b border-zinc-100 dark:border-zinc-700">
       <div className="flex items-center justify-between gap-3">
         <div>
           <h2 className="text-[15px] font-semibold text-zinc-800 dark:text-zinc-100">{title}</h2>
@@ -34,12 +34,9 @@ export const CardHeader = ({ title, description, counter, counterComplete }) => 
 
 // Card body for list items
 export const CardBody = ({ children }) => (
-  <div className="border-t border-zinc-100 dark:border-zinc-700">
-    {children}
-  </div>
+  <div>{children}</div>
 )
 
-// Card footer (for empty states, loading, etc.)
 export const CardFooter = ({ children, centered = false }) => (
   <div className="border-t border-zinc-100 dark:border-zinc-700">
     <div className={`px-4 py-3 ${centered ? 'flex items-center justify-center gap-2' : 'flex items-center justify-between'}`}>

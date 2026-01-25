@@ -15,7 +15,7 @@ const isPolling = (data) =>
   data.experiences?.some(e => e.state === 'populating')
 
 const TopicManager = ({ topicCode }) => {
-  const data = usePollingFetch(`/${topicCode}`, isPolling)
+  const [data, refetch] = usePollingFetch(`/${topicCode}`, isPolling)
   if (!data) return null
 
   const isComplete = data.completed_count === data.experience_count && data.experience_count > 0
@@ -37,7 +37,7 @@ const TopicManager = ({ topicCode }) => {
         {data.experiences.length > 0 && (
           <CardBody>
             {data.experiences.map((exp, i) => (
-              <ExperienceRow key={exp.code} exp={exp} index={i} topicCode={topicCode} />
+              <ExperienceRow key={exp.code} exp={exp} index={i} topicCode={topicCode} onRefetch={refetch} />
             ))}
           </CardBody>
         )}
@@ -53,9 +53,9 @@ const TopicManager = ({ topicCode }) => {
           <CardFooter>
             <span className="text-zinc-500 dark:text-zinc-400 text-sm">No experiences yet.</span>
             {window.isAdmin && (
-              <PostForm action={`/${topicCode}/populate`}>
-                <Button>Generate</Button>
-              </PostForm>
+            <PostForm action={`/${topicCode}/populate`} onSuccess={refetch}>
+              <Button>Generate</Button>
+            </PostForm>
             )}
           </CardFooter>
         )}
@@ -73,7 +73,6 @@ const TopicManager = ({ topicCode }) => {
   )
 }
 
-// Mount React component
 document.addEventListener('DOMContentLoaded', () => {
   const container = document.querySelector('[data-topic-code]')
   if (!container) return

@@ -43,7 +43,6 @@ export const TableRowActions = ({ children }) => (
   </div>
 )
 
-// Link title styles
 export const linkStyles = {
   unvisited: 'text-blue-600 dark:text-blue-400',
   visited: 'text-purple-600 dark:text-purple-400',

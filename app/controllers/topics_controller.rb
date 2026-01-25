@@ -44,6 +44,9 @@ class TopicsController < ApplicationController
     @topic = Topic.find_by!(code: params[:code])
     @topic.update!(state: "populating")
     PopulateTopicWorker.perform_async(@topic.id)
-    redirect_to topic_path(@topic.code)
+    respond_to do |format|
+      format.html { redirect_to topic_path(@topic.code) }
+      format.json { head :ok }
+    end
   end
 end

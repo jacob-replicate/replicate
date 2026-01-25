@@ -7,7 +7,7 @@ import {
   linkStyles
 } from './ui'
 
-const ExperienceRow = ({ exp, index, topicCode }) => {
+const ExperienceRow = ({ exp, index, topicCode, onRefetch }) => {
   const isPopulated = exp.state === 'populated'
   const isPopulating = exp.state === 'populating'
 
@@ -34,7 +34,7 @@ const ExperienceRow = ({ exp, index, topicCode }) => {
               <span className="text-xs">Generating...</span>
             </div>
           ) : window.isAdmin && (
-            <PostForm action={`/${topicCode}/${exp.code}/populate`}>
+            <PostForm action={`/${topicCode}/${exp.code}/populate`} onSuccess={onRefetch}>
               <Button>Generate</Button>
             </PostForm>
           )}

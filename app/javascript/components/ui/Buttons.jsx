@@ -1,7 +1,6 @@
 import React from 'react'
 import { XIcon } from './Icons'
 
-// Primary action button (gray)
 export const Button = ({ children, variant = 'primary', size = 'md', className = '', ...props }) => {
   const variants = {
     primary: 'bg-zinc-600 hover:bg-zinc-700 text-white',
@@ -26,11 +25,10 @@ export const Button = ({ children, variant = 'primary', size = 'md', className =
   )
 }
 
-// Icon-only button (for delete, close, etc.)
 export const IconButton = ({ children, variant = 'primary', className = '', ...props }) => {
   const variants = {
-    primary: 'bg-slate-600 hover:bg-slate-700',
-    danger: 'bg-red-500 hover:bg-red-600',
+    primary: 'bg-slate-500 hover:bg-slate-600 text-white',
+    danger: 'bg-red-500 hover:bg-red-600 text-white',
     ghost: 'hover:bg-zinc-100 dark:hover:bg-zinc-700',
   }
 
@@ -45,7 +43,6 @@ export const IconButton = ({ children, variant = 'primary', className = '', ...p
   )
 }
 
-// Delete button with X icon
 export const DeleteButton = (props) => (
   <IconButton variant="primary" {...props}>
     <XIcon className="w-3.5 h-3.5 text-white" />

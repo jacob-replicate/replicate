@@ -18,7 +18,36 @@ class StaticController < ApplicationController
       hash[topic.id] = { completed: completed, total: total }
     end
     @started_topic_ids = forked_counts.keys.to_set
+
+    if request.xhr?
+      render json: {
+        categories: @categories.map do |category|
+          {
+            name: category.name,
+            topics: category.topics.map { |t| topic_json(t) }
+          }
+        end,
+        uncategorized: @uncategorized_topics.map { |t| topic_json(t) }
+      }
+    end
   end
+
+  private
+
+  def topic_json(topic)
+    progress = @topic_progress[topic.id] || { completed: 0, total: 0 }
+    {
+      code: topic.code,
+      name: topic.name,
+      description: topic.description,
+      url: topic_path(topic.code),
+      completed: progress[:completed],
+      total: progress[:total],
+      visited: @started_topic_ids.include?(topic.id)
+    }
+  end
+
+  public
 
   def growth
     @active_trials = Member.where(subscribed: true).pluck(:organization_id).uniq.size # TODO: Filter out auto-unsubscribed

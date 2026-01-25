@@ -20,7 +20,10 @@ class ExperiencesController < ApplicationController
     @experience = Experience.templates.find_by!(code: params[:experience_code])
     @experience.update!(state: "populating")
     PopulateExperienceWorker.perform_async(@experience.id)
-    redirect_to topic_path(@topic.code)
+    respond_to do |format|
+      format.html { redirect_to topic_path(@topic.code) }
+      format.json { head :ok }
+    end
   end
 
   def destroy
