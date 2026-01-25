@@ -18,11 +18,14 @@ const PrimaryButton = ({ children, ...props }) => (
   </button>
 )
 
-const DeleteButton = (props) => (
+const DeleteButton = ({ topicCode, experienceCode, experienceName }) => (
   <button
     type="button"
     className="flex-shrink-0 bg-slate-600 hover:bg-slate-700 rounded p-1.5 transition-colors"
-    {...props}
+    data-delete-experience=""
+    data-topic-code={topicCode}
+    data-experience-code={experienceCode}
+    data-experience-name={experienceName}
   >
     <svg className="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
@@ -92,10 +95,9 @@ const ExperienceRow = ({ exp, index, topicCode }) => {
               </PostForm>
             )}
             <DeleteButton
-              data-delete-experience
-              data-topic-code={topicCode}
-              data-experience-code={exp.code}
-              data-experience-name={exp.name}
+              topicCode={topicCode}
+              experienceCode={exp.code}
+              experienceName={exp.name}
             />
           </div>
         </div>
