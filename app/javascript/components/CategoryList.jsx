@@ -1,25 +1,11 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useCallback } from 'react'
 import ReactDOM from 'react-dom/client'
 import CategorySection from './CategorySection'
+import useGraphPolling from '../hooks/useGraphPolling'
 
 const CategoryList = () => {
-  const [data, setData] = useState(null)
+  const [data, refetch] = useGraphPolling()
   const [expandedTopicCode, setExpandedTopicCode] = useState(null)
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await fetch('/', { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
-        if (res.ok) {
-          const json = await res.json()
-          setData(json)
-        }
-      } catch (err) {
-        console.error('CategoryList: fetch error', err)
-      }
-    }
-    fetchData()
-  }, [])
 
   const handleTopicClick = useCallback((topicCode) => {
     setExpandedTopicCode(topicCode)
@@ -41,6 +27,7 @@ const CategoryList = () => {
           expandedTopicCode={expandedTopicCode}
           onTopicClick={handleTopicClick}
           onBackToCategory={handleBackToCategory}
+          onRefetch={refetch}
         />
       ))}
 
@@ -52,6 +39,7 @@ const CategoryList = () => {
           expandedTopicCode={expandedTopicCode}
           onTopicClick={handleTopicClick}
           onBackToCategory={handleBackToCategory}
+          onRefetch={refetch}
         />
       )}
     </div>

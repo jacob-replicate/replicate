@@ -1,6 +1,5 @@
 class ExperiencesController < ApplicationController
   protect_from_forgery with: :null_session
-  before_action :verify_admin, only: [:populate, :destroy]
 
   def show
     @topic = Topic.find_by!(code: params[:topic_code])

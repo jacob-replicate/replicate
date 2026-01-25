@@ -2,48 +2,79 @@ class StaticController < ApplicationController
   before_action :verify_admin, only: [:growth]
 
   def index
-    topics = Topic.all.order(:name)
+    topics = Topic.includes(:experiences).order(:name)
     topic_categories = TopicCategories.new(topics)
 
     @categories = topic_categories.categorized
     @uncategorized_topics = topic_categories.uncategorized
 
-    # Progress data for each topic (completed / total experiences)
-    topic_ids = topics.pluck(:id)
-    experience_counts = Experience.templates.where(topic_id: topic_ids).group(:topic_id).count
-    forked_counts = Experience.where(template: false, topic_id: topic_ids, session_id: session[:identifier]).group(:topic_id).count
-    @topic_progress = topics.each_with_object({}) do |topic, hash|
-      total = experience_counts[topic.id] || 0
-      completed = forked_counts[topic.id] || 0
-      hash[topic.id] = { completed: completed, total: total }
-    end
-    @started_topic_ids = forked_counts.keys.to_set
+    # Preload all experience data for efficiency
+    @experiences_by_topic = Experience.templates
+      .where(topic_id: topics.pluck(:id))
+      .order(:name)
+      .group_by(&:topic_id)
+
+    # User's completed experiences (forked from templates)
+    @forked_codes_by_topic = Experience
+      .where(template: false, topic_id: topics.pluck(:id), session_id: session[:identifier])
+      .pluck(:topic_id, :code)
+      .group_by(&:first)
+      .transform_values { |pairs| pairs.map(&:last).to_set }
 
     if request.xhr?
-      render json: {
-        categories: @categories.map do |category|
-          {
-            name: category.name,
-            topics: category.topics.map { |t| topic_json(t) }
-          }
-        end,
-        uncategorized: @uncategorized_topics.map { |t| topic_json(t) }
-      }
+      json_data = build_graph_json
+      render json: json_data
     end
   end
 
   private
 
+  def build_graph_json
+    data = {
+      categories: @categories.map { |cat| category_json(cat) },
+      uncategorized: @uncategorized_topics.map { |t| topic_json(t) }
+    }
+
+    # Checksum based on states + counts for efficient polling
+    checksum_source = data.to_json
+    data[:checksum] = Digest::MD5.hexdigest(checksum_source)[0, 8]
+    data
+  end
+
+  def category_json(category)
+    {
+      name: category.name,
+      topics: category.topics.map { |t| topic_json(t) }
+    }
+  end
+
   def topic_json(topic)
-    progress = @topic_progress[topic.id] || { completed: 0, total: 0 }
+    experiences = @experiences_by_topic[topic.id] || []
+    forked_codes = @forked_codes_by_topic[topic.id] || Set.new
+
+    populated_experiences = experiences.select { |e| e.state == 'populated' }
+
     {
       code: topic.code,
       name: topic.name,
       description: topic.description,
+      state: topic.state,
       url: topic_path(topic.code),
-      completed: progress[:completed],
-      total: progress[:total],
-      visited: @started_topic_ids.include?(topic.id)
+      experience_count: experiences.size,
+      populated_count: populated_experiences.size,
+      completed_count: forked_codes.size,
+      experiences: experiences.map { |exp| experience_json(exp, forked_codes) }
+    }
+  end
+
+  def experience_json(exp, forked_codes)
+    {
+      code: exp.code,
+      name: exp.name,
+      description: exp.description,
+      state: exp.state,
+      visited: forked_codes.include?(exp.code),
+      url: topic_experience_path(exp.topic.code, exp.code)
     }
   end
 

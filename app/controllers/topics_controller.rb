@@ -1,15 +1,11 @@
 class TopicsController < ApplicationController
-  before_action :verify_admin, only: [:populate]
 
-  def index
-    @topics = Topic.all.order(:name)
-  end
 
   def show
     @topic = Topic.includes(:experiences).find_by!(code: params[:code])
     @experiences = @topic.experiences.templates.order(:name)
     @experience_count = @experiences.size
-    @populated_experiences = @experiences.populated
+    @populated_count = @experiences.populated.size
     @forked_experience_codes = @topic.experiences.where(template: false, session_id: session[:identifier]).pluck(:code).to_set
     @completed_count = @forked_experience_codes.size
 
@@ -19,6 +15,7 @@ class TopicsController < ApplicationController
       topic_name: @topic.name,
       topic_description: @topic.description,
       experience_count: @experience_count,
+      populated_count: @populated_count,
       completed_count: @completed_count,
       experiences: @experiences.map do |exp|
         {

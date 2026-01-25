@@ -2,9 +2,9 @@ import React from 'react'
 import { TableRow, TableRowContent, linkStyles } from './ui'
 
 const TopicRow = ({ topic, index, onTopicClick }) => {
-  const isDone = topic.completed === topic.total && topic.total > 0
+  const isDone = topic.completed_count === topic.experience_count && topic.experience_count > 0
   const titleClass = topic.visited ? linkStyles.visited : linkStyles.unvisited
-  const counter = topic.total > 0 ? `${topic.completed}/${topic.total}` : null
+  const counter = topic.experience_count > 0 ? `${topic.completed_count}/${topic.experience_count}` : null
   const counterClass = isDone
     ? 'text-emerald-600 dark:text-emerald-400'
     : 'text-zinc-400 dark:text-zinc-500'

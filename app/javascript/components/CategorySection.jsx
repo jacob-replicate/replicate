@@ -3,7 +3,7 @@ import TopicRow from './TopicRow'
 import TopicDetail from './TopicDetail'
 import { Card, CardBody } from './ui'
 
-const CategorySection = ({ name, topics, variant = 'default', expandedTopicCode, onTopicClick, onBackToCategory }) => {
+const CategorySection = ({ name, topics, variant = 'default', expandedTopicCode, onTopicClick, onBackToCategory, onRefetch }) => {
   const headerClass = variant === 'uncategorized'
     ? 'text-[13px] font-medium text-red-500 dark:text-red-400 tracking-wide mb-2'
     : 'text-[15px] font-medium dark:text-white tracking-wide mb-2'
@@ -17,14 +17,15 @@ const CategorySection = ({ name, topics, variant = 'default', expandedTopicCode,
 
   return (
     <section>
-      <h2 className={headerClass}>{name}</h2>
+      {!expandedTopic && <h2 className={headerClass}>{name}</h2>}
       <Card className={cardClass}>
         {expandedTopic ? (
           // Show expanded topic detail inline
           <TopicDetail
-            topicCode={expandedTopic.code}
-            topicName={expandedTopic.name}
+            topic={expandedTopic}
+            categoryName={name}
             onBack={onBackToCategory}
+            onRefetch={onRefetch}
           />
         ) : (
           // Show topic list

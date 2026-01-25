@@ -60,7 +60,7 @@ const ExperienceRow = ({ exp, index, topicCode, onRefetch }) => {
             </div>
           ) : isConfirming ? (
             <CountdownConfirmButton onConfirm={confirm} onCancel={cancel} />
-          ) : window.isAdmin && (
+          ) : (
             <>
               <PostForm action={`/${topicCode}/${exp.code}/populate`} onSuccess={onRefetch}>
                 <Button>Generate</Button>

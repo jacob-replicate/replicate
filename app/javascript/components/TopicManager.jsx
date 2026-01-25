@@ -52,11 +52,9 @@ const TopicManager = ({ topicCode }) => {
         {showEmpty && (
           <CardFooter>
             <span className="text-zinc-500 dark:text-zinc-400 text-sm">No experiences yet.</span>
-            {window.isAdmin && (
             <PostForm action={`/${topicCode}/populate`} onSuccess={refetch}>
               <Button>Generate</Button>
             </PostForm>
-            )}
           </CardFooter>
         )}
       </Card>

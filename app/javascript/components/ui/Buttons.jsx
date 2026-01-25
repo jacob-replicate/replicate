@@ -4,7 +4,7 @@ import { XIcon, UndoIcon } from './Icons'
 export const Button = ({ children, variant = 'primary', size = 'md', className = '', ...props }) => {
   const variants = {
     primary: 'bg-slate-600 hover:bg-slate-700 active:bg-slate-800 text-white',
-    secondary: 'bg-slate-400 hover:bg-slate-500 active:bg-slate-600 text-white',
+    secondary: 'bg-blue-500 hover:bg-blue-600 active:bg-blue-700 text-white',
     danger: 'bg-slate-500 hover:bg-slate-600 active:bg-slate-700 text-white',
   }
 
