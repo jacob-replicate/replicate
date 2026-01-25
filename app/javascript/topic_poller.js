@@ -121,20 +121,17 @@ class TopicManager {
       const populateButton = window.isAdmin ? `
         <form action="/${this.topicCode}/${exp.code}/populate" method="post">
           <input type="hidden" name="authenticity_token" value="${this.csrfToken}">
-          <button type="submit" class="inline-flex items-center gap-1.5 rounded-md bg-gradient-to-r from-violet-500 to-purple-500 hover:from-violet-600 hover:to-purple-600 px-3 py-1.5 text-xs font-semibold text-white shadow-sm hover:shadow-md transition-all duration-200 hover:scale-105">
-            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>
-            </svg>
+          <button type="submit" class="inline-flex items-center gap-1.5 rounded-md bg-zinc-600 hover:bg-zinc-700 px-3 py-1.5 text-xs font-medium text-white shadow-sm transition-colors">
             <span>Generate</span>
           </button>
         </form>
       ` : ''
       return `
-        <div data-experience-code="${exp.code}" class="${borderClass} group hover:bg-gradient-to-r hover:from-violet-50/50 hover:to-purple-50/50 dark:hover:from-violet-900/10 dark:hover:to-purple-900/10 transition-colors duration-200">
+        <div data-experience-code="${exp.code}" class="${borderClass} group hover:bg-zinc-50 dark:hover:bg-zinc-700/50 transition-colors">
           <div class="px-4 py-3">
             <div class="flex items-center justify-between gap-3">
               <div class="flex-1 min-w-0">
-                <div class="text-[14px] text-zinc-600 dark:text-zinc-300 group-hover:text-zinc-800 dark:group-hover:text-zinc-100 transition-colors">${exp.name}</div>
+                <div class="text-[14px] text-zinc-600 dark:text-zinc-300">${exp.name}</div>
                 <div class="text-[13px] text-zinc-400 dark:text-zinc-500 mt-0.5">${exp.description}</div>
               </div>
               <div class="flex items-center gap-2">
@@ -177,10 +174,7 @@ class TopicManager {
     const populateButton = window.isAdmin ? `
       <form action="/${this.topicCode}/populate" method="post">
         <input type="hidden" name="authenticity_token" value="${this.csrfToken}">
-        <button type="submit" class="inline-flex items-center gap-1.5 rounded-md bg-gradient-to-r from-violet-500 to-purple-500 hover:from-violet-600 hover:to-purple-600 px-3.5 py-2 text-sm font-semibold text-white shadow-sm hover:shadow-md transition-all duration-200 hover:scale-105">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>
-          </svg>
+        <button type="submit" class="inline-flex items-center gap-1.5 rounded-md bg-zinc-600 hover:bg-zinc-700 px-3.5 py-2 text-sm font-medium text-white shadow-sm transition-colors">
           <span>Generate Experiences</span>
         </button>
       </form>
