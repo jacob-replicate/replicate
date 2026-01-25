@@ -1,104 +1,21 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React from 'react'
 import ReactDOM from 'react-dom/client'
+import usePollingFetch from '../hooks/usePollingFetch'
+import ExperienceRow from './ExperienceRow'
 import {
   Spinner, PlusIcon,
-  Button, DeleteButton,
+  Button,
   PostForm,
   Card, CardHeader, CardBody, CardFooter,
-  TableRow, TableRowContent, TableRowActions,
-  linkStyles
 } from './ui'
 
-const ExperienceRow = ({ exp, index, topicCode }) => {
-  const isPopulated = exp.state === 'populated'
-  const isPopulating = exp.state === 'populating'
 
-  let titleClass = isPopulated
-    ? (exp.visited ? linkStyles.visited : linkStyles.unvisited)
-    : (isPopulating ? linkStyles.muted : linkStyles.default)
-
-  if (isPopulated) {
-    return (
-      <TableRow href={exp.url} isFirst={index === 0} data-experience-code={exp.code}>
-        <TableRowContent title={exp.name} description={exp.description} titleClassName={titleClass} />
-      </TableRow>
-    )
-  }
-
-  return (
-    <div data-experience-code={exp.code}>
-      <TableRow isFirst={index === 0} className={isPopulating ? '!hover:bg-transparent' : ''}>
-        <TableRowContent title={exp.name} description={exp.description} titleClassName={titleClass} />
-        <TableRowActions>
-          {isPopulating ? (
-            <div className="flex items-center gap-2 text-zinc-400 dark:text-zinc-500">
-              <Spinner />
-              <span className="text-xs">Generating...</span>
-            </div>
-          ) : window.isAdmin && (
-            <PostForm action={`/${topicCode}/${exp.code}/populate`}>
-              <Button>Generate</Button>
-            </PostForm>
-          )}
-          <DeleteButton
-            data-delete-experience=""
-            data-topic-code={topicCode}
-            data-experience-code={exp.code}
-            data-experience-name={exp.name}
-          />
-        </TableRowActions>
-      </TableRow>
-    </div>
-  )
-}
+const isPolling = (data) =>
+  data.topic_state === 'populating' ||
+  data.experiences?.some(e => e.state === 'populating')
 
 const TopicManager = ({ topicCode }) => {
-  const [data, setData] = useState(null)
-  const previousStates = useRef(new Map())
-  const intervalRef = useRef(500)
-
-  useEffect(() => {
-    let timeoutId = null
-    let mounted = true
-
-    const fetchData = async () => {
-      try {
-        const response = await fetch(`/${topicCode}`, {
-          headers: { 'X-Requested-With': 'XMLHttpRequest' }
-        })
-        if (!response.ok) throw new Error(`HTTP ${response.status}`)
-
-        const newData = await response.json()
-        if (!mounted) return
-
-        setData(newData)
-
-        const needsPolling = newData.topic_state === 'populating' ||
-          newData.experiences.some(exp => exp.state === 'populating')
-
-        if (needsPolling) {
-          let changed = false
-          for (const exp of newData.experiences) {
-            if (previousStates.current.get(exp.code) !== exp.state) changed = true
-            previousStates.current.set(exp.code, exp.state)
-          }
-          intervalRef.current = changed ? 500 : Math.min(intervalRef.current * 1.5, 8000)
-          timeoutId = setTimeout(fetchData, intervalRef.current)
-        }
-      } catch (error) {
-        console.error('TopicManager fetch error:', error)
-        intervalRef.current = Math.min(intervalRef.current * 2, 8000)
-        timeoutId = setTimeout(fetchData, intervalRef.current)
-      }
-    }
-
-    fetchData()
-    return () => {
-      mounted = false
-      if (timeoutId) clearTimeout(timeoutId)
-    }
-  }, [topicCode])
-
+  const data = usePollingFetch(`/${topicCode}`, isPolling)
   if (!data) return null
 
   const isComplete = data.completed_count === data.experience_count && data.experience_count > 0
