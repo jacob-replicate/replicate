@@ -85,64 +85,79 @@ class TopicManager {
 
   renderExperienceRow(exp, index) {
     const borderClass = index > 0 ? 'border-t border-zinc-100 dark:border-zinc-700' : ''
+    const isPopulated = exp.state === 'populated'
+    const isPopulating = exp.state === 'populating'
 
-    if (exp.state === 'populated') {
-      const textColor = exp.visited ? 'text-purple-600 dark:text-purple-400' : 'text-blue-600 dark:text-blue-400'
+    // Title styling based on state
+    let titleClass = 'text-[14px] '
+    if (isPopulated) {
+      titleClass += exp.visited ? 'text-purple-600 dark:text-purple-400' : 'text-blue-600 dark:text-blue-400'
+    } else if (isPopulating) {
+      titleClass += 'text-zinc-500 dark:text-zinc-400'
+    } else {
+      titleClass += 'text-zinc-600 dark:text-zinc-300'
+    }
+
+    const content = `
+      <div class="flex-1 min-w-0">
+        <div class="${titleClass}">${exp.name}</div>
+        ${exp.description ? `<div class="text-[13px] text-zinc-400 dark:text-zinc-500 mt-0.5">${exp.description}</div>` : ''}
+      </div>
+    `
+
+    // Populated: clickable link, no actions
+    if (isPopulated) {
       return `
         <div data-experience-code="${exp.code}" class="${borderClass}">
-          <a href="${exp.url}" class="block px-4 py-2.5 hover:bg-zinc-50 dark:hover:bg-zinc-700/50">
-            <div class="text-[14px] ${textColor}">${exp.name}</div>
-            <div class="text-[13px] text-zinc-500 dark:text-zinc-400 mt-0.5">${exp.description}</div>
+          <a href="${exp.url}" class="flex items-center px-4 py-2.5 hover:bg-zinc-50 dark:hover:bg-zinc-700/50">
+            ${content}
           </a>
         </div>
       `
-    } else if (exp.state === 'populating') {
-      return `
-        <div data-experience-code="${exp.code}" class="${borderClass}">
-          <div class="px-4 py-2.5">
-            <div class="flex items-center justify-between gap-3">
-              <div class="flex-1 min-w-0">
-                <div class="text-[14px] text-zinc-500 dark:text-zinc-400">${exp.name}</div>
-                <div class="text-[13px] text-zinc-400 dark:text-zinc-500 mt-0.5">${exp.description}</div>
-              </div>
-              <div class="flex items-center gap-2 text-zinc-400 dark:text-zinc-500">
-                <svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
-                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"></circle>
-                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                </svg>
-                <span class="text-xs">Populating...</span>
-              </div>
+    }
+
+    // Build action buttons for non-populated states
+    let actions = ''
+    if (isPopulating) {
+      actions = `
+        <div class="flex items-center gap-2 text-zinc-400 dark:text-zinc-500">
+          ${this.spinnerSvg}
+          <span class="text-xs">Generating...</span>
+        </div>
+      `
+    } else if (window.isAdmin) {
+      actions = `
+        <form action="/${this.topicCode}/${exp.code}/populate" method="post">
+          <input type="hidden" name="authenticity_token" value="${this.csrfToken}">
+          <button type="submit" class="inline-flex items-center gap-1.5 rounded-md bg-zinc-600 hover:bg-zinc-700 px-3 py-1.5 text-xs font-medium text-white shadow-sm transition-colors">
+            Generate
+          </button>
+        </form>
+      `
+    }
+
+    const hoverClass = !isPopulating ? 'hover:bg-zinc-50 dark:hover:bg-zinc-700/50' : ''
+
+    return `
+      <div data-experience-code="${exp.code}" class="${borderClass} ${hoverClass} transition-colors">
+        <div class="px-4 py-3">
+          <div class="flex items-center justify-between gap-3">
+            ${content}
+            <div class="flex items-center gap-2">
+              ${actions}
               ${this.renderDeleteButton(exp)}
             </div>
           </div>
         </div>
-      `
-    } else {
-      const populateButton = window.isAdmin ? `
-        <form action="/${this.topicCode}/${exp.code}/populate" method="post">
-          <input type="hidden" name="authenticity_token" value="${this.csrfToken}">
-          <button type="submit" class="inline-flex items-center gap-1.5 rounded-md bg-zinc-600 hover:bg-zinc-700 px-3 py-1.5 text-xs font-medium text-white shadow-sm transition-colors">
-            <span>Generate</span>
-          </button>
-        </form>
-      ` : ''
-      return `
-        <div data-experience-code="${exp.code}" class="${borderClass} group hover:bg-zinc-50 dark:hover:bg-zinc-700/50 transition-colors">
-          <div class="px-4 py-3">
-            <div class="flex items-center justify-between gap-3">
-              <div class="flex-1 min-w-0">
-                <div class="text-[14px] text-zinc-600 dark:text-zinc-300">${exp.name}</div>
-                <div class="text-[13px] text-zinc-400 dark:text-zinc-500 mt-0.5">${exp.description}</div>
-              </div>
-              <div class="flex items-center gap-2">
-                ${populateButton}
-                ${this.renderDeleteButton(exp)}
-              </div>
-            </div>
-          </div>
-        </div>
-      `
-    }
+      </div>
+    `
+  }
+
+  get spinnerSvg() {
+    return `<svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"></circle>
+      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+    </svg>`
   }
 
   renderDeleteButton(exp) {
@@ -160,10 +175,7 @@ class TopicManager {
     return `
       <div class="border-t border-zinc-100 dark:border-zinc-700">
         <div class="px-4 py-3 flex items-center justify-center gap-2 text-zinc-500 dark:text-zinc-400">
-          <svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
-            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"></circle>
-            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-          </svg>
+          ${this.spinnerSvg}
           <span class="text-sm">Generating experiences...</span>
         </div>
       </div>
@@ -172,17 +184,17 @@ class TopicManager {
 
   renderEmptyState() {
     const populateButton = window.isAdmin ? `
-      <form action="/${this.topicCode}/populate" method="post">
+      <form action="/${this.topicCode}/populate" method="post" class="inline">
         <input type="hidden" name="authenticity_token" value="${this.csrfToken}">
-        <button type="submit" class="inline-flex items-center gap-1.5 rounded-md bg-zinc-600 hover:bg-zinc-700 px-3.5 py-2 text-sm font-medium text-white shadow-sm transition-colors">
-          <span>Generate Experiences</span>
+        <button type="submit" class="rounded bg-zinc-600 hover:bg-zinc-700 px-2.5 py-1 text-xs font-medium text-white transition-colors">
+          Generate
         </button>
       </form>
     ` : ''
     return `
       <div class="border-t border-zinc-100 dark:border-zinc-700">
-        <div class="px-4 py-6 flex flex-col items-center justify-center gap-3">
-          <p class="text-zinc-500 dark:text-zinc-400 text-sm">Ready to explore this topic?</p>
+        <div class="px-4 py-3 flex items-center justify-between">
+          <span class="text-zinc-500 dark:text-zinc-400 text-sm">No experiences yet.</span>
           ${populateButton}
         </div>
       </div>
