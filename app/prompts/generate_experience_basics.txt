@@ -64,14 +64,14 @@ experience_description:
 - End with a vivid image of the failure state
 
 DESCRIPTION LENGTH GUIDANCE:
-- Count characters carefully. Aim for 260-280 to hit the sweet spot.
-- If under 240, add another concrete detail or extend the consequence
-- If over 290, tighten word choice but keep the full thought
+- Count characters carefully. Aim for 205-215 to hit the sweet spot.
+- If under 200, add another concrete detail or extend the consequence
+- If over 220, tighten word choice but keep the full thought
 
 DESCRIPTION EXAMPLES (note the length and flow):
-- "DNS caches lie. When you update a record, some resolvers see the new value while others insist it doesn't exist. This phantom effect causes mysterious outages during migrations, where one part of your infrastructure thinks a service is alive and another thinks it vanished into thin air." (289 chars)
-- "Your container shows 50% CPU but the app crawls. The kernel is throttling you mid-cycle while metrics claim resources are available. Engineers blame application code for weeks because nothing on the dashboard points to the scheduler." (254 chars)
-- "The attacker set your session ID before you logged in. Your framework preserved it across the authentication boundary, so when you authenticated, you authenticated them too. Now two people share your identity." (241 chars)
+- "DNS caches lie. When you update a record, some resolvers see the new value while others insist it doesn't exist. Your infrastructure argues with itself about what's real." (200 chars)
+- "Your container shows 50% CPU but the app crawls. The kernel is throttling you mid-cycle while metrics claim resources are available." (204 chars)
+- "The attacker set your session ID before you logged in. Your framework preserved it across the authentication boundary, so when you authenticated, you authenticated them too." (205 chars)
 
 DESCRIPTION TONE RULES:
 - Assume competence - never explain terminology
@@ -100,7 +100,7 @@ BAD (too short, choppy): "Misconfigured cgroup limits cause cascading CPU thrott
 GOOD (flows, 240-290 chars): "Your container shows 50% CPU but the app crawls. The kernel is throttling you mid-cycle while metrics claim resources are available. Engineers blame application code for weeks because nothing on the dashboard points to the scheduler."
 
 BAD (too short, choppy): "Session fixation vulnerabilities occur when session IDs aren't regenerated."
-GOOD (flows, 240-290 chars): "The attacker set your session ID before you logged in. Your framework preserved it across the authentication boundary, so when you authenticated, you authenticated them too. Now two people share your identity."
+GOOD (flows, 200-220 chars): "The attacker set your session ID before you logged in. Your framework preserved it across the authentication boundary, so when you authenticated, you authenticated them too."
 
 experience_code:
 - Lowercase, hyphen-separated URL slug from experience_name
