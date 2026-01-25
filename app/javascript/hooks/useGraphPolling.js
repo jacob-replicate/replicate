@@ -31,7 +31,7 @@ const useGraphPolling = () => {
 
     return allTopics.some(topic =>
       topic.state === 'populating' ||
-      topic.experiences?.some(exp => exp.state === 'populating')
+      topic.conversations?.some(convo => convo.state === 'populating')
     )
   }, [])
 

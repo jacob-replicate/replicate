@@ -5,8 +5,9 @@ class PopulateTopic
 
   def call
     generation_intents.each do |generation_intent|
-      GenerateExperience.new(@topic.id, generation_intent).call
-    rescue StandardError
+      GenerateConversation.new(@topic.id, generation_intent).call
+    rescue StandardError => e
+      Rails.logger.error("Failed to generate for intent '#{generation_intent}': #{e.message}")
       nil
     end
   ensure
@@ -14,15 +15,15 @@ class PopulateTopic
   end
 
   def generation_intents
-    existing_experiences = @topic.experiences.templates.pluck(:name, :generation_intent)
+    existing_conversations = @topic.conversations.templates.pluck(:name, :generation_intent)
 
     context = {
       topic_name: @topic.name,
       topic_description: @topic.description,
-      existing_experiences: existing_experiences.map { |name, intent| "- #{name}: #{intent}" }.join("\n")
+      existing_conversations: existing_conversations.map { |name, intent| "- #{name}: #{intent}" }.join("\n")
     }
 
-    response = Prompts::GenerateTopicExperienceIntents.new(context: context).call
+    response = Prompts::GenerateTopicConversationIntents.new(context: context).call
     response["generation_intents"] || []
   end
 end

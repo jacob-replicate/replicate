@@ -23,6 +23,8 @@ const CategoryList = () => {
 
   if (!data) return null
 
+  const isAdmin = data.is_admin
+
   return (
     <div className="space-y-8 mt-6">
       {data.categories.map((category) => (
@@ -34,6 +36,7 @@ const CategoryList = () => {
           onTopicClick={handleTopicClick}
           onBackToCategory={handleBackToCategory}
           onRefetch={refetch}
+          isAdmin={isAdmin}
         />
       ))}
 
@@ -46,6 +49,7 @@ const CategoryList = () => {
           onTopicClick={handleTopicClick}
           onBackToCategory={handleBackToCategory}
           onRefetch={refetch}
+          isAdmin={isAdmin}
         />
       )}
     </div>

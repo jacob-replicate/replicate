@@ -2,21 +2,22 @@ class StaticController < ApplicationController
   before_action :verify_admin, only: [:growth]
 
   def index
-    topics = Topic.includes(:experiences).order(:name)
+    topics = Topic.includes(:conversations).order(:name)
     topic_categories = TopicCategories.new(topics)
 
     @categories = topic_categories.categorized
     @uncategorized_topics = topic_categories.uncategorized
 
-    # Preload all experience data for efficiency
-    @experiences_by_topic = Experience.templates
+    # Preload conversation templates
+    @conversations_by_topic = Conversation.templates
       .where(topic_id: topics.pluck(:id))
       .order(:name)
       .group_by(&:topic_id)
 
-    # User's completed experiences (forked from templates)
-    @forked_codes_by_topic = Experience
-      .where(template: false, topic_id: topics.pluck(:id), session_id: session[:identifier])
+    # User's visited conversations (forked from templates)
+    owner_type, owner_id = current_owner
+    @visited_codes_by_topic = Conversation
+      .where(template: false, topic_id: topics.pluck(:id), owner_type: owner_type, owner_id: owner_id)
       .pluck(:topic_id, :code)
       .group_by(&:first)
       .transform_values { |pairs| pairs.map(&:last).to_set }
@@ -29,8 +30,17 @@ class StaticController < ApplicationController
 
   private
 
+  def current_owner
+    if current_user
+      ["User", current_user.id.to_s]
+    else
+      ["Session", session[:identifier]]
+    end
+  end
+
   def build_graph_json
     data = {
+      is_admin: admin?,
       categories: @categories.map { |cat| category_json(cat) },
       uncategorized: @uncategorized_topics.map { |t| topic_json(t) }
     }
@@ -49,10 +59,9 @@ class StaticController < ApplicationController
   end
 
   def topic_json(topic)
-    experiences = @experiences_by_topic[topic.id] || []
-    forked_codes = @forked_codes_by_topic[topic.id] || Set.new
-
-    populated_experiences = experiences.select { |e| e.state == 'populated' }
+    conversations = @conversations_by_topic[topic.id] || []
+    visited_codes = @visited_codes_by_topic[topic.id] || Set.new
+    populated_conversations = conversations.select { |c| c.state == 'populated' }
 
     {
       code: topic.code,
@@ -60,21 +69,21 @@ class StaticController < ApplicationController
       description: topic.description,
       state: topic.state,
       url: topic_path(topic.code),
-      experience_count: experiences.size,
-      populated_count: populated_experiences.size,
-      completed_count: forked_codes.size,
-      experiences: experiences.map { |exp| experience_json(exp, forked_codes) }
+      conversation_count: conversations.size,
+      populated_count: populated_conversations.size,
+      completed_count: visited_codes.size,
+      conversations: conversations.map { |convo| conversation_json(convo, visited_codes, topic) }
     }
   end
 
-  def experience_json(exp, forked_codes)
+  def conversation_json(convo, visited_codes, topic)
     {
-      code: exp.code,
-      name: exp.name,
-      description: exp.description,
-      state: exp.state,
-      visited: forked_codes.include?(exp.code),
-      url: topic_experience_path(exp.topic.code, exp.code)
+      code: convo.code,
+      name: convo.name,
+      description: convo.description,
+      state: convo.state,
+      visited: visited_codes.include?(convo.code),
+      url: topic_conversation_path(topic.code, convo.code)
     }
   end
 

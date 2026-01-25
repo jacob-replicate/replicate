@@ -1,7 +1,7 @@
 class Topic < ApplicationRecord
   STATES = %w[pending populating populated].freeze
 
-  has_many :experiences, dependent: :destroy
+  has_many :conversations, dependent: :destroy
 
   validates :name, :description, presence: true
   validates :state, inclusion: { in: STATES }

@@ -3,7 +3,7 @@ import TopicRow from './TopicRow'
 import TopicDetail from './TopicDetail'
 import { Card, CardBody } from './ui'
 
-const CategorySection = ({ name, topics, variant = 'default', expandedTopicCode, onTopicClick, onBackToCategory, onRefetch }) => {
+const CategorySection = ({ name, topics, variant = 'default', expandedTopicCode, onTopicClick, onBackToCategory, onRefetch, isAdmin }) => {
   const headerClass = variant === 'uncategorized'
     ? 'text-[13px] font-medium text-red-500 dark:text-red-400 tracking-wide mb-2'
     : 'text-[15px] font-medium dark:text-white tracking-wide mb-2'
@@ -34,6 +34,7 @@ const CategorySection = ({ name, topics, variant = 'default', expandedTopicCode,
             categoryName={name}
             onBack={handleBack}
             onRefetch={onRefetch}
+            isAdmin={isAdmin}
           />
         ) : (
           // Show topic list

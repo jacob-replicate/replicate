@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react'
-import ExperienceRow from './ExperienceRow'
+import ConversationRow from './ConversationRow'
 import {
   Spinner, PlusIcon,
   Button,
@@ -7,7 +7,7 @@ import {
   CardBody, CardFooter,
 } from './ui'
 
-const TopicDetail = ({ topic, categoryName, onBack, onRefetch }) => {
+const TopicDetail = ({ topic, categoryName, onBack, onRefetch, isAdmin }) => {
   const containerRef = useRef(null)
   const hasScrolledRef = useRef(false)
 
@@ -24,10 +24,12 @@ const TopicDetail = ({ topic, categoryName, onBack, onRefetch }) => {
     }
   }, [topic.code])
 
-  const isComplete = topic.completed_count === topic.experience_count && topic.experience_count > 0
+  const conversations = topic.conversations || []
+  const conversationCount = topic.conversation_count || 0
+  const isComplete = topic.completed_count === conversationCount && conversationCount > 0
   const showGenerating = topic.state === 'populating'
-  const showEmpty = topic.experiences.length === 0 && !showGenerating
-  const counter = topic.experience_count > 0 ? `${topic.completed_count}/${topic.experience_count}` : null
+  const showEmpty = conversations.length === 0 && !showGenerating
+  const counter = conversationCount > 0 ? `${topic.completed_count}/${conversationCount}` : null
 
   const counterColor = isComplete
     ? 'text-emerald-600 dark:text-emerald-400'
@@ -63,11 +65,11 @@ const TopicDetail = ({ topic, categoryName, onBack, onRefetch }) => {
         )}
       </div>
 
-      {/* Experience list */}
-      {topic.experiences.length > 0 && (
+      {/* Conversation list */}
+      {conversations.length > 0 && (
         <CardBody>
-          {topic.experiences.map((exp, i) => (
-            <ExperienceRow key={exp.code} exp={exp} index={i} topicCode={topic.code} onRefetch={onRefetch} />
+          {conversations.map((convo, i) => (
+            <ConversationRow key={convo.code} conversation={convo} index={i} topicCode={topic.code} onRefetch={onRefetch} isAdmin={isAdmin} />
           ))}
         </CardBody>
       )}
@@ -76,26 +78,28 @@ const TopicDetail = ({ topic, categoryName, onBack, onRefetch }) => {
       {showGenerating && (
         <CardFooter centered>
           <Spinner />
-          <span className="text-sm text-zinc-500 dark:text-zinc-400">Generating experiences...</span>
+          <span className="text-sm text-zinc-500 dark:text-zinc-400">Generating conversations...</span>
         </CardFooter>
       )}
 
-      {/* Empty state */}
+      {/* Empty state - only show generate button if admin */}
       {showEmpty && (
         <CardFooter>
-          <span className="text-zinc-500 dark:text-zinc-400 text-sm">No experiences yet.</span>
-          <PostForm action={`/${topic.code}/populate`} onSuccess={onRefetch}>
-            <Button>Generate</Button>
-          </PostForm>
+          <span className="text-zinc-500 dark:text-zinc-400 text-sm">No conversations yet.</span>
+          {isAdmin && (
+            <PostForm action={`/${topic.code}/populate`} onSuccess={onRefetch}>
+              <Button>Generate</Button>
+            </PostForm>
+          )}
         </CardFooter>
       )}
 
-      {/* Add more button */}
-      {topic.experiences.length > 0 && !showGenerating && (
+      {/* Add more button - only show if admin */}
+      {isAdmin && conversations.length > 0 && !showGenerating && (
         <div className="px-4 py-3 border-t border-zinc-100 dark:border-zinc-700 flex justify-center">
           <Button variant="secondary" className="inline-flex items-center gap-1.5">
             <PlusIcon />
-            <span>Add more experiences</span>
+            <span>Add more conversations</span>
           </Button>
         </div>
       )}

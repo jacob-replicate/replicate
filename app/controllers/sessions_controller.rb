@@ -35,6 +35,11 @@ class SessionsController < ApplicationController
       avatar_url: auth.info.image
     )
 
+    # Transfer any session-owned conversations to the user
+    if session[:identifier].present?
+      Conversation.transfer_session_to_user(session[:identifier], user)
+    end
+
     session[:user_id] = user.id
     redirect_to root_path
   end
