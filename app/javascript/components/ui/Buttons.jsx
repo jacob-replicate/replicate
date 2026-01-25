@@ -1,11 +1,11 @@
 import React from 'react'
-import { XIcon } from './Icons'
+import { XIcon, UndoIcon } from './Icons'
 
 export const Button = ({ children, variant = 'primary', size = 'md', className = '', ...props }) => {
   const variants = {
-    primary: 'bg-indigo-400 hover:bg-indigo-500 active:bg-indigo-600 text-white',
+    primary: 'bg-slate-600 hover:bg-slate-700 active:bg-slate-800 text-white',
     secondary: 'bg-slate-400 hover:bg-slate-500 active:bg-slate-600 text-white',
-    danger: 'bg-slate-500 hover:bg-rose-600 active:bg-rose-700 text-white',
+    danger: 'bg-slate-500 hover:bg-slate-600 active:bg-slate-700 text-white',
   }
 
   const sizes = {
@@ -47,4 +47,41 @@ export const DeleteButton = (props) => (
   <IconButton variant="primary" {...props}>
     <XIcon className="w-3.5 h-3.5 text-white" />
   </IconButton>
+)
+
+/**
+ * Countdown confirm button with visual progress bar
+ * Shows a button that auto-confirms when countdown completes
+ */
+export const CountdownConfirmButton = ({
+  onConfirm,
+  onCancel,
+  duration = 5,
+  width = 'w-[88px]',
+  label = 'Confirm'
+}) => (
+  <>
+    <button
+      onClick={onConfirm}
+      className={`relative h-8 ${width} text-xs font-medium tracking-wide text-white rounded-lg overflow-hidden bg-slate-700 hover:bg-slate-800 transition-colors`}
+    >
+      <span
+        className="absolute inset-0 bg-slate-500 origin-right animate-countdown-shrink"
+        style={{ animationDuration: `${duration}s` }}
+      />
+      <span className="relative">{label}</span>
+    </button>
+    <IconButton variant="primary" onClick={onCancel}>
+      <UndoIcon className="w-3.5 h-3.5 text-white" />
+    </IconButton>
+    <style>{`
+      @keyframes countdown-shrink {
+        from { transform: scaleX(1); }
+        to { transform: scaleX(0); }
+      }
+      .animate-countdown-shrink {
+        animation: countdown-shrink linear forwards;
+      }
+    `}</style>
+  </>
 )
