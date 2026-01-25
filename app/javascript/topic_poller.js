@@ -59,6 +59,10 @@ class TopicManager {
     const showEmpty = data.experiences.length === 0 && !showGenerating
     const showAddMore = data.experiences.length > 0 && !showGenerating
 
+    const experiencesHtml = data.experiences.length > 0
+      ? `<div class="border-t border-zinc-100 dark:border-zinc-700">${data.experiences.map((exp, i) => this.renderExperienceRow(exp, i)).join('')}</div>`
+      : ''
+
     this.container.className = 'mt-4 space-y-8'
     this.container.innerHTML = `
       <section class="bg-white dark:bg-zinc-800 rounded-md shadow-xs overflow-hidden border-2 border-zinc-300 dark:border-zinc-700">
@@ -71,9 +75,7 @@ class TopicManager {
             ${data.experience_count > 0 ? `<span class="text-[11px] tabular-nums flex-shrink-0 ${counterColor}">${data.completed_count}/${data.experience_count}</span>` : ''}
           </div>
         </div>
-        <div class="border-t border-zinc-100 dark:border-zinc-700">
-          ${data.experiences.map((exp, i) => this.renderExperienceRow(exp, i)).join('')}
-        </div>
+        ${experiencesHtml}
         ${showGenerating ? this.renderGeneratingFooter() : ''}
         ${showEmpty ? this.renderEmptyState() : ''}
       </section>
@@ -119,20 +121,20 @@ class TopicManager {
       const populateButton = window.isAdmin ? `
         <form action="/${this.topicCode}/${exp.code}/populate" method="post">
           <input type="hidden" name="authenticity_token" value="${this.csrfToken}">
-          <button type="submit" class="inline-flex items-center gap-1.5 rounded-md border border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-700 px-2.5 py-1 text-xs font-medium text-zinc-700 dark:text-zinc-300 transition-colors">
-            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4v16m8-8H4"/>
+          <button type="submit" class="inline-flex items-center gap-1.5 rounded-md bg-gradient-to-r from-violet-500 to-purple-500 hover:from-violet-600 hover:to-purple-600 px-3 py-1.5 text-xs font-semibold text-white shadow-sm hover:shadow-md transition-all duration-200 hover:scale-105">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>
             </svg>
-            <span>Populate</span>
+            <span>Generate</span>
           </button>
         </form>
       ` : ''
       return `
-        <div data-experience-code="${exp.code}" class="${borderClass}">
-          <div class="px-4 py-2.5">
+        <div data-experience-code="${exp.code}" class="${borderClass} group hover:bg-gradient-to-r hover:from-violet-50/50 hover:to-purple-50/50 dark:hover:from-violet-900/10 dark:hover:to-purple-900/10 transition-colors duration-200">
+          <div class="px-4 py-3">
             <div class="flex items-center justify-between gap-3">
               <div class="flex-1 min-w-0">
-                <div class="text-[14px] text-zinc-500 dark:text-zinc-400">${exp.name}</div>
+                <div class="text-[14px] text-zinc-600 dark:text-zinc-300 group-hover:text-zinc-800 dark:group-hover:text-zinc-100 transition-colors">${exp.name}</div>
                 <div class="text-[13px] text-zinc-400 dark:text-zinc-500 mt-0.5">${exp.description}</div>
               </div>
               <div class="flex items-center gap-2">
