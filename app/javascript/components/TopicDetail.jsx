@@ -24,7 +24,7 @@ const TopicDetail = ({ topic, categoryName, onBack, onRefetch, isAdmin }) => {
     <>
       <Card>
           {/* Topic header */}
-          <div className="px-4 pt-4 pb-3 border-b border-zinc-100 dark:border-zinc-700">
+          <div className="px-4 pt-4 pb-3 border-b border-zinc-100 dark:border-zinc-700 bg-zinc-100 dark:bg-zinc-750">
             <div className="flex items-start justify-between gap-3">
               <div className="min-w-0">
                 <h2 className="text-[15px] font-semibold text-zinc-900 dark:text-zinc-50 tracking-tight">

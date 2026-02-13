@@ -7,6 +7,7 @@ Rack::Attack.blocklist('specific IP addresses') do |req|
 end
 
 Rack::Attack.throttle('req/ip', limit: 20, period: 1.minute) do |req|
+  next if req.path.end_with?('/populate')
   req.ip
 end
 

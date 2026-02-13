@@ -45,7 +45,7 @@ export const TableRowContent = ({ title, description, titleClassName = '' }) => 
   <div className="flex-1 min-w-0">
     <div className={`text-[14px] ${titleClassName}`}>{title}</div>
     {description && (
-      <div className="text-[13px] text-zinc-400 dark:text-zinc-500 mt-0.5">{description}</div>
+      <div className="text-[13px] text-zinc-500 dark:text-zinc-400 mt-0.5">{description}</div>
     )}
   </div>
 )
