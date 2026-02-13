@@ -2,7 +2,7 @@ import React from 'react'
 
 // Card container with header
 export const Card = ({ children, className = '' }) => (
-  <section className={`bg-white dark:bg-zinc-800 rounded-md shadow-xs overflow-hidden border-2 border-zinc-300 dark:border-zinc-700 ${className}`}>
+  <section className={`bg-white dark:bg-zinc-800 rounded-md shadow-xs overflow-hidden border-2 border-zinc-400 dark:border-zinc-600 ${className}`}>
     {children}
   </section>
 )
