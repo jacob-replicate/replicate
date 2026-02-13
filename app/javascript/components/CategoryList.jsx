@@ -1,12 +1,36 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, useMemo } from 'react'
 import ReactDOM from 'react-dom/client'
 import CategorySection from './CategorySection'
 import useGraphPolling from '../hooks/useGraphPolling'
-import { STRUGGLE_WIDGETS } from './StruggleWidgets'
+import { INCIDENT_WIDGETS } from './IncidentWidgets'  // Polished keepers
+import { STRUGGLE_WIDGETS } from './StruggleWidgets'  // Experimental (safe to purge)
+
+// Simple seeded random for consistent daily shuffles
+const seededRandom = (seed) => {
+  const x = Math.sin(seed) * 10000
+  return x - Math.floor(x)
+}
+
+const shuffleWithSeed = (array, seed) => {
+  const shuffled = [...array]
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(seededRandom(seed + i) * (i + 1))
+    ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
+  }
+  return shuffled
+}
 
 const CategoryList = () => {
   const [data, refetch] = useGraphPolling()
   const [expandedByCategory, setExpandedByCategory] = useState({})
+
+  // Merge polished + experimental widgets, then shuffle daily
+  const shuffledWidgets = useMemo(() => {
+    const allWidgets = [...INCIDENT_WIDGETS, ...STRUGGLE_WIDGETS]
+    const today = new Date()
+    const seed = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate()
+    return shuffleWithSeed(allWidgets, seed)
+  }, [])
 
   const handleTopicClick = useCallback((categoryName, topicCode) => {
     setExpandedByCategory(prev => ({
@@ -26,10 +50,11 @@ const CategoryList = () => {
 
   const isAdmin = data.is_admin
 
-  // Interleave categories with widgets (category -> widget -> category -> widget)
+  // Interleave categories with randomly shuffled widgets
   const renderWithWidgets = () => {
     const elements = []
     const categories = data.categories
+    let widgetIndex = 0
 
     categories.forEach((category, index) => {
       // Add the category
@@ -46,16 +71,28 @@ const CategoryList = () => {
         />
       )
 
-      // Add a widget after each category (except the last), cycling through the 10 variations
-      if (index < categories.length - 1 && index < STRUGGLE_WIDGETS.length) {
-        const Widget = STRUGGLE_WIDGETS[index]
+      // Add a widget after each category (except the last)
+      if (index < categories.length - 1 && widgetIndex < shuffledWidgets.length) {
+        const Widget = shuffledWidgets[widgetIndex]
         elements.push(
-          <div key={`widget-${index}`} className="my-2">
+          <div key={`widget-${widgetIndex}`} className="my-2">
             <Widget />
           </div>
         )
+        widgetIndex++
       }
     })
+
+    // Dump any remaining widgets at the end
+    while (widgetIndex < shuffledWidgets.length) {
+      const Widget = shuffledWidgets[widgetIndex]
+      elements.push(
+        <div key={`widget-${widgetIndex}`} className="my-2">
+          <Widget />
+        </div>
+      )
+      widgetIndex++
+    }
 
     return elements
   }

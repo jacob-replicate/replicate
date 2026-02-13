@@ -94,32 +94,32 @@ const LIVE_INCIDENTS = [
   },
 ]
 
-// Variation 1: Slack-style alert
+// Variation 1: Slack-style alert (light mode friendly)
 export const StruggleWidget1 = () => {
   const incident = LIVE_INCIDENTS[0]
   return (
     <div className="py-4">
       <a
         href={`/topics/${incident.slug}`}
-        className="block p-4 rounded-lg bg-[#1a1d21] hover:bg-[#222529] transition-colors group border border-zinc-800"
+        className="block p-4 rounded-lg bg-white dark:bg-[#1a1d21] border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:bg-[#222529] transition-colors group shadow-sm"
       >
         <div className="flex items-center gap-2 mb-2">
           <div className="w-5 h-5 rounded bg-red-500 flex items-center justify-center">
             <span className="text-white text-xs font-bold">!</span>
           </div>
-          <span className="text-[#e8912d] font-semibold text-sm">{incident.channel}</span>
-          <span className="text-zinc-500 text-xs">{incident.time}</span>
+          <span className="text-amber-600 dark:text-[#e8912d] font-semibold text-sm">{incident.channel}</span>
+          <span className="text-zinc-400 dark:text-zinc-500 text-xs">{incident.time}</span>
         </div>
         <div className="flex items-start gap-3">
           <div className="w-9 h-9 rounded bg-gradient-to-br from-red-500 to-orange-500 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">PD</div>
           <div>
-            <div className="text-white text-sm"><span className="font-semibold">PagerDuty</span> <span className="text-zinc-400">triggered an incident</span></div>
-            <div className="mt-1 p-2 rounded bg-zinc-800/50 border-l-2 border-red-500">
-              <div className="text-red-400 font-mono text-sm">[FIRING] {incident.service}</div>
-              <div className="text-zinc-300 text-sm mt-1">{incident.alert}</div>
+            <div className="text-zinc-900 dark:text-white text-sm"><span className="font-semibold">PagerDuty</span> <span className="text-zinc-500 dark:text-zinc-400">triggered an incident</span></div>
+            <div className="mt-1 p-2 rounded bg-zinc-100 dark:bg-zinc-800/50 border-l-2 border-red-500">
+              <div className="text-red-600 dark:text-red-400 font-mono text-sm">[FIRING] {incident.service}</div>
+              <div className="text-zinc-700 dark:text-zinc-300 text-sm mt-1">{incident.alert}</div>
               <div className="text-zinc-500 text-xs mt-1">{incident.metric}</div>
             </div>
-            <div className="mt-2 text-xs text-blue-400 group-hover:underline">Jump into this scenario →</div>
+            <div className="mt-2 text-xs text-blue-600 dark:text-blue-400 group-hover:underline">Jump into this scenario →</div>
           </div>
         </div>
       </a>
@@ -134,20 +134,17 @@ export const StruggleWidget2 = () => {
     <div className="py-4">
       <a
         href={`/topics/${incident.slug}`}
-        className="block p-4 rounded-lg bg-[#0b5e1e] hover:bg-[#0d6b22] transition-colors group"
+        className="flex items-center justify-between p-4 rounded-lg bg-zinc-800 hover:bg-zinc-750 transition-colors group border border-zinc-700"
       >
-        <div className="flex items-center justify-between mb-2">
-          <div className="flex items-center gap-2">
-            <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></div>
-            <span className="text-white font-semibold text-sm">INCIDENT TRIGGERED</span>
+        <div className="flex items-center gap-4">
+          <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse flex-shrink-0"></div>
+          <div>
+            <div className="text-white font-medium">{incident.service}</div>
+            <div className="text-zinc-400 text-sm">{incident.alert} · {incident.metric}</div>
           </div>
-          <span className="text-green-200 text-xs font-mono">{incident.time}</span>
         </div>
-        <div className="text-white font-mono text-lg mb-1">{incident.service}</div>
-        <div className="text-green-100 text-sm mb-2">{incident.alert}</div>
-        <div className="flex items-center justify-between">
-          <div className="text-green-300 text-xs">Assigned to: <span className="font-semibold">{incident.oncall}</span></div>
-          <div className="text-green-200 text-xs group-hover:underline">Respond to this →</div>
+        <div className="px-4 py-2 rounded bg-white hover:bg-zinc-100 text-zinc-900 text-sm font-medium transition-colors">
+          Respond →
         </div>
       </a>
     </div>
@@ -331,14 +328,14 @@ export const StruggleWidget8 = () => {
   )
 }
 
-// Variation 9: Discord/chat notification
+// Variation 9: Discord/chat notification (light mode friendly)
 export const StruggleWidget9 = () => {
   const incident = LIVE_INCIDENTS[8]
   return (
     <div className="py-4">
       <a
         href={`/topics/${incident.slug}`}
-        className="block p-4 rounded-lg bg-[#2b2d31] hover:bg-[#35373c] transition-colors group"
+        className="block p-4 rounded-lg bg-zinc-100 dark:bg-[#2b2d31] hover:bg-zinc-200 dark:hover:bg-[#35373c] transition-colors group"
       >
         <div className="flex items-start gap-3">
           <div className="w-10 h-10 rounded-full bg-red-500 flex items-center justify-center flex-shrink-0">
@@ -346,16 +343,16 @@ export const StruggleWidget9 = () => {
           </div>
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-1">
-              <span className="text-white font-semibold">Alert Bot</span>
-              <span className="px-1.5 py-0.5 rounded text-xs bg-[#5865f2] text-white">BOT</span>
+              <span className="text-zinc-900 dark:text-white font-semibold">Alert Bot</span>
+              <span className="px-1.5 py-0.5 rounded text-xs bg-indigo-500 dark:bg-[#5865f2] text-white">BOT</span>
               <span className="text-zinc-500 text-xs">Today at {new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
             </div>
-            <div className="p-3 rounded bg-[#1e1f22] border-l-4 border-red-500">
-              <div className="text-red-400 font-semibold text-sm mb-1">🚨 {incident.service}</div>
-              <div className="text-zinc-300 text-sm">{incident.alert}</div>
+            <div className="p-3 rounded bg-white dark:bg-[#1e1f22] border-l-4 border-red-500 shadow-sm dark:shadow-none">
+              <div className="text-red-600 dark:text-red-400 font-semibold text-sm mb-1">🚨 {incident.service}</div>
+              <div className="text-zinc-700 dark:text-zinc-300 text-sm">{incident.alert}</div>
               <div className="text-zinc-500 text-xs mt-2">{incident.metric} • {incident.time}</div>
             </div>
-            <div className="mt-2 text-xs text-blue-400 group-hover:underline">React to this incident →</div>
+            <div className="mt-2 text-xs text-blue-600 dark:text-blue-400 group-hover:underline">React to this incident →</div>
           </div>
         </div>
       </a>
