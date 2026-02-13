@@ -2,6 +2,7 @@ import React, { useState, useCallback } from 'react'
 import ReactDOM from 'react-dom/client'
 import CategorySection from './CategorySection'
 import useGraphPolling from '../hooks/useGraphPolling'
+import { STRUGGLE_WIDGETS } from './StruggleWidgets'
 
 const CategoryList = () => {
   const [data, refetch] = useGraphPolling()
@@ -25,9 +26,14 @@ const CategoryList = () => {
 
   const isAdmin = data.is_admin
 
-  return (
-    <div className="space-y-8 mt-6">
-      {data.categories.map((category) => (
+  // Interleave categories with widgets (category -> widget -> category -> widget)
+  const renderWithWidgets = () => {
+    const elements = []
+    const categories = data.categories
+
+    categories.forEach((category, index) => {
+      // Add the category
+      elements.push(
         <CategorySection
           key={category.name}
           name={category.name}
@@ -38,7 +44,25 @@ const CategoryList = () => {
           onRefetch={refetch}
           isAdmin={isAdmin}
         />
-      ))}
+      )
+
+      // Add a widget after each category (except the last), cycling through the 10 variations
+      if (index < categories.length - 1 && index < STRUGGLE_WIDGETS.length) {
+        const Widget = STRUGGLE_WIDGETS[index]
+        elements.push(
+          <div key={`widget-${index}`} className="my-2">
+            <Widget />
+          </div>
+        )
+      }
+    })
+
+    return elements
+  }
+
+  return (
+    <div className="space-y-8 mt-6">
+      {renderWithWidgets()}
 
       {data.uncategorized.length > 0 && (
         <CategorySection

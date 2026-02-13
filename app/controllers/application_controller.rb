@@ -70,6 +70,7 @@ class ApplicationController < ActionController::Base
   end
 
   def ban_current_ip
+    return if user_signed_in? && current_user.admin?
     Rails.logger.info "Banning IP #{request.remote_ip}"
     BannedIp.create!(address: request.remote_ip) unless banned_ips.include?(request.remote_ip)
   end

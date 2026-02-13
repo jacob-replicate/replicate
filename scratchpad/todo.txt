@@ -1,5 +1,7 @@
 - IBM disclosure. Make sure to update the dates on your terms/privacy/security pages to be recent.
 - Make incident generation intents align with your old INCIDENTS constant format.
+- Rerender the multiple choice questions on page reload + back button
+- Merge progress with existing account after logging in
 - Make sure you're returning to old convos in static/index. You're forking every time, which is bad.
 - Make the conversation descriptions closer to incidents, not invariants?
 - Review the list of topics again. Do they all align with incident-focused conversations in V1?
