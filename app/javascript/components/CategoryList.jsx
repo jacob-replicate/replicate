@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom/client'
 import CategorySection from './CategorySection'
 import useGraphPolling from '../hooks/useGraphPolling'
 import { INCIDENT_WIDGETS } from './IncidentWidgets'  // Polished keepers
-import { STRUGGLE_WIDGETS } from './StruggleWidgets'  // Experimental (safe to purge)
 
 // Simple seeded random for consistent daily shuffles
 const seededRandom = (seed) => {
@@ -24,9 +23,9 @@ const CategoryList = () => {
   const [data, refetch] = useGraphPolling()
   const [expandedByCategory, setExpandedByCategory] = useState({})
 
-  // Merge polished + experimental widgets, then shuffle daily
+  // Shuffle polished widgets daily
   const shuffledWidgets = useMemo(() => {
-    const allWidgets = [...INCIDENT_WIDGETS, ...STRUGGLE_WIDGETS]
+    const allWidgets = [...INCIDENT_WIDGETS]
     const today = new Date()
     const seed = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate()
     return shuffleWithSeed(allWidgets, seed)
@@ -98,7 +97,7 @@ const CategoryList = () => {
   }
 
   return (
-    <div className="space-y-8 mt-6">
+    <div className="space-y-4 mt-6">
       {renderWithWidgets()}
 
       {data.uncategorized.length > 0 && (

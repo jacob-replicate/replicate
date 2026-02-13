@@ -1,3 +1,4 @@
+- Conversations don't need to live in a plain white box. You can make it resemble a Slack chat, PR review, design doc update, terminal code fix, etc.
 - IBM disclosure. Make sure to update the dates on your terms/privacy/security pages to be recent.
 - Make incident generation intents align with your old INCIDENTS constant format.
 - Rerender the multiple choice questions on page reload + back button

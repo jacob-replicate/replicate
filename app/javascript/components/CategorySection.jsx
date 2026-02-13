@@ -38,19 +38,6 @@ const CategorySection = ({ name, topics, variant = 'default', expandedTopicCode,
 
   return (
     <section>
-      {!expandedTopic && (
-        <div className="flex items-center justify-between mb-2">
-          <h2 className={headerClass}>{name}</h2>
-          {progressPct > 0 && (
-            <div className="h-1.5 bg-zinc-200 dark:bg-zinc-700 rounded-full overflow-hidden w-[100px]">
-              <div
-                className={`h-full rounded-full transition-all duration-300 ${getProgressColor()}`}
-                style={{ width: `${progressPct}%` }}
-              />
-            </div>
-          )}
-        </div>
-      )}
       {expandedTopic ? (
         // Show expanded topic detail - TopicDetail handles its own Card + external button
         <TopicDetail
@@ -61,9 +48,21 @@ const CategorySection = ({ name, topics, variant = 'default', expandedTopicCode,
           isAdmin={isAdmin}
         />
       ) : (
-        // Show topic list
+        // Show topic list with inset header
         <Card className={cardClass}>
           <CardBody>
+            {/* Category header inside card */}
+            <div className="flex items-center justify-between px-4 pt-4 pb-3 border-b border-zinc-100 dark:border-zinc-700/50">
+              <h2 className={headerClass}>{name}</h2>
+              {progressPct > 0 && (
+                <div className="h-1.5 bg-zinc-200 dark:bg-zinc-700 rounded-full overflow-hidden w-[100px]">
+                  <div
+                    className={`h-full rounded-full transition-all duration-300 ${getProgressColor()}`}
+                    style={{ width: `${progressPct}%` }}
+                  />
+                </div>
+              )}
+            </div>
             {topics.map((topic, i) => (
               <TopicRow
                 key={topic.code}
