@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react'
+import React from 'react'
 import ConversationRow from './ConversationRow'
 import {
   Spinner, PlusIcon,
@@ -8,23 +8,8 @@ import {
 } from './ui'
 
 const TopicDetail = ({ topic, categoryName, onBack, onRefetch, isAdmin }) => {
-  const containerRef = useRef(null)
-  const hasScrolledRef = useRef(false)
-
-  useEffect(() => {
-    // Reset scroll flag when topic changes
-    hasScrolledRef.current = false
-  }, [topic.code])
-
-  useEffect(() => {
-    if (containerRef.current && !hasScrolledRef.current) {
-      hasScrolledRef.current = true
-      const y = containerRef.current.getBoundingClientRect().top + window.scrollY - 40
-      window.scrollTo({ top: y, behavior: 'instant' })
-    }
-  }, [topic.code])
-
   const conversations = topic.conversations || []
+
   const conversationCount = topic.conversation_count || 0
   const isComplete = topic.completed_count === conversationCount && conversationCount > 0
   const showGenerating = topic.state === 'populating'
@@ -38,7 +23,6 @@ const TopicDetail = ({ topic, categoryName, onBack, onRefetch, isAdmin }) => {
   return (
     <>
       <Card>
-        <div ref={containerRef}>
           {/* Topic header */}
           <div className="px-4 pt-4 pb-3 border-b border-zinc-100 dark:border-zinc-700">
             <div className="flex items-start justify-between gap-3">
@@ -53,10 +37,10 @@ const TopicDetail = ({ topic, categoryName, onBack, onRefetch, isAdmin }) => {
                 )}
                 <button
                   onClick={onBack}
-                  className="text-zinc-500 dark:text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-300 text-[12px] mt-2.5 inline-flex items-center gap-1.5 px-2 py-1 -ml-2 rounded hover:bg-zinc-100 dark:hover:bg-zinc-700/50 transition-colors"
+                  className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 text-[13px] mt-2.5 inline-flex items-center gap-1.5 font-medium"
                 >
                   <span>←</span>
-                  <span>Back to {categoryName || 'topics'}</span>
+                  <span>{categoryName || 'Back'}</span>
                 </button>
               </div>
               {counter && (
@@ -69,34 +53,33 @@ const TopicDetail = ({ topic, categoryName, onBack, onRefetch, isAdmin }) => {
 
           {/* Conversation list */}
           {conversations.length > 0 && (
-          <CardBody>
-            {conversations.map((convo, i) => (
-              <ConversationRow key={convo.code} conversation={convo} index={i} topicCode={topic.code} onRefetch={onRefetch} isAdmin={isAdmin} />
-            ))}
-          </CardBody>
-        )}
+            <CardBody>
+              {conversations.map((convo, i) => (
+                <ConversationRow key={convo.code} conversation={convo} index={i} topicCode={topic.code} onRefetch={onRefetch} isAdmin={isAdmin} />
+              ))}
+            </CardBody>
+          )}
 
-        {/* Generating state */}
-        {showGenerating && (
-          <CardFooter centered>
-            <Spinner />
-            <span className="text-sm text-zinc-500 dark:text-zinc-400">Generating conversations...</span>
-          </CardFooter>
-        )}
+          {/* Generating state */}
+          {showGenerating && (
+            <CardFooter centered>
+              <Spinner />
+              <span className="text-sm text-zinc-500 dark:text-zinc-400">Generating conversations...</span>
+            </CardFooter>
+          )}
 
-        {/* Empty state - only show generate button if admin */}
-        {showEmpty && (
-          <CardFooter>
-            <span className="text-zinc-500 dark:text-zinc-400 text-sm">No conversations yet.</span>
-            {isAdmin && (
-              <PostForm action={`/${topic.code}/populate`} onSuccess={onRefetch}>
-                <Button>Generate</Button>
-              </PostForm>
-            )}
-          </CardFooter>
-        )}
-        </div>
-      </Card>
+          {/* Empty state - only show generate button if admin */}
+          {showEmpty && (
+            <CardFooter>
+              <span className="text-zinc-500 dark:text-zinc-400 text-sm">No conversations yet.</span>
+              {isAdmin && (
+                <PostForm action={`/${topic.code}/populate`} onSuccess={onRefetch}>
+                  <Button>Generate</Button>
+                </PostForm>
+              )}
+            </CardFooter>
+          )}
+        </Card>
 
       {/* Add more button - outside card, only show if admin */}
       {isAdmin && conversations.length > 0 && !showGenerating && (

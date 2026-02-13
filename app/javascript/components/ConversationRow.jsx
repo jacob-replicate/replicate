@@ -44,7 +44,7 @@ const ConversationRow = ({ conversation, index, topicCode, onRefetch, isAdmin })
   // Populated conversations are clickable links
   if (isPopulated) {
     return (
-      <TableRow href={conversation.url} isFirst={index === 0} data-conversation-code={conversation.code}>
+      <TableRow href={conversation.url} target="_blank" isFirst={index === 0} data-conversation-code={conversation.code}>
         <TableRowContent title={conversation.name} description={conversation.description} titleClassName={titleClass} />
       </TableRow>
     )

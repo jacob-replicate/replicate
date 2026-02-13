@@ -1,9 +1,13 @@
 - IBM disclosure. Make sure to update the dates on your terms/privacy/security pages to be recent.
+- Make incident generation intents align with your old INCIDENTS constant format.
+- Make sure you're returning to old convos in static/index. You're forking every time, which is bad.
 - Make the conversation descriptions closer to incidents, not invariants?
 - Review the list of topics again. Do they all align with incident-focused conversations in V1?
 - Add another engineer during a handoff. Hey Jacob, I can take this one over. Want to try another incident?
 - Replace the navbar filesystem breadcrumbs. Not as relevant anymore. Make a callout to other incidents somehow.
 - Meta tags + sharing images/text
+- "Generating" spinner in category list when topics are generating.
+- Fire logo emoji next to conversation title/description (to make room for different icons for design review, articles, etc)
 - Add language tags (e.g., "Go", "Python", etc) to the conversations
 - Better error handling + retries. Don't just let the loop die.
 - Cancel try-replicate + Apollo billing. Zero traction from cold email + feels spammy. Seeing traction from ads. Lean in.
