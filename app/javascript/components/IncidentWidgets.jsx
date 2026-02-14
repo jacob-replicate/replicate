@@ -411,8 +411,8 @@ export const SlackThread = ({ category = 'networking', topic = 'dns' }) => {
   }, [visibleMessages])
 
   return (
-    <div className="">
-      <div className="overflow-hidden border-b border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900">
+    <div className="rounded-xl overflow-hidden shadow-sm border border-zinc-200/60 dark:border-zinc-700">
+      <div className="bg-white dark:bg-zinc-900">
         {/* Window chrome */}
         <div className="bg-zinc-100 dark:bg-zinc-800 border-b border-zinc-200 dark:border-zinc-700 px-3 py-2 flex items-center relative">
           <div className="flex items-center gap-1.5">
@@ -424,31 +424,6 @@ export const SlackThread = ({ category = 'networking', topic = 'dns' }) => {
             <span className="text-zinc-600 dark:text-zinc-400 text-xs font-semibold tracking-tight">#ops-alerts</span>
           </div>
         </div>
-
-        {/* Category navigation - inside chat container */}
-        {categories.length > 0 && (
-          <div className="bg-zinc-100 dark:bg-zinc-800 border-b border-zinc-200 dark:border-zinc-700 overflow-hidden">
-            <div className="flex flex-wrap md:flex-nowrap">
-              {categories.map(cat => {
-                const isActive = (currentCategory || category) === cat.name.toLowerCase()
-                return (
-                  <button
-                    key={cat.name}
-                    onClick={() => onCategoryChange && onCategoryChange(cat.name.toLowerCase())}
-                    className={`w-1/3 md:w-auto md:flex-1 text-center py-3 px-2 md:px-4 text-[12px] md:text-[13px] tracking-wide cursor-pointer transition-all duration-150 ${
-                      isActive
-                        ? 'text-white font-medium scale-105'
-                        : 'text-zinc-400 hover:text-zinc-500 hover:scale-105 font-light'
-                    }`}
-                    style={isActive ? { backgroundColor: '#1a365d' } : {}}
-                  >
-                    {cat.name.toLowerCase()}
-                  </button>
-                )
-              })}
-            </div>
-          </div>
-        )}
 
         {/* Messages */}
         <div className="divide-y divide-zinc-200 dark:divide-zinc-700 [&>*]:py-4 [&>*]:px-4">
@@ -538,18 +513,18 @@ options ndots:5  # <- every lookup tries 5 suffixes first`}</code></pre>
                   </button>
                 </div>
                 <MessageText className="mt-0.5 mb-3">What's the core issue with this DNS health check pattern?</MessageText>
-                <div className="flex flex-col bg-gray-50 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 shadow-sm rounded-lg overflow-hidden">
-                  <label className="text-[15px] flex items-center p-[12px] cursor-pointer hover:bg-indigo-50 dark:hover:bg-indigo-900/30 border-b border-gray-200 dark:border-zinc-700">
-                    <input type="radio" name="mc_dns" className="h-4 w-4 text-indigo-600 border-gray-400 focus:ring-indigo-500" />
-                    <span className="ml-2">High-frequency polling overwhelms shared infrastructure like CoreDNS</span>
+                <div className="flex flex-col bg-gray-50 dark:bg-zinc-800/60 border border-gray-200 dark:border-zinc-600 shadow-sm rounded-lg overflow-hidden">
+                  <label className="text-[15px] flex items-center p-[12px] cursor-pointer hover:bg-indigo-50 dark:hover:bg-indigo-900/40 border-b border-gray-200 dark:border-zinc-600">
+                    <input type="radio" name="mc_dns" className="h-4 w-4 text-indigo-600 border-gray-400 dark:border-zinc-500 focus:ring-indigo-500 dark:bg-zinc-700" />
+                    <span className="ml-3 text-zinc-800 dark:text-zinc-200">High-frequency polling overwhelms shared infrastructure like CoreDNS</span>
                   </label>
-                  <label className="text-[15px] flex items-center p-[12px] cursor-pointer hover:bg-indigo-50 dark:hover:bg-indigo-900/30 border-b border-gray-200 dark:border-zinc-700">
-                    <input type="radio" name="mc_dns" className="h-4 w-4 text-indigo-600 border-gray-400 focus:ring-indigo-500" />
-                    <span className="ml-2">External DNS lookups should use a caching resolver</span>
+                  <label className="text-[15px] flex items-center p-[12px] cursor-pointer hover:bg-indigo-50 dark:hover:bg-indigo-900/40 border-b border-gray-200 dark:border-zinc-600">
+                    <input type="radio" name="mc_dns" className="h-4 w-4 text-indigo-600 border-gray-400 dark:border-zinc-500 focus:ring-indigo-500 dark:bg-zinc-700" />
+                    <span className="ml-3 text-zinc-800 dark:text-zinc-200">External DNS lookups should use a caching resolver</span>
                   </label>
-                  <label className="text-[15px] flex items-center p-[12px] cursor-pointer hover:bg-indigo-50 dark:hover:bg-indigo-900/30">
-                    <input type="radio" name="mc_dns" className="h-4 w-4 text-indigo-600 border-gray-400 focus:ring-indigo-500" />
-                    <span className="ml-2">The ndots:5 setting amplifies every query into multiple requests</span>
+                  <label className="text-[15px] flex items-center p-[12px] cursor-pointer hover:bg-indigo-50 dark:hover:bg-indigo-900/40">
+                    <input type="radio" name="mc_dns" className="h-4 w-4 text-indigo-600 border-gray-400 dark:border-zinc-500 focus:ring-indigo-500 dark:bg-zinc-700" />
+                    <span className="ml-3 text-zinc-800 dark:text-zinc-200">The ndots:5 setting amplifies every query into multiple requests</span>
                   </label>
                 </div>
               </div>
@@ -567,39 +542,6 @@ options ndots:5  # <- every lookup tries 5 suffixes first`}</code></pre>
             placeholder="Say something..."
             className="flex-1 px-4 py-3 text-[15px] text-[#1d1c1d] dark:text-zinc-200 placeholder-[#868686] dark:placeholder-zinc-500 outline-none border-none bg-transparent ring-0 focus:ring-0 focus:outline-none"
           />
-          <div className="relative mr-3">
-            <button
-              onClick={() => setDropdownOpen(!dropdownOpen)}
-              className="flex items-center gap-1.5 px-3 py-1.5 text-[13px] font-medium text-zinc-700 dark:text-zinc-200 bg-white dark:bg-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-700 rounded transition-colors border-2"
-              style={{ borderColor: '#1a365d' }}
-            >
-              {category}
-              <svg className={`w-3.5 h-3.5 transition-transform ${dropdownOpen ? 'rotate-180' : ''}`} viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M4 6l4 4 4-4" />
-              </svg>
-            </button>
-            {dropdownOpen && (
-              <div className="absolute bottom-full right-0 mb-1 w-40 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg shadow-lg overflow-hidden z-10">
-                {categories.map(cat => (
-                  <button
-                    key={cat.name}
-                    onClick={() => {
-                      setDropdownOpen(false)
-                      if (onCategoryChange) onCategoryChange(cat.name.toLowerCase())
-                    }}
-                    className={`w-full text-left px-3 py-2 text-[13px] hover:bg-zinc-100 dark:hover:bg-zinc-700 transition-colors ${
-                      cat.name.toLowerCase() === category 
-                        ? 'text-white font-medium' 
-                        : 'text-zinc-600 dark:text-zinc-300'
-                    }`}
-                    style={cat.name.toLowerCase() === category ? { backgroundColor: '#1a365d' } : {}}
-                  >
-                    {cat.name.toLowerCase()}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
         </div>
       </div>
     </div>
