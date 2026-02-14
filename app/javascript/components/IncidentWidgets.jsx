@@ -366,10 +366,11 @@ const TypingIndicator = ({ avatar, name }) => (
 )
 
 // Slack incident thread conversation
-export const SlackThread = ({ category = 'networking', topic = 'dns', topicName }) => {
+export const SlackThread = ({ category = 'networking', topic = 'dns', topicName, categories = [], onCategoryChange }) => {
   const codeRef = React.useRef(null)
   const [visibleMessages, setVisibleMessages] = React.useState(0)
   const [typingUser, setTypingUser] = React.useState({ avatar: '/jacob-square.jpg', name: 'pagerduty' })
+  const [dropdownOpen, setDropdownOpen] = React.useState(false)
 
   // Message sequence: pagerduty alert -> maya's diagnosis -> daniel's observation -> maya's finding -> replicate question
   const messageSequence = [
@@ -542,13 +543,38 @@ options ndots:5  # <- every lookup tries 5 suffixes first`}</code></pre>
             placeholder="Say something..."
             className="flex-1 px-4 py-3 text-[15px] text-[#1d1c1d] dark:text-zinc-200 placeholder-[#868686] dark:placeholder-zinc-500 outline-none border-none bg-transparent ring-0 focus:ring-0 focus:outline-none"
           />
-          <button className="flex items-center gap-1.5 px-3 py-1.5 mr-3 text-[13px] font-medium text-zinc-600 dark:text-zinc-300 bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 rounded transition-colors">
-            <svg className="w-3.5 h-3.5" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M14 8A6 6 0 114 3.5" />
-              <path d="M4 1v3h3" />
-            </svg>
-            New SEV-1
-          </button>
+          <div className="relative mr-3">
+            <button
+              onClick={() => setDropdownOpen(!dropdownOpen)}
+              className="flex items-center gap-1.5 px-3 py-1.5 text-[13px] font-medium text-zinc-600 dark:text-zinc-300 bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 rounded transition-colors"
+            >
+              {category}
+              <svg className={`w-3.5 h-3.5 transition-transform ${dropdownOpen ? 'rotate-180' : ''}`} viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M4 6l4 4 4-4" />
+              </svg>
+            </button>
+            {dropdownOpen && (
+              <div className="absolute bottom-full right-0 mb-1 w-40 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg shadow-lg overflow-hidden z-10">
+                {categories.map(cat => (
+                  <button
+                    key={cat.name}
+                    onClick={() => {
+                      setDropdownOpen(false)
+                      if (onCategoryChange) onCategoryChange(cat.name.toLowerCase())
+                    }}
+                    className={`w-full text-left px-3 py-2 text-[13px] hover:bg-zinc-100 dark:hover:bg-zinc-700 transition-colors ${
+                      cat.name.toLowerCase() === category 
+                        ? 'text-white font-medium' 
+                        : 'text-zinc-600 dark:text-zinc-300'
+                    }`}
+                    style={cat.name.toLowerCase() === category ? { backgroundColor: '#1a365d' } : {}}
+                  >
+                    {cat.name.toLowerCase()}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>

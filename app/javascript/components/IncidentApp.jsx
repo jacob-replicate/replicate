@@ -96,16 +96,33 @@ const CategoryView = ({ categories }) => {
 // Topic view - shows conversations in a topic (for now, just shows the SlackThread)
 const TopicView = ({ categories }) => {
   const { category, topic } = useParams()
+  const navigate = useNavigate()
 
   const categoryData = categories.find(c => c.name.toLowerCase() === category)
   const topicData = categoryData?.topics.find(t => t.code === topic)
+
+  const handleCategoryChange = (newCategory) => {
+    // Navigate to the first topic of the new category
+    const newCategoryData = categories.find(c => c.name.toLowerCase() === newCategory)
+    if (newCategoryData && newCategoryData.topics.length > 0) {
+      navigate(`/${newCategory}/${newCategoryData.topics[0].code}`)
+    } else {
+      navigate(`/${newCategory}`)
+    }
+  }
 
   return (
     <div>
       <CategoryNav categories={categories} current={category} />
       <div className="p-4">
         {/* Pass topic info to SlackThread - for now it's still hardcoded but will use this later */}
-        <SlackThread category={category} topic={topic} topicName={topicData?.name} />
+        <SlackThread
+          category={category}
+          topic={topic}
+          topicName={topicData?.name}
+          categories={categories}
+          onCategoryChange={handleCategoryChange}
+        />
       </div>
     </div>
   )
