@@ -200,148 +200,197 @@ export const MonitorAlert = () => {
   )
 }
 
+// Inline code span component
+const Code = ({ children }) => (
+  <span className="font-mono bg-zinc-100 dark:bg-zinc-800 px-1 rounded">{children}</span>
+)
+
+// Mention component
+const Mention = ({ children }) => (
+  <span className="text-[#1264a3] dark:text-blue-400 bg-[#e8f5fa] dark:bg-blue-900/30 rounded px-0.5">{children}</span>
+)
+
+// Message text wrapper - handles styling consistently
+const MessageText = ({ children, className = '' }) => (
+  <div className={`text-[#1d1c1d] dark:text-zinc-200 text-[15px] ${className}`}>{children}</div>
+)
+
+// Reusable chat message component
+const ChatMessage = ({ avatar, name, time, children, text }) => (
+  <div className="flex items-start gap-3">
+    <img src={avatar} alt="" className="w-10 h-10 rounded-full flex-shrink-0" />
+    <div className="flex-1">
+      <div className="flex items-baseline gap-2">
+        <span className="font-semibold text-[#1d1c1d] dark:text-zinc-100 text-[15px] tracking-[-0.01em]">{name}</span>
+        {time && <span className="text-[#616061] dark:text-zinc-500 text-[12px]">{time}</span>}
+      </div>
+      {text ? (
+        <MessageText className="mt-0.5">{text}</MessageText>
+      ) : (
+        children
+      )}
+    </div>
+  </div>
+)
+
+// Typing indicator component
+const TypingIndicator = ({ avatar, name }) => (
+  <div className="flex items-start gap-3">
+    <img src={avatar} alt="" className="w-10 h-10 rounded-full flex-shrink-0" />
+    <div className="flex-1">
+      <div className="flex items-baseline gap-2">
+        <span className="font-semibold text-[#1d1c1d] dark:text-zinc-100 text-[15px] tracking-[-0.01em]">{name}</span>
+      </div>
+      <div className="flex items-center gap-1 mt-1">
+        <div className="flex gap-0.5">
+          <div className="w-2 h-2 bg-zinc-400 dark:bg-zinc-500 rounded-full animate-bounce" style={{ animationDelay: '0ms', animationDuration: '600ms' }}></div>
+          <div className="w-2 h-2 bg-zinc-400 dark:bg-zinc-500 rounded-full animate-bounce" style={{ animationDelay: '150ms', animationDuration: '600ms' }}></div>
+          <div className="w-2 h-2 bg-zinc-400 dark:bg-zinc-500 rounded-full animate-bounce" style={{ animationDelay: '300ms', animationDuration: '600ms' }}></div>
+        </div>
+      </div>
+    </div>
+  </div>
+)
+
 // Slack incident thread conversation
 export const SlackThread = () => {
+  const codeRef = React.useRef(null)
+  const [visibleMessages, setVisibleMessages] = React.useState(0)
+  const [typingUser, setTypingUser] = React.useState({ avatar: '/jacob-square.jpg', name: 'k8s-alerts' })
+
+  // Message sequence: k8s-alert -> maya's diagnosis -> daniel's observation -> maya's finding -> replicate question
+  const messageSequence = [
+    { typingDuration: 1200 }, // k8s-alerts typing
+    { delay: 500, avatar: '/profile-photo-3.jpg', name: 'maya', typingDuration: 1600 },
+    { delay: 600, avatar: '/profile-photo-2.jpg', name: 'daniel', typingDuration: 1200 },
+    { delay: 500, avatar: '/profile-photo-3.jpg', name: 'maya', typingDuration: 1400 },
+    { delay: 600, avatar: '/logo.png', name: 'replicate.info', typingDuration: 700 },
+    { delay: 0 },
+  ]
+
+  React.useEffect(() => {
+    const seqIndex = visibleMessages
+    if (seqIndex >= messageSequence.length) return
+
+    const seq = messageSequence[seqIndex]
+
+    // Show typing, then reveal message
+    const messageTimeout = setTimeout(() => {
+      setTypingUser(null)
+      setVisibleMessages(v => v + 1)
+
+      // Set next typing user after a delay
+      const nextSeq = messageSequence[seqIndex + 1]
+      if (nextSeq && nextSeq.avatar) {
+        setTimeout(() => {
+          setTypingUser({ avatar: nextSeq.avatar, name: nextSeq.name, isBot: nextSeq.isBot })
+        }, nextSeq.delay || 0)
+      }
+    }, seq.typingDuration || 0)
+
+    return () => clearTimeout(messageTimeout)
+  }, [visibleMessages])
+
+  React.useEffect(() => {
+    if (codeRef.current && window.hljs && visibleMessages >= 2) {
+      window.hljs.highlightElement(codeRef.current)
+    }
+  }, [visibleMessages])
+
   return (
     <div className="py-4">
-      <div className="rounded-lg overflow-hidden border border-zinc-200 bg-white shadow-sm">
+      <div className="rounded-lg overflow-hidden border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 shadow-sm">
         {/* Window chrome */}
-        <div className="bg-zinc-100 border-b border-zinc-200 px-3 py-2 flex items-center gap-2">
+        <div className="bg-zinc-100 dark:bg-zinc-800 border-b border-zinc-200 dark:border-zinc-700 px-3 py-2 flex items-center gap-2">
           <div className="flex items-center gap-1.5">
             <div className="w-3 h-3 rounded-full bg-red-400 hover:bg-red-500 cursor-default transition-colors"></div>
             <div className="w-3 h-3 rounded-full bg-amber-400 hover:bg-amber-500 cursor-default transition-colors"></div>
             <div className="w-3 h-3 rounded-full bg-green-400 hover:bg-green-500 cursor-default transition-colors"></div>
           </div>
           <div className="flex-1 flex items-center justify-center">
-            <span className="text-zinc-500 text-xs font-medium tracking-tight">#ops-alerts</span>
+            <span className="text-zinc-500 dark:text-zinc-400 text-xs font-medium tracking-tight">#ops-alerts</span>
           </div>
           <div className="w-[52px]"></div>
         </div>
 
         {/* Messages */}
         <div className="px-4 py-4 space-y-5">
-          {/* Message 1 - Alert */}
-          <div className="flex gap-3">
-            <div className="w-10 h-10 rounded flex-shrink-0 bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center">
-              <span className="text-white text-lg">☸</span>
-            </div>
-            <div className="flex-1">
-              <div className="flex items-baseline gap-2">
-                <span className="font-semibold text-zinc-900 text-[15px] tracking-tight">k8s-alerts</span>
-                <span className="text-zinc-400 text-xs">2:47 AM</span>
+          {/* Alert */}
+          {visibleMessages >= 1 && (
+            <ChatMessage
+              avatar="/jacob-square.jpg"
+              name="k8s-alerts"
+              time="2:47 AM"
+            >
+              <div className="border-l-4 border-red-500 bg-[#f8f8f8] dark:bg-zinc-800 rounded-r px-3 py-2 mt-1">
+                <div className="font-mono text-[13px] text-red-600 dark:text-red-400 mb-1">[CrashLoopBackOff] payments-worker-7d4f8 stuck</div>
+                <div className="text-[#1d1c1d] dark:text-zinc-100 text-sm font-medium">Pod restarting every 47s — liveness probe failing</div>
+                <div className="text-[#616061] dark:text-zinc-400 text-xs mt-1">12 restarts in 9min • all 3 replicas affected</div>
               </div>
-              <div className="border-l-4 border-red-500 bg-zinc-50 rounded-r px-3 py-2 mt-1">
-                <div className="font-mono text-sm text-red-600 mb-1">[OOMKilled] checkout-worker-6f8b9 restarting</div>
-                <div className="text-zinc-800 text-sm font-medium">Container exceeded memory limit during GC pause</div>
-                <div className="text-zinc-500 text-xs mt-1">3rd restart in 10min • node memory pressure detected</div>
-              </div>
-              {/* Reaction */}
-              <div className="mt-1.5 flex items-center gap-1">
-                <div className="flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-zinc-100 border border-zinc-200">
-                  <span className="text-xs">📌</span>
-                  <span className="text-xs text-zinc-600 font-medium">1</span>
+            </ChatMessage>
+          )}
+
+          {/* Maya's diagnosis */}
+          {visibleMessages >= 2 && (
+            <ChatMessage avatar="/profile-photo-3.jpg" name="maya" time="2:48 AM">
+              <MessageText className="mt-0.5 mb-2">liveness is hitting <Code>/healthz</Code> but that endpoint calls the DB</MessageText>
+              <pre className="rounded-md text-[13px] leading-[1.5] overflow-x-auto !p-0"><code ref={codeRef} className="language-yaml !p-4 block">{`livenessProbe:
+  httpGet:
+    path: /healthz    # <- queries pg
+    port: 8080
+  timeoutSeconds: 1   # <- too tight
+  failureThreshold: 3`}</code></pre>
+            </ChatMessage>
+          )}
+
+          {/* Daniel's observation */}
+          {visibleMessages >= 3 && (
+            <ChatMessage avatar="/profile-photo-2.jpg" name="daniel" time="2:49 AM">
+              <MessageText className="mt-0.5">pg_stat_activity shows 94 connections in <Code>idle in transaction</Code> — someone's not closing txns</MessageText>
+            </ChatMessage>
+          )}
+
+          {/* Maya's finding */}
+          {visibleMessages >= 4 && (
+            <ChatMessage avatar="/profile-photo-3.jpg" name="maya" time="2:50 AM">
+              <MessageText className="mt-0.5">found it — new deploy added a <Code>@Transactional</Code> on the health check controller 🤦‍♀️</MessageText>
+            </ChatMessage>
+          )}
+
+          {/* replicate.info prompt */}
+          {visibleMessages >= 5 && (
+            <ChatMessage
+              avatar="/logo.png"
+              name="replicate.info"
+              text="What's wrong with this liveness probe design?"
+            />
+          )}
+
+          {/* Typing indicator */}
+          {typingUser && <TypingIndicator avatar={typingUser.avatar} name={typingUser.name} />}
+
+          {/* Multiple choice options */}
+          {visibleMessages >= 6 && (
+            <div className="flex items-start gap-3">
+              <div className="w-10 flex-shrink-0"></div>
+              <div className="flex-1">
+                <div className="flex flex-col bg-gray-50 border border-gray-200 shadow-sm rounded-lg overflow-hidden">
+                  <label className="text-[15px] flex items-center p-[12px] cursor-pointer hover:bg-indigo-50 border-b border-gray-200">
+                    <input type="radio" name="mc_liveness" className="h-4 w-4 text-indigo-600 border-gray-400 focus:ring-indigo-500" />
+                    <span className="ml-2">Liveness probes should never have external dependencies</span>
+                  </label>
+                  <label className="text-[15px] flex items-center p-[12px] cursor-pointer hover:bg-indigo-50 border-b border-gray-200">
+                    <input type="radio" name="mc_liveness" className="h-4 w-4 text-indigo-600 border-gray-400 focus:ring-indigo-500" />
+                    <span className="ml-2">The timeout is too short for a database query under load</span>
+                  </label>
+                  <label className="text-[15px] flex items-center p-[12px] cursor-pointer hover:bg-indigo-50">
+                    <input type="radio" name="mc_liveness" className="h-4 w-4 text-indigo-600 border-gray-400 focus:ring-indigo-500" />
+                    <span className="ml-2">The failureThreshold should be higher to tolerate transient failures</span>
+                  </label>
                 </div>
               </div>
             </div>
-          </div>
-
-          {/* Message 2 */}
-          <div className="flex gap-3">
-            <img src="/profile-photo-3.jpg" alt="" className="w-10 h-10 rounded flex-shrink-0" />
-            <div>
-              <div className="flex items-baseline gap-2">
-                <span className="font-semibold text-zinc-900 text-[15px] tracking-tight">maya</span>
-                <span className="text-zinc-400 text-xs">2:48 AM</span>
-              </div>
-              <div className="text-zinc-800 text-[15px] mt-0.5">on it, pulling metrics</div>
-            </div>
-          </div>
-
-          {/* Message 3 - with code */}
-          <div className="flex gap-3">
-            <img src="/profile-photo-3.jpg" alt="" className="w-10 h-10 rounded flex-shrink-0" />
-            <div className="flex-1">
-              <div className="flex items-baseline gap-2">
-                <span className="font-semibold text-zinc-900 text-[15px] tracking-tight">maya</span>
-                <span className="text-zinc-400 text-xs">2:49 AM</span>
-              </div>
-              <div className="text-zinc-800 text-[15px] mt-0.5 mb-2">here's what I'm seeing:</div>
-              <div className="bg-zinc-900 rounded font-mono text-[13px] p-3 leading-6">
-                <div className="text-zinc-300"><span className="text-zinc-500">$</span> kubectl top pod checkout-worker-6f8b9</div>
-                <div className="text-zinc-500 mt-2">NAME                    CPU   MEM</div>
-                <div className="text-zinc-300">checkout-worker-6f8b9   340m  <span className="text-red-400">1998Mi/2Gi</span></div>
-                <div className="text-zinc-600 mt-3">memory.high breached — reclaim stalled 847ms</div>
-                <div className="text-amber-400">pressure avg10=<span className="text-red-400">78.42</span> avg60=52.18</div>
-              </div>
-            </div>
-          </div>
-
-          {/* Message 4 */}
-          <div className="flex gap-3">
-            <img src="/profile-photo-2.jpg" alt="" className="w-10 h-10 rounded flex-shrink-0" />
-            <div className="flex-1">
-              <div className="flex items-baseline gap-2">
-                <span className="font-semibold text-zinc-900 text-[15px] tracking-tight">daniel</span>
-                <span className="text-zinc-400 text-xs">2:51 AM</span>
-              </div>
-              <div className="text-zinc-800 text-[15px] mt-0.5">wait — if heap is only at 1998Mi, why is pressure that high? that doesn't add up</div>
-            </div>
-          </div>
-
-          {/* Message 5 */}
-          <div className="flex gap-3">
-            <img src="/profile-photo-3.jpg" alt="" className="w-10 h-10 rounded flex-shrink-0" />
-            <div>
-              <div className="flex items-baseline gap-2">
-                <span className="font-semibold text-zinc-900 text-[15px]">maya</span>
-                <span className="text-zinc-400 text-xs">2:52 AM</span>
-              </div>
-              <div className="text-zinc-800 text-[15px] mt-0.5"><span className="text-blue-600 bg-blue-50 rounded px-0.5">@daniel</span> good catch. let me check what else is in that cgroup...</div>
-            </div>
-          </div>
-
-          {/* Message 6 - the hook */}
-          <div className="flex gap-3">
-            <img src="/profile-photo-2.jpg" alt="" className="w-10 h-10 rounded flex-shrink-0" />
-            <div className="flex-1">
-              <div className="flex items-baseline gap-2">
-                <span className="font-semibold text-zinc-900 text-[15px]">daniel</span>
-                <span className="text-zinc-400 text-xs">2:52 AM</span>
-              </div>
-              <div className="text-zinc-800 text-[15px] mt-0.5">also — is this the JVM heap or the container limit? those are different numbers</div>
-            </div>
-          </div>
-
-          {/* replicate.info prompt */}
-          <div className="flex gap-3">
-            <img src="/logo.png" alt="" className="w-10 h-10 rounded flex-shrink-0" />
-            <div className="flex-1">
-              <div className="flex items-baseline gap-2">
-                <span className="font-semibold text-zinc-900 text-[15px]">replicate.info</span>
-              </div>
-              <div className="text-zinc-800 text-[15px] mt-0.5">
-                Why might memory pressure spike even when heap usage looks fine?
-              </div>
-            </div>
-          </div>
-
-          {/* Multiple choice options */}
-          <div className="mt-2 mb-2">
-            <div className="flex flex-col bg-gray-50 border border-gray-200 shadow-sm rounded-lg overflow-hidden">
-              <label className="text-[15px] flex items-center p-[12px] cursor-pointer hover:bg-indigo-50 border-b border-gray-200">
-                <input type="radio" name="mc_memory" className="h-4 w-4 text-indigo-600 border-gray-400 focus:ring-indigo-500" />
-                <span className="ml-2">The JVM is allocating off-heap memory that doesn't show up in heap metrics</span>
-              </label>
-              <label className="text-[15px] flex items-center p-[12px] cursor-pointer hover:bg-indigo-50 border-b border-gray-200">
-                <input type="radio" name="mc_memory" className="h-4 w-4 text-indigo-600 border-gray-400 focus:ring-indigo-500" />
-                <span className="ml-2">The container limit is lower than the JVM's max heap setting</span>
-              </label>
-              <label className="text-[15px] flex items-center p-[12px] cursor-pointer hover:bg-indigo-50">
-                <input type="radio" name="mc_memory" className="h-4 w-4 text-indigo-600 border-gray-400 focus:ring-indigo-500" />
-                <span className="ml-2">Other processes in the cgroup are consuming memory alongside the JVM</span>
-              </label>
-            </div>
-          </div>
+          )}
         </div>
 
         {/* Chat input with hint link */}
@@ -349,7 +398,7 @@ export const SlackThread = () => {
           <input
             type="text"
             placeholder="Say something..."
-            className="flex-1 px-4 py-3 text-sm text-zinc-700 placeholder-zinc-400 outline-none border-none bg-transparent ring-0 focus:ring-0 focus:outline-none"
+            className="flex-1 px-4 py-3 text-[15px] text-[#1d1c1d] placeholder-[#868686] outline-none border-none bg-transparent ring-0 focus:ring-0 focus:outline-none"
           />
           <div className="flex items-center gap-1.5 text-indigo-500 text-sm pr-4 cursor-pointer hover:text-indigo-600">
             <span>✨</span>
