@@ -366,11 +366,10 @@ const TypingIndicator = ({ avatar, name }) => (
 )
 
 // Slack incident thread conversation
-export const SlackThread = ({ category = 'networking', topic = 'dns', topicName, categories = [], onCategoryChange }) => {
+export const SlackThread = ({ category = 'networking', topic = 'dns' }) => {
   const codeRef = React.useRef(null)
   const [visibleMessages, setVisibleMessages] = React.useState(0)
   const [typingUser, setTypingUser] = React.useState({ avatar: '/jacob-square.jpg', name: 'pagerduty' })
-  const [dropdownOpen, setDropdownOpen] = React.useState(false)
 
   // Message sequence: pagerduty alert -> maya's diagnosis -> daniel's observation -> maya's finding -> replicate question
   const messageSequence = [
@@ -413,7 +412,7 @@ export const SlackThread = ({ category = 'networking', topic = 'dns', topicName,
 
   return (
     <div className="">
-      <div className="rounded-lg overflow-hidden border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 shadow-sm">
+      <div className="overflow-hidden border-b border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900">
         {/* Window chrome */}
         <div className="bg-zinc-100 dark:bg-zinc-800 border-b border-zinc-200 dark:border-zinc-700 px-3 py-2 flex items-center relative">
           <div className="flex items-center gap-1.5">
@@ -425,6 +424,31 @@ export const SlackThread = ({ category = 'networking', topic = 'dns', topicName,
             <span className="text-zinc-600 dark:text-zinc-400 text-xs font-semibold tracking-tight">#ops-alerts</span>
           </div>
         </div>
+
+        {/* Category navigation - inside chat container */}
+        {categories.length > 0 && (
+          <div className="bg-zinc-100 dark:bg-zinc-800 border-b border-zinc-200 dark:border-zinc-700 overflow-hidden">
+            <div className="flex flex-wrap md:flex-nowrap">
+              {categories.map(cat => {
+                const isActive = (currentCategory || category) === cat.name.toLowerCase()
+                return (
+                  <button
+                    key={cat.name}
+                    onClick={() => onCategoryChange && onCategoryChange(cat.name.toLowerCase())}
+                    className={`w-1/3 md:w-auto md:flex-1 text-center py-3 px-2 md:px-4 text-[12px] md:text-[13px] tracking-wide cursor-pointer transition-all duration-150 ${
+                      isActive
+                        ? 'text-white font-medium scale-105'
+                        : 'text-zinc-400 hover:text-zinc-500 hover:scale-105 font-light'
+                    }`}
+                    style={isActive ? { backgroundColor: '#1a365d' } : {}}
+                  >
+                    {cat.name.toLowerCase()}
+                  </button>
+                )
+              })}
+            </div>
+          </div>
+        )}
 
         {/* Messages */}
         <div className="divide-y divide-zinc-200 dark:divide-zinc-700 [&>*]:py-4 [&>*]:px-4">
@@ -546,7 +570,8 @@ options ndots:5  # <- every lookup tries 5 suffixes first`}</code></pre>
           <div className="relative mr-3">
             <button
               onClick={() => setDropdownOpen(!dropdownOpen)}
-              className="flex items-center gap-1.5 px-3 py-1.5 text-[13px] font-medium text-zinc-600 dark:text-zinc-300 bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 rounded transition-colors"
+              className="flex items-center gap-1.5 px-3 py-1.5 text-[13px] font-medium text-zinc-700 dark:text-zinc-200 bg-white dark:bg-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-700 rounded transition-colors border-2"
+              style={{ borderColor: '#1a365d' }}
             >
               {category}
               <svg className={`w-3.5 h-3.5 transition-transform ${dropdownOpen ? 'rotate-180' : ''}`} viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

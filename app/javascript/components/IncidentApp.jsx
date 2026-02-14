@@ -1,33 +1,31 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import { HashRouter, Routes, Route, Link, useParams, useNavigate } from 'react-router-dom'
+import { HashRouter, Routes, Route, Link, useParams, useNavigate, useLocation } from 'react-router-dom'
 import useGraphPolling from '../hooks/useGraphPolling'
 import { SlackThread } from './IncidentWidgets'
 
-// Category navigation bar
+// Category navigation bar - sits at top level, outside any specific view
 const CategoryNav = ({ categories, current }) => {
   return (
-    <div className="px-4 py-3">
-      <div className="bg-zinc-100 dark:bg-zinc-800 rounded-xl border border-zinc-200 dark:border-zinc-700 overflow-hidden">
-        <div className="flex flex-wrap md:flex-nowrap">
-          {categories.map(cat => {
-            const isActive = current === cat.name.toLowerCase()
-            return (
-              <Link
-                key={cat.name}
-                to={`/${cat.name.toLowerCase()}`}
-                className={`w-1/3 md:w-auto md:flex-1 text-center py-3 px-2 md:px-4 text-[12px] md:text-[13px] tracking-wide cursor-pointer transition-all duration-150 ${
-                  isActive
-                    ? 'text-white font-medium scale-105'
-                    : 'text-zinc-400 hover:text-zinc-500 hover:scale-105 font-light'
-                }`}
-                style={isActive ? { backgroundColor: '#1a365d' } : {}}
-              >
-                {cat.name.toLowerCase()}
-              </Link>
-            )
-          })}
-        </div>
+    <div className="bg-zinc-100/80 dark:bg-zinc-800 rounded-xl shadow-sm border border-zinc-200/60 dark:border-zinc-700 overflow-hidden mb-4">
+      <div className="flex flex-wrap md:flex-nowrap">
+        {categories.map(cat => {
+          const isActive = current === cat.name.toLowerCase()
+          return (
+            <Link
+              key={cat.name}
+              to={`/${cat.name.toLowerCase()}`}
+              className={`w-1/3 md:w-auto md:flex-1 text-center py-3 px-2 md:px-4 text-[12px] md:text-[13px] tracking-wide cursor-pointer transition-all duration-150 ${
+                isActive
+                  ? 'text-white font-medium scale-105'
+                  : 'text-zinc-400 hover:text-zinc-500 hover:scale-105 font-light'
+              }`}
+              style={isActive ? { backgroundColor: '#1a365d' } : {}}
+            >
+              {cat.name.toLowerCase()}
+            </Link>
+          )
+        })}
       </div>
     </div>
   )
@@ -51,84 +49,52 @@ const CategoryView = ({ categories }) => {
 
   if (!categoryData) {
     return (
-      <div>
-        <CategoryNav categories={categories} current={category} />
-        <div className="p-4 text-zinc-500">Category not found</div>
-      </div>
+      <div className="p-4 text-zinc-500">Category not found</div>
     )
   }
 
   return (
-    <div>
-      <CategoryNav categories={categories} current={category} />
-      <div className="p-4">
-        <div className="rounded-lg overflow-hidden border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 shadow-sm">
-          <div className="px-4 pt-4 pb-3 border-b border-zinc-100 dark:border-zinc-700/50">
-            <h2 className="text-[15px] font-medium dark:text-white tracking-wide">{categoryData.name}</h2>
-          </div>
-          {categoryData.topics.map((topic, i) => (
-            <div
-              key={topic.code}
-              onClick={() => navigate(`/${category}/${topic.code}`)}
-              className={`px-4 py-3 cursor-pointer hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors ${
-                i > 0 ? 'border-t border-zinc-100 dark:border-zinc-800' : ''
-              }`}
-            >
-              <div className="flex items-center justify-between">
-                <div>
-                  <div className="text-[15px] text-blue-600 dark:text-blue-400 font-medium">{topic.name}</div>
-                  <div className="text-[13px] text-zinc-500 dark:text-zinc-400 mt-0.5">{topic.description}</div>
-                </div>
-                {topic.conversation_count > 0 && (
-                  <span className="text-[11px] tabular-nums text-zinc-400 dark:text-zinc-500">
-                    {topic.completed_count || 0}/{topic.conversation_count}
-                  </span>
-                )}
-              </div>
-            </div>
-          ))}
-        </div>
+    <div className="overflow-hidden rounded-xl border border-zinc-200/60 dark:border-zinc-700 shadow-sm bg-white dark:bg-zinc-900">
+      <div className="px-4 pt-4 pb-3 border-b border-zinc-100 dark:border-zinc-700/50">
+        <h2 className="text-[15px] font-medium dark:text-white tracking-wide">{categoryData.name}</h2>
       </div>
+      {categoryData.topics.map((topic, i) => (
+        <div
+          key={topic.code}
+          onClick={() => navigate(`/${category}/${topic.code}`)}
+          className={`px-4 py-3 cursor-pointer hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors ${
+            i > 0 ? 'border-t border-zinc-100 dark:border-zinc-800' : ''
+          }`}
+        >
+          <div className="flex items-center justify-between">
+            <div>
+              <div className="text-[15px] text-blue-600 dark:text-blue-400 font-medium">{topic.name}</div>
+              <div className="text-[13px] text-zinc-500 dark:text-zinc-400 mt-0.5">{topic.description}</div>
+            </div>
+            {topic.conversation_count > 0 && (
+              <span className="text-[11px] tabular-nums text-zinc-400 dark:text-zinc-500">
+                {topic.completed_count || 0}/{topic.conversation_count}
+              </span>
+            )}
+          </div>
+        </div>
+      ))}
     </div>
   )
 }
 
 // Topic view - shows conversations in a topic (for now, just shows the SlackThread)
-const TopicView = ({ categories }) => {
+const TopicView = () => {
   const { category, topic } = useParams()
-  const navigate = useNavigate()
-
-  const categoryData = categories.find(c => c.name.toLowerCase() === category)
-  const topicData = categoryData?.topics.find(t => t.code === topic)
-
-  const handleCategoryChange = (newCategory) => {
-    // Navigate to the first topic of the new category
-    const newCategoryData = categories.find(c => c.name.toLowerCase() === newCategory)
-    if (newCategoryData && newCategoryData.topics.length > 0) {
-      navigate(`/${newCategory}/${newCategoryData.topics[0].code}`)
-    } else {
-      navigate(`/${newCategory}`)
-    }
-  }
 
   return (
     <div>
-      <CategoryNav categories={categories} current={category} />
-      <div className="p-4">
-        {/* Pass topic info to SlackThread - for now it's still hardcoded but will use this later */}
-        <SlackThread
-          category={category}
-          topic={topic}
-          topicName={topicData?.name}
-          categories={categories}
-          onCategoryChange={handleCategoryChange}
-        />
-      </div>
+      <SlackThread category={category} topic={topic} />
     </div>
   )
 }
 
-// Main app with routing
+// Main app with routing - CategoryNav is now at top level
 const IncidentApp = () => {
   const [data] = useGraphPolling()
 
@@ -138,12 +104,31 @@ const IncidentApp = () => {
 
   return (
     <HashRouter>
-      <Routes>
-        <Route path="/" element={<HomeView categories={categories} />} />
-        <Route path="/:category" element={<CategoryView categories={categories} />} />
-        <Route path="/:category/:topic" element={<TopicView categories={categories} />} />
-      </Routes>
+      <AppContent categories={categories} />
     </HashRouter>
+  )
+}
+
+// Inner component that can use routing hooks
+const AppContent = ({ categories }) => {
+  const location = useLocation()
+
+  // Extract current category from path
+  const pathParts = location.pathname.split('/').filter(Boolean)
+  const currentCategory = pathParts[0] || 'networking'
+
+  return (
+    <div>
+      {/* Top-level category nav - always visible */}
+      <CategoryNav categories={categories} current={currentCategory} />
+
+      {/* Routed content below */}
+      <Routes>
+        <Route path="/" element={<HomeView />} />
+        <Route path="/:category" element={<CategoryView categories={categories} />} />
+        <Route path="/:category/:topic" element={<TopicView />} />
+      </Routes>
+    </div>
   )
 }
 
