@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react'
+import React, { useRef, useEffect, useMemo } from 'react'
 
 // Inline code span
 const Code = ({ children }) => (
@@ -25,15 +25,31 @@ const EmojiReaction = ({ emoji, count }) => (
 // Thread replies component
 const ThreadReplies = ({ replies }) => {
   const [expanded, setExpanded] = React.useState(false)
-  const [visibleReplies, setVisibleReplies] = React.useState(0)
+  // Track how many replies existed when we expanded - these show instantly
+  const [repliesAtExpand, setRepliesAtExpand] = React.useState(0)
+  // Track how many NEW replies (after expand) are visible (for typing animation)
+  const [visibleNewReplies, setVisibleNewReplies] = React.useState(0)
 
+  // When expanding, snapshot current reply count - these show instantly
   useEffect(() => {
-    if (!expanded || visibleReplies >= replies.length) return
+    if (expanded) {
+      setRepliesAtExpand(replies.length)
+      setVisibleNewReplies(0)
+    }
+  }, [expanded])
+
+  // Animate in only NEW replies that arrive after expansion
+  const newRepliesCount = replies.length - repliesAtExpand
+  useEffect(() => {
+    if (!expanded || visibleNewReplies >= newRepliesCount) return
     const timeout = setTimeout(() => {
-      setVisibleReplies(v => v + 1)
-    }, visibleReplies === 0 ? 300 : 800 + Math.random() * 600)
+      setVisibleNewReplies(v => v + 1)
+    }, 800 + Math.random() * 600)
     return () => clearTimeout(timeout)
-  }, [expanded, visibleReplies, replies.length])
+  }, [expanded, visibleNewReplies, newRepliesCount])
+
+  // Total visible = all replies at expand time + animated new replies
+  const totalVisible = expanded ? repliesAtExpand + visibleNewReplies : 0
 
   const lastReply = replies[replies.length - 1]
 
@@ -61,15 +77,15 @@ const ThreadReplies = ({ replies }) => {
           {replies.length} {replies.length === 1 ? 'reply' : 'replies'}
         </span>
         {!expanded && lastReply && (
-          <span className="text-zinc-500 dark:text-zinc-400">
-            {lastReply.name}: {lastReply.text?.slice(0, 30)}{lastReply.text?.length > 30 ? '...' : ''}
+          <span className="text-zinc-500 dark:text-zinc-400 truncate max-w-[200px]">
+            {lastReply.name}:{lastReply.avatar && <img src={lastReply.avatar} alt="" className="w-4 h-4 rounded-full inline ml-1 mr-1" />} {lastReply.text?.slice(0, 25)}{lastReply.text?.length > 25 ? '...' : ''}
           </span>
         )}
       </button>
 
       {expanded && (
         <div className="mt-2 ml-1 pl-3 border-l-2 border-zinc-200 dark:border-zinc-700 space-y-2">
-          {replies.slice(0, visibleReplies).map((reply, i) => (
+          {replies.slice(0, totalVisible).map((reply, i) => (
             <div key={i} className="flex items-start gap-2">
               {reply.avatar && (
                 <img src={reply.avatar} alt="" className="w-6 h-6 rounded-full flex-shrink-0" />
@@ -89,7 +105,7 @@ const ThreadReplies = ({ replies }) => {
               </div>
             </div>
           ))}
-          {visibleReplies < replies.length && (
+          {totalVisible < replies.length && (
             <div className="flex items-center gap-2 text-zinc-400 text-[12px]">
               <div className="flex gap-0.5">
                 <div className="w-1.5 h-1.5 bg-zinc-400 dark:bg-zinc-500 rounded-full animate-bounce" style={{ animationDelay: '0ms', animationDuration: '600ms' }} />
@@ -105,45 +121,51 @@ const ThreadReplies = ({ replies }) => {
 }
 
 // Diff component
-const Diff = ({ filename, lines, additions, deletions }) => (
-  <div className="rounded border border-zinc-200 dark:border-zinc-700 overflow-hidden text-[12px] font-mono">
-    {filename && (
-      <div className="bg-zinc-100 dark:bg-zinc-800 px-2 py-1 text-zinc-500 dark:text-zinc-400 border-b border-zinc-200 dark:border-zinc-700 flex items-center justify-between">
-        <span>{filename}</span>
-        {(additions || deletions) && (
-          <div className="flex items-center gap-2">
-            {additions && <span className="text-green-600 dark:text-green-400">+{additions}</span>}
-            {deletions && <span className="text-red-500 dark:text-red-400">-{deletions}</span>}
-          </div>
-        )}
-      </div>
-    )}
-    {lines.map((line, i) => {
-      if (line.type === 'remove') {
-        return (
-          <div key={i} className="bg-red-50 dark:bg-red-950/30 px-2 py-0.5 text-red-700 dark:text-red-300">
-            <span className="text-red-400 dark:text-red-500 select-none mr-2">-</span>
-            {line.text}
-          </div>
-        )
-      }
-      if (line.type === 'add') {
-        return (
-          <div key={i} className="bg-green-50 dark:bg-green-950/30 px-2 py-0.5 text-green-700 dark:text-green-300">
-            <span className="text-green-500 select-none mr-2">+</span>
-            {line.text}
-          </div>
-        )
-      }
-      return (
-        <div key={i} className="px-2 py-0.5 text-zinc-600 dark:text-zinc-400">
-          <span className="select-none mr-2">&nbsp;</span>
-          {line.text}
+const Diff = ({ filename, lines }) => {
+  // Calculate additions and deletions dynamically from lines
+  const additions = lines.filter(line => line.type === 'add').length
+  const deletions = lines.filter(line => line.type === 'remove').length
+
+  return (
+    <div className="rounded border border-zinc-200 dark:border-zinc-700 overflow-hidden text-[13px] font-mono">
+      {filename && (
+        <div className="bg-zinc-100 dark:bg-zinc-800 px-2 py-1 text-zinc-500 dark:text-zinc-400 border-b border-zinc-200 dark:border-zinc-700 flex items-center justify-between">
+          <span>{filename}</span>
+          {(additions > 0 || deletions > 0) && (
+            <div className="flex items-center gap-2">
+              {additions > 0 && <span className="text-green-600 dark:text-green-400">+{additions}</span>}
+              {deletions > 0 && <span className="text-red-500 dark:text-red-400">-{deletions}</span>}
+            </div>
+          )}
         </div>
-      )
-    })}
-  </div>
-)
+      )}
+      {lines.map((line, i) => {
+        if (line.type === 'remove') {
+          return (
+            <div key={i} className="bg-red-50 dark:bg-red-950/30 px-2 py-0.5 text-red-700 dark:text-red-300">
+              <span className="text-red-400 dark:text-red-500 select-none mr-2">-</span>
+              {line.text}
+            </div>
+          )
+        }
+        if (line.type === 'add') {
+          return (
+            <div key={i} className="bg-green-50 dark:bg-green-950/30 px-2 py-0.5 text-green-700 dark:text-green-300">
+              <span className="text-green-500 select-none mr-2">+</span>
+              {line.text}
+            </div>
+          )
+        }
+        return (
+          <div key={i} className="px-2 py-0.5 text-zinc-600 dark:text-zinc-400">
+            <span className="select-none mr-2">&nbsp;</span>
+            {line.text}
+          </div>
+        )
+      })}
+    </div>
+  )
+}
 
 // Code block with syntax highlighting
 const CodeBlock = ({ code, language }) => {
@@ -156,7 +178,7 @@ const CodeBlock = ({ code, language }) => {
   }, [code])
 
   return (
-    <pre className="rounded-md text-[13px] leading-[1.5] overflow-x-auto !p-0">
+    <pre className="rounded-md text-[13px] leading-[1.5] overflow-x-auto !p-0 border border-zinc-200 dark:border-zinc-600">
       <code ref={codeRef} className={`language-${language || 'plaintext'} !p-4 block`}>
         {code}
       </code>
@@ -238,11 +260,31 @@ const AlertBlock = ({ severity, title, description, metadata }) => {
 /**
  * Main Message component - renders different message types
  */
-export const Message = ({ message, onSelect }) => {
+export const Message = ({ message, onSelect, threadReplies }) => {
   const { author, components, reactions, thread, timestamp, edited } = message
   // Legacy support for old structure
   const { content, type, metadata } = message
   const { name, avatar } = author || {}
+
+  // Convert threadReplies (full messages) to the format ThreadReplies component expects
+  // This allows both the old `thread` array format and the new `parent_message_id` approach
+  const computedThread = useMemo(() => {
+    if (thread || metadata?.thread) {
+      return thread || metadata?.thread // Legacy format
+    }
+    if (threadReplies && threadReplies.length > 0) {
+      // Convert full messages to thread reply format
+      return threadReplies.map(reply => ({
+        avatar: reply.author?.avatar,
+        name: reply.author?.name,
+        time: reply.timestamp
+          ? new Date(reply.timestamp).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })
+          : null,
+        text: reply.components?.[0]?.content || reply.content || '',
+      }))
+    }
+    return null
+  }, [thread, metadata?.thread, threadReplies])
 
   // Format timestamp
   const timeStr = timestamp
@@ -388,8 +430,8 @@ export const Message = ({ message, onSelect }) => {
             ))}
           </div>
         )}
-        {(thread || metadata?.thread) && (
-          <ThreadReplies replies={thread || metadata?.thread} />
+        {computedThread && computedThread.length > 0 && (
+          <ThreadReplies replies={computedThread} />
         )}
       </div>
     </div>

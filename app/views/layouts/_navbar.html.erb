@@ -117,7 +117,8 @@
               <% end %>
             </div>
           </div>
-        <% else %>
+        <%# Hidden sign-in button - kept in code but never shown %>
+        <% elsif false && (controller_name != 'static' || action_name != 'index') %>
           <%= form_tag("/auth/google_oauth2", method: :post, class: "inline") do %>
             <button type="submit" class="inline-flex items-center gap-2 px-3 py-1.5 text-[13px] font-medium text-zinc-600 dark:text-zinc-300 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-md hover:bg-zinc-50 dark:hover:bg-zinc-700 transition-colors">
               <svg class="w-4 h-4" viewBox="0 0 24 24">

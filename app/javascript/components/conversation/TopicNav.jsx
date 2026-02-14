@@ -20,6 +20,9 @@ export const TopicNav = ({ topics = DEFAULT_TOPICS, currentTopic, onTopicSelect 
   // Determine active topic from URL or prop
   const activeTopic = currentTopic || location.pathname.split('/').filter(Boolean)[0]
 
+  // Hidden - kept in code but never shown
+  if (true) return null
+
   return (
     <div className="bg-zinc-100/80 dark:bg-zinc-800 rounded-xl shadow-sm border border-zinc-200/60 dark:border-zinc-700 overflow-hidden mb-4">
       <div className="flex flex-wrap md:flex-nowrap">

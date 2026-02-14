@@ -54,8 +54,6 @@ options ndots:5  # <- every lookup tries 5 suffixes first`,
         sequence: 5,
         type: 'diff',
         filename: 'k8s/deployments/payments-api.yaml',
-        additions: 4,
-        deletions: 0,
         lines: [
           { type: 'context', text: 'containers:' },
           { type: 'add', text: '- name: dns-health-checker' },
@@ -68,14 +66,15 @@ options ndots:5  # <- every lookup tries 5 suffixes first`,
       { emoji: '💀', count: 3 },
       { emoji: '🤦', count: 2 },
     ],
-    thread: [
-      { avatar: '/profile-photo-1.jpg', name: 'sarah', time: '3:16 AM', text: 'that was me... thought it would catch DNS outages early 😅' },
-      { avatar: '/profile-photo-2.jpg', name: 'daniel', time: '3:17 AM', text: '200 pods × 10 queries/sec = 2000 DNS queries/sec' },
-      { avatar: '/profile-photo-1.jpg', name: 'sarah', time: '3:17 AM', text: 'oh god' },
-      { avatar: '/profile-photo-3.jpg', name: 'maya', time: '3:17 AM', text: 'CoreDNS default is 1000 qps per instance lol' },
-      { avatar: '/profile-photo-2.jpg', name: 'daniel', time: '3:18 AM', text: 'we have 2 replicas so you literally doubled our max capacity' },
-      { avatar: '/profile-photo-1.jpg', name: 'sarah', time: '3:18 AM', text: 'rolling back now 🏃‍♀️' },
-      { avatar: '/profile-photo-3.jpg', name: 'maya', time: '3:18 AM', text: '🙏' },
+  },
+  // First thread reply - sarah admits fault
+  {
+    id: 'msg_3_reply_1',
+    parent_message_id: 'msg_3',
+    author: { name: 'sarah', avatar: '/profile-photo-1.jpg' },
+    timestamp: '2026-02-14T03:16:00',
+    components: [
+      { sequence: 5.1, type: 'text', content: 'that was me... thought it would catch DNS outages early 😅' }
     ],
   },
   {
@@ -89,6 +88,16 @@ options ndots:5  # <- every lookup tries 5 suffixes first`,
       }
     ],
   },
+  // More thread replies interspersed
+  {
+    id: 'msg_3_reply_2',
+    parent_message_id: 'msg_3',
+    author: { name: 'daniel', avatar: '/profile-photo-2.jpg' },
+    timestamp: '2026-02-14T03:17:00',
+    components: [
+      { sequence: 6.1, type: 'text', content: '200 pods × 10 queries/sec = 2000 DNS queries/sec' }
+    ],
+  },
   {
     id: 'msg_5',
     author: { name: 'replicate.info', avatar: '/logo.png' },
@@ -96,13 +105,152 @@ options ndots:5  # <- every lookup tries 5 suffixes first`,
       {
         sequence: 7,
         type: 'multiple_choice',
-        question: "What's the core issue with this DNS health check pattern?",
+        question: "Rollback is out. What's your next move?",
         selected: 'a',
         options: [
-          { id: 'a', text: 'High-frequency polling overwhelms shared infrastructure like CoreDNS' },
-          { id: 'b', text: 'External DNS lookups should use a caching resolver' },
-          { id: 'c', text: 'The ndots:5 setting amplifies every query into multiple requests' },
+          { id: 'a', text: 'Scale CoreDNS to handle the load, then close the incident' },
+          { id: 'b', text: 'Check if other services have similar polling patterns' },
+          { id: 'c', text: 'Lower ndots to reduce query amplification cluster-wide' },
         ],
+      }
+    ],
+  },
+  {
+    id: 'msg_3_reply_3',
+    parent_message_id: 'msg_3',
+    author: { name: 'sarah', avatar: '/profile-photo-1.jpg' },
+    timestamp: '2026-02-14T03:17:30',
+    components: [
+      { sequence: 7.1, type: 'text', content: 'oh god' }
+    ],
+  },
+  {
+    id: 'msg_6',
+    author: { name: 'daniel', avatar: '/profile-photo-2.jpg' },
+    components: [
+      {
+        sequence: 8,
+        type: 'text',
+        content: 'scaled CoreDNS to 4 replicas. should be good now',
+      }
+    ],
+  },
+  {
+    id: 'msg_3_reply_4',
+    parent_message_id: 'msg_3',
+    author: { name: 'maya', avatar: '/profile-photo-3.jpg' },
+    timestamp: '2026-02-14T03:17:45',
+    components: [
+      { sequence: 8.1, type: 'text', content: 'CoreDNS default is 1000 qps per instance lol' }
+    ],
+  },
+  {
+    id: 'msg_7',
+    author: { name: 'maya', avatar: '/profile-photo-3.jpg' },
+    components: [
+      {
+        sequence: 9,
+        type: 'text',
+        content: 'wait. I just grepped for nslookup across the cluster',
+      },
+      {
+        sequence: 10,
+        type: 'code',
+        content: `$ grep -r "nslookup\\|dns\\|resolve" */health*.yaml | wc -l
+47`,
+      }
+    ],
+  },
+  {
+    id: 'msg_3_reply_5',
+    parent_message_id: 'msg_3',
+    author: { name: 'daniel', avatar: '/profile-photo-2.jpg' },
+    timestamp: '2026-02-14T03:18:00',
+    components: [
+      { sequence: 10.1, type: 'text', content: 'we have 2 replicas so you literally doubled our max capacity' }
+    ],
+  },
+  {
+    id: 'msg_8',
+    author: { name: 'daniel', avatar: '/profile-photo-2.jpg' },
+    components: [
+      {
+        sequence: 11,
+        type: 'text',
+        content: 'forty seven services doing DNS health checks. and auth-service alone has 400 replicas doing 1 lookup/sec each',
+      }
+    ],
+    reactions: [
+      { emoji: '😬', count: 3 },
+    ],
+  },
+  {
+    id: 'msg_3_reply_6',
+    parent_message_id: 'msg_3',
+    author: { name: 'sarah', avatar: '/profile-photo-1.jpg' },
+    timestamp: '2026-02-14T03:18:15',
+    components: [
+      { sequence: 11.1, type: 'text', content: 'rolling back now 🏃‍♀️' }
+    ],
+  },
+  {
+    id: 'msg_9',
+    author: { name: 'replicate.info', avatar: '/logo.png' },
+    components: [
+      {
+        sequence: 12,
+        type: 'multiple_choice',
+        question: "With ndots:5, each lookup generates up to 6 queries. What's the actual baseline load on CoreDNS right now?",
+        selected: 'b',
+        options: [
+          { id: 'a', text: 'Somewhere around 2000 qps' },
+          { id: 'b', text: 'Closer to 15000 qps if you count the search domains' },
+        ],
+      }
+    ],
+  },
+  {
+    id: 'msg_3_reply_7',
+    parent_message_id: 'msg_3',
+    author: { name: 'maya', avatar: '/profile-photo-3.jpg' },
+    timestamp: '2026-02-14T03:18:30',
+    components: [
+      { sequence: 12.1, type: 'text', content: '🙏' }
+    ],
+  },
+  {
+    id: 'msg_10',
+    author: { name: 'maya', avatar: '/profile-photo-3.jpg' },
+    components: [
+      {
+        sequence: 13,
+        type: 'text',
+        content: 'we just scaled to 4 replicas. thats 4000 qps max. we were over capacity before the incident even started',
+      }
+    ],
+  },
+  {
+    id: 'msg_11',
+    author: { name: 'daniel', avatar: '/profile-photo-2.jpg' },
+    components: [
+      {
+        sequence: 14,
+        type: 'text',
+        content: 'the payments sidecar wasnt the root cause. it was the last 2000 qps on a system already doing 15000',
+      }
+    ],
+    reactions: [
+      { emoji: '💀', count: 2 },
+    ],
+  },
+  {
+    id: 'msg_12',
+    author: { name: 'replicate.info', avatar: '/logo.png' },
+    components: [
+      {
+        sequence: 15,
+        type: 'text',
+        content: "You scale CoreDNS to 20 replicas. Next Tuesday, auth-service rolls out and all 400 pods restart at once. What breaks first?",
       }
     ],
   },

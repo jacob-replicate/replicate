@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useCallback } from 'react'
+import React, { useEffect, useRef, useCallback, useState } from 'react'
 import ReactDOM from 'react-dom/client'
 import { HashRouter, Routes, Route, Navigate, useParams, useNavigate } from 'react-router-dom'
 import Conversation from './Conversation'
@@ -30,6 +30,7 @@ const ConversationView = ({ apiRef }) => {
   const { topic } = useParams()
   const navigate = useNavigate()
   const currentTopic = TOPICS.find(t => t.code === topic) || TOPICS[0]
+  const [channelName, setChannelName] = useState('#ops-alerts')
 
   const {
     messages,
@@ -55,9 +56,18 @@ const ConversationView = ({ apiRef }) => {
   /**
    * Stream messages with typing indicators and delays
    * Shows typing indicator before each new message, then streams components
+   *
+   * Thread replies (messages with parent_message_id) are added instantly
+   * without typing indicators - they just update the thread reply count
    */
   const streamMessages = useCallback(async (messagesToStream) => {
     for (const message of messagesToStream) {
+      // Thread replies don't get typing indicators - just add them instantly
+      if (message.parent_message_id) {
+        addMessageRef.current(message)
+        continue
+      }
+
       // Show typing indicator for this author
       setTypingRef.current(message.author)
       await sleep(TYPING_DURATION)
@@ -81,6 +91,7 @@ const ConversationView = ({ apiRef }) => {
       setTyping,
       setExpectedSequence,
       streamMessages,
+      setChannelName,
       getMessages: () => messages,
       isTyping: () => isTyping,
     }
@@ -108,7 +119,7 @@ const ConversationView = ({ apiRef }) => {
     return () => {
       // Don't clean up global API - let it persist
     }
-  }, [addMessage, updateMessage, removeMessage, clear, setTyping, setExpectedSequence, messages, isTyping, apiRef])
+  }, [addMessage, updateMessage, removeMessage, clear, setTyping, setExpectedSequence, setChannelName, messages, isTyping, apiRef])
 
   // Handle topic change from dropdown
   const handleTopicChange = useCallback((newTopic) => {
@@ -141,6 +152,7 @@ const ConversationView = ({ apiRef }) => {
       topics={TOPICS}
       currentTopic={currentTopic}
       onTopicChange={handleTopicChange}
+      channelName={channelName}
       className=""
     />
   )

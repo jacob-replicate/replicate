@@ -226,46 +226,52 @@ const MessageText = ({ children, className = '' }) => (
 
 // Reusable diff component
 // lines: array of { text: string, type: 'add' | 'remove' | 'context' }
-export const Diff = ({ filename, lines, additions, deletions }) => (
-  <div className="rounded border border-zinc-200 dark:border-zinc-700 overflow-hidden text-[12px] font-mono">
-    {filename && (
-      <div className="bg-zinc-100 dark:bg-zinc-800 px-2 py-1 text-zinc-500 dark:text-zinc-400 border-b border-zinc-200 dark:border-zinc-700 flex items-center justify-between">
-        <span>{filename}</span>
-        {(additions || deletions) && (
-          <div className="flex items-center gap-2">
-            {additions && <span className="text-green-600 dark:text-green-400">+{additions}</span>}
-            {deletions && <span className="text-red-500 dark:text-red-400">-{deletions}</span>}
-          </div>
-        )}
-      </div>
-    )}
-    {lines.map((line, i) => {
-      if (line.type === 'remove') {
-        return (
-          <div key={i} className="bg-red-50 dark:bg-red-950/30 px-2 py-0.5 text-red-700 dark:text-red-300">
-            <span className="text-red-400 dark:text-red-500 select-none mr-2">-</span>
-            {line.text}
-          </div>
-        )
-      }
-      if (line.type === 'add') {
-        return (
-          <div key={i} className="bg-green-50 dark:bg-green-950/30 px-2 py-0.5 text-green-700 dark:text-green-300">
-            <span className="text-green-500 select-none mr-2">+</span>
-            {line.text}
-          </div>
-        )
-      }
-      // context
-      return (
-        <div key={i} className="px-2 py-0.5 text-zinc-600 dark:text-zinc-400">
-          <span className="select-none mr-2">&nbsp;</span>
-          {line.text}
+export const Diff = ({ filename, lines }) => {
+  // Calculate additions and deletions dynamically from lines
+  const additions = lines.filter(line => line.type === 'add').length
+  const deletions = lines.filter(line => line.type === 'remove').length
+
+  return (
+    <div className="rounded border border-zinc-200 dark:border-zinc-700 overflow-hidden text-[13px] font-mono">
+      {filename && (
+        <div className="bg-zinc-100 dark:bg-zinc-800 px-2 py-1 text-zinc-500 dark:text-zinc-400 border-b border-zinc-200 dark:border-zinc-700 flex items-center justify-between">
+          <span>{filename}</span>
+          {(additions > 0 || deletions > 0) && (
+            <div className="flex items-center gap-2">
+              {additions > 0 && <span className="text-green-600 dark:text-green-400">+{additions}</span>}
+              {deletions > 0 && <span className="text-red-500 dark:text-red-400">-{deletions}</span>}
+            </div>
+          )}
         </div>
-      )
-    })}
-  </div>
-)
+      )}
+      {lines.map((line, i) => {
+        if (line.type === 'remove') {
+          return (
+            <div key={i} className="bg-red-50 dark:bg-red-950/30 px-2 py-0.5 text-red-700 dark:text-red-300">
+              <span className="text-red-400 dark:text-red-500 select-none mr-2">-</span>
+              {line.text}
+            </div>
+          )
+        }
+        if (line.type === 'add') {
+          return (
+            <div key={i} className="bg-green-50 dark:bg-green-950/30 px-2 py-0.5 text-green-700 dark:text-green-300">
+              <span className="text-green-500 select-none mr-2">+</span>
+              {line.text}
+            </div>
+          )
+        }
+        // context
+        return (
+          <div key={i} className="px-2 py-0.5 text-zinc-600 dark:text-zinc-400">
+            <span className="select-none mr-2">&nbsp;</span>
+            {line.text}
+          </div>
+        )
+      })}
+    </div>
+  )
+}
 
 // Thread reply link component with expandable replies
 const Thread = ({ replies }) => {
