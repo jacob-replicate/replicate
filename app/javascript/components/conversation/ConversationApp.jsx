@@ -16,6 +16,12 @@ const TOPICS = [
   { name: 'storage', code: 'storage' },
 ]
 
+// Timing constants for message streaming
+const TYPING_DURATION = 600
+const MIN_GAP_BETWEEN_AUTHORS = 400
+
+const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms))
+
 /**
  * ConversationView - renders a conversation for a specific topic
  * Exposes the conversation API globally for demo streaming
@@ -33,8 +39,37 @@ const ConversationView = ({ apiRef }) => {
     removeMessage,
     clear,
     setTyping,
+    setExpectedSequence,
     sendUserMessage,
   } = useConversation({ conversationId: null }) // No ActionCable for demo
+
+  // Use refs for functions to avoid stale closures in async streamMessages
+  const addMessageRef = useRef(addMessage)
+  const setTypingRef = useRef(setTyping)
+
+  useEffect(() => {
+    addMessageRef.current = addMessage
+    setTypingRef.current = setTyping
+  })
+
+  /**
+   * Stream messages with typing indicators and delays
+   * Shows typing indicator before each new message, then streams components
+   */
+  const streamMessages = useCallback(async (messagesToStream) => {
+    for (const message of messagesToStream) {
+      // Show typing indicator for this author
+      setTypingRef.current(message.author)
+      await sleep(TYPING_DURATION)
+      setTypingRef.current(false)
+
+      // Add the message with all its components at once
+      addMessageRef.current(message)
+
+      // Small delay between messages
+      await sleep(MIN_GAP_BETWEEN_AUTHORS)
+    }
+  }, [])
 
   // Expose API globally for external streaming
   useEffect(() => {
@@ -44,6 +79,8 @@ const ConversationView = ({ apiRef }) => {
       removeMessage,
       clear,
       setTyping,
+      setExpectedSequence,
+      streamMessages,
       getMessages: () => messages,
       isTyping: () => isTyping,
     }
@@ -71,7 +108,7 @@ const ConversationView = ({ apiRef }) => {
     return () => {
       // Don't clean up global API - let it persist
     }
-  }, [addMessage, updateMessage, removeMessage, clear, setTyping, messages, isTyping, apiRef])
+  }, [addMessage, updateMessage, removeMessage, clear, setTyping, setExpectedSequence, messages, isTyping, apiRef])
 
   // Handle topic change from dropdown
   const handleTopicChange = useCallback((newTopic) => {
@@ -79,14 +116,21 @@ const ConversationView = ({ apiRef }) => {
   }, [navigate])
 
   // Handle message selection (for multiple choice, etc)
-  const handleSelect = useCallback((messageId, optionId) => {
+  // optionText is the text of the selected option (for sending as a message)
+  const handleSelect = useCallback((messageId, optionId, optionText) => {
+    // Update the message to show selection
     updateMessage(messageId, {
       metadata: {
         ...messages.find(m => m.id === messageId)?.metadata,
         selectedId: optionId
       }
     })
-  }, [updateMessage, messages])
+
+    // If we have optionText, send it as the user's response
+    if (optionText) {
+      sendUserMessage(optionText)
+    }
+  }, [updateMessage, messages, sendUserMessage])
 
   return (
     <Conversation
@@ -97,7 +141,7 @@ const ConversationView = ({ apiRef }) => {
       topics={TOPICS}
       currentTopic={currentTopic}
       onTopicChange={handleTopicChange}
-      className="min-h-[500px]"
+      className=""
     />
   )
 }

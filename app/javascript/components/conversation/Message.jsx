@@ -165,30 +165,46 @@ const CodeBlock = ({ code, language }) => {
 }
 
 // Multiple choice component
-const MultipleChoice = ({ question, options, onSelect, selectedId }) => {
+const MultipleChoice = ({ question, options, onSelect, selectedId, disabled = false }) => {
+  const hasSelection = selectedId !== undefined && selectedId !== null
+
   return (
     <div>
       {question && (
         <div className="text-[#1d1c1d] dark:text-zinc-200 text-[15px] mb-3">{question}</div>
       )}
       <div className="flex flex-col bg-gray-50 dark:bg-zinc-800/60 border border-gray-200 dark:border-zinc-600 shadow-sm rounded-lg overflow-hidden">
-        {options.map((option, idx) => (
-          <label
-            key={option.id || idx}
-            className={`text-[15px] flex items-center p-[12px] cursor-pointer hover:bg-indigo-50 dark:hover:bg-indigo-900/40 ${
-              idx < options.length - 1 ? 'border-b border-gray-200 dark:border-zinc-600' : ''
-            }`}
-          >
-            <input
-              type="radio"
-              name={`mc_${question?.slice(0, 20) || 'choice'}`}
-              checked={selectedId === (option.id || idx)}
-              onChange={() => onSelect?.(option.id || idx)}
-              className="h-4 w-4 text-indigo-600 border-gray-400 dark:border-zinc-500 focus:ring-indigo-500 dark:bg-zinc-700"
-            />
-            <span className="ml-3 text-zinc-800 dark:text-zinc-200">{option.text}</span>
-          </label>
-        ))}
+        {options.map((option, idx) => {
+          const optionId = option.id !== undefined ? option.id : idx
+          const isSelected = selectedId === optionId
+          const isDisabled = disabled || (hasSelection && !isSelected)
+          const canInteract = !disabled && !hasSelection
+
+          return (
+            <label
+              key={optionId}
+              className={`text-[15px] flex items-center p-[12px] transition-colors ${
+                idx < options.length - 1 ? 'border-b border-gray-200 dark:border-zinc-600' : ''
+              } ${
+                isSelected
+                  ? 'bg-indigo-100 dark:bg-indigo-900/50'
+                  : isDisabled
+                    ? 'opacity-50 cursor-default'
+                    : 'cursor-pointer hover:bg-indigo-50 dark:hover:bg-indigo-900/40'
+              }`}
+            >
+              <input
+                type="radio"
+                name={`mc_${question?.slice(0, 20) || 'choice'}_${options.length}`}
+                checked={isSelected}
+                disabled={isDisabled}
+                onChange={() => canInteract && onSelect?.(optionId, option.text)}
+                className="h-4 w-4 text-indigo-600 border-gray-400 dark:border-zinc-500 focus:ring-indigo-500 dark:bg-zinc-700 disabled:cursor-default"
+              />
+              <span className="ml-3 text-zinc-800 dark:text-zinc-200">{option.text}</span>
+            </label>
+          )
+        })}
       </div>
     </div>
   )
@@ -223,7 +239,9 @@ const AlertBlock = ({ severity, title, description, metadata }) => {
  * Main Message component - renders different message types
  */
 export const Message = ({ message, onSelect }) => {
-  const { author, content, type, metadata, timestamp, edited } = message
+  const { author, components, reactions, thread, timestamp, edited } = message
+  // Legacy support for old structure
+  const { content, type, metadata } = message
   const { name, avatar } = author || {}
 
   // Format timestamp
@@ -231,8 +249,68 @@ export const Message = ({ message, onSelect }) => {
     ? new Date(timestamp).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })
     : null
 
-  // Render content based on type
+  // Render a single component
+  const renderComponent = (component, index) => {
+    switch (component.type) {
+      case 'alert':
+        return (
+          <AlertBlock
+            key={index}
+            severity={component.severity}
+            title={component.title}
+            description={component.description}
+            metadata={component.meta}
+          />
+        )
+
+      case 'code':
+        return <CodeBlock key={index} code={component.content} language={component.language} />
+
+      case 'diff':
+        return (
+          <Diff
+            key={index}
+            filename={component.filename}
+            lines={component.lines || []}
+            additions={component.additions}
+            deletions={component.deletions}
+          />
+        )
+
+      case 'multiple_choice':
+        return (
+          <MultipleChoice
+            key={index}
+            question={component.content}
+            options={component.options || []}
+            onSelect={(id, optionText) => onSelect?.(message.id, id, optionText)}
+            selectedId={component.selectedId}
+            disabled={component.disabled}
+          />
+        )
+
+      case 'text':
+      default:
+        return (
+          <div key={index} className="text-[#1d1c1d] dark:text-zinc-200 text-[15px] whitespace-pre-wrap">
+            {component.content}
+          </div>
+        )
+    }
+  }
+
+  // Render content - supports both new components array and legacy single type
   const renderContent = () => {
+    // New structure with components array
+    if (components && components.length > 0) {
+      return (
+        <div className="space-y-2">
+          {components.map((component, index) => renderComponent(component, index))}
+        </div>
+      )
+    }
+
+    // Legacy structure with single type/content
     switch (type) {
       case 'alert':
         return (
@@ -262,14 +340,15 @@ export const Message = ({ message, onSelect }) => {
           <MultipleChoice
             question={content}
             options={metadata?.options || []}
-            onSelect={(id) => onSelect?.(message.id, id)}
+            onSelect={(id, optionText) => onSelect?.(message.id, id, optionText)}
             selectedId={metadata?.selectedId}
+            disabled={metadata?.disabled}
           />
         )
 
       case 'text':
       default:
-        // Parse content for special formatting
+        if (!content) return null
         return (
           <div className="text-[#1d1c1d] dark:text-zinc-200 text-[15px] whitespace-pre-wrap">
             {content}
@@ -302,15 +381,15 @@ export const Message = ({ message, onSelect }) => {
         <div className="mt-0.5">
           {renderContent()}
         </div>
-        {metadata?.reactions && (
+        {(reactions || metadata?.reactions) && (
           <div className="mt-2 flex gap-1">
-            {metadata.reactions.map((r, i) => (
+            {(reactions || metadata?.reactions).map((r, i) => (
               <EmojiReaction key={i} emoji={r.emoji} count={r.count} />
             ))}
           </div>
         )}
-        {metadata?.thread && (
-          <ThreadReplies replies={metadata.thread} />
+        {(thread || metadata?.thread) && (
+          <ThreadReplies replies={thread || metadata?.thread} />
         )}
       </div>
     </div>

@@ -10,24 +10,27 @@ const generateId = () => `msg_${Date.now()}_${Math.random().toString(36).slice(2
  * @param {Object} options
  * @param {string} options.conversationId - UUID for the conversation (for ActionCable)
  * @param {boolean} options.autoSubscribe - Automatically subscribe to ActionCable (default: true)
+ * @param {number} options.initialSequence - Starting sequence number (default: 0)
  * @returns {Object} Conversation state and methods
  */
-export function useConversation({ conversationId, autoSubscribe = true } = {}) {
+export function useConversation({ conversationId, autoSubscribe = true, initialSequence = 0 } = {}) {
   const [messages, setMessages] = useState([])
   const [isTyping, setIsTyping] = useState(false)
   const [isConnected, setIsConnected] = useState(false)
   const isSubscribedRef = useRef(false)
 
+  // Sequence tracking for out-of-order message handling
+  const messageQueueRef = useRef({})
+  const expectedSequenceRef = useRef(initialSequence)
+
   // Add a message to the conversation
   const addMessage = useCallback((msgPartial) => {
     const message = {
+      ...msgPartial,
       id: msgPartial.id || generateId(),
-      content: msgPartial.content || '',
       author: msgPartial.author || { name: 'Unknown' },
       timestamp: msgPartial.timestamp || new Date(),
       isSystem: msgPartial.isSystem ?? true,
-      type: msgPartial.type || 'text',
-      metadata: msgPartial.metadata || {},
     }
     setMessages(prev => [...prev, message])
     return message.id
@@ -49,6 +52,14 @@ export function useConversation({ conversationId, autoSubscribe = true } = {}) {
   const clear = useCallback(() => {
     setMessages([])
     setIsTyping(false)
+    // Reset sequence tracking
+    messageQueueRef.current = {}
+    expectedSequenceRef.current = initialSequence
+  }, [initialSequence])
+
+  // Set expected sequence (useful when loading existing conversations)
+  const setExpectedSequence = useCallback((seq) => {
+    expectedSequenceRef.current = seq
   }, [])
 
   // Set typing indicator
@@ -98,19 +109,23 @@ export function useConversation({ conversationId, autoSubscribe = true } = {}) {
     // Mark this conversation as active
     conversationManager.setActive(conversationId)
 
+    // Handler for incoming messages (includes sequence support)
+    const handleMessage = (message) => {
+      addMessage({
+        id: message.id,
+        content: message.content,
+        author: message.author,
+        isSystem: message.is_system,
+        type: message.message_type || message.type || 'text',
+        metadata: message.metadata,
+        sequence: message.sequence, // Pass sequence for ordering
+      })
+    }
+
     // Subscribe or update callbacks
     if (!conversationManager.isSubscribed(conversationId)) {
       conversationManager.subscribe(conversationId, {
-        onMessage: (message) => {
-          addMessage({
-            id: message.id,
-            content: message.content,
-            author: message.author,
-            isSystem: message.is_system,
-            type: message.message_type || 'text',
-            metadata: message.metadata,
-          })
-        },
+        onMessage: handleMessage,
         onTyping: setTypingIndicator,
         onConnected: () => setIsConnected(true),
         onDisconnected: () => setIsConnected(false),
@@ -119,16 +134,7 @@ export function useConversation({ conversationId, autoSubscribe = true } = {}) {
     } else {
       // Update callbacks for existing subscription
       conversationManager.updateCallbacks(conversationId, {
-        onMessage: (message) => {
-          addMessage({
-            id: message.id,
-            content: message.content,
-            author: message.author,
-            isSystem: message.is_system,
-            type: message.message_type || 'text',
-            metadata: message.metadata,
-          })
-        },
+        onMessage: handleMessage,
         onTyping: setTypingIndicator,
         onConnected: () => setIsConnected(true),
         onDisconnected: () => setIsConnected(false),
@@ -157,6 +163,7 @@ export function useConversation({ conversationId, autoSubscribe = true } = {}) {
     removeMessage,
     clear,
     setTyping: setTypingIndicator,
+    setExpectedSequence,
     sendUserMessage,
   }
 }
