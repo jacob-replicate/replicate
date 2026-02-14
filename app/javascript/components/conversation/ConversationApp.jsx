@@ -23,13 +23,12 @@ const MIN_GAP_BETWEEN_AUTHORS = 400
 const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms))
 
 /**
- * ConversationView - renders a conversation for a specific topic
+ * ConversationView - renders a conversation for a specific UUID
  * Exposes the conversation API globally for demo streaming
  */
 const ConversationView = ({ apiRef }) => {
-  const { topic } = useParams()
+  const { uuid } = useParams()
   const navigate = useNavigate()
-  const currentTopic = TOPICS.find(t => t.code === topic) || TOPICS[0]
   const [channelName, setChannelName] = useState('#ops-alerts')
 
   const {
@@ -47,11 +46,53 @@ const ConversationView = ({ apiRef }) => {
   // Use refs for functions to avoid stale closures in async streamMessages
   const addMessageRef = useRef(addMessage)
   const setTypingRef = useRef(setTyping)
+  const updateMessageRef = useRef(updateMessage)
 
   useEffect(() => {
     addMessageRef.current = addMessage
     setTypingRef.current = setTyping
+    updateMessageRef.current = updateMessage
   })
+
+  /**
+   * Animate reactions ticking up to their final counts
+   * Runs async/non-blocking - doesn't hold up message streaming
+   */
+  const animateReactions = useCallback((messageId, finalReactions) => {
+    if (!finalReactions || finalReactions.length === 0) return
+
+    // Start after 3+ seconds
+    const baseDelay = 3000 + Math.random() * 2000
+
+    setTimeout(() => {
+      // Initialize all reactions at count 0
+      const currentCounts = finalReactions.map(() => 0)
+      updateMessageRef.current(messageId, {
+        reactions: finalReactions.map((r, i) => ({ ...r, count: currentCounts[i] }))
+      })
+
+      // For each reaction, tick up to final count with random intervals
+      finalReactions.forEach((reaction, reactionIndex) => {
+        let tickCount = 0
+        const tickUp = () => {
+          tickCount++
+          currentCounts[reactionIndex] = tickCount
+
+          updateMessageRef.current(messageId, {
+            reactions: finalReactions.map((r, i) => ({ ...r, count: currentCounts[i] }))
+          })
+
+          if (tickCount < reaction.count) {
+            // Random interval between ticks (300ms - 1200ms)
+            setTimeout(tickUp, 300 + Math.random() * 900)
+          }
+        }
+
+        // Stagger start of each reaction's ticking
+        setTimeout(tickUp, Math.random() * 1500)
+      })
+    }, baseDelay)
+  }, [])
 
   /**
    * Stream messages with typing indicators and delays
@@ -59,6 +100,8 @@ const ConversationView = ({ apiRef }) => {
    *
    * Thread replies (messages with parent_message_id) are added instantly
    * without typing indicators - they just update the thread reply count
+   *
+   * Reactions are animated asynchronously after the message appears
    */
   const streamMessages = useCallback(async (messagesToStream) => {
     for (const message of messagesToStream) {
@@ -73,13 +116,21 @@ const ConversationView = ({ apiRef }) => {
       await sleep(TYPING_DURATION)
       setTypingRef.current(false)
 
-      // Add the message with all its components at once
-      addMessageRef.current(message)
+      // Extract reactions to animate separately
+      const { reactions, ...messageWithoutReactions } = message
+
+      // Add the message without reactions first
+      addMessageRef.current(messageWithoutReactions)
+
+      // Animate reactions asynchronously (non-blocking)
+      if (reactions && reactions.length > 0) {
+        animateReactions(message.id, reactions)
+      }
 
       // Small delay between messages
       await sleep(MIN_GAP_BETWEEN_AUTHORS)
     }
-  }, [])
+  }, [animateReactions])
 
   // Expose API globally for external streaming
   useEffect(() => {
@@ -182,6 +233,9 @@ const ConversationAppInner = ({ apiRef }) => {
     navigate(`/conversations/${conversationId}`)
   }, [navigate])
 
+  // Default conversation UUID for the demo
+  const defaultConversationId = 'c9f2e8d1-3b4a-5c6d-7e8f-9a0b1c2d3e4f'
+
   return (
     <div>
       {/* Topic navigation bar - outside conversation container */}
@@ -189,8 +243,7 @@ const ConversationAppInner = ({ apiRef }) => {
 
       {/* Routed conversation view */}
       <Routes>
-        <Route path="/" element={<Navigate to="/networking" replace />} />
-        <Route path="/:topic" element={<ConversationView apiRef={apiRef} />} />
+        <Route path="/" element={<Navigate to={`/conversations/${defaultConversationId}`} replace />} />
         <Route path="/conversations/:uuid" element={<ConversationView apiRef={apiRef} />} />
       </Routes>
 

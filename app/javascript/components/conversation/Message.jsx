@@ -261,10 +261,13 @@ const AlertBlock = ({ severity, title, description, metadata }) => {
  * Main Message component - renders different message types
  */
 export const Message = ({ message, onSelect, threadReplies }) => {
-  const { author, components, reactions, thread, timestamp, edited } = message
+  const { author, components, reactions, thread, created_at, updated_at } = message
   // Legacy support for old structure
-  const { content, type, metadata } = message
+  const { content, type, metadata, timestamp, edited } = message
   const { name, avatar } = author || {}
+
+  // Derive edited status from updated_at (or use legacy edited field)
+  const isEdited = edited || (updated_at && updated_at !== created_at)
 
   // Convert threadReplies (full messages) to the format ThreadReplies component expects
   // This allows both the old `thread` array format and the new `parent_message_id` approach
@@ -277,8 +280,8 @@ export const Message = ({ message, onSelect, threadReplies }) => {
       return threadReplies.map(reply => ({
         avatar: reply.author?.avatar,
         name: reply.author?.name,
-        time: reply.timestamp
-          ? new Date(reply.timestamp).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })
+        time: reply.created_at
+          ? new Date(reply.created_at).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })
           : null,
         text: reply.components?.[0]?.content || reply.content || '',
       }))
@@ -286,9 +289,9 @@ export const Message = ({ message, onSelect, threadReplies }) => {
     return null
   }, [thread, metadata?.thread, threadReplies])
 
-  // Format timestamp
-  const timeStr = timestamp
-    ? new Date(timestamp).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })
+  // Format timestamp - prefer created_at, fall back to legacy timestamp
+  const timeStr = (created_at || timestamp)
+    ? new Date(created_at || timestamp).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })
     : null
 
   // Render a single component
@@ -416,7 +419,7 @@ export const Message = ({ message, onSelect, threadReplies }) => {
           {timeStr && (
             <span className="text-[#616061] dark:text-zinc-500 text-[12px]">{timeStr}</span>
           )}
-          {edited && (
+          {isEdited && (
             <span className="text-[#616061] dark:text-zinc-500 text-[11px]">(edited)</span>
           )}
         </div>

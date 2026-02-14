@@ -7,6 +7,7 @@ const DNS_INCIDENT_MESSAGES = [
   {
     id: 'msg_1',
     author: { name: 'PagerDuty', avatar: '/jacob-square.jpg' },
+    created_at: '2026-02-14T10:30:00',
     components: [
       {
         sequence: 1,
@@ -25,6 +26,7 @@ const DNS_INCIDENT_MESSAGES = [
   {
     id: 'msg_2',
     author: { name: 'maya', avatar: '/profile-photo-3.jpg' },
+    created_at: '2026-02-14T10:31:00',
     components: [
       {
         sequence: 2,
@@ -44,6 +46,7 @@ options ndots:5  # <- every lookup tries 5 suffixes first`,
   {
     id: 'msg_3',
     author: { name: 'daniel', avatar: '/profile-photo-2.jpg' },
+    created_at: '2026-02-14T10:32:00',
     components: [
       {
         sequence: 4,
@@ -72,7 +75,7 @@ options ndots:5  # <- every lookup tries 5 suffixes first`,
     id: 'msg_3_reply_1',
     parent_message_id: 'msg_3',
     author: { name: 'sarah', avatar: '/profile-photo-1.jpg' },
-    timestamp: '2026-02-14T03:16:00',
+    created_at: '2026-02-14T10:33:00',
     components: [
       { sequence: 5.1, type: 'text', content: 'that was me... thought it would catch DNS outages early 😅' }
     ],
@@ -80,6 +83,8 @@ options ndots:5  # <- every lookup tries 5 suffixes first`,
   {
     id: 'msg_4',
     author: { name: 'maya', avatar: '/profile-photo-3.jpg' },
+    created_at: '2026-02-14T10:34:00',
+    updated_at: '2026-02-14T10:35:00',
     components: [
       {
         sequence: 6,
@@ -93,7 +98,7 @@ options ndots:5  # <- every lookup tries 5 suffixes first`,
     id: 'msg_3_reply_2',
     parent_message_id: 'msg_3',
     author: { name: 'daniel', avatar: '/profile-photo-2.jpg' },
-    timestamp: '2026-02-14T03:17:00',
+    created_at: '2026-02-14T10:34:30',
     components: [
       { sequence: 6.1, type: 'text', content: '200 pods × 10 queries/sec = 2000 DNS queries/sec' }
     ],
@@ -101,6 +106,7 @@ options ndots:5  # <- every lookup tries 5 suffixes first`,
   {
     id: 'msg_5',
     author: { name: 'replicate.info', avatar: '/logo.png' },
+    created_at: '2026-02-14T10:35:00',
     components: [
       {
         sequence: 7,
@@ -119,7 +125,7 @@ options ndots:5  # <- every lookup tries 5 suffixes first`,
     id: 'msg_3_reply_3',
     parent_message_id: 'msg_3',
     author: { name: 'sarah', avatar: '/profile-photo-1.jpg' },
-    timestamp: '2026-02-14T03:17:30',
+    created_at: '2026-02-14T10:35:30',
     components: [
       { sequence: 7.1, type: 'text', content: 'oh god' }
     ],
@@ -127,6 +133,7 @@ options ndots:5  # <- every lookup tries 5 suffixes first`,
   {
     id: 'msg_6',
     author: { name: 'daniel', avatar: '/profile-photo-2.jpg' },
+    created_at: '2026-02-14T10:36:00',
     components: [
       {
         sequence: 8,
@@ -139,7 +146,7 @@ options ndots:5  # <- every lookup tries 5 suffixes first`,
     id: 'msg_3_reply_4',
     parent_message_id: 'msg_3',
     author: { name: 'maya', avatar: '/profile-photo-3.jpg' },
-    timestamp: '2026-02-14T03:17:45',
+    created_at: '2026-02-14T10:36:30',
     components: [
       { sequence: 8.1, type: 'text', content: 'CoreDNS default is 1000 qps per instance lol' }
     ],
@@ -147,6 +154,7 @@ options ndots:5  # <- every lookup tries 5 suffixes first`,
   {
     id: 'msg_7',
     author: { name: 'maya', avatar: '/profile-photo-3.jpg' },
+    created_at: '2026-02-14T10:37:00',
     components: [
       {
         sequence: 9,
@@ -165,7 +173,7 @@ options ndots:5  # <- every lookup tries 5 suffixes first`,
     id: 'msg_3_reply_5',
     parent_message_id: 'msg_3',
     author: { name: 'daniel', avatar: '/profile-photo-2.jpg' },
-    timestamp: '2026-02-14T03:18:00',
+    created_at: '2026-02-14T10:37:30',
     components: [
       { sequence: 10.1, type: 'text', content: 'we have 2 replicas so you literally doubled our max capacity' }
     ],
@@ -173,6 +181,7 @@ options ndots:5  # <- every lookup tries 5 suffixes first`,
   {
     id: 'msg_8',
     author: { name: 'daniel', avatar: '/profile-photo-2.jpg' },
+    created_at: '2026-02-14T10:38:00',
     components: [
       {
         sequence: 11,
@@ -188,7 +197,8 @@ options ndots:5  # <- every lookup tries 5 suffixes first`,
     id: 'msg_3_reply_6',
     parent_message_id: 'msg_3',
     author: { name: 'sarah', avatar: '/profile-photo-1.jpg' },
-    timestamp: '2026-02-14T03:18:15',
+    created_at: '2026-02-14T10:38:30',
+    updated_at: '2026-02-14T10:39:00',
     components: [
       { sequence: 11.1, type: 'text', content: 'rolling back now 🏃‍♀️' }
     ],
@@ -196,6 +206,7 @@ options ndots:5  # <- every lookup tries 5 suffixes first`,
   {
     id: 'msg_9',
     author: { name: 'replicate.info', avatar: '/logo.png' },
+    created_at: '2026-02-14T10:39:00',
     components: [
       {
         sequence: 12,
@@ -213,7 +224,7 @@ options ndots:5  # <- every lookup tries 5 suffixes first`,
     id: 'msg_3_reply_7',
     parent_message_id: 'msg_3',
     author: { name: 'maya', avatar: '/profile-photo-3.jpg' },
-    timestamp: '2026-02-14T03:18:30',
+    created_at: '2026-02-14T10:39:30',
     components: [
       { sequence: 12.1, type: 'text', content: '🙏' }
     ],
@@ -221,6 +232,7 @@ options ndots:5  # <- every lookup tries 5 suffixes first`,
   {
     id: 'msg_10',
     author: { name: 'maya', avatar: '/profile-photo-3.jpg' },
+    created_at: '2026-02-14T10:40:00',
     components: [
       {
         sequence: 13,
@@ -232,6 +244,7 @@ options ndots:5  # <- every lookup tries 5 suffixes first`,
   {
     id: 'msg_11',
     author: { name: 'daniel', avatar: '/profile-photo-2.jpg' },
+    created_at: '2026-02-14T10:41:00',
     components: [
       {
         sequence: 14,
@@ -246,6 +259,7 @@ options ndots:5  # <- every lookup tries 5 suffixes first`,
   {
     id: 'msg_12',
     author: { name: 'replicate.info', avatar: '/logo.png' },
+    created_at: '2026-02-14T10:42:00',
     components: [
       {
         sequence: 15,
