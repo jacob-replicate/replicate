@@ -96,7 +96,8 @@ options ndots:5  # <- every lookup tries 5 suffixes first`,
       {
         sequence: 7,
         type: 'multiple_choice',
-        content: "What's the core issue with this DNS health check pattern?",
+        question: "What's the core issue with this DNS health check pattern?",
+        selected: 'a',
         options: [
           { id: 'a', text: 'High-frequency polling overwhelms shared infrastructure like CoreDNS' },
           { id: 'b', text: 'External DNS lookups should use a caching resolver' },

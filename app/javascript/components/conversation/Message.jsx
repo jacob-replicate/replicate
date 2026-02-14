@@ -281,10 +281,10 @@ export const Message = ({ message, onSelect }) => {
         return (
           <MultipleChoice
             key={index}
-            question={component.content}
+            question={component.question}
             options={component.options || []}
             onSelect={(id, optionText) => onSelect?.(message.id, id, optionText)}
-            selectedId={component.selectedId}
+            selectedId={component.selected}
             disabled={component.disabled}
           />
         )
