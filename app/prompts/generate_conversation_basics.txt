@@ -1,0 +1,148 @@
+CONTEXT:
+You are generating metadata for a single conversation - one entry on the cover of a book for senior engineers.
+
+This conversation:
+- Names a failure mode, not a feature
+- Exposes a lie engineers believe until production breaks it
+- Assumes competence - no explanations, no comfort, no teaching
+
+This conversation is NOT:
+- A blog post, tutorial, or lesson
+- A definition or overview of a concept
+- "Best practices" or advice
+- A broad category (BAD: "Authentication", "Caching")
+- Beginner-friendly content
+
+INPUTS:
+- topic_name: {{CONTEXT_TOPIC_NAME}}
+- topic_description: {{CONTEXT_TOPIC_DESCRIPTION}}
+- conversation_generation_intent: {{CONTEXT_CONVERSATION_GENERATION_INTENT}}
+
+CRITICAL REQUIREMENT - TOPIC RELEVANCE:
+This conversation must clearly belong under "{{CONTEXT_TOPIC_NAME}}". If the generation intent drifts to unrelated territory, adapt or reject it.
+
+CRITICAL REQUIREMENT - CONVERSATION NAMING:
+The generation_intent likely contains "Create a conversation called '[Name]'..."
+Extract and use this EXACT name. It was chosen to be distinct from other conversations.
+
+If no explicit name is provided, derive a name that:
+- Implies the pain (GOOD: "CPU Throttling", BAD: "CPU Resource Management")
+- Is a failure mode, not a feature (GOOD: "Split-Brain", BAD: "Consensus Algorithms")
+- Would be what a staff engineer mutters at 3am
+- Is 2-4 words maximum
+
+NAMING PHILOSOPHY:
+The name is an accusation, not a label.
+
+GOOD names imply pain:
+- "CPU Throttling" → you're being slowed down and don't know it
+- "Split-Brain" → both sides accepted writes
+- "Session Fixation" → the attacker rode in on your session
+- "Replica Lag" → your read was stale
+
+BAD names are features or mechanisms:
+- "Container Resources" → which failure mode?
+- "Authentication Flow" → what breaks?
+- "Database Consistency" → too broad
+
+REQUIREMENTS:
+
+conversation_name:
+- 2-4 words MAX. Shorter is better.
+- The name implies the pain
+- GOOD: "CPU Throttling", "Session Fixation", "Split-Brain", "Replica Lag"
+- BAD: "Resource Management", "Security Mechanisms", "Consistency Patterns"
+- No verbs, no "Understanding...", no "How to..."
+- What would a staff engineer call this in a post-mortem title?
+
+conversation_description:
+- Maximum 200 characters.
+- Start with a punchy observation that names the lie (1 sentence)
+- Continue the thought with concrete consequences (1-2 more sentences)
+- Write as one flowing paragraph, not choppy statements
+- Use second-person ("your", "you") - speak directly to the reader
+- End with a vivid image of the failure state
+
+DESCRIPTION EXAMPLES (note the flow):
+- "Your container shows 50% CPU but the app crawls. The kernel is throttling you mid-cycle while metrics claim resources are available. Production drags while dashboards lie."
+- "The attacker set your session ID before you logged in. Your framework preserved it across the authentication boundary, so when you authenticated, you authenticated them."
+
+DESCRIPTION TONE RULES:
+- Assume competence - never explain terminology
+- Never say "best practice"
+- Never comfort the reader
+- Write as if time and credibility were lost
+
+DESCRIPTION ANTI-PATTERNS (never use these words):
+- No "synchronization", "propagation", "amplification", "contention"
+- No "cascading", "compounding", "mismanaged", "misconfigured"
+- No "ensuring", "maintaining", "leveraging", "utilizing"
+- No "can lead to", "may cause", "might result in"
+
+FORBIDDEN PUNCTUATION (validation will reject these):
+- NEVER use em dashes (—). Use commas, periods, or rewrite the sentence.
+- NEVER use semicolons (;). Split into separate sentences instead.
+- NEVER use single quotes (') around phrases like 'this'. Apostrophes in contractions (don't, it's) are fine.
+- NEVER use double quotes (") around phrases.
+- Only use: commas, periods, apostrophes in contractions.
+
+DESCRIPTION PATTERN:
+BAD (choppy): "Clock drift across distributed systems can lead to rate limiting inconsistencies."
+GOOD (flows): "Your servers disagree about what time it is. Rate limits on one machine reject requests another would accept. Audit logs show events in impossible orders. Nobody trusts timestamps anymore."
+
+BAD (choppy): "Misconfigured cgroup limits cause cascading CPU throttling issues."
+GOOD (flows): "Your container shows 50% CPU but the app crawls. The kernel is throttling you mid-cycle while metrics claim resources are available. Engineers blame application code for weeks."
+
+BAD (uses forbidden quotes): "Session fixation vulnerabilities occur when session IDs aren't regenerated."
+GOOD (flows): "The attacker set your session ID before you logged in. Your framework preserved it across the authentication boundary. When you authenticated, you authenticated them too."
+
+conversation_code:
+- Lowercase, hyphen-separated URL slug from conversation_name
+- Maximum 25 characters (abbreviate if needed)
+- e.g., "cpu-throttling", "split-brain", "session-fixation"
+
+refined_generation_intent:
+- This guides ALL future content generation for this conversation
+- Start with: "This conversation exposes the lie that [belief]. In reality, [truth]."
+- 5-7 dense sentences minimum. Be EXTREMELY detailed.
+
+THE LIE STRUCTURE (required):
+- What engineers BELIEVE (the comfortable assumption)
+- What ACTUALLY happens (the uncomfortable truth)
+- Why they MISDIAGNOSE it (what they blame instead)
+- When it SURFACES (production conditions that expose it)
+- What it COSTS (time, data, credibility)
+
+MUST INCLUDE:
+- 4-6 concrete failure scenarios (specific, not abstract)
+- Common wrong assumptions engineers hold
+- Edge cases that expose the gap between docs and production
+- Real incidents or companies when known (GitHub 2018, Cloudflare, etc.)
+- What breaks at 3am that isn't on any dashboard
+- The delta between "I understand the concept" and "I've debugged this"
+
+TONE:
+- Post-incident writing
+- No comfort, no "you will learn"
+- Assume the reader has already been burned and wants to understand why
+
+OUTPUT FORMAT:
+Return a single valid JSON object with exactly these keys: conversation_name, conversation_description, conversation_code, refined_generation_intent
+
+IMPORTANT: Return ONLY the raw JSON object. Do NOT wrap it in markdown code blocks.
+
+EXAMPLE OUTPUT:
+{
+  "conversation_name": "CPU Throttling",
+  "conversation_description": "Your container shows 50% CPU but the app crawls. The kernel is throttling you mid-cycle while metrics claim resources are available. Engineers blame application code for weeks.",
+  "conversation_code": "cpu-throttling",
+  "refined_generation_intent": "This conversation exposes the lie that CPU metrics tell you how much compute your container is using. In reality, cgroup throttling means your container hits its quota mid-cycle and waits, frozen, while metrics still show 'available' CPU. Engineers blame application code, GC pauses, or network latency because the dashboard says CPU is fine. Scenarios include: a container with 500m CPU that performs worse than the same code with 250m (due to quota timing), latency spikes that correlate with nothing in APM, p99 latency that varies wildly while p50 stays constant, and metrics showing 40% CPU while the process is throttled 30% of the time. Engineers assume 'CPU limit' means 'maximum CPU' when it actually means 'CPU budget per scheduling period.' The throttling counter in cgroup stats is the only honest metric, but nobody looks at it. This surfaces under bursty workloads - request handling that needs 200ms of CPU but gets spread across multiple scheduling windows, each hitting the quota. The real cost isn't CPU - it's the weeks spent optimizing code that was never slow."
+}
+
+ANOTHER EXAMPLE (showing the lie structure):
+{
+  "conversation_name": "Session Fixation",
+  "conversation_description": "The attacker set your session ID before you logged in. Your framework preserved it across the authentication boundary. When you authenticated, they did too.",
+  "conversation_code": "session-fixation",
+  "refined_generation_intent": "This conversation exposes the lie that login creates a fresh session. In reality, many frameworks preserve the session ID across authentication boundaries, meaning an attacker who sets the session ID pre-auth gains access post-auth. Engineers believe 'we use a secure framework' provides protection when the framework only provides the tools, not the guarantee. Scenarios include: session IDs passed in URLs that survive login, cookie-based sessions that aren't regenerated on privilege change, and SSO flows where the session predates identity. The fix looks simple (regenerate on login) but breaks applications that store pre-auth state in the session. Real incidents: applications where 'remember me' checkboxes preserved fixated sessions, password reset flows that didn't regenerate, and step-up authentication that kept the original session. Engineers misdiagnose this as 'session hijacking' when the session was never hijacked - it was controlled from the start. The uncomfortable truth: most session implementations are vulnerable by default and only become secure through explicit, tested configuration."
+}

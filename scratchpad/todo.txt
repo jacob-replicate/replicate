@@ -1,127 +1,32 @@
+- Conversations don't need to live in a plain white box. You can make it resemble a Slack chat, PR review, design doc update, terminal code fix, etc.
+- Click "New SEV" button. Show a new one ASAP, along with a link to browser after it reloads. Amazon "one click buy"
 - IBM disclosure. Make sure to update the dates on your terms/privacy/security pages to be recent.
-- Code editor + Run button. Hide the regular textarea.
-
-- Mix in different avatars, not just replicate.info - Replicate is the narrator, other engineers push the story forward.
-- New Element Types:
-    - Prompt to ask what type of elements to include, and in what order, and for what reason (so you can manually grade/debug).
-    - Runbooks (e.g., "@here - I found this runbook Jesse wrote for a similar issue last year. Any concerns with me running it in the prod console?" - Include that context somehow)
-    - Transition. Give precise feedback WITHOUT a question in 1st message. Message 2 has a new shape + question. Never leave them hanging, but still move forward.
-        - Checkboxes (choose all that apply)
-        - Good/bad ideas from coworkers. Show their titles. Let them break stuff. Let them ask for feedback on bad ideas. Mix it up. Keep track of characters.
-            - find_persona_by_code (e.g., PERSONAS.find_by { |x| md5_hash(x) == prev_messages.last.persona_hash })
-            - @here - I'm going to try blah blah
-            - Have conversations going on dynamically. If you start typing, other people stop.
-        - Code diffs
-        - Resource selector. Show the file structure, the logs, etc. Let them dig through.
-            - Recursively cache the full file list for incident early on? Do recursive prompts, not just one big one.
-            - Add the selector into the initial prompt to make it more engaging.
-
-        - Reordering (e.g., how should we sequence these actions)
-        - Confidence slider. State their thinking back to them. No cuts. Just clearly communicating it (and maybe showing why it's wrong). Then give them an out.
-        - Status update for leadership grading/editing
-        - New exceptions + stack traces to debug
-        - SQL runner. Just make GPT "run" the SQL and return results based off the schema shown.
-        - Line chart
-        - Histogram
-        - Yes/No buttons
-
-- Threaded conversations (i.e., forks that you display on the same page)
-- Disable all radio button on clicks when sending message. You can click give me a hint + answer old radios.
-- Article suggestion card on mobile to make it standout (gray background, border radius, padding)
-- Clean up "question_format" for turn 2. You're giving inconsistent instructions in the "reply =" line. Fill the CTA context with that turn 2 instruction.
-- Turn 4: Multiple choice, but only if short answer? Long answer implies they're ready to type?
-- Stop scroling to the top of the last message when you send a new one. Scroll to the actual bottom of the page then.
-- Stop IP banning scrapers, just malicious rate limits.
-- Make 4th question not super hard yet. You just transitioned off the first text 1v1 question. Needs to still be light.
-- Better error handling + retries. Don't just let the loop die.
-- Share button
-- Don't ask yes/no CTA if you're showing 3 option multiple choice (or hide the options temporarily)
-- Mobile conversations. Shorter paragraphs, shorter file names (service on newline, not # character)
+- Make incident generation intents align with your old INCIDENTS constant format.
+- Rerender the multiple choice questions on page reload + back button
+- Merge progress with existing account after logging in
+- Make sure you're returning to old convos in static/index. You're forking every time, which is bad.
+- Make the conversation descriptions closer to incidents, not invariants?
+- Review the list of topics again. Do they all align with incident-focused conversations in V1?
+- Add another engineer during a handoff. Hey Jacob, I can take this one over. Want to try another incident?
+- Replace the navbar filesystem breadcrumbs. Not as relevant anymore. Make a callout to other incidents somehow.
 - Meta tags + sharing images/text
-- Follow up with additional messages like 30 seconds in. Keep them hooked. Thinking hard? Great, I'm typing now at random to anthropomorphize the AI.
-- Put user agent on BannedIp table + add better logging.
-- a11y
-
------------
-
-Paid Version:
-- Monthly email report format for leadership. Make it a PDF that Rails renders, which you can attach in Postmark email, that they can forward to VP.
-- Customization of prompts the team uses. Team reports for tech leads + EMs + the team at large. Reports are never bad. Green or yellow, never red.
-- Conversation sharing. -- "This tripped me up. Share the insight in my team's feed, with a link to the full convo if they're curious."
-- Shared weekly drills so everyone is on the same page. Make it part of the UI itself. It should be the default.
-- Team-wide blind spot insights.
-- Additional tracks? Security, GRC, Go, etc.
-- You need to make logging in as a free user enticing. Once they're logged in (e.g., to view their growth + personalized incidents), it's easier to get EM onboard.
-- IAM + GRC for data/access controls. Public/free site, but you're still typing your data into it.
--------------
-
-- Action Bar - Make the CTAs more visible
-    - Give me a hint
-    - Write me an article
-    - View incident library
-    - Switch difficulty
-    - Share with friends / export screenshot
-    - Fix a new SEV
-    - Timer
-    - End incident + teach me the lesson (i.e., print an article -> make coaching return an ArticleReply if needed).
-
-- Mid-conversation Nudges
-    - Make this way more visual. 1920x1080 thumbnails with tags (redis, k8s, linux, etc)
-    - Accordions (Roblox/Fortnite style) that hug the edges of the window with a separate background color. Horizontal scroll through topics.
-
-- Incident library. Get them browsing for more content. Add key article convos into the list. Dark mode on the homepage so it doesn't blend in?
-- Periodic progress reports throughout the conversation. Visual.
-- Add a "change difficulty" nudge in the conversation?
-
-Security / Ops
-- Keep a pool of pre-generated conversation intros to reduce AI cost, speed up loading, and lower risk of people spamming your homepage and racking up LLM bills.
-- Add reason to IP bans.
-- Cloudflare
-
-- New elements:
-    - QOL: New script to judge the conversation so far, and figure out which elements from the list below to include. Don't clog up the prompt with all the instructions.
-    - What kind of elements would land hard with returning users?
-        - Want to use this at work? Send this tl;dr to whoever leads the team.
-        - Welcome back. What skills are we working on today?
-
-    - Single article highlight (show the first paragraph, faded -- not a title + description)
-
-    - Diff view to highlight PR changes
-        - https://github.com/rtfpessoa/diff2html?tab=readme-ov-file#online-example
-
-    - Table (e.g. config diffs, replica status, customer impact matrix)
-
-    - Timeline (e.g. event order, deployment propagation)
-        - This is just a text summary. You don't need a fancy JS library.
-
-    - Bar Chart (e.g. per-zone errors, API versions in use)
-        - https://echarts.apache.org/examples/en/editor.html?c=bar-simple
-
-    - Scatterplot (e.g. latency vs correctness, node drift)
-        - https://echarts.apache.org/examples/en/editor.html?c=scatter-simple
-
-    - Heatmap (e.g. fault intensity across services or zones)
-        - https://echarts.apache.org/examples/en/editor.html?c=heatmap-cartesian
-
-    - Sequence Diagram (e.g. write flow across services)
-    - Cards -- show some text, and it flips to other text whenever you click on it
-    - Flow charts
-    - "Edit this SQL" to run commands. GPT just makes shit up based on what they type.
-    - Group chat transcripts - "where's the flaw in their thinking here?"
-    - Share this SEV with your friends link (replicate.info/retry-storm)
-
-Quality of life:
+- "Generating" spinner in category list when topics are generating.
+- Fire logo emoji next to conversation title/description (to make room for different icons for design review, articles, etc)
+- Add language tags (e.g., "Go", "Python", etc) to the conversations
+- Better error handling + retries. Don't just let the loop die.
 - Cancel try-replicate + Apollo billing. Zero traction from cold email + feels spammy. Seeing traction from ads. Lean in.
-- Fix missing "Loading..." after articles load for "What am I missing here?" prompt.
-- Shared validation rules to reject em dashes, semi-colons outside of code blocks, etc. Tiny shit that it often misses.
-- Gsub out ’ characters
-- Edit messages + Regenerate button (soft delete everything >= created_at of the message you want to regen from)
-- Make certain technical phrases clickable, and link to an article convo
-- Stop showing a blank conversation when you use the back button.
-- Figure out why it sometimes just dies. OpenAI upstream issues? Add a "Hey, this is awkward. Put in your email to continue later." or something.
+- Cut article variant completely
+- Let people edit/delete messages
+- Stop showing a blank conversation when you use the back button -- did that one JS change you made for navigation links persist?
+- Cloudflare
+- Convert conversations/show to React
 - Show multiple choice options in persisted conversation -- can't just generate in JS -- MessageElement, maybe?
-- Figure out why auditing doesn't work
-- Check conversation scrolling on mobile -- doing it too early?
-- Double check all your plans for overcharging (e.g., Apollo, Postmark, etc)
-- Protect your S3 credentials from misuse -- spin down old keys
-- Automated data deletion + audit logging
+- Protect your S3 credentials from misuse -- spin down old keys, or just delete it?
+- If still a thing, disable all radio button on clicks when sending message. You can click give me a hint + answer old radios.
+
+
+Ads
+- Let's see if you actually understand DNS
+- Let's see if you can debug DNS under pressure
+- Can you debug DNS under pressure?
+- Do you actually know how leader election works?

@@ -1,30 +1,31 @@
 class TopicsController < ApplicationController
-
+  before_action :verify_admin, only: [:populate]
 
   def show
-    @topic = Topic.includes(:experiences).find_by!(code: params[:code])
-    @experiences = @topic.experiences.templates.order(:name)
-    @experience_count = @experiences.size
-    @populated_count = @experiences.populated.size
-    @forked_experience_codes = @topic.experiences.where(template: false, session_id: session[:identifier]).pluck(:code).to_set
-    @completed_count = @forked_experience_codes.size
+    @topic = Topic.includes(:conversations).find_by!(code: params[:code])
+    @conversations = @topic.conversations.templates.order(:name)
+    @conversation_count = @conversations.size
+    @populated_count = @conversations.populated.size
 
-    # Only respond to xhr requests - navigation is handled client-side
+    owner_type, owner_id = current_owner
+    @visited_codes = @topic.conversations.where(template: false, owner_type: owner_type, owner_id: owner_id).pluck(:code).to_set
+    @completed_count = @visited_codes.size
+
     render json: {
       topic_state: @topic.state,
       topic_name: @topic.name,
       topic_description: @topic.description,
-      experience_count: @experience_count,
+      conversation_count: @conversation_count,
       populated_count: @populated_count,
       completed_count: @completed_count,
-      experiences: @experiences.map do |exp|
+      conversations: @conversations.map do |convo|
         {
-          code: exp.code,
-          name: exp.name,
-          description: exp.description,
-          state: exp.state,
-          visited: @forked_experience_codes.include?(exp.code),
-          url: topic_experience_path(@topic.code, exp.code)
+          code: convo.code,
+          name: convo.name,
+          description: convo.description,
+          state: convo.state,
+          visited: @visited_codes.include?(convo.code),
+          url: topic_conversation_path(@topic.code, convo.code)
         }
       end
     }
@@ -37,6 +38,16 @@ class TopicsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to topic_path(@topic.code) }
       format.json { head :ok }
+    end
+  end
+
+  private
+
+  def current_owner
+    if current_user
+      ["User", current_user.id.to_s]
+    else
+      ["Session", session[:identifier]]
     end
   end
 end

@@ -23,7 +23,8 @@ class ApplicationController < ActionController::Base
   end
 
   def admin?
-    request.remote_ip == "98.249.45.68" || Rails.env.development? || session[:admin] == true
+    return true if current_user&.admin?
+    false
   end
 
   def skip_malicious_users
@@ -69,15 +70,12 @@ class ApplicationController < ActionController::Base
   end
 
   def ban_current_ip
+    return if user_signed_in? && current_user.admin?
     Rails.logger.info "Banning IP #{request.remote_ip}"
     BannedIp.create!(address: request.remote_ip) unless banned_ips.include?(request.remote_ip)
   end
 
   def verify_admin
-    if params[:code] == "puppies123" # TODO: Make this secure. Not important right now.
-      session[:admin] = true
-    end
-
-    raise "Not found" unless (request.remote_ip == "98.249.45.68" || Rails.env.development? || session[:admin] == true)
+    raise "Not found" unless admin?
   end
 end

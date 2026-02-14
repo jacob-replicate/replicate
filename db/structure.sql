@@ -126,7 +126,15 @@ CREATE TABLE public.conversations (
     referring_conversation_id uuid,
     generation_intent text,
     variant character varying,
-    page_title character varying
+    page_title character varying,
+    topic_id uuid,
+    owner_type character varying,
+    owner_id text,
+    template boolean DEFAULT false NOT NULL,
+    name text,
+    description text,
+    code text,
+    state text DEFAULT 'pending'::text
 );
 
 
@@ -284,7 +292,8 @@ CREATE TABLE public.users (
     name text,
     avatar_url text,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    admin boolean DEFAULT false NOT NULL
 );
 
 
@@ -451,6 +460,13 @@ CREATE INDEX index_cached_llm_on_template_and_input_hash ON public.cached_llm_re
 
 
 --
+-- Name: index_conversations_on_owner_type_and_owner_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_conversations_on_owner_type_and_owner_id ON public.conversations USING btree (owner_type, owner_id);
+
+
+--
 -- Name: index_conversations_on_recipient; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -469,6 +485,27 @@ CREATE INDEX index_conversations_on_referring_conversation_id ON public.conversa
 --
 
 CREATE INDEX index_conversations_on_sharing_code ON public.conversations USING btree (sharing_code);
+
+
+--
+-- Name: index_conversations_on_topic_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_conversations_on_topic_id ON public.conversations USING btree (topic_id);
+
+
+--
+-- Name: index_conversations_on_topic_id_and_code_and_template; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_conversations_on_topic_id_and_code_and_template ON public.conversations USING btree (topic_id, code, template) WHERE (template = true);
+
+
+--
+-- Name: index_conversations_on_topic_id_and_owner_type_and_owner_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_conversations_on_topic_id_and_owner_type_and_owner_id ON public.conversations USING btree (topic_id, owner_type, owner_id);
 
 
 --
@@ -535,12 +572,22 @@ CREATE INDEX user_index ON public.audits USING btree (user_id, user_type);
 
 
 --
+-- Name: conversations fk_rails_7d55d5d8f7; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.conversations
+    ADD CONSTRAINT fk_rails_7d55d5d8f7 FOREIGN KEY (topic_id) REFERENCES public.topics(id);
+
+
+--
 -- PostgreSQL database dump complete
 --
 
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260125190208'),
+('20260125165549'),
 ('20260125163148'),
 ('20260125014759'),
 ('20260124184729'),

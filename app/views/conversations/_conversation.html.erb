@@ -180,7 +180,7 @@
         if (!loadingEl) {
           loadingEl = document.createElement("div");
           loadingEl.className = `mt-1 flex ${isUser ? "justify-end" : "justify-start"}`;
-          const bubbleClass = "bg-yellow-100 border border-yellow-200 text-gray-700";
+          const bubbleClass = "bg-yellow-100 border border-yellow-200 text-gray-700 dark:bg-zinc-700 dark:border-zinc-600 dark:text-zinc-300";
           loadingEl.innerHTML = `
         <div class="message-body ${bubbleClass} rounded-xl px-3 py-2 text-sm mt-2">
           Thinking<span id="loading-dots">.</span>

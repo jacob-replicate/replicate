@@ -23,7 +23,6 @@ RSpec.describe MessageGenerators::Incident do
     before do
       allow(generator).to receive(:broadcast_to_web)
       allow(generator).to receive(:deliver_multiple_choice_options)
-      allow(generator).to receive(:deliver_article_suggestions)
       create(:message, conversation: conversation, user_generated: true, content: "test message")
     end
 

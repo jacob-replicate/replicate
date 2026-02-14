@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import "./components"
 import "./channels/consumer"
-import "./components/CategoryList"
+import "./components/IncidentApp"
 import "./delete_experience"
 
 // Reload page on back button to show fresh data

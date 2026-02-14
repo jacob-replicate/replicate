@@ -1,0 +1,138 @@
+CONTEXT:
+You are decomposing a technical topic into the distinct failure modes that senior engineers encounter in production.
+
+This page is the cover of a book for senior engineers. It filters for credibility. It is NOT teaching, navigation, or onboarding.
+
+INPUTS:
+- topic_name: {{CONTEXT_TOPIC_NAME}}
+- topic_description: {{CONTEXT_TOPIC_DESCRIPTION}}
+
+EXISTING CONVERSATIONS (DO NOT DUPLICATE):
+{{CONTEXT_EXISTING_CONVERSATIONS}}
+
+If conversations are listed above, generate intents that fill gaps. Do not duplicate or reframe existing coverage.
+
+---
+
+WHAT EACH CONVERSATION MUST BE:
+
+A. A failure mode, not a feature
+GOOD: "CPU Throttling", "OOMKill Analysis", "PID Exhaustion"
+BAD: "cgroups", "namespaces", "schedulers"
+The name should already imply pain.
+
+B. Breaking a DIFFERENT assumption than every other conversation
+Each conversation punishes a *distinct belief*. Before adding a conversation, verify it breaks an assumption not already covered by another.
+
+C. Describing the *lie*
+Every conversation must contrast:
+- What the system *appears* to say
+- What is actually happening
+- Why engineers misdiagnose it
+
+D. Not fixable by one command
+If the issue is solved by "just raise the limit" or "just restart it" or "just run X", it doesn't belong.
+
+E. Orthogonal but cumulative
+The full list should feel:
+- Selective
+- Opinionated
+- Incomplete on purpose
+Not exhaustive. Not comforting.
+
+---
+
+SUCCESS TEST:
+A senior engineer should think: "I've dealt with most of these - I'm not sure I actually understood them."
+- If they think "Seems reasonable" → too soft
+- If they think "I know all this" → too generic
+- If they think "That's uncomfortable" → correct
+
+---
+
+TOPIC RELEVANCE:
+Every conversation must be *primarily* about "{{CONTEXT_TOPIC_NAME}}". Someone should immediately know it belongs under this topic. Tangential concepts belong elsewhere.
+
+NAMING PHILOSOPHY:
+Conversation names are accusations, not labels.
+
+2-4 words max. Shorter is better.
+- GOOD: "CPU Throttling", "Split-Brain", "Replica Lag", "Session Fixation"
+- BAD: "Container Resource Management", "Database Consistency Issues", "Authentication Mechanisms"
+
+The name implies the pain:
+- "Throttling" → you're being slowed down
+- "Split-Brain" → both sides think they're in charge
+- "Replica Lag" → your reads are stale
+
+What would a staff engineer mutter under their breath at 3am?
+
+No verbs. No "-ing" words (except when they ARE the concept, like "Throttling"). No "How to". No adjectives like "Advanced" or "Secure".
+
+REQUIREMENTS:
+
+Intent Quality:
+Each generation_intent must:
+- Start with: "Create a conversation called '[SHORT NAME]' that..."
+- Use a SHORT name (2-4 words max) that implies the pain
+- Be 250-400 characters total
+- Describe the LIE: what engineers believe vs what actually happens
+- Reference what breaks and when the misunderstanding surfaces
+
+Intent Structure (the lie pattern):
+Each intent should expose a specific lie:
+- What the system APPEARS to say ("monitoring shows 50% CPU")
+- What is ACTUALLY happening ("you're being throttled")
+- Why engineers MISDIAGNOSE it ("they blame application code")
+
+Coverage Strategy:
+- What are the failure modes that haunt production?
+- What do engineers THINK they understand but don't?
+- What beliefs get shattered during incidents?
+- What shows up in postmortems that surprises people?
+
+Number of intents:
+- Generate 5-7 intents
+- Each must break a DIFFERENT assumption
+- Quality over quantity - fewer distinct failures beats more overlapping ones
+
+OUTPUT FORMAT:
+Return a single valid JSON object with this structure:
+{
+  "generation_intents": [
+    "Create a conversation called '[Invariant Name]' that...",
+    "Create a conversation called '[Invariant Name]' that...",
+    ...
+  ]
+}
+
+IMPORTANT: Return ONLY the raw JSON object. Do NOT wrap it in markdown code blocks.
+
+EXAMPLE 1 - Container Runtime topic:
+{
+  "generation_intents": [
+    "Create a conversation called 'CPU Throttling' that exposes the lie between reported CPU usage and actual performance. Engineers see '50% CPU' but the container crawls. Throttling hides the truth, warps metrics, and makes debugging a nightmare because the numbers look fine.",
+    "Create a conversation called 'Cgroup Isolation' that challenges the belief that containers are isolated. One container leaks memory and suddenly the whole node struggles. The isolation you trust is a polite fiction enforced by soft limits.",
+    "Create a conversation called 'PID Limits' that explores silent thread exhaustion. A container has spare CPU and memory but can't spawn threads. PID exhaustion creates deadlocks and stalled throughput with no obvious error.",
+    "Create a conversation called 'OOMKill Analysis' that examines why containers get killed. Diagnosing which process triggered the OOM, understanding allocation patterns, and finding the leak that metrics didn't reveal."
+  ]
+}
+
+EXAMPLE 2 - Authentication topic:
+{
+  "generation_intents": [
+    "Create a conversation called 'Token Audience' that exposes how tokens get accepted by the wrong service. The aud claim is supposed to prevent this, but multi-tenant setups and shared identity providers create confusion that leads to privilege escalation.",
+    "Create a conversation called 'Session Fixation' that challenges the belief that login creates a new session. Pre-auth session IDs that survive post-auth let attackers ride along. The 'secure' login flow preserves the compromised state.",
+    "Create a conversation called 'Clock Skew' that explores time disagreement in auth. JWT validation, TOTP codes, and certificate expiry all assume clocks agree. Strict validation rejects legitimate requests while lenient validation opens attack windows.",
+    "Create a conversation called 'Refresh Tokens' that examines token rotation failures. Refresh tokens are supposed to be single-use, but race conditions and retry logic create scenarios where revoked tokens still work."
+  ]
+}
+
+BAD EXAMPLES - Names that are too generic or don't imply pain:
+{
+  "generation_intents": [
+    "Create a conversation called 'Container Security'...",           // TOO BROAD: which failure mode?
+    "Create a conversation called 'Authentication Best Practices'...", // NOT A FAILURE MODE: "best practices" is teaching
+    "Create a conversation called 'Token Validation Mechanisms'..."    // NO PAIN IMPLIED: what breaks?
+  ]
+}

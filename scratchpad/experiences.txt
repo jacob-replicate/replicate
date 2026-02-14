@@ -1,5 +1,0 @@
-- Links to YouTube / Google searches pre-filled with helpful topics (WeWantConcerts-style)
-- Rename "coaching" conversation to "incident" message generator. It's one way to teach a concept, not the only way.
-- Indigo breadcrumb bar at top of conversation whenever you navigate away from experience.
-- "You can send replicate.info/raft to your friends. They'll get a fresh copy." - White on indigo footer, always.
-- Progress bar at the top of the discover page for each topic?

@@ -29,7 +29,6 @@ Rails.application.routes.draw do
 
   resources :conversations, only: [:show, :update]
   get '/conversations/:id/destroy', to: "conversations#destroy"
-  resources :elements, only: [:show]
   resources :messages, only: [:create]
   resources :organizations, only: [:create]
 
@@ -39,11 +38,15 @@ Rails.application.routes.draw do
   get '/auth/failure', to: "sessions#oauth_failure"
   delete '/logout', to: "sessions#destroy"
 
-  # Topic and Experience routes (wildcards - keep last)
+  # Topic routes (simplified: Category -> Topic -> Conversation)
   post '/:code/populate', to: "topics#populate", as: "populate_topic"
-  post '/:topic_code/:experience_code/populate', to: "experiences#populate", as: "populate_experience"
-  delete '/:topic_code/:experience_code', to: "experiences#destroy", as: "destroy_experience"
-  get '/:topic_code/:experience_code', to: "experiences#show", as: "topic_experience"
+
+  # Conversation routes under topic (these replace Experience routes)
+  post '/:topic_code/:conversation_code/populate', to: "conversations#populate", as: "populate_conversation"
+  delete '/:topic_code/:conversation_code', to: "conversations#destroy_template", as: "destroy_conversation_template"
+  get '/:topic_code/:conversation_code', to: "conversations#show_by_code", as: "topic_conversation"
+
+  # Topic show (must be last of the wildcard routes)
   get '/:code', to: "topics#show", as: "topic"
 
   root "static#index"
