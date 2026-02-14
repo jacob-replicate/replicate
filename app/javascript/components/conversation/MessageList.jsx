@@ -20,12 +20,8 @@ export const MessageList = ({ messages, isTyping, onSelect }) => {
     const threadMap = new Map() // parent_message_id -> array of reply messages
     const rootMessages = []
 
-    // Sort by sequence to ensure correct order
-    const sorted = [...messages].sort((a, b) => {
-      const seqA = a.components?.[0]?.sequence ?? 0
-      const seqB = b.components?.[0]?.sequence ?? 0
-      return seqA - seqB
-    })
+    // Sort by sequence (global monotonic integer)
+    const sorted = [...messages].sort((a, b) => (a.sequence ?? 0) - (b.sequence ?? 0))
 
     for (const message of sorted) {
       if (message.parent_message_id) {

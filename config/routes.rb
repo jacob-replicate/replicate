@@ -27,6 +27,9 @@ Rails.application.routes.draw do
   post '/sessions/pulse', to: "sessions#pulse"
   get '/growth', to: "static#growth"
 
+  # Demo conversation route - renders React app
+  get '/conversations/:uuid', to: "static#index", constraints: { uuid: /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i }
+
   resources :conversations, only: [:show, :update]
   get '/conversations/:id/destroy', to: "conversations#destroy"
   resources :messages, only: [:create]
