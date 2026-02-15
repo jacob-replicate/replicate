@@ -177,8 +177,32 @@ class ConversationManager {
 
   /**
    * Send a message to a conversation
+   * In demo mode, simulates the server response
    */
   async send(conversationId, content) {
+    // For demo: simulate server response via global API
+    // Server assigns ID, sequence, timestamp and broadcasts back
+    if (window.ReplicateConversation) {
+      const api = window.ReplicateConversation
+      const messages = api.getMessages?.() || []
+
+      // Get next sequence from existing messages
+      const maxSeq = messages.reduce((max, m) => Math.max(max, m.sequence ?? 0), 0)
+
+      const message = {
+        id: `msg_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`,
+        sequence: maxSeq + 1,
+        author: { name: 'You', avatar: null },
+        created_at: new Date().toISOString(),
+        components: [{ type: 'text', content }],
+      }
+
+      // Add message via the global API (simulates server broadcast)
+      api.addMessage?.(message)
+      return message
+    }
+
+    // Real API call (when not in demo mode)
     const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content
 
     const response = await fetch(`/conversations/${conversationId}/messages`, {

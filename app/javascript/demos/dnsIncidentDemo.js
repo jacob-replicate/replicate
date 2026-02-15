@@ -1,275 +1,441 @@
 /**
- * Demo script - streams the DNS incident conversation on page load
+ * Demo script - streams the connection pool incident conversation on page load
  * Uses the global ReplicateConversation API
  */
 
-const DNS_INCIDENT_MESSAGES = [
+// Generate dynamic timestamps starting 15 minutes ago
+const generateTimestamps = () => {
+  const now = new Date()
+  const startTime = new Date(now.getTime() - 15 * 60 * 1000) // 15 minutes ago
+
+  // Message timestamps as offsets from start (in seconds)
+  // Total span is ~15 minutes, ending near "now"
+  const offsets = [
+    0,      // msg_1: PagerDuty alert
+    60,     // msg_2: Maya takes IC
+    90,     // msg_3: Daniel on it (thread)
+    120,    // msg_4: Alex offers help (thread)
+    150,    // msg_5: Maya assigns alex (thread)
+    240,    // msg_6: Daniel finds issue
+    270,    // msg_7: Daniel shows diff
+    300,    // msg_8: Thread - Maya asks about other services
+    330,    // msg_9: Thread - Alex confirms isolated
+    360,    // msg_10: Thread - Maya focuses
+    420,    // msg_11: Daniel confirms deadlock
+    480,    // msg_12: First narrator question
+    540,    // msg_13: Daniel and Maya discuss
+    570,    // msg_14: Thread - risk question
+    600,    // msg_15: Thread - Maya quantifies
+    630,    // msg_16: Thread - alex rollback
+    720,    // msg_17: Preparing revert
+    780,    // msg_18: Revert deployed
+    840,    // msg_19: Second narrator question
+    900,    // msg_20: Maya wraps up
+    930,    // msg_21: Alex confirms
+    960,    // msg_22: Thread - postmortem
+    990,    // msg_23: Final narrator question
+  ]
+
+  return offsets.map(offset => {
+    const time = new Date(startTime.getTime() + offset * 1000)
+    return time.toISOString()
+  })
+}
+
+
+// Generate timestamps dynamically
+const timestamps = generateTimestamps()
+
+const INCIDENT_MESSAGES = [
+  // Message 1: PagerDuty alert with OncallAlert component
   {
     id: 'msg_1',
     sequence: 1,
     author: { name: 'PagerDuty', avatar: '/jacob-square.jpg' },
-    created_at: '2026-02-14T10:30:00',
+    created_at: timestamps[0],
     components: [
       {
-        type: 'alert',
-        color: 'red',
-        title: '[SEV-1] DNS resolution failures across prod-east',
-        description: "Services can't resolve internal hostnames",
+        type: 'oncall_alert',
+        severity: 'SEV-1',
+        service: 'orders-api',
+        alert: 'Connection pool exhausted — all 50 connections in use',
+        error: 'ECONNREFUSED',
+        affected: '~3,200 orders/min failing',
+        commit: 'd4f8a2c',
       }
     ],
     reactions: [
-      { emoji: '📌', count: 1 },
-      { emoji: '👀', count: 2 }
+      { emoji: '🔥', count: 4 },
+      { emoji: '👀', count: 7 }
     ]
   },
+  // Message 2: Maya takes IC with Monitor component
   {
     id: 'msg_2',
     sequence: 2,
     author: { name: 'maya', avatar: '/profile-photo-3.jpg' },
-    created_at: '2026-02-14T10:31:00',
+    created_at: timestamps[1],
     components: [
       {
         type: 'text',
-        content: 'CoreDNS pods are OOMKilled — check the ndots setting in resolv.conf',
+        content: 'taking IC. @daniel can you pull up the connection metrics? seeing max_connections=50 but we should have headroom',
       },
       {
-        type: 'code',
-        content: `# /etc/resolv.conf in affected pods
-nameserver 10.96.0.10
-search default.svc.cluster.local svc.cluster.local cluster.local
-options ndots:5  # <- every lookup tries 5 suffixes first`,
+        type: 'monitor',
+        title: 'PostgreSQL Connection Pool',
+        metric: 'orders-db-primary',
+        value: 98,
+        threshold: 90,
+        status: 'critical',
       }
     ]
   },
+  // Message 3: Thread reply - daniel on it
   {
     id: 'msg_3',
     sequence: 3,
+    parent_message_id: 'msg_2',
     author: { name: 'daniel', avatar: '/profile-photo-2.jpg' },
-    created_at: '2026-02-14T10:32:00',
+    created_at: timestamps[2],
     components: [
-      {
-        type: 'text',
-        content: 'found it — someone deployed a new sidecar that does nslookup every 100ms for health checks',
-      },
-      {
-        type: 'diff',
-        filename: 'k8s/deployments/payments-api.yaml',
-        lines: [
-          { type: 'context', text: 'containers:' },
-          { type: 'add', text: '- name: dns-health-checker' },
-          { type: 'add', text: '  image: busybox' },
-          { type: 'add', text: '  command: ["sh", "-c", "while true; do nslookup google.com; sleep 0.1; done"]' },
-        ],
-      }
-    ],
-    reactions: [
-      { emoji: '💀', count: 3 },
-      { emoji: '🤦', count: 2 },
+      { type: 'text', content: 'on it — pulling grafana now' }
     ],
   },
+  // Message 4: Thread reply - alex offers help
   {
     id: 'msg_4',
     sequence: 4,
-    parent_message_id: 'msg_3',
-    author: { name: 'sarah', avatar: '/profile-photo-1.jpg' },
-    created_at: '2026-02-14T10:33:00',
+    parent_message_id: 'msg_2',
+    author: { name: 'alex', avatar: '/profile-photo-1.jpg' },
+    created_at: timestamps[3],
     components: [
-      { type: 'text', content: 'that was me... thought it would catch DNS outages early 😅' }
+      { type: 'text', content: 'anything I can help with?' }
     ],
   },
+  // Message 5: Thread reply - maya assigns alex
   {
     id: 'msg_5',
     sequence: 5,
+    parent_message_id: 'msg_2',
     author: { name: 'maya', avatar: '/profile-photo-3.jpg' },
-    created_at: '2026-02-14T10:34:00',
-    updated_at: '2026-02-14T10:35:00',
+    created_at: timestamps[4],
     components: [
-      {
-        type: 'text',
-        content: 'rollback is out — DNS queries dropping back to normal. @oncall let\'s add CoreDNS autoscaling before this happens again',
-      }
+      { type: 'text', content: 'alex check if this is isolated to orders or if payments is affected too' }
     ],
   },
+  // Message 6: Daniel finds the issue with code block
   {
     id: 'msg_6',
     sequence: 6,
-    parent_message_id: 'msg_3',
     author: { name: 'daniel', avatar: '/profile-photo-2.jpg' },
-    created_at: '2026-02-14T10:34:30',
+    created_at: timestamps[5],
     components: [
-      { type: 'text', content: '200 pods × 10 queries/sec = 2000 DNS queries/sec' }
+      {
+        type: 'text',
+        content: 'found it — connection acquire time spiking. looks like queries are hanging and never returning connections to the pool',
+      },
+      {
+        type: 'code',
+        language: 'sql',
+        content: `-- active connections by state
+SELECT state, count(*), max(now() - query_start) as max_duration
+FROM pg_stat_activity WHERE datname = 'orders'
+GROUP BY state;
+
+ state  | count |  max_duration
+--------+-------+----------------
+ active |    47 | 00:04:23.445   -- these should be milliseconds
+ idle   |     3 | 00:00:01.234`,
+      }
+    ],
+    reactions: [
+      { emoji: '😱', count: 3 },
     ],
   },
+  // Message 7: Alex finds the problematic diff
   {
     id: 'msg_7',
     sequence: 7,
-    author: { name: 'invariant.training', avatar: '/logo.png' },
-    created_at: '2026-02-14T10:35:00',
+    author: { name: 'alex', avatar: '/profile-photo-1.jpg' },
+    created_at: timestamps[6],
     components: [
       {
-        type: 'multiple_choice',
-        question: "Rollback is out. What's your next move?",
-        selected: 'a',
-        options: [
-          { id: 'a', text: 'Scale CoreDNS to handle the load, then close the incident' },
-          { id: 'b', text: 'Check if other services have similar polling patterns' },
-          { id: 'c', text: 'Lower ndots to reduce query amplification cluster-wide' },
+        type: 'text',
+        content: 'payments is fine, but I found something weird — someone added a new SELECT FOR UPDATE yesterday that\'s taking row locks',
+      },
+      {
+        type: 'diff',
+        filename: 'internal/orders/repository.go',
+        lines: [
+          { type: 'context', text: 'func (r *Repository) GetOrderForProcessing(ctx context.Context, id string) (*Order, error) {' },
+          { type: 'remove', text: '    return r.db.GetOrder(ctx, id)' },
+          { type: 'add', text: '    // Lock row to prevent double-processing' },
+          { type: 'add', text: '    return r.db.QueryRow(ctx, `SELECT * FROM orders WHERE id = $1 FOR UPDATE`, id)' },
+          { type: 'context', text: '}' },
         ],
       }
     ],
   },
+  // Message 8: Thread reply - daniel explains
   {
     id: 'msg_8',
     sequence: 8,
-    parent_message_id: 'msg_3',
-    author: { name: 'sarah', avatar: '/profile-photo-1.jpg' },
-    created_at: '2026-02-14T10:35:30',
+    parent_message_id: 'msg_7',
+    author: { name: 'daniel', avatar: '/profile-photo-2.jpg' },
+    created_at: timestamps[7],
     components: [
-      { type: 'text', content: 'oh god' }
+      { type: 'text', content: 'oh no... FOR UPDATE with no timeout will wait forever for the lock' }
     ],
   },
+  // Message 9: Thread reply - alex connects the dots
   {
     id: 'msg_9',
     sequence: 9,
-    author: { name: 'daniel', avatar: '/profile-photo-2.jpg' },
-    created_at: '2026-02-14T10:36:00',
+    parent_message_id: 'msg_7',
+    author: { name: 'alex', avatar: '/profile-photo-1.jpg' },
+    created_at: timestamps[8],
     components: [
-      {
-        type: 'text',
-        content: 'scaled CoreDNS to 4 replicas. should be good now',
-      }
+      { type: 'text', content: 'and if multiple workers try to process the same order...' }
     ],
   },
+  // Message 10: Thread reply - daniel names it
   {
     id: 'msg_10',
     sequence: 10,
-    parent_message_id: 'msg_3',
-    author: { name: 'maya', avatar: '/profile-photo-3.jpg' },
-    created_at: '2026-02-14T10:36:30',
+    parent_message_id: 'msg_7',
+    author: { name: 'daniel', avatar: '/profile-photo-2.jpg' },
+    created_at: timestamps[9],
     components: [
-      { type: 'text', content: 'CoreDNS default is 1000 qps per instance lol' }
+      { type: 'text', content: 'deadlock city 💀' }
     ],
   },
+  // Message 11: Maya confirms with another code block + monitor
   {
     id: 'msg_11',
     sequence: 11,
     author: { name: 'maya', avatar: '/profile-photo-3.jpg' },
-    created_at: '2026-02-14T10:37:00',
+    created_at: timestamps[10],
     components: [
       {
         type: 'text',
-        content: 'wait. I just grepped for nslookup across the cluster',
+        content: 'confirmed — we have 23 transactions waiting on each other. classic deadlock pattern',
       },
       {
         type: 'code',
-        content: `$ grep -r "nslookup\\|dns\\|resolve" */health*.yaml | wc -l
-47`,
+        language: 'sql',
+        content: `-- blocked queries waiting on locks
+SELECT blocked.pid, blocked.query, blocking.pid as blocking_pid
+FROM pg_stat_activity blocked
+JOIN pg_locks bl ON bl.pid = blocked.pid
+JOIN pg_locks l ON l.relation = bl.relation AND l.pid != bl.pid
+JOIN pg_stat_activity blocking ON l.pid = blocking.pid
+WHERE NOT bl.granted;
+
+-- 23 rows returned, circular dependencies detected`,
+      },
+      {
+        type: 'monitor',
+        title: 'Lock Wait Queue Depth',
+        metric: 'orders-db-primary',
+        value: 87,
+        threshold: 80,
+        status: 'critical',
       }
     ],
   },
+  // Message 12: First question from narrator
   {
     id: 'msg_12',
     sequence: 12,
-    parent_message_id: 'msg_3',
-    author: { name: 'daniel', avatar: '/profile-photo-2.jpg' },
-    created_at: '2026-02-14T10:37:30',
-    components: [
-      { type: 'text', content: 'we have 2 replicas so you literally doubled our max capacity' }
-    ],
-  },
-  {
-    id: 'msg_13',
-    sequence: 13,
-    author: { name: 'daniel', avatar: '/profile-photo-2.jpg' },
-    created_at: '2026-02-14T10:38:00',
-    components: [
-      {
-        type: 'text',
-        content: 'forty seven services doing DNS health checks. and auth-service alone has 400 replicas doing 1 lookup/sec each',
-      }
-    ],
-    reactions: [
-      { emoji: '😬', count: 3 },
-    ],
-  },
-  {
-    id: 'msg_14',
-    sequence: 14,
-    parent_message_id: 'msg_3',
-    author: { name: 'sarah', avatar: '/profile-photo-1.jpg' },
-    created_at: '2026-02-14T10:38:30',
-    updated_at: '2026-02-14T10:39:00',
-    components: [
-      { type: 'text', content: 'rolling back now 🏃‍♀️' }
-    ],
-  },
-  {
-    id: 'msg_15',
-    sequence: 15,
     author: { name: 'invariant.training', avatar: '/logo.png' },
-    created_at: '2026-02-14T10:39:00',
+    created_at: timestamps[11],
     components: [
       {
         type: 'multiple_choice',
-        question: "With ndots:5, each lookup generates up to 6 queries. What's the actual baseline load on CoreDNS right now?",
-        selected: 'b',
+        question: "You've confirmed a deadlock. What's your immediate priority?",
         options: [
-          { id: 'a', text: 'Somewhere around 2000 qps' },
-          { id: 'b', text: 'Closer to 15000 qps if you count the search domains' },
+          { id: 'a', text: 'Kill the stuck queries and rollback the transactions' },
+          { id: 'b', text: 'Increase the connection pool size to 100' },
+          { id: 'c', text: 'Restart the orders-api pods' },
         ],
       }
     ],
   },
+  // Message 13: Daniel proposes options
   {
-    id: 'msg_16',
-    sequence: 16,
-    parent_message_id: 'msg_3',
-    author: { name: 'maya', avatar: '/profile-photo-3.jpg' },
-    created_at: '2026-02-14T10:39:30',
-    components: [
-      { type: 'text', content: '🙏' }
-    ],
-  },
-  {
-    id: 'msg_17',
-    sequence: 17,
-    author: { name: 'maya', avatar: '/profile-photo-3.jpg' },
-    created_at: '2026-02-14T10:40:00',
-    components: [
-      {
-        type: 'text',
-        content: 'we just scaled to 4 replicas. thats 4000 qps max. we were over capacity before the incident even started',
-      }
-    ],
-  },
-  {
-    id: 'msg_18',
-    sequence: 18,
+    id: 'msg_13',
+    sequence: 13,
     author: { name: 'daniel', avatar: '/profile-photo-2.jpg' },
-    created_at: '2026-02-14T10:41:00',
+    created_at: timestamps[12],
     components: [
       {
         type: 'text',
-        content: 'the payments sidecar wasnt the root cause. it was the last 2000 qps on a system already doing 15000',
+        content: 'options: (1) kill the stuck queries and rollback, (2) add NOWAIT or SKIP LOCKED to the query, (3) revert the commit entirely',
+      },
+      {
+        type: 'text',
+        content: "I'd vote revert — the FOR UPDATE approach needs a proper queue, not row locking",
       }
     ],
     reactions: [
-      { emoji: '💀', count: 2 },
+      { emoji: '👍', count: 2 },
+      { emoji: '💯', count: 1 },
     ],
   },
+  // Message 14: Thread reply - alex volunteers
+  {
+    id: 'msg_14',
+    sequence: 14,
+    parent_message_id: 'msg_13',
+    author: { name: 'alex', avatar: '/profile-photo-1.jpg' },
+    created_at: timestamps[13],
+    components: [
+      { type: 'text', content: 'agreed — I can have the revert ready in 2 min' }
+    ],
+  },
+  // Message 15: Thread reply - maya delegates
+  {
+    id: 'msg_15',
+    sequence: 15,
+    parent_message_id: 'msg_13',
+    author: { name: 'maya', avatar: '/profile-photo-3.jpg' },
+    created_at: timestamps[14],
+    components: [
+      { type: 'text', content: 'do it. daniel can you kill the stuck connections so we recover faster?' }
+    ],
+  },
+  // Message 16: Thread reply - daniel confirms
+  {
+    id: 'msg_16',
+    sequence: 16,
+    parent_message_id: 'msg_13',
+    author: { name: 'daniel', avatar: '/profile-photo-2.jpg' },
+    created_at: timestamps[15],
+    components: [
+      { type: 'text', content: 'already on it' }
+    ],
+  },
+  // Message 17: Daniel kills connections
+  {
+    id: 'msg_17',
+    sequence: 17,
+    author: { name: 'daniel', avatar: '/profile-photo-2.jpg' },
+    created_at: timestamps[16],
+    components: [
+      {
+        type: 'text',
+        content: 'killed 23 stuck connections. pool is recovering',
+      },
+      {
+        type: 'code',
+        language: 'sql',
+        content: `SELECT pg_terminate_backend(pid) 
+FROM pg_stat_activity 
+WHERE state = 'active' 
+  AND query_start < now() - interval '1 minute'
+  AND datname = 'orders';
+
+-- 23 connections terminated`,
+      }
+    ],
+  },
+  // Message 18: Maya confirms resolution (edited)
+  {
+    id: 'msg_18',
+    sequence: 18,
+    author: { name: 'maya', avatar: '/profile-photo-3.jpg' },
+    created_at: timestamps[17],
+    updated_at: timestamps[18],
+    components: [
+      {
+        type: 'text',
+        content: 'revert is deployed, pool is back to normal — down to 12 active connections now. @oncall marking resolved but we need a proper fix for the double-processing issue',
+      }
+    ],
+    reactions: [
+      { emoji: '🎉', count: 4 },
+      { emoji: '🙏', count: 2 },
+    ],
+  },
+  // Message 19: Second question from narrator
   {
     id: 'msg_19',
     sequence: 19,
     author: { name: 'invariant.training', avatar: '/logo.png' },
-    created_at: '2026-02-14T10:42:00',
+    created_at: timestamps[18],
     components: [
       {
-        type: 'text',
-        content: "You scale CoreDNS to 20 replicas. Next Tuesday, auth-service rolls out and all 400 pods restart at once. What breaks first?",
+        type: 'multiple_choice',
+        question: "The incident is mitigated, but orders can still be double-processed. Before closing, what should you do?",
+        options: [
+          { id: 'a', text: 'Create a follow-up ticket and close the incident' },
+          { id: 'b', text: 'Keep the incident open until the root cause is fully fixed' },
+          { id: 'c', text: 'Add monitoring for double-processed orders first' },
+        ],
       }
     ],
   },
-]
+  // Message 20: Maya wraps up
+  {
+    id: 'msg_20',
+    sequence: 20,
+    author: { name: 'maya', avatar: '/profile-photo-3.jpg' },
+    created_at: timestamps[19],
+    components: [
+      {
+        type: 'text',
+        content: "created JIRA-4521 for the proper fix. @alex can you add a Datadog monitor for duplicate order IDs in the meantime?",
+      }
+    ],
+  },
+  // Message 21: Alex confirms
+  {
+    id: 'msg_21',
+    sequence: 21,
+    author: { name: 'alex', avatar: '/profile-photo-1.jpg' },
+    created_at: timestamps[20],
+    components: [
+      {
+        type: 'text',
+        content: 'on it. will alert if we see any order_id processed more than once in a 5 min window',
+      }
+    ],
+    reactions: [
+      { emoji: '👍', count: 2 },
+    ],
+  },
+  // Message 22: Daniel shares postmortem thought
+  {
+    id: 'msg_22',
+    sequence: 22,
+    author: { name: 'daniel', avatar: '/profile-photo-2.jpg' },
+    created_at: timestamps[21],
+    components: [
+      {
+        type: 'text',
+        content: "for the postmortem — the real issue is we're using database locks for job coordination. should've been a proper queue from day one",
+      }
+    ],
+  },
+  // Message 23: Final question from narrator
+  {
+    id: 'msg_23',
+    sequence: 23,
+    author: { name: 'invariant.training', avatar: '/logo.png' },
+    created_at: timestamps[22],
+    components: [
+      {
+        type: 'multiple_choice',
+        question: "The team reverted the change, but the underlying problem remains: orders can still be double-processed. What's the right architectural fix?",
+        options: [
+          { id: 'a', text: 'Use SELECT FOR UPDATE SKIP LOCKED to avoid blocking' },
+          { id: 'b', text: 'Add a distributed lock service like Redis or Zookeeper' },
+          { id: 'c', text: 'Use a proper job queue with exactly-once delivery guarantees' },
+          { id: 'd', text: 'Increase the connection pool size to handle lock contention' },
+        ],
+      }
+    ],
+  },
 ]
 
 // Demo conversation UUID
@@ -289,9 +455,9 @@ const fetchConversation = async () => {
 
   return {
     id: DEMO_CONVERSATION_ID,
-    channel_name: '#ops-alerts',
+    channel_name: '#incident-2847',
     is_new: !isDirectNavigation, // Direct navigation = existing, root = new demo
-    messages: DNS_INCIDENT_MESSAGES,
+    messages: INCIDENT_MESSAGES,
   }
 }
 

@@ -186,48 +186,156 @@ const CodeBlock = ({ code, language }) => {
   )
 }
 
-// Multiple choice component
+// OncallAlert component (PagerDuty-style)
+const OncallAlert = ({ severity = 'SEV-1', service, alert, error, affected, commit }) => {
+  const severityColors = {
+    'SEV-1': { bg: 'bg-red-500/20', text: 'text-red-400', border: 'border-red-500/30' },
+    'SEV-2': { bg: 'bg-orange-500/20', text: 'text-orange-400', border: 'border-orange-500/30' },
+  }
+  const colors = severityColors[severity] || severityColors['SEV-1']
+
+  return (
+    <div className="rounded-lg bg-zinc-800 border border-zinc-700 p-4 mt-1">
+      <div className="flex items-start justify-between gap-4">
+        <div className="flex items-start gap-3">
+          <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse flex-shrink-0 mt-1.5" />
+          <div>
+            <div className="flex items-center gap-2 mb-1">
+              <span className="text-white font-medium">{service}</span>
+              <span className={`px-1.5 py-0.5 rounded text-xs font-bold ${colors.bg} ${colors.text} ${colors.border} border`}>{severity}</span>
+            </div>
+            <div className="text-zinc-400 text-sm mb-1">{alert}</div>
+            <div className="flex items-center gap-3 text-xs">
+              {affected && <span className="text-zinc-400">{affected}</span>}
+              {commit && <><span className="text-zinc-500">•</span><span className="text-zinc-400 font-mono">{commit}</span></>}
+            </div>
+          </div>
+        </div>
+        {error && (
+          <span className="font-mono text-red-400 bg-red-500/10 px-2 py-1 rounded text-xs flex-shrink-0">{error}</span>
+        )}
+      </div>
+    </div>
+  )
+}
+
+// Monitor component (Datadog-style metric chart)
+const Monitor = ({ title, metric, value, threshold, status = 'warning' }) => {
+  const [dataPoints] = React.useState(() => {
+    const initial = []
+    for (let i = 0; i < 20; i++) {
+      const progress = i / 19
+      const base = 15 + progress * (value - 15)
+      const noise = (Math.random() - 0.5) * 5
+      initial.push(Math.max(0, Math.min(100, base + noise)))
+    }
+    return initial
+  })
+
+  const toY = (pct) => 40 - (pct / 100) * 40
+  const points = dataPoints.map((val, i) => `${(i / 19) * 200},${toY(val)}`).join(' L')
+  const linePath = `M${points}`
+  const areaPath = `${linePath} L200,40 L0,40 Z`
+  const lastY = toY(dataPoints[dataPoints.length - 1])
+
+  const colors = status === 'critical'
+    ? { bg: '#fef2f2', border: 'border-red-400', text: 'text-red-700', badge: 'bg-red-600', stroke: '#ef4444', fill: '#fee2e2' }
+    : { bg: '#fffbeb', border: 'border-amber-300', text: 'text-amber-700', badge: 'bg-zinc-600', stroke: '#f59e0b', fill: '#fef3c7' }
+
+  const gradientId = `monitor-grad-${title?.replace(/\s/g, '-') || 'default'}`
+
+  return (
+    <div className={`rounded-lg overflow-hidden border-2 ${colors.border} mt-2`} style={{ backgroundColor: colors.bg }}>
+      <div className="px-4 pt-3 pb-2 flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <svg className={`w-4 h-4 ${colors.text}`} viewBox="0 0 24 24" fill="currentColor">
+            <rect x="3" y="4" width="18" height="4" rx="1" opacity="0.5" />
+            <rect x="3" y="10" width="18" height="4" rx="1" opacity="0.7" />
+            <rect x="3" y="16" width="18" height="4" rx="1" />
+          </svg>
+          <span className={`${colors.text} font-medium text-sm`}>Monitor Alert</span>
+        </div>
+        <span className={`px-2 py-1 rounded text-xs font-semibold ${colors.badge} text-white`}>
+          {status === 'critical' ? 'Critical' : 'Warning'}
+        </span>
+      </div>
+      <div className="px-4 pb-1">
+        <h3 className="text-zinc-900 text-base font-semibold">{title}</h3>
+        <div className={`flex items-center gap-2 ${colors.text} text-sm`}>
+          <span>{metric}</span>
+          <span className="opacity-50">•</span>
+          <span>{value}% used</span>
+        </div>
+      </div>
+      <div className="px-4 pb-3 pt-1">
+        <div className="flex justify-end mb-1">
+          <span className="text-[10px] text-red-400 font-medium">{threshold}%</span>
+        </div>
+        <div className="relative">
+          <div className="absolute w-full border-t-2 border-dashed border-red-400/60" style={{ top: `${(1 - threshold/100) * 48}px` }} />
+          <svg viewBox="0 0 200 40" className="w-full h-10" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor={colors.stroke} stopOpacity="0.4" />
+                <stop offset="100%" stopColor={colors.stroke} stopOpacity="0.1" />
+              </linearGradient>
+            </defs>
+            <path d={areaPath} fill={`url(#${gradientId})`} />
+            <path d={linePath} fill="none" stroke={colors.stroke} strokeWidth="2" strokeLinecap="round" />
+            <circle cx="200" cy={lastY} r="3" fill={colors.stroke}>
+              <animate attributeName="r" values="3;5;3" dur="1s" repeatCount="indefinite" />
+            </circle>
+          </svg>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// Multiple choice component - terminal style
 const MultipleChoice = ({ question, options, onSelect, selectedId, disabled = false }) => {
   const hasSelection = selectedId !== undefined && selectedId !== null
 
   return (
-    <div>
+    <div className="bg-zinc-900 p-4 font-mono">
       {question && (
-        <div className="text-[#1d1c1d] dark:text-zinc-200 text-[15px] mb-3">{question}</div>
+        <div className="text-[15px] text-emerald-400">
+          {question}
+        </div>
       )}
-      <div className="flex flex-col bg-gray-50 dark:bg-zinc-800/60 border border-gray-200 dark:border-zinc-600 shadow-sm rounded-lg overflow-hidden">
-        {options.map((option, idx) => {
-          const optionId = option.id !== undefined ? option.id : idx
-          const isSelected = selectedId === optionId
-          const isDisabled = disabled || (hasSelection && !isSelected)
-          const canInteract = !disabled && !hasSelection
+      {options && options.length > 0 && (
+        <div className="space-y-0 mt-3">
+          {options.map((option, idx) => {
+            const optionId = option.id !== undefined ? option.id : idx
+            const isSelected = selectedId === optionId
+            const isDisabled = disabled || (hasSelection && !isSelected)
+            const canInteract = !disabled && !hasSelection
 
-          return (
-            <label
-              key={optionId}
-              className={`text-[15px] flex items-center p-[12px] transition-colors ${
-                idx < options.length - 1 ? 'border-b border-gray-200 dark:border-zinc-600' : ''
-              } ${
-                isSelected
-                  ? 'bg-indigo-100 dark:bg-indigo-900/50'
-                  : isDisabled
-                    ? 'opacity-50 cursor-default'
-                    : 'cursor-pointer hover:bg-indigo-50 dark:hover:bg-indigo-900/40'
-              }`}
-            >
-              <input
-                type="radio"
-                name={`mc_${question?.slice(0, 20) || 'choice'}_${options.length}`}
-                checked={isSelected}
-                disabled={isDisabled}
-                onChange={() => canInteract && onSelect?.(optionId, option.text)}
-                className="h-4 w-4 text-indigo-600 border-gray-400 dark:border-zinc-500 focus:ring-indigo-500 dark:bg-zinc-700 disabled:cursor-default"
-              />
-              <span className="ml-3 text-zinc-800 dark:text-zinc-200">{option.text}</span>
-            </label>
-          )
-        })}
-      </div>
+            return (
+              <label
+                key={optionId}
+                className={`flex items-center py-2 px-2.5 rounded ${
+                  isSelected
+                    ? 'bg-emerald-900/40'
+                    : isDisabled
+                      ? 'opacity-50 cursor-default'
+                      : 'cursor-pointer hover:bg-zinc-800'
+                }`}
+                onClick={() => canInteract && onSelect?.(optionId, option.text)}
+              >
+                <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${
+                  isSelected 
+                    ? 'border-emerald-500 bg-emerald-500' 
+                    : 'border-zinc-500 bg-transparent'
+                }`}>
+                  {isSelected && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
+                </div>
+                <span className="ml-3 text-white text-[14px]">{option.text}</span>
+              </label>
+            )
+          })}
+        </div>
+      )}
     </div>
   )
 }
@@ -334,6 +442,31 @@ export const Message = ({ message, onSelect, threadReplies }) => {
           />
         )
 
+      case 'oncall_alert':
+        return (
+          <OncallAlert
+            key={index}
+            severity={component.severity}
+            service={component.service}
+            alert={component.alert}
+            error={component.error}
+            affected={component.affected}
+            commit={component.commit}
+          />
+        )
+
+      case 'monitor':
+        return (
+          <Monitor
+            key={index}
+            title={component.title}
+            metric={component.metric}
+            value={component.value}
+            threshold={component.threshold}
+            status={component.status}
+          />
+        )
+
       case 'text':
       default:
         return (
@@ -400,6 +533,17 @@ export const Message = ({ message, onSelect, threadReplies }) => {
           </div>
         )
     }
+  }
+
+  // Special rendering for narrator (invariant.training) - no avatar, name, timestamp
+  const isNarrator = name === 'invariant.training'
+
+  if (isNarrator) {
+    return (
+      <div className="!py-0 !-mx-4">
+        {renderContent()}
+      </div>
+    )
   }
 
   return (

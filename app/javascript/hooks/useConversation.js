@@ -79,28 +79,39 @@ export function useConversation({ conversationId, autoSubscribe = true, initialS
     }
   }, [])
 
-  // Send user message via ConversationManager
+  // Send user message to server
+  // Server assigns ID and sequence, message comes back via normal message flow
   const sendUserMessage = useCallback(async (content) => {
-    // Add message locally immediately
-    const messageId = addMessage({
-      content,
-      author: { name: 'You', avatar: null },
-      isSystem: false,
-      type: 'text',
-    })
+    // Demo mode: use global API directly (when no conversationId)
+    if (!conversationId && window.ReplicateConversation) {
+      const api = window.ReplicateConversation
+      const currentMessages = api.getMessages?.() || []
 
-    // Send to backend if we have a conversation ID
+      // Get next sequence from existing messages
+      const maxSeq = currentMessages.reduce((max, m) => Math.max(max, m.sequence ?? 0), 0)
+
+      const message = {
+        id: `msg_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`,
+        sequence: maxSeq + 1,
+        author: { name: 'You', avatar: null },
+        created_at: new Date().toISOString(),
+        components: [{ type: 'text', content }],
+      }
+
+      // Add message via the global API (simulates server broadcast)
+      api.addMessage?.(message)
+      return
+    }
+
+    // Real mode: send to server via ConversationManager
     if (conversationId) {
       try {
         await conversationManager.send(conversationId, content)
       } catch (e) {
         console.error('[useConversation] Failed to send message:', e)
-        // Could update message state to show error
       }
     }
-
-    return messageId
-  }, [addMessage, conversationId])
+  }, [conversationId])
 
   // Subscribe to ActionCable via ConversationManager
   useEffect(() => {

@@ -371,38 +371,137 @@ const TypingIndicator = ({ avatar, name }) => (
   </div>
 )
 
+// Inline Monitor widget (Datadog-style) for embedding in chat
+const Monitor = ({ title, metric, value, threshold, status = 'warning' }) => {
+  const [dataPoints] = React.useState(() => {
+    const initial = []
+    for (let i = 0; i < 20; i++) {
+      const progress = i / 19
+      const base = 15 + progress * (value - 15)
+      const noise = (Math.random() - 0.5) * 5
+      initial.push(Math.max(0, Math.min(100, base + noise)))
+    }
+    return initial
+  })
+
+  const toY = (pct) => 40 - (pct / 100) * 40
+  const points = dataPoints.map((val, i) => `${(i / 19) * 200},${toY(val)}`).join(' L')
+  const linePath = `M${points}`
+  const areaPath = `${linePath} L200,40 L0,40 Z`
+  const lastY = toY(dataPoints[dataPoints.length - 1])
+
+  const colors = status === 'critical'
+    ? { bg: '#fef2f2', border: 'border-red-400', text: 'text-red-700', badge: 'bg-red-600', stroke: '#ef4444', fill: '#fee2e2' }
+    : { bg: '#fffbeb', border: 'border-amber-300', text: 'text-amber-700', badge: 'bg-zinc-600', stroke: '#f59e0b', fill: '#fef3c7' }
+
+  return (
+    <div className={`rounded-lg overflow-hidden border-2 ${colors.border} mt-2`} style={{ backgroundColor: colors.bg }}>
+      <div className="px-4 pt-3 pb-2 flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <svg className={`w-4 h-4 ${colors.text}`} viewBox="0 0 24 24" fill="currentColor">
+            <rect x="3" y="4" width="18" height="4" rx="1" opacity="0.5" />
+            <rect x="3" y="10" width="18" height="4" rx="1" opacity="0.7" />
+            <rect x="3" y="16" width="18" height="4" rx="1" />
+          </svg>
+          <span className={`${colors.text} font-medium text-sm`}>Monitor Alert</span>
+        </div>
+        <span className={`px-2 py-1 rounded text-xs font-semibold ${colors.badge} text-white`}>
+          {status === 'critical' ? 'Critical' : 'Warning'}
+        </span>
+      </div>
+      <div className="px-4 pb-1">
+        <h3 className="text-zinc-900 text-base font-semibold">{title}</h3>
+        <div className={`flex items-center gap-2 ${colors.text} text-sm`}>
+          <span>{metric}</span>
+          <span className="opacity-50">•</span>
+          <span>{value}% used</span>
+        </div>
+      </div>
+      <div className="px-4 pb-3 pt-1">
+        <div className="flex justify-end mb-1">
+          <span className="text-[10px] text-red-400 font-medium">{threshold}%</span>
+        </div>
+        <div className="relative">
+          <div className="absolute w-full border-t-2 border-dashed border-red-400/60" style={{ top: `${(1 - threshold/100) * 48}px` }} />
+          <svg viewBox="0 0 200 40" className="w-full h-10" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id={`grad-${title}`} x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor={colors.stroke} stopOpacity="0.4" />
+                <stop offset="100%" stopColor={colors.stroke} stopOpacity="0.1" />
+              </linearGradient>
+            </defs>
+            <path d={areaPath} fill={`url(#grad-${title})`} />
+            <path d={linePath} fill="none" stroke={colors.stroke} strokeWidth="2" strokeLinecap="round" />
+            <circle cx="200" cy={lastY} r="3" fill={colors.stroke}>
+              <animate attributeName="r" values="3;5;3" dur="1s" repeatCount="indefinite" />
+            </circle>
+          </svg>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// Inline OncallAlert widget (PagerDuty-style) for embedding in chat
+const OncallAlert = ({ severity = 'SEV-1', service, alert, error, affected, commit }) => {
+  const severityColors = {
+    'SEV-1': { bg: 'bg-red-500/20', text: 'text-red-400', border: 'border-red-500/30' },
+    'SEV-2': { bg: 'bg-orange-500/20', text: 'text-orange-400', border: 'border-orange-500/30' },
+  }
+  const colors = severityColors[severity] || severityColors['SEV-1']
+
+  return (
+    <div className="rounded-lg bg-zinc-800 border border-zinc-700 p-4 mt-2">
+      <div className="flex items-center gap-3">
+        <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse flex-shrink-0" />
+        <div className="flex-1">
+          <div className="flex items-center gap-2 mb-1">
+            <span className="text-white font-medium">{service}</span>
+            <span className={`px-1.5 py-0.5 rounded text-xs font-bold ${colors.bg} ${colors.text} ${colors.border} border`}>{severity}</span>
+          </div>
+          <div className="text-zinc-400 text-sm mb-2">{alert}</div>
+          <div className="flex items-center gap-3 text-xs flex-wrap">
+            {error && <span className="font-mono text-red-400 bg-red-500/10 px-1.5 py-0.5 rounded">{error}</span>}
+            {affected && <span className="text-zinc-400">{affected}</span>}
+            {commit && <><span className="text-zinc-500">•</span><span className="text-zinc-400 font-mono">{commit}</span></>}
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 // Slack incident thread conversation
 export const SlackThread = ({ category = 'networking', topic = 'dns' }) => {
   const codeRef = React.useRef(null)
+  const codeRef2 = React.useRef(null)
   const [visibleMessages, setVisibleMessages] = React.useState(0)
   const [typingUser, setTypingUser] = React.useState({ avatar: '/jacob-square.jpg', name: 'pagerduty' })
 
-  // Message sequence: pagerduty alert -> maya's diagnosis -> daniel's observation -> maya's finding -> replicate question
   const messageSequence = [
-    { typingDuration: 1200 }, // pagerduty typing
-    { delay: 500, avatar: '/profile-photo-3.jpg', name: 'maya', typingDuration: 1600 },
-    { delay: 600, avatar: '/profile-photo-2.jpg', name: 'daniel', typingDuration: 1200 },
-    { delay: 500, avatar: '/profile-photo-3.jpg', name: 'maya', typingDuration: 1400 },
-    { delay: 600, avatar: '/logo.png', name: 'invariant.training', typingDuration: 700 },
+    { typingDuration: 1200 },
+    { delay: 400, avatar: '/profile-photo-3.jpg', name: 'maya', typingDuration: 1400 },
+    { delay: 300, avatar: '/profile-photo-2.jpg', name: 'daniel', typingDuration: 1600 },
+    { delay: 500, avatar: '/profile-photo-1.jpg', name: 'alex', typingDuration: 1200 },
+    { delay: 400, avatar: '/profile-photo-3.jpg', name: 'maya', typingDuration: 1800 },
+    { delay: 300, avatar: '/profile-photo-2.jpg', name: 'daniel', typingDuration: 1400 },
+    { delay: 500, avatar: '/profile-photo-3.jpg', name: 'maya', typingDuration: 1000 },
+    { delay: 600, avatar: '/logo.png', name: 'invariant.training', typingDuration: 800 },
     { delay: 0 },
   ]
 
   React.useEffect(() => {
     const seqIndex = visibleMessages
     if (seqIndex >= messageSequence.length) return
-
     const seq = messageSequence[seqIndex]
 
-    // Show typing, then reveal message
     const messageTimeout = setTimeout(() => {
       setTypingUser(null)
       setVisibleMessages(v => v + 1)
-
-      // Set next typing user after a delay
       const nextSeq = messageSequence[seqIndex + 1]
       if (nextSeq && nextSeq.avatar) {
         setTimeout(() => {
-          setTypingUser({ avatar: nextSeq.avatar, name: nextSeq.name, isBot: nextSeq.isBot })
+          setTypingUser({ avatar: nextSeq.avatar, name: nextSeq.name })
         }, nextSeq.delay || 0)
       }
     }, seq.typingDuration || 0)
@@ -411,8 +510,11 @@ export const SlackThread = ({ category = 'networking', topic = 'dns' }) => {
   }, [visibleMessages])
 
   React.useEffect(() => {
-    if (codeRef.current && window.hljs && visibleMessages >= 2) {
+    if (codeRef.current && window.hljs && visibleMessages >= 3) {
       window.hljs.highlightElement(codeRef.current)
+    }
+    if (codeRef2.current && window.hljs && visibleMessages >= 5) {
+      window.hljs.highlightElement(codeRef2.current)
     }
   }, [visibleMessages])
 
@@ -427,110 +529,168 @@ export const SlackThread = ({ category = 'networking', topic = 'dns' }) => {
             <div className="w-3 h-3 rounded-full bg-green-400 hover:bg-green-500 cursor-default transition-colors"></div>
           </div>
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <span className="text-zinc-600 dark:text-zinc-400 text-xs font-semibold tracking-tight">#ops-alerts</span>
+            <span className="text-zinc-600 dark:text-zinc-400 text-xs font-semibold tracking-tight">#incident-2847</span>
           </div>
         </div>
 
         {/* Messages */}
         <div className="divide-y divide-zinc-200 dark:divide-zinc-700 [&>*]:py-4 [&>*]:px-4">
-          {/* Alert */}
+
+          {/* Message 1: PagerDuty Alert */}
           {visibleMessages >= 1 && (
-            <ChatMessage
-              avatar="/jacob-square.jpg"
-              name="pagerduty"
-              time="3:12 AM"
-            >
-              <div className="border-l-4 border-red-500 bg-[#f8f8f8] dark:bg-zinc-800 rounded-r px-3 py-2 mt-1">
-                <div className="font-mono text-[13px] text-red-600 dark:text-red-400 mb-1">[SEV-1] DNS resolution failures across prod-east</div>
-                <div className="text-[#1d1c1d] dark:text-zinc-100 text-sm font-medium">Services can't resolve internal hostnames — 503s spiking</div>
-                <div className="text-[#616061] dark:text-zinc-400 text-xs mt-1">payments-api, orders-api, auth-service affected • 847 errors/min</div>
-              </div>
-              <div className="mt-2 flex gap-1">
-                <EmojiReaction emoji="📌" count={1} />
-                <EmojiReaction emoji="👀" count={5} />
-              </div>
-            </ChatMessage>
-          )}
-
-          {/* Maya's diagnosis */}
-          {visibleMessages >= 2 && (
-            <ChatMessage avatar="/profile-photo-3.jpg" name="maya" time="3:14 AM">
-              <MessageText className="mt-0.5 mb-2">CoreDNS pods are OOMKilled — check the <Code>ndots</Code> setting in <Code>resolv.conf</Code></MessageText>
-              <pre className="rounded-md text-[13px] leading-[1.5] overflow-x-auto !p-0"><code ref={codeRef} className="language-yaml !p-4 block">{`# /etc/resolv.conf in affected pods
-nameserver 10.96.0.10
-search default.svc.cluster.local svc.cluster.local cluster.local
-options ndots:5  # <- every lookup tries 5 suffixes first`}</code></pre>
-              <Thread replies={[
-                { avatar: '/profile-photo-1.jpg', name: 'alex', time: '3:14 AM', text: 'wait so payments-api.prod hits the DNS server 6 times?' },
-                { avatar: '/profile-photo-3.jpg', name: 'maya', time: '3:15 AM', text: 'yep — it tries all the search domains before going external' },
-                { avatar: '/profile-photo-1.jpg', name: 'alex', time: '3:15 AM', text: 'thats insane, no wonder coredns is dying 😬' },
-              ]} />
-            </ChatMessage>
-          )}
-
-          {/* Daniel's observation */}
-          {visibleMessages >= 3 && (
-            <ChatMessage avatar="/profile-photo-2.jpg" name="daniel" time="3:16 AM">
-              <MessageText className="mt-0.5 mb-2">found it — someone deployed a new sidecar that does <Code>nslookup</Code> every 100ms for health checks</MessageText>
-              <MessageText className="text-zinc-500 dark:text-zinc-400 text-[13px] mb-2">this was in yesterday's deploy:</MessageText>
-              <Diff
-                filename="k8s/deployments/payments-api.yaml"
-                additions={4}
-                deletions={0}
-                lines={[
-                  { type: 'context', text: 'containers:' },
-                  { type: 'add', text: '- name: dns-health-checker' },
-                  { type: 'add', text: '  image: busybox' },
-                  { type: 'add', text: '  command: ["sh", "-c", "while true; do nslookup google.com; sleep 0.1; done"]' },
-                ]}
+            <ChatMessage avatar="/jacob-square.jpg" name="pagerduty" time="2:47 AM">
+              <OncallAlert
+                severity="SEV-1"
+                service="orders-api"
+                alert="Connection pool exhausted — all 50 connections in use"
+                error="ECONNREFUSED"
+                affected="~3,200 orders/min failing"
+                commit="d4f8a2c"
               />
               <div className="mt-2 flex gap-1">
-                <EmojiReaction emoji="💀" count={3} />
-                <EmojiReaction emoji="🤦" count={2} />
+                <EmojiReaction emoji="🔥" count={4} />
+                <EmojiReaction emoji="👀" count={7} />
               </div>
+            </ChatMessage>
+          )}
+
+          {/* Message 2: Maya joins */}
+          {visibleMessages >= 2 && (
+            <ChatMessage avatar="/profile-photo-3.jpg" name="maya" time="2:48 AM">
+              <MessageText className="mt-0.5">taking IC. <Mention>@daniel</Mention> can you pull up the connection metrics? seeing <Code>max_connections=50</Code> but we should have headroom</MessageText>
+              <Monitor
+                title="PostgreSQL Connection Pool"
+                metric="orders-db-primary"
+                value={98}
+                threshold={90}
+                status="critical"
+              />
               <Thread replies={[
-                { avatar: '/profile-photo-1.jpg', name: 'sarah', time: '3:16 AM', text: 'that was me... thought it would catch DNS outages early 😅' },
-                { avatar: '/profile-photo-2.jpg', name: 'daniel', time: '3:17 AM', text: '200 pods × 10 queries/sec = 2000 DNS queries/sec' },
-                { avatar: '/profile-photo-1.jpg', name: 'sarah', time: '3:17 AM', text: 'oh god' },
-                { avatar: '/profile-photo-3.jpg', name: 'maya', time: '3:17 AM', text: 'CoreDNS default is 1000 qps per instance lol' },
-                { avatar: '/profile-photo-2.jpg', name: 'daniel', time: '3:18 AM', text: 'we have 2 replicas so you literally doubled our max capacity' },
-                { avatar: '/profile-photo-1.jpg', name: 'sarah', time: '3:18 AM', text: 'rolling back now 🏃‍♀️' },
-                { avatar: '/profile-photo-3.jpg', name: 'maya', time: '3:18 AM', text: '🙏' },
+                { avatar: '/profile-photo-2.jpg', name: 'daniel', time: '2:48 AM', text: 'on it — pulling grafana now' },
+                { avatar: '/profile-photo-1.jpg', name: 'alex', time: '2:49 AM', text: 'anything I can help with?' },
+                { avatar: '/profile-photo-3.jpg', name: 'maya', time: '2:49 AM', text: 'alex check if this is isolated to orders or if payments is affected too' },
               ]} />
             </ChatMessage>
           )}
 
-          {/* Maya's finding */}
-          {visibleMessages >= 4 && (
-            <ChatMessage avatar="/profile-photo-3.jpg" name="maya" time="3:19 AM" edited>
-              <MessageText className="mt-0.5">rollback is out — DNS queries dropping back to normal. <Mention>@oncall</Mention> let's add CoreDNS autoscaling before this happens again</MessageText>
+          {/* Message 3: Daniel finds something */}
+          {visibleMessages >= 3 && (
+            <ChatMessage avatar="/profile-photo-2.jpg" name="daniel" time="2:51 AM">
+              <MessageText className="mt-0.5 mb-2">found it — connection acquire time spiking. looks like queries are hanging and never returning connections to the pool</MessageText>
+              <pre className="rounded-md text-[13px] leading-[1.5] overflow-x-auto !p-0"><code ref={codeRef} className="language-sql !p-4 block">{`-- active connections by state
+SELECT state, count(*), max(now() - query_start) as max_duration
+FROM pg_stat_activity WHERE datname = 'orders'
+GROUP BY state;
+
+ state  | count |  max_duration
+--------+-------+----------------
+ active |    47 | 00:04:23.445   -- these should be milliseconds
+ idle   |     3 | 00:00:01.234`}</code></pre>
+              <div className="mt-2 flex gap-1">
+                <EmojiReaction emoji="😱" count={3} />
+              </div>
             </ChatMessage>
           )}
 
-          {/* invariant.training prompt with multiple choice */}
+          {/* Message 4: Alex finds related issue */}
+          {visibleMessages >= 4 && (
+            <ChatMessage avatar="/profile-photo-1.jpg" name="alex" time="2:52 AM">
+              <MessageText className="mt-0.5 mb-2">payments is fine, but I found something weird — someone added a new <Code>SELECT FOR UPDATE</Code> yesterday that's taking row locks</MessageText>
+              <Diff
+                filename="internal/orders/repository.go"
+                lines={[
+                  { type: 'context', text: 'func (r *Repository) GetOrderForProcessing(ctx context.Context, id string) (*Order, error) {' },
+                  { type: 'remove', text: '    return r.db.GetOrder(ctx, id)' },
+                  { type: 'add', text: '    // Lock row to prevent double-processing' },
+                  { type: 'add', text: '    return r.db.QueryRow(ctx, `SELECT * FROM orders WHERE id = $1 FOR UPDATE`, id)' },
+                  { type: 'context', text: '}' },
+                ]}
+              />
+              <Thread replies={[
+                { avatar: '/profile-photo-2.jpg', name: 'daniel', time: '2:53 AM', text: 'oh no... FOR UPDATE with no timeout will wait forever for the lock' },
+                { avatar: '/profile-photo-1.jpg', name: 'alex', time: '2:53 AM', text: 'and if multiple workers try to process the same order...' },
+                { avatar: '/profile-photo-2.jpg', name: 'daniel', time: '2:53 AM', text: 'deadlock city 💀' },
+              ]} />
+            </ChatMessage>
+          )}
+
+          {/* Message 5: Maya digs deeper */}
           {visibleMessages >= 5 && (
+            <ChatMessage avatar="/profile-photo-3.jpg" name="maya" time="2:55 AM">
+              <MessageText className="mt-0.5 mb-2">confirmed — we have 23 transactions waiting on each other. classic deadlock pattern</MessageText>
+              <pre className="rounded-md text-[13px] leading-[1.5] overflow-x-auto !p-0"><code ref={codeRef2} className="language-sql !p-4 block">{`-- blocked queries waiting on locks
+SELECT blocked.pid, blocked.query, blocking.pid as blocking_pid
+FROM pg_stat_activity blocked
+JOIN pg_locks bl ON bl.pid = blocked.pid
+JOIN pg_locks l ON l.relation = bl.relation AND l.pid != bl.pid
+JOIN pg_stat_activity blocking ON l.pid = blocking.pid
+WHERE NOT bl.granted;
+
+-- 23 rows returned, circular dependencies detected`}</code></pre>
+              <Monitor
+                title="Lock Wait Queue Depth"
+                metric="orders-db-primary"
+                value={87}
+                threshold={80}
+                status="critical"
+              />
+            </ChatMessage>
+          )}
+
+          {/* Message 6: Daniel proposes fix */}
+          {visibleMessages >= 6 && (
+            <ChatMessage avatar="/profile-photo-2.jpg" name="daniel" time="2:57 AM">
+              <MessageText className="mt-0.5 mb-2">options: (1) kill the stuck queries and rollback, (2) add <Code>NOWAIT</Code> or <Code>SKIP LOCKED</Code> to the query, (3) revert the commit entirely</MessageText>
+              <MessageText className="text-zinc-500 dark:text-zinc-400 text-[13px]">I'd vote revert — the <Code>FOR UPDATE</Code> approach needs a proper queue, not row locking</MessageText>
+              <div className="mt-2 flex gap-1">
+                <EmojiReaction emoji="👍" count={2} />
+                <EmojiReaction emoji="💯" count={1} />
+              </div>
+              <Thread replies={[
+                { avatar: '/profile-photo-1.jpg', name: 'alex', time: '2:57 AM', text: 'agreed — I can have the revert ready in 2 min' },
+                { avatar: '/profile-photo-3.jpg', name: 'maya', time: '2:58 AM', text: 'do it. daniel can you kill the stuck connections so we recover faster?' },
+                { avatar: '/profile-photo-2.jpg', name: 'daniel', time: '2:58 AM', text: 'already on it' },
+              ]} />
+            </ChatMessage>
+          )}
+
+          {/* Message 7: Maya confirms resolution */}
+          {visibleMessages >= 7 && (
+            <ChatMessage avatar="/profile-photo-3.jpg" name="maya" time="3:04 AM" edited>
+              <MessageText className="mt-0.5">revert is deployed, killed 23 stuck connections. pool is recovering — down to 12 active connections now. <Mention>@oncall</Mention> marking resolved but we need a proper fix for the double-processing issue</MessageText>
+              <div className="mt-2 flex gap-1">
+                <EmojiReaction emoji="🎉" count={4} />
+                <EmojiReaction emoji="🙏" count={2} />
+              </div>
+            </ChatMessage>
+          )}
+
+          {/* Message 8: invariant.training narrator question */}
+          {visibleMessages >= 8 && (
             <div className="flex items-start gap-3">
               <img src="/logo.png" alt="" className="w-10 h-10 rounded-full flex-shrink-0" />
               <div className="flex-1">
                 <div className="flex items-baseline justify-between gap-2">
                   <span className="font-semibold text-[#1d1c1d] dark:text-zinc-100 text-[15px] tracking-[-0.01em]">invariant.training</span>
-                  <button className="px-3 py-1 text-[12px] font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-full transition-colors">
-                    Give me a hint
-                  </button>
+                  <span className="text-[#616061] dark:text-zinc-500 text-[12px]">3:05 AM</span>
                 </div>
-                <MessageText className="mt-0.5 mb-3">What's the core issue with this DNS health check pattern?</MessageText>
+                <MessageText className="mt-0.5 mb-3">The team reverted the change, but the underlying problem remains: orders can still be double-processed. What's the right architectural fix?</MessageText>
                 <div className="flex flex-col bg-gray-50 dark:bg-zinc-800/60 border border-gray-200 dark:border-zinc-600 shadow-sm rounded-lg overflow-hidden">
                   <label className="text-[15px] flex items-center p-[12px] cursor-pointer hover:bg-indigo-50 dark:hover:bg-indigo-900/40 border-b border-gray-200 dark:border-zinc-600">
-                    <input type="radio" name="mc_dns" className="h-4 w-4 text-indigo-600 border-gray-400 dark:border-zinc-500 focus:ring-indigo-500 dark:bg-zinc-700" />
-                    <span className="ml-3 text-zinc-800 dark:text-zinc-200">High-frequency polling overwhelms shared infrastructure like CoreDNS</span>
+                    <input type="radio" name="mc_pool" className="h-4 w-4 text-indigo-600 border-gray-400 dark:border-zinc-500 focus:ring-indigo-500 dark:bg-zinc-700" />
+                    <span className="ml-3 text-zinc-800 dark:text-zinc-200">Use SELECT FOR UPDATE SKIP LOCKED to avoid blocking</span>
                   </label>
                   <label className="text-[15px] flex items-center p-[12px] cursor-pointer hover:bg-indigo-50 dark:hover:bg-indigo-900/40 border-b border-gray-200 dark:border-zinc-600">
-                    <input type="radio" name="mc_dns" className="h-4 w-4 text-indigo-600 border-gray-400 dark:border-zinc-500 focus:ring-indigo-500 dark:bg-zinc-700" />
-                    <span className="ml-3 text-zinc-800 dark:text-zinc-200">External DNS lookups should use a caching resolver</span>
+                    <input type="radio" name="mc_pool" className="h-4 w-4 text-indigo-600 border-gray-400 dark:border-zinc-500 focus:ring-indigo-500 dark:bg-zinc-700" />
+                    <span className="ml-3 text-zinc-800 dark:text-zinc-200">Add a distributed lock service like Redis or Zookeeper</span>
+                  </label>
+                  <label className="text-[15px] flex items-center p-[12px] cursor-pointer hover:bg-indigo-50 dark:hover:bg-indigo-900/40 border-b border-gray-200 dark:border-zinc-600">
+                    <input type="radio" name="mc_pool" className="h-4 w-4 text-indigo-600 border-gray-400 dark:border-zinc-500 focus:ring-indigo-500 dark:bg-zinc-700" />
+                    <span className="ml-3 text-zinc-800 dark:text-zinc-200">Use a proper job queue with exactly-once delivery guarantees</span>
                   </label>
                   <label className="text-[15px] flex items-center p-[12px] cursor-pointer hover:bg-indigo-50 dark:hover:bg-indigo-900/40">
-                    <input type="radio" name="mc_dns" className="h-4 w-4 text-indigo-600 border-gray-400 dark:border-zinc-500 focus:ring-indigo-500 dark:bg-zinc-700" />
-                    <span className="ml-3 text-zinc-800 dark:text-zinc-200">The ndots:5 setting amplifies every query into multiple requests</span>
+                    <input type="radio" name="mc_pool" className="h-4 w-4 text-indigo-600 border-gray-400 dark:border-zinc-500 focus:ring-indigo-500 dark:bg-zinc-700" />
+                    <span className="ml-3 text-zinc-800 dark:text-zinc-200">Increase the connection pool size to handle lock contention</span>
                   </label>
                 </div>
               </div>
@@ -664,10 +824,8 @@ export const GitDiff = () => {
 
 // Export all polished widgets
 export const INCIDENT_WIDGETS = [
-  SlackThread,
   MonitorAlert,
   PagerDutyAlert,
-  GitDiff,
 ]
 
 export default INCIDENT_WIDGETS
