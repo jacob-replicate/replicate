@@ -383,7 +383,7 @@ export const SlackThread = ({ category = 'networking', topic = 'dns' }) => {
     { delay: 500, avatar: '/profile-photo-3.jpg', name: 'maya', typingDuration: 1600 },
     { delay: 600, avatar: '/profile-photo-2.jpg', name: 'daniel', typingDuration: 1200 },
     { delay: 500, avatar: '/profile-photo-3.jpg', name: 'maya', typingDuration: 1400 },
-    { delay: 600, avatar: '/logo.png', name: 'replicate.info', typingDuration: 700 },
+    { delay: 600, avatar: '/logo.png', name: 'invariant.training', typingDuration: 700 },
     { delay: 0 },
   ]
 
@@ -507,13 +507,13 @@ options ndots:5  # <- every lookup tries 5 suffixes first`}</code></pre>
             </ChatMessage>
           )}
 
-          {/* replicate.info prompt with multiple choice */}
+          {/* invariant.training prompt with multiple choice */}
           {visibleMessages >= 5 && (
             <div className="flex items-start gap-3">
               <img src="/logo.png" alt="" className="w-10 h-10 rounded-full flex-shrink-0" />
               <div className="flex-1">
                 <div className="flex items-baseline justify-between gap-2">
-                  <span className="font-semibold text-[#1d1c1d] dark:text-zinc-100 text-[15px] tracking-[-0.01em]">replicate.info</span>
+                  <span className="font-semibold text-[#1d1c1d] dark:text-zinc-100 text-[15px] tracking-[-0.01em]">invariant.training</span>
                   <button className="px-3 py-1 text-[12px] font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-full transition-colors">
                     Give me a hint
                   </button>

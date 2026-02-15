@@ -16,7 +16,7 @@ class ConversationsController < ApplicationController
 
     @topic = @conversation.topic
 
-    @title = [@conversation.page_title || @conversation.name, "replicate.info"].reject(&:blank?).first
+    @title = [@conversation.page_title || @conversation.name, "invariant.training"].reject(&:blank?).first
   end
 
   # GET /:topic_code/:conversation_code - Show by topic/code (forks template if needed)
@@ -29,7 +29,7 @@ class ConversationsController < ApplicationController
     @conversation = template.fork_for_owner!(owner_type: owner_type, owner_id: owner_id)
     @conversation.update(ip_address: request.remote_ip) if @conversation.ip_address.blank?
 
-    @title = [@conversation.name, "replicate.info"].reject(&:blank?).first
+    @title = [@conversation.name, "invariant.training"].reject(&:blank?).first
     render :show
   end
 

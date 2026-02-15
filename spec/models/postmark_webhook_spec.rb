@@ -72,12 +72,12 @@ RSpec.describe PostmarkWebhook, type: :model do
     let!(:conversation) { create(:conversation) }
 
     it "finds the message via In-Reply-To header when present" do
-      parent = create(:message, conversation:, content: "parent", email_message_id_header: "<parent@mail.replicate.info>")
+      parent = create(:message, conversation:, content: "parent", email_message_id_header: "<parent@mail.invariant.training>")
 
       w = build(:postmark_webhook, content: payload.merge(
         "Headers" => [
-          { "Name" => "In-Reply-To", "Value" => "<parent@mail.replicate.info>" },
-          { "Name" => "Message-ID",  "Value" => "<child@mail.replicate.info>" }
+          { "Name" => "In-Reply-To", "Value" => "<parent@mail.invariant.training>" },
+          { "Name" => "Message-ID",  "Value" => "<child@mail.invariant.training>" }
         ]
       ))
 
@@ -86,12 +86,12 @@ RSpec.describe PostmarkWebhook, type: :model do
 
     it "falls back to References when In-Reply-To is absent/blank" do
       # Only one of the references actually exists to keep selection deterministic
-      referenced = create(:message, conversation:, content: "in chain", email_message_id_header: "<exists@mail.replicate.info>")
+      referenced = create(:message, conversation:, content: "in chain", email_message_id_header: "<exists@mail.invariant.training>")
 
       w = build(:postmark_webhook, content: payload.merge(
         "Headers" => [
-          { "Name" => "References", "Value" => "<nope@mail.replicate.info> <exists@mail.replicate.info> <alsonope@mail.replicate.info>" },
-          { "Name" => "Message-ID", "Value" => "<child@mail.replicate.info>" }
+          { "Name" => "References", "Value" => "<nope@mail.invariant.training> <exists@mail.invariant.training> <alsonope@mail.invariant.training>" },
+          { "Name" => "Message-ID", "Value" => "<child@mail.invariant.training>" }
         ]
       ))
 
@@ -116,7 +116,7 @@ RSpec.describe PostmarkWebhook, type: :model do
     it "returns nil when no matching Message exists for the referenced IDs" do
       w = build(:postmark_webhook, content: payload.merge(
         "Headers" => [
-          { "Name" => "In-Reply-To", "Value" => "<unknown@mail.replicate.info>" }
+          { "Name" => "In-Reply-To", "Value" => "<unknown@mail.invariant.training>" }
         ]
       ))
       expect(w.in_reply_to_message).to be_nil

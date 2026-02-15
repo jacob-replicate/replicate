@@ -122,7 +122,7 @@ class Conversation < ApplicationRecord
   end
 
   def sharing_url
-    Rails.env.development? ? "http://localhost:3000/incidents/#{sharing_code}" : "https://replicate.info/incidents/#{sharing_code}"
+    Rails.env.development? ? "http://localhost:3000/incidents/#{sharing_code}" : "https://invariant.training/incidents/#{sharing_code}"
   end
 
   def duration

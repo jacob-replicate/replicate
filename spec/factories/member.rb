@@ -2,7 +2,7 @@ FactoryBot.define do
   factory :member do
     association :organization
     name { "Alice Smith" }
-    sequence(:email) { |n| "employee#{n}@replicate.info" }
+    sequence(:email) { |n| "employee#{n}@invariant.training" }
     role { "engineer" }
     subscribed { true }
     email_bounced { false }

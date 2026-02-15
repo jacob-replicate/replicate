@@ -3,7 +3,7 @@
 ## Requirements (Simplified)
 
 1. **Topics only** - No category/topic hierarchy, just 6 topics with direct links
-2. **Conversation UUID routing** - `replicate.info/conversations/:uuid` for bookmarkable links
+2. **Conversation UUID routing** - `invariant.training/conversations/:uuid` for bookmarkable links
 3. **Dark mode** - Support existing toggle, no other theme variants
 4. **Clean async interface** - Design frontend to accept messages via clean JS API
 5. **Hardcoded demo on load** - Use lightweight onload callback to stream demo content
@@ -37,7 +37,7 @@ interface Message {
   content: string;
   author: { name: string; avatar?: string };
   timestamp: Date;
-  isSystem: boolean;  // replicate.info vs user
+  isSystem: boolean;  // invariant.training vs user
   type?: 'text' | 'code' | 'multiple_choice' | 'loading';
   metadata?: Record<string, any>;
 }

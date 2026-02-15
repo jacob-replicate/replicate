@@ -103,7 +103,7 @@ options ndots:5  # <- every lookup tries 5 suffixes first`,
   {
     id: 'msg_7',
     sequence: 7,
-    author: { name: 'replicate.info', avatar: '/logo.png' },
+    author: { name: 'invariant.training', avatar: '/logo.png' },
     created_at: '2026-02-14T10:35:00',
     components: [
       {
@@ -206,7 +206,7 @@ options ndots:5  # <- every lookup tries 5 suffixes first`,
   {
     id: 'msg_15',
     sequence: 15,
-    author: { name: 'replicate.info', avatar: '/logo.png' },
+    author: { name: 'invariant.training', avatar: '/logo.png' },
     created_at: '2026-02-14T10:39:00',
     components: [
       {
@@ -260,7 +260,7 @@ options ndots:5  # <- every lookup tries 5 suffixes first`,
   {
     id: 'msg_19',
     sequence: 19,
-    author: { name: 'replicate.info', avatar: '/logo.png' },
+    author: { name: 'invariant.training', avatar: '/logo.png' },
     created_at: '2026-02-14T10:42:00',
     components: [
       {

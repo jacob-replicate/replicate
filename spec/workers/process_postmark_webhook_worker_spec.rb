@@ -8,7 +8,7 @@ RSpec.describe ProcessPostmarkWebhookWorker, type: :worker do
     create(:message,
       conversation: conversation,
       content: "root",
-      email_message_id_header: "<parent-123@mail.replicate.info>",
+      email_message_id_header: "<parent-123@mail.invariant.training>",
       user_generated: false
     )
   end
@@ -25,7 +25,7 @@ RSpec.describe ProcessPostmarkWebhookWorker, type: :worker do
           "MessageID" => "pm-123",
           "Headers" => [
             { "Name" => "In-Reply-To", "Value" => "#{parent_msg.email_message_id_header}" },
-            { "Name" => "Message-ID",  "Value" => "<child-456@mail.replicate.info>" }
+            { "Name" => "Message-ID",  "Value" => "<child-456@mail.invariant.training>" }
           ]
         }
       end
@@ -41,7 +41,7 @@ RSpec.describe ProcessPostmarkWebhookWorker, type: :worker do
         expect(new_msg).to have_attributes(
           user_generated: true,
           content: "Hello from Postmark",
-          email_message_id_header: "<child-456@mail.replicate.info>"
+          email_message_id_header: "<child-456@mail.invariant.training>"
         )
 
         expect(webhook.reload.processed_at).to be_within(1.second).of(Time.current)
@@ -50,8 +50,8 @@ RSpec.describe ProcessPostmarkWebhookWorker, type: :worker do
       it "marks processed but does not create a message when no parent matches" do
         webhook.update!(content: payload.merge(
           "Headers" => [
-            { "Name" => "In-Reply-To", "Value" => "<not-found@mail.replicate.info>" },
-            { "Name" => "Message-ID",  "Value" => "<child-789@mail.replicate.info>" }
+            { "Name" => "In-Reply-To", "Value" => "<not-found@mail.invariant.training>" },
+            { "Name" => "Message-ID",  "Value" => "<child-789@mail.invariant.training>" }
           ]
         ))
 
@@ -80,7 +80,7 @@ RSpec.describe ProcessPostmarkWebhookWorker, type: :worker do
         }.to change { conversation.messages.count }.by(1)
 
         forced = conversation.messages.order(:created_at).last
-        expect(forced.email_message_id_header).to eq("<child-456@mail.replicate.info>")
+        expect(forced.email_message_id_header).to eq("<child-456@mail.invariant.training>")
       end
     end
   end
