@@ -243,24 +243,6 @@ WHERE NOT bl.granted;
       }
     ],
   },
-  // Message 12: First question from narrator
-  {
-    id: 'msg_12',
-    sequence: 12,
-    author: { name: 'invariant.training', avatar: '/logo.png' },
-    created_at: timestamps[11],
-    components: [
-      {
-        type: 'multiple_choice',
-        question: "You've confirmed a deadlock. What's your immediate priority?",
-        options: [
-          { id: 'a', text: 'Kill the stuck queries and rollback the transactions' },
-          { id: 'b', text: 'Increase the connection pool size to 100' },
-          { id: 'c', text: 'Restart the orders-api pods' },
-        ],
-      }
-    ],
-  },
   // Message 13: Daniel proposes options
   {
     id: 'msg_13',
@@ -357,24 +339,6 @@ WHERE state = 'active'
       { emoji: '🙏', count: 2 },
     ],
   },
-  // Message 19: Second question from narrator
-  {
-    id: 'msg_19',
-    sequence: 19,
-    author: { name: 'invariant.training', avatar: '/logo.png' },
-    created_at: timestamps[18],
-    components: [
-      {
-        type: 'multiple_choice',
-        question: "The incident is mitigated, but orders can still be double-processed. Before closing, what should you do?",
-        options: [
-          { id: 'a', text: 'Create a follow-up ticket and close the incident' },
-          { id: 'b', text: 'Keep the incident open until the root cause is fully fixed' },
-          { id: 'c', text: 'Add monitoring for double-processed orders first' },
-        ],
-      }
-    ],
-  },
   // Message 20: Maya wraps up
   {
     id: 'msg_20',
@@ -428,10 +392,26 @@ WHERE state = 'active'
         type: 'multiple_choice',
         question: "The team reverted the change, but the underlying problem remains: orders can still be double-processed. What's the right architectural fix?",
         options: [
-          { id: 'a', text: 'Use SELECT FOR UPDATE SKIP LOCKED to avoid blocking' },
-          { id: 'b', text: 'Add a distributed lock service like Redis or Zookeeper' },
-          { id: 'c', text: 'Use a proper job queue with exactly-once delivery guarantees' },
-          { id: 'd', text: 'Increase the connection pool size to handle lock contention' },
+          {
+            id: 'a',
+            thought: 'Use SELECT FOR UPDATE SKIP LOCKED to avoid blocking',
+            message: 'for the follow-up ticket — we could use SKIP LOCKED instead of FOR UPDATE. that way workers skip rows that are already being processed instead of blocking'
+          },
+          {
+            id: 'b',
+            thought: 'Add a distributed lock service like Redis or Zookeeper',
+            message: 'thinking we need a distributed lock here — Redis or ZK. database row locks aren\'t meant for this kind of coordination'
+          },
+          {
+            id: 'c',
+            thought: 'Use a proper job queue with exactly-once delivery guarantees',
+            message: 'this needs a proper job queue with exactly-once semantics. SQS FIFO or something similar — row locking for job coordination is always going to be fragile'
+          },
+          {
+            id: 'd',
+            thought: 'Increase the connection pool size to handle lock contention',
+            message: 'should we just bump the connection pool? might give us more headroom for lock contention'
+          },
         ],
       }
     ],

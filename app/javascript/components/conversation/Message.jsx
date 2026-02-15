@@ -310,6 +310,9 @@ const MultipleChoice = ({ question, options, onSelect, selectedId, disabled = fa
             const isSelected = selectedId === optionId
             const isDisabled = disabled || (hasSelection && !isSelected)
             const canInteract = !disabled && !hasSelection
+            // Display thought (internal thinking), send message (Slack message)
+            const displayText = option.thought || option.text
+            const messageText = option.message || option.text
 
             return (
               <label
@@ -321,7 +324,7 @@ const MultipleChoice = ({ question, options, onSelect, selectedId, disabled = fa
                       ? 'opacity-50 cursor-default'
                       : 'cursor-pointer hover:bg-zinc-800'
                 }`}
-                onClick={() => canInteract && onSelect?.(optionId, option.text)}
+                onClick={() => canInteract && onSelect?.(optionId, messageText)}
               >
                 <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${
                   isSelected 
@@ -330,7 +333,7 @@ const MultipleChoice = ({ question, options, onSelect, selectedId, disabled = fa
                 }`}>
                   {isSelected && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
                 </div>
-                <span className="ml-3 text-white text-[14px]">{option.text}</span>
+                <span className="ml-3 text-white text-[14px]">{displayText}</span>
               </label>
             )
           })}

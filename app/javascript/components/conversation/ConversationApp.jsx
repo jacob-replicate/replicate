@@ -253,21 +253,25 @@ const ConversationView = ({ apiRef }) => {
   }, [addMessage, updateMessage, removeMessage, clear, setTyping, setExpectedSequence, setChannelName, messages, isTyping, isLoaded, apiRef, streamMessages, loadMessages])
 
   // Handle message selection (for multiple choice, etc)
-  // optionText is the text of the selected option (for sending as a message)
-  const handleSelect = useCallback((messageId, optionId, optionText) => {
-    // Update the message to show selection
-    updateMessage(messageId, {
-      metadata: {
-        ...messages.find(m => m.id === messageId)?.metadata,
-        selectedId: optionId
-      }
-    })
+  // Removes the system prompt, shows typing indicator, then sends user's message
+  const handleSelect = useCallback(async (messageId, optionId, optionText) => {
+    // Remove the system prompt immediately
+    removeMessage(messageId)
 
-    // If we have optionText, send it as the user's response
+    // Show typing indicator for "You"
+    setTyping({ name: 'You', avatar: '/jacob-square.jpg' })
+
+    // Wait a moment (simulates typing)
+    await new Promise(resolve => setTimeout(resolve, 600))
+
+    // Clear typing indicator
+    setTyping(false)
+
+    // Send the user's response (will appear as a normal message)
     if (optionText) {
       sendUserMessage(optionText)
     }
-  }, [updateMessage, messages, sendUserMessage])
+  }, [removeMessage, setTyping, sendUserMessage])
 
   return (
     <Conversation

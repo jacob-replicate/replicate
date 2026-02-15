@@ -93,7 +93,7 @@ export function useConversation({ conversationId, autoSubscribe = true, initialS
       const message = {
         id: `msg_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`,
         sequence: maxSeq + 1,
-        author: { name: 'You', avatar: null },
+        author: { name: 'You', avatar: '/jacob-square.jpg' },
         created_at: new Date().toISOString(),
         components: [{ type: 'text', content }],
       }
