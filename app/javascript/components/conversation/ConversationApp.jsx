@@ -4,6 +4,12 @@ import { BrowserRouter, Routes, Route, useParams, useNavigate } from 'react-rout
 import Conversation from './Conversation'
 import BackgroundNotification from './BackgroundNotification'
 import useConversation from '../../hooks/useConversation'
+import {
+  orchestrateDemoResponse,
+  orchestrateFollowUpResponse,
+  isPrimaryOption,
+  isFollowUpOption
+} from '../../demos/demoOrchestrator'
 
 // Timing constants for message streaming
 const TYPING_DURATION = 600
@@ -254,6 +260,7 @@ const ConversationView = ({ apiRef }) => {
 
   // Handle message selection (for multiple choice, etc)
   // Removes the system prompt, shows typing indicator, then sends user's message
+  // Then orchestrates demo responses based on the selected option
   const handleSelect = useCallback(async (messageId, optionId, optionText) => {
     // Remove the system prompt immediately
     removeMessage(messageId)
@@ -270,6 +277,17 @@ const ConversationView = ({ apiRef }) => {
     // Send the user's response (will appear as a normal message)
     if (optionText) {
       sendUserMessage(optionText)
+    }
+
+    // Orchestrate demo responses based on option type
+    if (window.ReplicateConversation) {
+      if (isPrimaryOption(optionId)) {
+        // First-level option (a, b, c, d) - trigger engineer pushback + follow-up
+        orchestrateDemoResponse(optionId, window.ReplicateConversation)
+      } else if (isFollowUpOption(optionId)) {
+        // Second-level option - trigger final response
+        orchestrateFollowUpResponse(optionId, window.ReplicateConversation)
+      }
     }
   }, [removeMessage, setTyping, sendUserMessage])
 

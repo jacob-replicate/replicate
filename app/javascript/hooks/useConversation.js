@@ -30,7 +30,7 @@ export function useConversation({ conversationId, autoSubscribe = true, initialS
       id: msgPartial.id || generateId(),
       author: msgPartial.author || { name: 'Unknown' },
       timestamp: msgPartial.timestamp || new Date(),
-      isSystem: msgPartial.isSystem ?? true,
+      isSystem: msgPartial.isSystem ?? false,
     }
     setMessages(prev => [...prev, message])
     return message.id

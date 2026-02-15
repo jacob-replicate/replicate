@@ -372,7 +372,7 @@ const AlertBlock = ({ severity, title, description, metadata }) => {
  * Main Message component - renders different message types
  */
 export const Message = ({ message, onSelect, threadReplies }) => {
-  const { author, components, reactions, thread, created_at, updated_at } = message
+  const { author, components, reactions, thread, created_at, updated_at, isSystem } = message
   // Legacy support for old structure
   const { content, type, metadata, timestamp, edited } = message
   const { name, avatar } = author || {}
@@ -538,10 +538,8 @@ export const Message = ({ message, onSelect, threadReplies }) => {
     }
   }
 
-  // Special rendering for narrator (invariant.training) - no avatar, name, timestamp
-  const isNarrator = name === 'invariant.training'
-
-  if (isNarrator) {
+  // Special rendering for system prompts - no avatar, name, timestamp
+  if (isSystem) {
     return (
       <div className="!py-0 !-mx-4">
         {renderContent()}

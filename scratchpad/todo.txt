@@ -1,7 +1,8 @@
-- Replace the system prompt selected with a message from "You" for how an engineer would suggest an idea
-- Conversations don't need to live in a plain white box. You can make it resemble a Slack chat, PR review, design doc update, terminal code fix, etc.
+- Your decisions can spawn new incidents, as an integrated way to break off into new experiences + surface novelty by design.
+    - "Hey, just crossposting #inc-5938"... - Put a tab bar in the toolbar to switch between incidents at the top + send notifications in popup that are interesting
+
 - Team mode lets you play async and solve the problem together. Switch between different categories. Escape the room style team building. Solo is free. Team mode is like daily chess.
-- You can get them out of the current experience by sending a new SEV incident Slack popup in the top right. -- "SEV-1: MultiXact pressure causing SLRU exhaustion" -> click -> novelty
+
 - Click "New SEV" button. Show a new one ASAP, along with a link to browser after it reloads. Amazon "one click buy"
 - IBM disclosure. Make sure to update the dates on your terms/privacy/security pages to be recent.
 - Make incident generation intents align with your old INCIDENTS constant format.

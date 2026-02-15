@@ -385,7 +385,7 @@ WHERE state = 'active'
   {
     id: 'msg_23',
     sequence: 23,
-    author: { name: 'invariant.training', avatar: '/logo.png' },
+    isSystem: true,
     created_at: timestamps[22],
     components: [
       {
