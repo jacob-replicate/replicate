@@ -51,17 +51,16 @@ const INCIDENT_MESSAGES = [
   {
     id: 'msg_1',
     sequence: 1,
-    author: { name: 'PagerDuty', avatar: '/jacob-square.jpg' },
+    author: { name: 'ops-prod-alerts', avatar: '/logo.png' },
     created_at: timestamps[0],
     components: [
       {
-        type: 'oncall_alert',
-        severity: 'SEV-1',
-        service: 'orders-api',
-        alert: 'Connection pool exhausted — all 50 connections in use',
-        error: 'ECONNREFUSED',
-        affected: '~3,200 orders/min failing',
-        commit: 'd4f8a2c',
+        type: 'monitor',
+        title: 'PostgreSQL Connection Pool',
+        metric: 'orders-db-primary',
+        value: 98,
+        threshold: 90,
+        status: 'critical',
       }
     ],
     reactions: [
@@ -73,20 +72,24 @@ const INCIDENT_MESSAGES = [
   {
     id: 'msg_2',
     sequence: 2,
-    author: { name: 'maya', avatar: '/profile-photo-3.jpg' },
+    author: { name: 'maya', avatar: '/profile-photo-3.jpg', status: { emoji: '🌴', text: 'OOO - back Monday' } },
     created_at: timestamps[1],
     components: [
       {
         type: 'text',
         content: 'taking IC. @daniel can you pull up the connection metrics? seeing max_connections=50 but we should have headroom',
       },
+    ]
+  },
+  // Message 2b: Channel join - jacob
+  {
+    id: 'msg_2b',
+    sequence: 2.5,
+    components: [
       {
-        type: 'monitor',
-        title: 'PostgreSQL Connection Pool',
-        metric: 'orders-db-primary',
-        value: 98,
-        threshold: 90,
-        status: 'critical',
+        type: 'channel_join',
+        name: 'jacob',
+        avatar: '/jacob-square.jpg',
       }
     ]
   },
@@ -95,7 +98,7 @@ const INCIDENT_MESSAGES = [
     id: 'msg_3',
     sequence: 3,
     parent_message_id: 'msg_2',
-    author: { name: 'daniel', avatar: '/profile-photo-2.jpg' },
+    author: { name: 'daniel', avatar: '/profile-photo-2.jpg', status: { emoji: '📅', text: 'In a meeting' } },
     created_at: timestamps[2],
     components: [
       { type: 'text', content: 'on it — pulling grafana now' }
@@ -106,7 +109,7 @@ const INCIDENT_MESSAGES = [
     id: 'msg_4',
     sequence: 4,
     parent_message_id: 'msg_2',
-    author: { name: 'alex', avatar: '/profile-photo-1.jpg' },
+    author: { name: 'alex', avatar: '/profile-photo-1.jpg', status: { emoji: '💻', text: 'Focusing' } },
     created_at: timestamps[3],
     components: [
       { type: 'text', content: 'anything I can help with?' }
@@ -229,19 +232,21 @@ FROM pg_stat_activity blocked
 JOIN pg_locks bl ON bl.pid = blocked.pid
 JOIN pg_locks l ON l.relation = bl.relation AND l.pid != bl.pid
 JOIN pg_stat_activity blocking ON l.pid = blocking.pid
-WHERE NOT bl.granted;
-
--- 23 rows returned, circular dependencies detected`,
+WHERE NOT bl.granted;`,
       },
-      {
-        type: 'monitor',
-        title: 'Lock Wait Queue Depth',
-        metric: 'orders-db-primary',
-        value: 87,
-        threshold: 80,
-        status: 'critical',
-      }
     ],
+  },
+  // Channel join - chris (eng manager) joins mid-incident
+  {
+    id: 'msg_11b',
+    sequence: 11.5,
+    components: [
+      {
+        type: 'channel_join',
+        name: 'chris',
+        avatar: '/profile-photo-1.jpg',
+      }
+    ]
   },
   // Message 13: Daniel proposes options
   {

@@ -375,7 +375,7 @@ export const Message = ({ message, onSelect, threadReplies }) => {
   const { author, components, reactions, thread, created_at, updated_at, isSystem } = message
   // Legacy support for old structure
   const { content, type, metadata, timestamp, edited } = message
-  const { name, avatar } = author || {}
+  const { name, avatar, status } = author || {}
 
   // Derive edited status from updated_at (or use legacy edited field)
   const isEdited = edited || (updated_at && updated_at !== created_at)
@@ -470,6 +470,18 @@ export const Message = ({ message, onSelect, threadReplies }) => {
           />
         )
 
+      case 'channel_join':
+        return (
+          <div key={index} className="flex items-center gap-2 text-zinc-500 dark:text-zinc-400 text-[13px] py-1">
+            {component.avatar && (
+              <img src={component.avatar} alt="" className="w-5 h-5 rounded-full" />
+            )}
+            <span>
+              <span className="text-[#1264a3] dark:text-blue-400 font-medium">{component.name || component.user}</span> joined the channel
+            </span>
+          </div>
+        )
+
       case 'text':
       default:
         return (
@@ -547,6 +559,11 @@ export const Message = ({ message, onSelect, threadReplies }) => {
     )
   }
 
+  // Special rendering for channel_join - no avatar/name wrapper needed
+  if (components?.length === 1 && components[0].type === 'channel_join') {
+    return renderContent()
+  }
+
   return (
     <div className="flex items-start gap-3">
       {avatar ? (
@@ -557,17 +574,24 @@ export const Message = ({ message, onSelect, threadReplies }) => {
         </div>
       )}
       <div className="flex-1 min-w-0">
-        <div className="flex items-baseline gap-2 flex-wrap">
-          <span className="font-semibold text-[#1d1c1d] dark:text-zinc-100 text-[15px] tracking-[-0.01em]">
-            {name || 'Unknown'}
-          </span>
-          {timeStr && (
-            <span className="text-[#616061] dark:text-zinc-500 text-[12px]">{timeStr}</span>
-          )}
-          {isEdited && (
-            <span className="text-[#616061] dark:text-zinc-500 text-[11px]">(edited)</span>
-          )}
-        </div>
+        {(name || timeStr || isEdited) && (
+          <div className="flex items-baseline gap-2 flex-wrap">
+            {name && (
+              <span className="font-semibold text-[#1d1c1d] dark:text-zinc-100 text-[15px] tracking-[-0.01em]">
+                {name}
+              </span>
+            )}
+            {status && (
+              <span className="text-[12px] text-zinc-500 dark:text-zinc-400">{status.emoji} {status.text}</span>
+            )}
+            {timeStr && (
+              <span className="text-[#616061] dark:text-zinc-500 text-[12px]">{timeStr}</span>
+            )}
+            {isEdited && (
+              <span className="text-[#616061] dark:text-zinc-500 text-[11px]">(edited)</span>
+            )}
+          </div>
+        )}
         <div className="mt-0.5">
           {renderContent()}
         </div>

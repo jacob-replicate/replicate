@@ -3,6 +3,8 @@
 
 - Team mode lets you play async and solve the problem together. Switch between different categories. Escape the room style team building. Solo is free. Team mode is like daily chess.
 
+- GitHub recent PR links.
+
 - Click "New SEV" button. Show a new one ASAP, along with a link to browser after it reloads. Amazon "one click buy"
 - IBM disclosure. Make sure to update the dates on your terms/privacy/security pages to be recent.
 - Make incident generation intents align with your old INCIDENTS constant format.
