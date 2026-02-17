@@ -39,19 +39,6 @@ export const Conversation = ({
   if (variant === 'irc') {
     return (
       <div className="flex flex-col h-full bg-white dark:bg-zinc-900 text-sm">
-        {/* IRC-style topic bar - hidden on mobile (ChannelSwitcher has mobile header) */}
-        <div className="hidden md:flex bg-zinc-100 dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-800 px-3 py-2 items-center gap-3 font-mono">
-          <span className="text-zinc-900 dark:text-white font-medium">{channelName}</span>
-          {topic && (
-            <>
-              <span className="text-zinc-400 dark:text-zinc-600">|</span>
-              <span className="text-zinc-600 dark:text-zinc-400 truncate flex-1">{topic}</span>
-            </>
-          )}
-          {userCount && (
-            <span className="text-zinc-500 text-xs">{userCount} users</span>
-          )}
-        </div>
 
         {/* Messages area */}
         <MessageList

@@ -333,10 +333,33 @@ const ConversationAppInner = ({ apiRef }) => {
 
   // Sample channels - in production these would come from API/state
   const [channels] = useState([
+    // Active incidents
     { id: 'incident-2847', name: 'incident-2847', unreadCount: 0, isActive: true },
     { id: 'incident-2846', name: 'incident-2846', unreadCount: 3, isActive: false },
-    { id: 'ops-alerts', name: 'ops-alerts', unreadCount: 0, isActive: false },
+    { id: 'incident-2845', name: 'incident-2845', unreadCount: 0, isActive: false },
+    // Ops channels
+    { id: 'ops-alerts', name: 'ops-alerts', unreadCount: 12, isActive: false },
     { id: 'oncall', name: 'oncall', unreadCount: 1, isActive: false },
+    { id: 'deploy-prod', name: 'deploy-prod', unreadCount: 0, isActive: false },
+    { id: 'deploy-staging', name: 'deploy-staging', unreadCount: 0, isActive: false },
+    // Team channels
+    { id: 'platform-eng', name: 'platform-eng', unreadCount: 5, isActive: false },
+    { id: 'backend', name: 'backend', unreadCount: 0, isActive: false },
+    { id: 'frontend', name: 'frontend', unreadCount: 2, isActive: false },
+    { id: 'infra', name: 'infra', unreadCount: 0, isActive: false },
+    { id: 'sre-team', name: 'sre-team', unreadCount: 0, isActive: false },
+    { id: 'security', name: 'security', unreadCount: 1, isActive: false },
+    // General
+    { id: 'engineering', name: 'engineering', unreadCount: 0, isActive: false },
+    { id: 'random', name: 'random', unreadCount: 0, isActive: false },
+    { id: 'watercooler', name: 'watercooler', unreadCount: 0, isActive: false },
+    // DMs (prefixed with user emoji or name pattern)
+    { id: 'dm-maya', name: 'maya', unreadCount: 0, isActive: false },
+    { id: 'dm-alex', name: 'alex', unreadCount: 2, isActive: false },
+    { id: 'dm-daniel', name: 'daniel', unreadCount: 0, isActive: false },
+    { id: 'dm-sarah', name: 'sarah', unreadCount: 0, isActive: false },
+    { id: 'dm-chen', name: 'chen', unreadCount: 1, isActive: false },
+    { id: 'dm-priya', name: 'priya', unreadCount: 0, isActive: false },
   ])
 
   const [activeChannelId, setActiveChannelId] = useState('incident-2847')

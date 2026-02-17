@@ -1,6 +1,45 @@
 import React, { useState, useRef, useEffect } from 'react'
 
 /**
+ * ChannelButton - Reusable button for channel/DM list items
+ */
+const ChannelButton = ({ channel, activeChannelId, onSelect, showHash = true }) => {
+  const isActive = activeChannelId === channel.id
+  const hasUnread = channel.unreadCount > 0 && !isActive
+
+  return (
+    <button
+      onClick={() => onSelect(channel.id)}
+      className={`w-full text-left px-3 py-1.5 flex items-center gap-2 hover:bg-zinc-200/50 dark:hover:bg-zinc-700/50 ${
+        isActive
+          ? 'bg-zinc-200 dark:bg-zinc-700 text-zinc-900 dark:text-white'
+          : 'text-zinc-600 dark:text-zinc-400'
+      }`}
+    >
+      {/* Activity/status indicator */}
+      {channel.isActive ? (
+        <span className="w-1.5 h-1.5 rounded-full bg-green-500 flex-shrink-0" />
+      ) : hasUnread ? (
+        <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 flex-shrink-0" />
+      ) : showHash ? (
+        <span className="w-1.5 h-1.5 flex-shrink-0" />
+      ) : (
+        <span className="w-1.5 h-1.5 rounded-full bg-zinc-400 dark:bg-zinc-600 flex-shrink-0" />
+      )}
+
+      <span className="truncate">{showHash ? '#' : ''}{channel.name}</span>
+
+      {/* Unread count */}
+      {hasUnread && (
+        <span className="ml-auto text-xs bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 px-1.5 rounded">
+          {channel.unreadCount}
+        </span>
+      )}
+    </button>
+  )
+}
+
+/**
  * ChannelSwitcher - Tool for switching between multiple chat channels
  *
  * IRC-inspired channel list sidebar that can wrap any conversation content.
@@ -16,6 +55,9 @@ const ChannelSwitcher = ({
     return document.documentElement.classList.contains('dark')
   })
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [bannerDismissed, setBannerDismissed] = useState(() => {
+    return localStorage.getItem('training-banner-dismissed') === 'true'
+  })
 
   const toggleDarkMode = () => {
     const newDark = !isDark
@@ -58,75 +100,131 @@ const ChannelSwitcher = ({
         h-full
         transition-transform duration-200 ease-in-out
       `}>
-        {/* Server header */}
+        {/* Brand header */}
         <div className="px-3 py-2.5 border-b border-zinc-300 dark:border-zinc-700">
-          <div className="text-zinc-500 dark:text-zinc-500 text-xs uppercase tracking-wider">Server</div>
-          <div className="text-green-600 dark:text-green-400 font-medium truncate">{serverName}</div>
+          <a href="/" className="text-[15px] tracking-tight">
+            <span className="font-medium text-zinc-800 dark:text-zinc-100">invariant</span>
+            <span className="text-zinc-400 dark:text-zinc-500">.</span>
+            <span className="font-medium text-purple-600 dark:text-purple-400">training</span>
+          </a>
         </div>
 
         {/* Channel list */}
         <div className="flex-1 overflow-y-auto py-2">
-          <div className="px-3 py-1 text-zinc-500 text-xs uppercase tracking-wider">Channels</div>
-          {channels.map((channel) => (
-            <button
+          {/* Incidents section */}
+          <div className="px-3 py-1 text-zinc-500 text-xs uppercase tracking-wider">Incidents</div>
+          {channels.filter(c => c.id.startsWith('incident-')).map((channel) => (
+            <ChannelButton
               key={channel.id}
-              onClick={() => handleChannelSelect(channel.id)}
-              className={`w-full text-left px-3 py-1.5 flex items-center gap-2 hover:bg-zinc-200/50 dark:hover:bg-zinc-700/50 ${
-                activeChannelId === channel.id 
-                  ? 'bg-zinc-200 dark:bg-zinc-700 text-zinc-900 dark:text-white' 
-                  : 'text-zinc-600 dark:text-zinc-400'
-              }`}
-            >
-              {/* Activity indicator */}
-              {channel.isActive && (
-                <span className="w-1.5 h-1.5 rounded-full bg-green-500 flex-shrink-0" />
-              )}
-              {!channel.isActive && channel.unreadCount > 0 && (
-                <span className="w-1.5 h-1.5 rounded-full bg-amber-500 flex-shrink-0" />
-              )}
-              {!channel.isActive && channel.unreadCount === 0 && (
-                <span className="w-1.5 h-1.5 flex-shrink-0" />
-              )}
+              channel={channel}
+              activeChannelId={activeChannelId}
+              onSelect={handleChannelSelect}
+              showHash
+            />
+          ))}
 
-              <span className="truncate">#{channel.name}</span>
+          {/* Ops section */}
+          <div className="px-3 py-1 mt-3 text-zinc-500 text-xs uppercase tracking-wider">Ops</div>
+          {channels.filter(c => ['ops-alerts', 'oncall', 'deploy-prod', 'deploy-staging'].includes(c.id)).map((channel) => (
+            <ChannelButton
+              key={channel.id}
+              channel={channel}
+              activeChannelId={activeChannelId}
+              onSelect={handleChannelSelect}
+              showHash
+            />
+          ))}
 
-              {/* Unread count */}
-              {channel.unreadCount > 0 && activeChannelId !== channel.id && (
-                <span className="ml-auto text-xs bg-amber-500/20 text-amber-400 px-1.5 rounded">
-                  {channel.unreadCount}
-                </span>
-              )}
-            </button>
+          {/* Teams section */}
+          <div className="px-3 py-1 mt-3 text-zinc-500 text-xs uppercase tracking-wider">Teams</div>
+          {channels.filter(c => ['platform-eng', 'backend', 'frontend', 'infra', 'sre-team', 'security'].includes(c.id)).map((channel) => (
+            <ChannelButton
+              key={channel.id}
+              channel={channel}
+              activeChannelId={activeChannelId}
+              onSelect={handleChannelSelect}
+              showHash
+            />
+          ))}
+
+          {/* General section */}
+          <div className="px-3 py-1 mt-3 text-zinc-500 text-xs uppercase tracking-wider">General</div>
+          {channels.filter(c => ['engineering', 'random', 'watercooler'].includes(c.id)).map((channel) => (
+            <ChannelButton
+              key={channel.id}
+              channel={channel}
+              activeChannelId={activeChannelId}
+              onSelect={handleChannelSelect}
+              showHash
+            />
+          ))}
+
+          {/* DMs section */}
+          <div className="px-3 py-1 mt-3 text-zinc-500 text-xs uppercase tracking-wider">Direct Messages</div>
+          {channels.filter(c => c.id.startsWith('dm-')).map((channel) => (
+            <ChannelButton
+              key={channel.id}
+              channel={channel}
+              activeChannelId={activeChannelId}
+              onSelect={handleChannelSelect}
+              showHash={false}
+            />
           ))}
         </div>
 
-        {/* User info footer with dark mode toggle */}
-        <div className="px-3 py-2 border-t border-zinc-300 dark:border-zinc-700 flex items-center justify-between">
-          <div className="text-zinc-600 dark:text-zinc-500 text-xs">
-            <span className="text-green-600 dark:text-green-400">●</span> jacob
+        {/* Footer with links and dark mode toggle */}
+        <div className="border-t border-zinc-300 dark:border-zinc-700">
+          {/* Links */}
+          <div className="px-3 py-2 flex flex-wrap gap-x-3 gap-y-1 text-[11px]">
+            <a href="/privacy" className="text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300">Privacy</a>
+            <a href="/terms" className="text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300">Terms</a>
+            <a href="/security" className="text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300">Security</a>
           </div>
-          <button
-            onClick={toggleDarkMode}
-            className="text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 transition-colors"
-            title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
-          >
-            {isDark ? (
-              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clipRule="evenodd" />
-              </svg>
-            ) : (
-              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
-              </svg>
-            )}
-          </button>
+          {/* User and toggle */}
+          <div className="px-3 py-2 border-t border-zinc-200 dark:border-zinc-700/50 flex items-center justify-between">
+            <div className="text-zinc-600 dark:text-zinc-500 text-xs">
+              <span className="text-green-600 dark:text-green-400">●</span> jacob
+            </div>
+            <button
+              onClick={toggleDarkMode}
+              className="text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 transition-colors"
+              title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+            >
+              {isDark ? (
+                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clipRule="evenodd" />
+                </svg>
+              ) : (
+                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
+                </svg>
+              )}
+            </button>
+          </div>
         </div>
       </div>
 
       {/* Main content area */}
-      <div className="flex-1 flex flex-col min-w-0 bg-white dark:bg-zinc-900">
+      <div className="flex-1 flex flex-col min-w-0 min-h-0 bg-white dark:bg-zinc-900">
+        {/* Training mode banner */}
+        {!bannerDismissed && (
+          <div className="flex-shrink-0 bg-indigo-600 text-white text-xs font-medium px-3 py-1.5 flex items-center justify-center gap-2">
+            <span>TRAINING MODE — This is a simulated security incident for learning purposes</span>
+            <button
+              onClick={() => {
+                setBannerDismissed(true)
+                localStorage.setItem('training-banner-dismissed', 'true')
+              }}
+              className="ml-2 hover:bg-indigo-500 rounded p-0.5"
+            >
+              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+        )}
         {/* Mobile header with menu button */}
-        <div className="md:hidden flex items-center gap-2 px-3 py-2 border-b border-zinc-200 dark:border-zinc-700 bg-zinc-100 dark:bg-zinc-800">
+        <div className="md:hidden flex-shrink-0 flex items-center gap-2 px-3 py-2 border-b border-zinc-200 dark:border-zinc-700 bg-zinc-100 dark:bg-zinc-800">
           <button
             onClick={() => setSidebarOpen(true)}
             className="text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white"
@@ -137,7 +235,10 @@ const ChannelSwitcher = ({
           </button>
           <span className="text-zinc-600 dark:text-zinc-400 text-xs">#{channels.find(c => c.id === activeChannelId)?.name || 'channel'}</span>
         </div>
-        {children}
+        {/* Children container - takes remaining space */}
+        <div className="flex-1 min-h-0 flex flex-col">
+          {children}
+        </div>
       </div>
     </div>
   )
