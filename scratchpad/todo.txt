@@ -2,6 +2,9 @@
     - "Hey, just crossposting #inc-5938"... - Put a tab bar in the toolbar to switch between incidents at the top + send notifications in popup that are interesting
 
 - Team mode lets you play async and solve the problem together. Switch between different categories. Escape the room style team building. Solo is free. Team mode is like daily chess.
+- Invite your team -> share link -> "Jeff joined (with avatar)"
+- If multiplayer, leave old decisions lingering + leave an X to close them out. Still relevant.
+    - Ask LLM to generate chat message live (so old chat messags don't get stale -- the multi choice prompt provides context, not an actual message)
 
 - GitHub recent PR links.
 

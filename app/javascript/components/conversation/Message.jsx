@@ -472,13 +472,10 @@ export const Message = ({ message, onSelect, threadReplies }) => {
 
       case 'channel_join':
         return (
-          <div key={index} className="flex items-center gap-2 text-zinc-500 dark:text-zinc-400 text-[13px] py-1">
-            {component.avatar && (
-              <img src={component.avatar} alt="" className="w-5 h-5 rounded-full" />
-            )}
-            <span>
-              <span className="text-[#1264a3] dark:text-blue-400 font-medium">{component.name || component.user}</span> joined the channel
-            </span>
+          <div key={index} className="-mx-4 px-4 py-2 bg-violet-50/60 dark:bg-violet-950/20 flex items-center justify-center gap-3 text-[12px] text-violet-600 dark:text-violet-400">
+            <div className="h-px flex-1 bg-violet-200 dark:bg-violet-800 max-w-[80px]" />
+            <span><span className="font-medium">{component.name}</span> joined</span>
+            <div className="h-px flex-1 bg-violet-200 dark:bg-violet-800 max-w-[80px]" />
           </div>
         )
 
@@ -561,7 +558,7 @@ export const Message = ({ message, onSelect, threadReplies }) => {
 
   // Special rendering for channel_join - no avatar/name wrapper needed
   if (components?.length === 1 && components[0].type === 'channel_join') {
-    return renderContent()
+    return renderComponent(components[0], 0)
   }
 
   return (

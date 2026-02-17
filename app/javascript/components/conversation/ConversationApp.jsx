@@ -175,10 +175,16 @@ const ConversationView = ({ apiRef }) => {
         continue
       }
 
-      // Show typing indicator for this author
-      setTypingRef.current(message.author)
-      await sleep(TYPING_DURATION)
-      setTypingRef.current(false)
+      // Check if this is a channel_join message (no typing indicator needed)
+      const isChannelJoin = message.components?.length === 1 &&
+        message.components[0].type === 'channel_join'
+
+      // Show typing indicator for this author (skip for channel_join)
+      if (!isChannelJoin) {
+        setTypingRef.current(message.author)
+        await sleep(TYPING_DURATION)
+        setTypingRef.current(false)
+      }
 
       // Extract reactions to animate separately
       const { reactions, ...messageWithoutReactions } = message
