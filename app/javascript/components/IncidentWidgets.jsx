@@ -224,6 +224,27 @@ const MessageText = ({ children, className = '' }) => (
   <div className={`text-[#1d1c1d] dark:text-zinc-200 text-[15px] ${className}`}>{children}</div>
 )
 
+// IRC mode indicator component
+const ModeIndicator = ({ mode }) => {
+  if (!mode) return null
+  const modeStyles = {
+    '@': 'text-amber-500', // op
+    '+': 'text-green-500', // voice
+  }
+  return (
+    <span className={`font-mono text-[13px] ${modeStyles[mode] || 'text-zinc-500'}`}>{mode}</span>
+  )
+}
+
+// User roles/modes mapping
+const USER_MODES = {
+  'maya': '@',      // channel op (incident commander)
+  'daniel': '+',    // voiced
+  'alex': '+',      // voiced
+  'pagerduty': '',  // bot, no mode
+  'invariant.training': '', // bot, no mode
+}
+
 // Reusable diff component
 // lines: array of { text: string, type: 'add' | 'remove' | 'context' }
 export const Diff = ({ filename, lines }) => {
@@ -302,7 +323,7 @@ const Thread = ({ replies }) => {
         </svg>
         <span className="font-medium">{replies.length} {replies.length === 1 ? 'reply' : 'replies'}</span>
         {!expanded && lastReply && (
-          <span className="text-zinc-500 dark:text-zinc-400">{lastReply.name}: {lastReply.text.slice(0, 30)}{lastReply.text.length > 30 ? '...' : ''}</span>
+          <span className="text-zinc-500 dark:text-zinc-400"><ModeIndicator mode={USER_MODES[lastReply.name]} />{lastReply.name}: {lastReply.text.slice(0, 30)}{lastReply.text.length > 30 ? '...' : ''}</span>
         )}
       </button>
 
@@ -312,7 +333,9 @@ const Thread = ({ replies }) => {
             <div key={i} className="flex items-start gap-2">
               <img src={reply.avatar} alt="" className="w-6 h-6 rounded-full flex-shrink-0" />
               <div>
-                <span className="font-semibold text-[13px] text-[#1d1c1d] dark:text-zinc-100">{reply.name}</span>
+                <span className="font-semibold text-[13px] text-[#1d1c1d] dark:text-zinc-100">
+                  <ModeIndicator mode={USER_MODES[reply.name]} />{reply.name}
+                </span>
                 <span className="text-zinc-500 dark:text-zinc-400 text-[11px] ml-1.5">{reply.time}</span>
                 <div className="text-[13px] text-[#1d1c1d] dark:text-zinc-300">{reply.text}</div>
               </div>
@@ -333,13 +356,16 @@ const Thread = ({ replies }) => {
   )
 }
 
+
 // Reusable chat message component
 const ChatMessage = ({ avatar, name, time, children, text, edited }) => (
   <div className="flex items-start gap-3">
     <img src={avatar} alt="" className="w-10 h-10 rounded-full flex-shrink-0" />
     <div className="flex-1">
       <div className="flex items-baseline gap-2">
-        <span className="font-semibold text-[#1d1c1d] dark:text-zinc-100 text-[15px] tracking-[-0.01em]">{name}</span>
+        <span className="font-semibold text-[#1d1c1d] dark:text-zinc-100 text-[15px] tracking-[-0.01em]">
+          <ModeIndicator mode={USER_MODES[name]} />{name}
+        </span>
         {time && <span className="text-[#616061] dark:text-zinc-500 text-[12px]">{time}</span>}
         {edited && <span className="text-[#616061] dark:text-zinc-500 text-[11px]">(edited)</span>}
       </div>
@@ -471,12 +497,90 @@ const OncallAlert = ({ severity = 'SEV-1', service, alert, error, affected, comm
   )
 }
 
+// User list for the channel
+const CHANNEL_USERS = [
+  { name: 'maya', avatar: '/profile-photo-3.jpg', mode: '@', status: 'online' },
+  { name: 'daniel', avatar: '/profile-photo-2.jpg', mode: '+', status: 'online' },
+  { name: 'alex', avatar: '/profile-photo-1.jpg', mode: '+', status: 'online' },
+  { name: 'sarah', avatar: '/profile-photo-1.jpg', mode: '', status: 'away' },
+  { name: 'chen', avatar: '/profile-photo-2.jpg', mode: '', status: 'online' },
+  { name: 'priya', avatar: '/profile-photo-3.jpg', mode: '', status: 'away' },
+]
+
+// User list panel component
+const UserListPanel = ({ users, onClose }) => (
+  <div className="w-48 border-l border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800/50 flex flex-col">
+    <div className="px-3 py-2 border-b border-zinc-200 dark:border-zinc-700 flex items-center justify-between">
+      <span className="text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wide">Users — {users.length}</span>
+      <button onClick={onClose} className="text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300">
+        <svg className="w-4 h-4" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
+          <path d="M4 4l8 8M12 4l-8 8" />
+        </svg>
+      </button>
+    </div>
+    <div className="flex-1 overflow-y-auto py-2">
+      {/* Ops first */}
+      {users.filter(u => u.mode === '@').length > 0 && (
+        <div className="px-3 mb-2">
+          <div className="text-[10px] font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wide mb-1">Ops (@)</div>
+          {users.filter(u => u.mode === '@').map(user => (
+            <div key={user.name} className="flex items-center gap-2 py-1">
+              <div className="relative">
+                <img src={user.avatar} alt="" className="w-6 h-6 rounded-full" />
+                <div className={`absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full border-2 border-zinc-50 dark:border-zinc-800 ${user.status === 'online' ? 'bg-green-500' : 'bg-zinc-400'}`} />
+              </div>
+              <span className="text-[13px] text-zinc-700 dark:text-zinc-300 font-mono">
+                <span className="text-amber-500">@</span>{user.name}
+              </span>
+            </div>
+          ))}
+        </div>
+      )}
+      {/* Voiced next */}
+      {users.filter(u => u.mode === '+').length > 0 && (
+        <div className="px-3 mb-2">
+          <div className="text-[10px] font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wide mb-1">Voice (+)</div>
+          {users.filter(u => u.mode === '+').map(user => (
+            <div key={user.name} className="flex items-center gap-2 py-1">
+              <div className="relative">
+                <img src={user.avatar} alt="" className="w-6 h-6 rounded-full" />
+                <div className={`absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full border-2 border-zinc-50 dark:border-zinc-800 ${user.status === 'online' ? 'bg-green-500' : 'bg-zinc-400'}`} />
+              </div>
+              <span className="text-[13px] text-zinc-700 dark:text-zinc-300 font-mono">
+                <span className="text-green-500">+</span>{user.name}
+              </span>
+            </div>
+          ))}
+        </div>
+      )}
+      {/* Regular users */}
+      {users.filter(u => !u.mode).length > 0 && (
+        <div className="px-3">
+          <div className="text-[10px] font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wide mb-1">Users</div>
+          {users.filter(u => !u.mode).map(user => (
+            <div key={user.name} className="flex items-center gap-2 py-1">
+              <div className="relative">
+                <img src={user.avatar} alt="" className="w-6 h-6 rounded-full" />
+                <div className={`absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full border-2 border-zinc-50 dark:border-zinc-800 ${user.status === 'online' ? 'bg-green-500' : 'bg-zinc-400'}`} />
+              </div>
+              <span className={`text-[13px] font-mono ${user.status === 'online' ? 'text-zinc-700 dark:text-zinc-300' : 'text-zinc-400 dark:text-zinc-500'}`}>
+                {user.name}
+              </span>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  </div>
+)
+
 // Slack incident thread conversation
 export const SlackThread = ({ category = 'networking', topic = 'dns' }) => {
   const codeRef = React.useRef(null)
   const codeRef2 = React.useRef(null)
   const [visibleMessages, setVisibleMessages] = React.useState(0)
   const [typingUser, setTypingUser] = React.useState({ avatar: '/jacob-square.jpg', name: 'pagerduty' })
+  const [showUserList, setShowUserList] = React.useState(false)
 
   const messageSequence = [
     { typingDuration: 1200 },
@@ -520,18 +624,9 @@ export const SlackThread = ({ category = 'networking', topic = 'dns' }) => {
 
   return (
     <div className="rounded-xl overflow-hidden shadow-sm border border-zinc-200/60 dark:border-zinc-700">
-      <div className="bg-white dark:bg-zinc-900">
-        {/* Window chrome */}
-        <div className="bg-zinc-100 dark:bg-zinc-800 border-b border-zinc-200 dark:border-zinc-700 px-3 py-2 flex items-center relative">
-          <div className="flex items-center gap-1.5">
-            <div className="w-3 h-3 rounded-full bg-red-400 hover:bg-red-500 cursor-default transition-colors"></div>
-            <div className="w-3 h-3 rounded-full bg-amber-400 hover:bg-amber-500 cursor-default transition-colors"></div>
-            <div className="w-3 h-3 rounded-full bg-green-400 hover:bg-green-500 cursor-default transition-colors"></div>
-          </div>
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <span className="text-zinc-600 dark:text-zinc-400 text-xs font-semibold tracking-tight">#incident-2847</span>
-          </div>
-        </div>
+      <div className="bg-white dark:bg-zinc-900 flex">
+        {/* Main chat area */}
+        <div className="flex-1 flex flex-col min-w-0">
 
         {/* Messages */}
         <div className="divide-y divide-zinc-200 dark:divide-zinc-700 [&>*]:py-4 [&>*]:px-4">
@@ -708,7 +803,20 @@ WHERE NOT bl.granted;
             placeholder="Say something..."
             className="flex-1 px-4 py-3 text-[15px] text-[#1d1c1d] dark:text-zinc-200 placeholder-[#868686] dark:placeholder-zinc-500 outline-none border-none bg-transparent ring-0 focus:ring-0 focus:outline-none"
           />
+          {/* User list toggle */}
+          <button
+            onClick={() => setShowUserList(!showUserList)}
+            className={`mr-3 p-1.5 rounded transition-colors ${showUserList ? 'bg-zinc-200 dark:bg-zinc-700 text-zinc-700 dark:text-zinc-200' : 'text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700'}`}
+            title="Toggle user list"
+          >
+            <svg className="w-4 h-4" viewBox="0 0 16 16" fill="currentColor">
+              <path d="M8 8a3 3 0 100-6 3 3 0 000 6zm0 2c-2.67 0-8 1.34-8 4v1h16v-1c0-2.66-5.33-4-8-4z" />
+            </svg>
+          </button>
         </div>
+        </div>
+        {/* User list panel */}
+        {showUserList && <UserListPanel users={CHANNEL_USERS} onClose={() => setShowUserList(false)} />}
       </div>
     </div>
   )

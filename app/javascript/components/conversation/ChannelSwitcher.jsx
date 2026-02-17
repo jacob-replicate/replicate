@@ -55,6 +55,7 @@ const ChannelSwitcher = ({
     return document.documentElement.classList.contains('dark')
   })
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [userListOpen, setUserListOpen] = useState(false)
   const [bannerDismissed, setBannerDismissed] = useState(() => {
     return localStorage.getItem('training-banner-dismissed') === 'true'
   })
@@ -77,7 +78,7 @@ const ChannelSwitcher = ({
   }
 
   return (
-    <div className="flex bg-zinc-100 dark:bg-zinc-800 overflow-hidden font-mono text-sm h-full w-full relative">
+    <div className="flex bg-zinc-100 dark:bg-zinc-800 overflow-hidden text-sm h-full w-full relative">
 
       {/* Mobile overlay */}
       {sidebarOpen && (
@@ -93,7 +94,7 @@ const ChannelSwitcher = ({
         md:translate-x-0
         fixed md:relative
         z-50 md:z-auto
-        w-56 flex-shrink-0 
+        w-64 flex-shrink-0 
         bg-zinc-100 dark:bg-zinc-800 
         border-r border-zinc-300 dark:border-zinc-700 
         flex flex-col
@@ -235,9 +236,90 @@ const ChannelSwitcher = ({
           </button>
           <span className="text-zinc-600 dark:text-zinc-400 text-xs">#{channels.find(c => c.id === activeChannelId)?.name || 'channel'}</span>
         </div>
-        {/* Children container - takes remaining space */}
-        <div className="flex-1 min-h-0 flex flex-col">
-          {children}
+        {/* Desktop channel header */}
+        <div className="hidden md:flex flex-shrink-0 items-center justify-between px-4 py-2 border-b border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900">
+          <div className="flex items-center gap-2">
+            <span className="font-semibold text-zinc-900 dark:text-white text-[15px]">#{channels.find(c => c.id === activeChannelId)?.name || 'channel'}</span>
+          </div>
+          <button
+            onClick={() => setUserListOpen(!userListOpen)}
+            className={`p-1.5 rounded transition-colors ${userListOpen ? 'bg-zinc-200 dark:bg-zinc-700 text-zinc-700 dark:text-zinc-200' : 'text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800'}`}
+            title="Toggle user list"
+          >
+            <svg className="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" />
+            </svg>
+          </button>
+        </div>
+        {/* Children container with optional user list */}
+        <div className="flex-1 min-h-0 flex">
+          <div className="flex-1 flex flex-col min-w-0">
+            {children}
+          </div>
+          {/* User list panel */}
+          {userListOpen && (
+            <div className="hidden md:flex w-48 border-l border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800/50 flex-col flex-shrink-0">
+              <div className="px-3 py-2 border-b border-zinc-200 dark:border-zinc-700">
+                <span className="text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wide">Users — 6</span>
+              </div>
+              <div className="flex-1 overflow-y-auto py-2">
+                {/* Ops */}
+                <div className="px-3 mb-2">
+                  <div className="text-[10px] font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wide mb-1">Ops (@)</div>
+                  <div className="flex items-center gap-2 py-1">
+                    <div className="relative">
+                      <div className="w-6 h-6 rounded-full bg-violet-500 flex items-center justify-center text-white text-xs font-medium">M</div>
+                      <div className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full border-2 border-zinc-50 dark:border-zinc-800 bg-green-500" />
+                    </div>
+                    <span className="text-[13px] text-zinc-700 dark:text-zinc-300 font-mono"><span className="text-amber-500">@</span>maya</span>
+                  </div>
+                </div>
+                {/* Voice */}
+                <div className="px-3 mb-2">
+                  <div className="text-[10px] font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wide mb-1">Voice (+)</div>
+                  <div className="flex items-center gap-2 py-1">
+                    <div className="relative">
+                      <div className="w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center text-white text-xs font-medium">D</div>
+                      <div className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full border-2 border-zinc-50 dark:border-zinc-800 bg-green-500" />
+                    </div>
+                    <span className="text-[13px] text-zinc-700 dark:text-zinc-300 font-mono"><span className="text-green-500">+</span>daniel</span>
+                  </div>
+                  <div className="flex items-center gap-2 py-1">
+                    <div className="relative">
+                      <div className="w-6 h-6 rounded-full bg-emerald-500 flex items-center justify-center text-white text-xs font-medium">A</div>
+                      <div className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full border-2 border-zinc-50 dark:border-zinc-800 bg-green-500" />
+                    </div>
+                    <span className="text-[13px] text-zinc-700 dark:text-zinc-300 font-mono"><span className="text-green-500">+</span>alex</span>
+                  </div>
+                </div>
+                {/* Users */}
+                <div className="px-3">
+                  <div className="text-[10px] font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wide mb-1">Users</div>
+                  <div className="flex items-center gap-2 py-1">
+                    <div className="relative">
+                      <div className="w-6 h-6 rounded-full bg-zinc-400 flex items-center justify-center text-white text-xs font-medium">S</div>
+                      <div className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full border-2 border-zinc-50 dark:border-zinc-800 bg-zinc-400" />
+                    </div>
+                    <span className="text-[13px] text-zinc-400 dark:text-zinc-500 font-mono">sarah</span>
+                  </div>
+                  <div className="flex items-center gap-2 py-1">
+                    <div className="relative">
+                      <div className="w-6 h-6 rounded-full bg-orange-500 flex items-center justify-center text-white text-xs font-medium">C</div>
+                      <div className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full border-2 border-zinc-50 dark:border-zinc-800 bg-green-500" />
+                    </div>
+                    <span className="text-[13px] text-zinc-700 dark:text-zinc-300 font-mono">chen</span>
+                  </div>
+                  <div className="flex items-center gap-2 py-1">
+                    <div className="relative">
+                      <div className="w-6 h-6 rounded-full bg-pink-500 flex items-center justify-center text-white text-xs font-medium">P</div>
+                      <div className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full border-2 border-zinc-50 dark:border-zinc-800 bg-zinc-400" />
+                    </div>
+                    <span className="text-[13px] text-zinc-400 dark:text-zinc-500 font-mono">priya</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

@@ -334,9 +334,9 @@ const ConversationAppInner = ({ apiRef }) => {
   // Sample channels - in production these would come from API/state
   const [channels] = useState([
     // Active incidents
-    { id: 'incident-2847', name: 'incident-2847', unreadCount: 0, isActive: true },
-    { id: 'incident-2846', name: 'incident-2846', unreadCount: 3, isActive: false },
-    { id: 'incident-2845', name: 'incident-2845', unreadCount: 0, isActive: false },
+    { id: 'incident-2847', name: 'inc-3824-redis-oom', unreadCount: 0, isActive: true },
+    { id: 'incident-2846', name: 'inc-3819-api-latency', unreadCount: 3, isActive: false },
+    { id: 'incident-2845', name: 'inc-3815-db-locks', unreadCount: 0, isActive: false },
     // Ops channels
     { id: 'ops-alerts', name: 'ops-alerts', unreadCount: 12, isActive: false },
     { id: 'oncall', name: 'oncall', unreadCount: 1, isActive: false },
