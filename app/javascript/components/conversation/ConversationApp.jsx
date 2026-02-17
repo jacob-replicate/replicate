@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client'
 import { BrowserRouter, Routes, Route, useParams, useNavigate } from 'react-router-dom'
 import Conversation from './Conversation'
 import BackgroundNotification from './BackgroundNotification'
+import ChannelSwitcher from './ChannelSwitcher'
 import useConversation from '../../hooks/useConversation'
 import {
   orchestrateDemoResponse,
@@ -304,6 +305,7 @@ const ConversationView = ({ apiRef }) => {
       onSend={sendUserMessage}
       onSelect={handleSelect}
       channelName={channelName}
+      variant="irc"
       className=""
     />
   )
@@ -327,9 +329,25 @@ const ConversationApp = () => {
  */
 const ConversationAppInner = ({ apiRef }) => {
   const navigate = useNavigate()
+  const { uuid } = useParams() || {}
+
+  // Sample channels - in production these would come from API/state
+  const [channels] = useState([
+    { id: 'incident-2847', name: 'incident-2847', unreadCount: 0, isActive: true },
+    { id: 'incident-2846', name: 'incident-2846', unreadCount: 3, isActive: false },
+    { id: 'ops-alerts', name: 'ops-alerts', unreadCount: 0, isActive: false },
+    { id: 'oncall', name: 'oncall', unreadCount: 1, isActive: false },
+  ])
+
+  const [activeChannelId, setActiveChannelId] = useState('incident-2847')
+
+  const handleChannelSelect = useCallback((channelId) => {
+    setActiveChannelId(channelId)
+    // In production, navigate to the channel's conversation
+    // navigate(`/conversations/${channelId}`)
+  }, [])
 
   const handleNotificationNavigate = useCallback((conversationId) => {
-    // Navigate to the conversation
     navigate(`/conversations/${conversationId}`)
   }, [navigate])
 
@@ -342,12 +360,22 @@ const ConversationAppInner = ({ apiRef }) => {
   }, [navigate])
 
   return (
-    <div>
-      {/* Routed conversation view */}
-      <Routes>
-        <Route path="/" element={<RootRedirect />} />
-        <Route path="/conversations/:uuid" element={<ConversationView apiRef={apiRef} />} />
-      </Routes>
+    <div className="h-full w-full">
+      <ChannelSwitcher
+        channels={channels}
+        activeChannelId={activeChannelId}
+        onChannelSelect={handleChannelSelect}
+        serverName="invariant.training"
+      >
+        {/* Routed conversation view */}
+        <Routes>
+          <Route path="/" element={<RootRedirect />} />
+          <Route
+            path="/conversations/:uuid"
+            element={<ConversationView apiRef={apiRef} />}
+          />
+        </Routes>
+      </ChannelSwitcher>
 
       {/* Background notifications for subscribed conversations */}
       <BackgroundNotification onNavigate={handleNotificationNavigate} />

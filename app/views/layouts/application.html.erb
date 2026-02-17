@@ -71,9 +71,15 @@
   </head>
 
   <body class="bg-[#fbfbfb] dark:bg-zinc-900">
-    <% if (params[:controller] == "static" && params[:action] == "index") || params[:action] == "growth" || params[:action] == "show" %>
+    <% if params[:controller] == "static" && params[:action] == "index" %>
+      <!-- Full-screen IRC app mode - navbar hidden -->
+      <div class="hidden"><%= render 'layouts/navbar' %></div>
+      <div class="h-screen w-screen overflow-hidden">
+        <%= yield %>
+      </div>
+    <% elsif params[:action] == "growth" || params[:action] == "show" %>
       <div class="container mx-auto">
-        <div class="px-4 pb-6 pt-4 md:pt-6 md:pb-8 md:px-0 lg:px-[125px] xl:px-[248px] 2xl:px-[375px]">
+        <div class="px-4 pb-6 pt-4 md:pt-6 md:pb-8 md:px-6 lg:px-12 xl:px-24 2xl:px-32">
           <%= render 'layouts/navbar' %>
 
           <div class="pt-4 md:pt-0 lg:pt-2">
@@ -93,10 +99,10 @@
       </div>
     <% else %>
       <div class="h-screen flex flex-col container mx-auto">
-        <div class="px-4 xl:px-56 2xl:px-[320px] py-4 md:py-6">
-          <div class="max-w-3xl mx-auto"><%= render 'layouts/navbar' %></div>
+        <div class="px-4 xl:px-32 2xl:px-56 py-4 md:py-6">
+          <div class="max-w-5xl mx-auto"><%= render 'layouts/navbar' %></div>
 
-          <div class="max-w-3xl mx-auto">
+          <div class="max-w-5xl mx-auto">
             <%= yield %>
           </div>
         </div>

@@ -1,6 +1,7 @@
 - Your decisions can spawn new incidents, as an integrated way to break off into new experiences + surface novelty by design.
     - "Hey, just crossposting #inc-5938"... - Put a tab bar in the toolbar to switch between incidents at the top + send notifications in popup that are interesting
 
+- You can make it social. Live refresh if people are playing (once it starts picking up steam)
 - Team mode lets you play async and solve the problem together. Switch between different categories. Escape the room style team building. Solo is free. Team mode is like daily chess.
 - Invite your team -> share link -> "Jeff joined (with avatar)"
 - If multiplayer, leave old decisions lingering + leave an X to close them out. Still relevant.
