@@ -409,6 +409,7 @@ const mount = () => {
   const container = document.querySelector('[data-conversation-app]')
   if (!container) return
 
+
   const root = ReactDOM.createRoot(container)
   root.render(<ConversationApp />)
 }

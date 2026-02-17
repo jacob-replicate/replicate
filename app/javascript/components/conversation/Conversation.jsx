@@ -35,17 +35,17 @@ export const Conversation = ({
     ? 'fixed inset-0 z-50 rounded-none'
     : `rounded-xl mt-2.5 ${className}`
 
-  // IRC variant - minimal header, dark theme
+  // IRC variant - minimal header, supports light/dark
   if (variant === 'irc') {
     return (
-      <div className="flex flex-col h-full bg-zinc-900 text-sm">
-        {/* IRC-style topic bar */}
-        <div className="bg-zinc-900 border-b border-zinc-800 px-3 py-2 flex items-center gap-3 font-mono">
-          <span className="text-white font-medium">{channelName}</span>
+      <div className="flex flex-col h-full bg-white dark:bg-zinc-900 text-sm">
+        {/* IRC-style topic bar - hidden on mobile (ChannelSwitcher has mobile header) */}
+        <div className="hidden md:flex bg-zinc-100 dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-800 px-3 py-2 items-center gap-3 font-mono">
+          <span className="text-zinc-900 dark:text-white font-medium">{channelName}</span>
           {topic && (
             <>
-              <span className="text-zinc-600">|</span>
-              <span className="text-zinc-400 truncate flex-1">{topic}</span>
+              <span className="text-zinc-400 dark:text-zinc-600">|</span>
+              <span className="text-zinc-600 dark:text-zinc-400 truncate flex-1">{topic}</span>
             </>
           )}
           {userCount && (
