@@ -9,6 +9,7 @@
 - GitHub recent PR links.
 
 - Click "New SEV" button. Show a new one ASAP, along with a link to browser after it reloads. Amazon "one click buy"
+- Better sharing text in navbar when you click on links. Has generic "Check out this incident" text now.
 - IBM disclosure. Make sure to update the dates on your terms/privacy/security pages to be recent.
 - Make incident generation intents align with your old INCIDENTS constant format.
 - Rerender the multiple choice questions on page reload + back button

@@ -56,7 +56,7 @@ export const MessageList = ({ messages, isTyping, onSelect }) => {
     <div
       ref={containerRef}
       onScroll={handleScroll}
-      className="flex-1 overflow-y-auto divide-y divide-zinc-200 dark:divide-zinc-700 [&>*]:py-4 [&>*]:px-4"
+      className="flex-1 overflow-y-auto overflow-x-hidden divide-y divide-zinc-200 dark:divide-zinc-700 [&>*]:py-4 [&>*]:px-4"
     >
       {rootMessages.map((message) => (
         <Message
