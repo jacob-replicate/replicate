@@ -1,25 +1,5 @@
 import React, { useRef, useEffect, useMemo } from 'react'
 
-// IRC mode indicator component
-const ModeIndicator = ({ mode }) => {
-  if (!mode) return null
-  const modeStyles = {
-    '@': 'text-amber-500', // op
-    '+': 'text-green-500', // voice
-  }
-  return (
-    <span className={`font-mono text-[14px] font-medium mr-0.5 ${modeStyles[mode] || 'text-zinc-500'}`}>{mode}</span>
-  )
-}
-
-// User roles/modes mapping (IRC-style)
-const USER_MODES = {
-  'maya': '@',      // channel op (incident commander)
-  'daniel': '+',    // voiced
-  'alex': '+',      // voiced
-  'pagerduty': '',  // bot, no mode
-  'invariant': '',  // bot, no mode
-}
 
 // Inline code span
 const Code = ({ children }) => (
@@ -102,7 +82,7 @@ const ThreadReplies = ({ replies }) => {
         </span>
         {!expanded && lastReply && (
           <span className="text-zinc-500 dark:text-zinc-400 truncate max-w-[200px]">
-            <ModeIndicator mode={USER_MODES[lastReply.name?.toLowerCase()]} />{lastReply.name}:{lastReply.avatar && <img src={lastReply.avatar} alt="" className="w-4 h-4 rounded-full inline ml-1 mr-1" />} {lastReply.text?.slice(0, 25)}{lastReply.text?.length > 25 ? '...' : ''}
+            {lastReply.name}:{lastReply.avatar && <img src={lastReply.avatar} alt="" className="w-4 h-4 rounded-full inline ml-1 mr-1" />} {lastReply.text?.slice(0, 25)}{lastReply.text?.length > 25 ? '...' : ''}
           </span>
         )}
       </button>
@@ -116,7 +96,7 @@ const ThreadReplies = ({ replies }) => {
               )}
               <div>
                 <span className="font-semibold text-[13px] text-[#1d1c1d] dark:text-zinc-100">
-                  <ModeIndicator mode={USER_MODES[reply.name?.toLowerCase()]} />{reply.name}
+                  {reply.name}
                 </span>
                 {reply.time && (
                   <span className="text-zinc-500 dark:text-zinc-400 text-[11px] ml-1.5">
@@ -599,7 +579,7 @@ export const Message = ({ message, onSelect, threadReplies }) => {
           <div className="flex items-baseline gap-2 flex-wrap">
             {name && (
               <span className="font-semibold text-[#1d1c1d] dark:text-zinc-100 text-[15px] tracking-[-0.01em]">
-                <ModeIndicator mode={USER_MODES[name?.toLowerCase()]} />{name}
+                {name}
               </span>
             )}
             {status && (

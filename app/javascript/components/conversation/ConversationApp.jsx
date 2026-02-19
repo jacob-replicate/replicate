@@ -334,9 +334,9 @@ const ConversationAppInner = ({ apiRef }) => {
   // Sample channels - in production these would come from API/state
   const [channels] = useState([
     // Active incidents
-    { id: 'incident-2847', name: 'inc-3824-redis-oom', unreadCount: 0, isActive: true },
-    { id: 'incident-2846', name: 'inc-3819-api-latency', unreadCount: 3, isActive: false },
-    { id: 'incident-2845', name: 'inc-3815-db-locks', unreadCount: 0, isActive: false },
+    { id: 'incident-2847', name: 'inc-3815-db-locks', unreadCount: 0, isActive: true },
+    { id: 'incident-2846', name: 'inc-3824-redis-oom', unreadCount: 3, isActive: false },
+    { id: 'incident-2845', name: 'inc-3819-api-latency', unreadCount: 0, isActive: false },
     // Ops channels
     { id: 'ops-alerts', name: 'ops-alerts', unreadCount: 12, isActive: false },
     { id: 'oncall', name: 'oncall', unreadCount: 1, isActive: false },
@@ -364,11 +364,26 @@ const ConversationAppInner = ({ apiRef }) => {
 
   const [activeChannelId, setActiveChannelId] = useState('incident-2847')
 
+  // Map channel IDs to conversation UUIDs for demos
+  const channelToConversation = {
+    'incident-2847': 'c9f2e8d1-3b4a-5c6d-7e8f-9a0b1c2d3e4f', // DB locks incident
+    'incident-2846': 'redis-oom-incident-demo',                // Redis OOM incident
+    'incident-2845': 'api-latency-incident-demo',              // API latency (placeholder)
+  }
+
   const handleChannelSelect = useCallback((channelId) => {
     setActiveChannelId(channelId)
-    // In production, navigate to the channel's conversation
-    // navigate(`/conversations/${channelId}`)
-  }, [])
+
+    // Navigate to the conversation if it's an incident channel
+    const conversationId = channelToConversation[channelId]
+    if (conversationId) {
+      navigate(`/conversations/${conversationId}`)
+      // Trigger demo load for this channel
+      if (window.ReplicateConversation?.loadDemo) {
+        window.ReplicateConversation.loadDemo(channelId)
+      }
+    }
+  }, [navigate])
 
   const handleNotificationNavigate = useCallback((conversationId) => {
     navigate(`/conversations/${conversationId}`)

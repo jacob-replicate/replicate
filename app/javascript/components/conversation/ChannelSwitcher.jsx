@@ -16,16 +16,6 @@ const ChannelButton = ({ channel, activeChannelId, onSelect, showHash = true }) 
           : 'text-zinc-600 dark:text-zinc-400'
       }`}
     >
-      {/* Activity/status indicator */}
-      {channel.isActive ? (
-        <span className="w-1.5 h-1.5 rounded-full bg-green-500 flex-shrink-0" />
-      ) : hasUnread ? (
-        <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 flex-shrink-0" />
-      ) : showHash ? (
-        <span className="w-1.5 h-1.5 flex-shrink-0" />
-      ) : (
-        <span className="w-1.5 h-1.5 rounded-full bg-zinc-400 dark:bg-zinc-600 flex-shrink-0" />
-      )}
 
       <span className="truncate">{showHash ? '#' : ''}{channel.name}</span>
 
@@ -101,19 +91,21 @@ const ChannelSwitcher = ({
         h-full
         transition-transform duration-200 ease-in-out
       `}>
-        {/* Brand header */}
-        <div className="px-3 py-2.5 border-b border-zinc-300 dark:border-zinc-700">
-          <a href="/" className="text-[15px] tracking-tight">
-            <span className="font-medium text-zinc-800 dark:text-zinc-100">invariant</span>
-            <span className="text-zinc-400 dark:text-zinc-500">.</span>
-            <span className="font-medium text-purple-600 dark:text-purple-400">training</span>
-          </a>
-        </div>
-
         {/* Channel list */}
         <div className="flex-1 overflow-y-auto py-2">
           {/* Incidents section */}
-          <div className="px-3 py-1 text-zinc-500 text-xs uppercase tracking-wider">Incidents</div>
+          <div className="px-3 py-1 text-zinc-500 text-xs uppercase tracking-wider flex items-center justify-between">
+            <span>Incidents</span>
+            <button
+              className="flex items-center gap-1 text-[10px] font-medium text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 bg-emerald-50 dark:bg-emerald-900/30 hover:bg-emerald-100 dark:hover:bg-emerald-900/50 px-1.5 py-0.5 rounded transition-colors"
+              onClick={() => alert('New incident flow coming soon!')}
+            >
+              <svg className="w-3 h-3" viewBox="0 0 16 16" fill="currentColor">
+                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+              </svg>
+              New
+            </button>
+          </div>
           {channels.filter(c => c.id.startsWith('incident-')).map((channel) => (
             <ChannelButton
               key={channel.id}
@@ -173,34 +165,13 @@ const ChannelSwitcher = ({
           ))}
         </div>
 
-        {/* Footer with links and dark mode toggle */}
+        {/* Footer with links */}
         <div className="border-t border-zinc-300 dark:border-zinc-700">
           {/* Links */}
           <div className="px-3 py-2 flex flex-wrap gap-x-3 gap-y-1 text-[11px]">
-            <a href="/privacy" className="text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300">Privacy</a>
-            <a href="/terms" className="text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300">Terms</a>
-            <a href="/security" className="text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300">Security</a>
-          </div>
-          {/* User and toggle */}
-          <div className="px-3 py-2 border-t border-zinc-200 dark:border-zinc-700/50 flex items-center justify-between">
-            <div className="text-zinc-600 dark:text-zinc-500 text-xs">
-              <span className="text-green-600 dark:text-green-400">●</span> jacob
-            </div>
-            <button
-              onClick={toggleDarkMode}
-              className="text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 transition-colors"
-              title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
-            >
-              {isDark ? (
-                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clipRule="evenodd" />
-                </svg>
-              ) : (
-                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
-                </svg>
-              )}
-            </button>
+            <a href="/privacy" className="text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 hover:underline">Privacy</a>
+            <a href="/terms" className="text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 hover:underline">Terms</a>
+            <a href="/security" className="text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 hover:underline">Security</a>
           </div>
         </div>
       </div>
@@ -241,15 +212,32 @@ const ChannelSwitcher = ({
           <div className="flex items-center gap-2">
             <span className="font-semibold text-zinc-900 dark:text-white text-[15px]">#{channels.find(c => c.id === activeChannelId)?.name || 'channel'}</span>
           </div>
-          <button
-            onClick={() => setUserListOpen(!userListOpen)}
-            className={`p-1.5 rounded transition-colors ${userListOpen ? 'bg-zinc-200 dark:bg-zinc-700 text-zinc-700 dark:text-zinc-200' : 'text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800'}`}
-            title="Toggle user list"
-          >
-            <svg className="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
-              <path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" />
-            </svg>
-          </button>
+          <div className="flex items-center gap-1">
+            <button
+              onClick={toggleDarkMode}
+              className="p-1.5 rounded transition-colors text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+              title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+            >
+              {isDark ? (
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clipRule="evenodd" />
+                </svg>
+              ) : (
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
+                </svg>
+              )}
+            </button>
+            <button
+              onClick={() => setUserListOpen(!userListOpen)}
+              className={`p-1.5 rounded transition-colors ${userListOpen ? 'bg-zinc-200 dark:bg-zinc-700 text-zinc-700 dark:text-zinc-200' : 'text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800'}`}
+              title="Toggle user list"
+            >
+              <svg className="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" />
+              </svg>
+            </button>
+          </div>
         </div>
         {/* Children container with optional user list */}
         <div className="flex-1 min-h-0 flex">
@@ -263,58 +251,54 @@ const ChannelSwitcher = ({
                 <span className="text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wide">Users — 6</span>
               </div>
               <div className="flex-1 overflow-y-auto py-2">
-                {/* Ops */}
+                {/* Online */}
                 <div className="px-3 mb-2">
-                  <div className="text-[10px] font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wide mb-1">Ops (@)</div>
+                  <div className="text-[10px] font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wide mb-1">Online</div>
                   <div className="flex items-center gap-2 py-1">
                     <div className="relative">
                       <div className="w-6 h-6 rounded-full bg-violet-500 flex items-center justify-center text-white text-xs font-medium">M</div>
                       <div className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full border-2 border-zinc-50 dark:border-zinc-800 bg-green-500" />
                     </div>
-                    <span className="text-[13px] text-zinc-700 dark:text-zinc-300 font-mono"><span className="text-amber-500">@</span>maya</span>
+                    <span className="text-[13px] text-zinc-700 dark:text-zinc-300">maya</span>
                   </div>
-                </div>
-                {/* Voice */}
-                <div className="px-3 mb-2">
-                  <div className="text-[10px] font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wide mb-1">Voice (+)</div>
                   <div className="flex items-center gap-2 py-1">
                     <div className="relative">
                       <div className="w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center text-white text-xs font-medium">D</div>
                       <div className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full border-2 border-zinc-50 dark:border-zinc-800 bg-green-500" />
                     </div>
-                    <span className="text-[13px] text-zinc-700 dark:text-zinc-300 font-mono"><span className="text-green-500">+</span>daniel</span>
+                    <span className="text-[13px] text-zinc-700 dark:text-zinc-300">daniel</span>
                   </div>
                   <div className="flex items-center gap-2 py-1">
                     <div className="relative">
                       <div className="w-6 h-6 rounded-full bg-emerald-500 flex items-center justify-center text-white text-xs font-medium">A</div>
                       <div className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full border-2 border-zinc-50 dark:border-zinc-800 bg-green-500" />
                     </div>
-                    <span className="text-[13px] text-zinc-700 dark:text-zinc-300 font-mono"><span className="text-green-500">+</span>alex</span>
-                  </div>
-                </div>
-                {/* Users */}
-                <div className="px-3">
-                  <div className="text-[10px] font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wide mb-1">Users</div>
-                  <div className="flex items-center gap-2 py-1">
-                    <div className="relative">
-                      <div className="w-6 h-6 rounded-full bg-zinc-400 flex items-center justify-center text-white text-xs font-medium">S</div>
-                      <div className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full border-2 border-zinc-50 dark:border-zinc-800 bg-zinc-400" />
-                    </div>
-                    <span className="text-[13px] text-zinc-400 dark:text-zinc-500 font-mono">sarah</span>
+                    <span className="text-[13px] text-zinc-700 dark:text-zinc-300">alex</span>
                   </div>
                   <div className="flex items-center gap-2 py-1">
                     <div className="relative">
                       <div className="w-6 h-6 rounded-full bg-orange-500 flex items-center justify-center text-white text-xs font-medium">C</div>
                       <div className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full border-2 border-zinc-50 dark:border-zinc-800 bg-green-500" />
                     </div>
-                    <span className="text-[13px] text-zinc-700 dark:text-zinc-300 font-mono">chen</span>
+                    <span className="text-[13px] text-zinc-700 dark:text-zinc-300">chen</span>
+                  </div>
+                </div>
+                {/* Offline */}
+                <div className="px-3">
+                  <div className="text-[10px] font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wide mb-1">Offline</div>
+                  <div className="flex items-center gap-2 py-1">
+                    <div className="relative">
+                      <div className="w-6 h-6 rounded-full bg-zinc-400 flex items-center justify-center text-white text-xs font-medium">S</div>
+                      <div className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full border-2 border-zinc-50 dark:border-zinc-800 bg-zinc-400" />
+                    </div>
+                    <span className="text-[13px] text-zinc-400 dark:text-zinc-500">sarah</span>
                   </div>
                   <div className="flex items-center gap-2 py-1">
                     <div className="relative">
                       <div className="w-6 h-6 rounded-full bg-pink-500 flex items-center justify-center text-white text-xs font-medium">P</div>
                       <div className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full border-2 border-zinc-50 dark:border-zinc-800 bg-zinc-400" />
                     </div>
-                    <span className="text-[13px] text-zinc-400 dark:text-zinc-500 font-mono">priya</span>
+                    <span className="text-[13px] text-zinc-400 dark:text-zinc-500">priya</span>
                   </div>
                 </div>
               </div>

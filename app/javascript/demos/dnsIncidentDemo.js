@@ -426,24 +426,60 @@ WHERE state = 'active'
 // Demo conversation UUID
 const DEMO_CONVERSATION_ID = 'c9f2e8d1-3b4a-5c6d-7e8f-9a0b1c2d3e4f'
 
+// Import Redis OOM demo
+import { REDIS_INCIDENT_MESSAGES, REDIS_DEMO_CONVERSATION_ID } from './redisOomDemo'
+
+// Demo data registry - maps channel IDs to their demo data
+const DEMO_REGISTRY = {
+  'incident-2847': {
+    id: DEMO_CONVERSATION_ID,
+    channel_name: '#inc-3815-db-locks',
+    messages: INCIDENT_MESSAGES,
+  },
+  'incident-2846': {
+    id: REDIS_DEMO_CONVERSATION_ID,
+    channel_name: '#inc-3824-redis-oom',
+    messages: REDIS_INCIDENT_MESSAGES,
+  },
+}
+
 /**
  * Simulates fetching a conversation from /conversations/generate
  * In production, this would be a real API call
  */
-const fetchConversation = async () => {
-  // Simulate API response - in production this would be:
-  // const response = await fetch('/conversations/generate')
-  // return response.json()
+const fetchConversation = async (channelId = 'incident-2847') => {
+  const demo = DEMO_REGISTRY[channelId] || DEMO_REGISTRY['incident-2847']
 
   // Check if we navigated directly to this conversation (existing) or from root (new)
   const isDirectNavigation = window.location.pathname.includes('/conversations/')
 
   return {
-    id: DEMO_CONVERSATION_ID,
-    channel_name: '#incident-2847',
+    id: demo.id,
+    channel_name: demo.channel_name,
     is_new: !isDirectNavigation, // Direct navigation = existing, root = new demo
-    messages: INCIDENT_MESSAGES,
+    messages: demo.messages,
   }
+}
+
+/**
+ * Load a specific demo by channel ID
+ */
+const loadDemo = async (channelId) => {
+  const conversation = await fetchConversation(channelId)
+
+  const waitForReady = () => {
+    if (window.ReplicateConversation?.onReady) {
+      window.ReplicateConversation.onReady((api) => {
+        api.clear()
+        api.setChannelName(conversation.channel_name)
+        api.loadMessages(conversation.messages)
+      })
+    } else {
+      setTimeout(waitForReady, 50)
+    }
+  }
+
+  waitForReady()
 }
 
 /**
@@ -454,14 +490,17 @@ const fetchConversation = async () => {
  * 2. User lands directly on /conversations/:uuid - load instantly, no animations
  */
 const initConversation = async () => {
-  // Fetch conversation data
-  const conversation = await fetchConversation()
+  // Fetch conversation data (default to first incident)
+  const conversation = await fetchConversation('incident-2847')
   const targetUrl = `/conversations/${conversation.id}`
   const isAlreadyOnConversation = window.location.pathname === targetUrl
 
   // Wait for the API to be ready
   const waitForReady = () => {
     if (window.ReplicateConversation?.navigate) {
+      // Expose loadDemo function globally
+      window.ReplicateConversation.loadDemo = loadDemo
+
       // Navigate if not already there
       if (!isAlreadyOnConversation) {
         window.ReplicateConversation.navigate(targetUrl)
