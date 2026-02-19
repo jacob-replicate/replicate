@@ -353,8 +353,9 @@ const ConversationAppInner = ({ apiRef }) => {
     // Ops channels
     { id: 'ops-alerts', name: 'ops-alerts', unreadCount: 12, isActive: false },
     { id: 'oncall', name: 'oncall', unreadCount: 1, isActive: false },
+    { id: 'oncall-leads', name: 'oncall-leads', unreadCount: 0, isActive: false, isPrivate: true },
     { id: 'deploy-prod', name: 'deploy-prod', unreadCount: 0, isActive: false },
-    { id: 'deploy-staging', name: 'deploy-staging', unreadCount: 0, isActive: false },
+    { id: 'deploy-staging', name: 'deploy-staging', unreadCount: 0, isActive: false, isMuted: true },
     // Team channels
     { id: 'platform-eng', name: 'platform-eng', unreadCount: 5, isActive: false },
     { id: 'backend', name: 'backend', unreadCount: 0, isActive: false },
@@ -362,9 +363,10 @@ const ConversationAppInner = ({ apiRef }) => {
     { id: 'infra', name: 'infra', unreadCount: 0, isActive: false },
     { id: 'sre-team', name: 'sre-team', unreadCount: 0, isActive: false },
     { id: 'security', name: 'security', unreadCount: 1, isActive: false },
+    { id: 'security-incidents', name: 'security-incidents', unreadCount: 0, isActive: false, isPrivate: true },
     // General
     { id: 'engineering', name: 'engineering', unreadCount: 0, isActive: false },
-    { id: 'random', name: 'random', unreadCount: 0, isActive: false },
+    { id: 'random', name: 'random', unreadCount: 0, isActive: false, isMuted: true },
     { id: 'watercooler', name: 'watercooler', unreadCount: 0, isActive: false },
     // DMs
     { id: 'dm-maya', name: 'maya', unreadCount: 0, isActive: false },

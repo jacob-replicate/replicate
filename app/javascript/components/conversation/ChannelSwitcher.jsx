@@ -6,6 +6,8 @@ import React, { useState, useRef, useEffect } from 'react'
 const ChannelButton = ({ channel, activeChannelId, onSelect, showHash = true }) => {
   const isActive = activeChannelId === channel.id
   const hasUnread = channel.unreadCount > 0 && !isActive
+  const isMuted = channel.isMuted
+  const isPrivate = channel.isPrivate
 
   return (
     <button
@@ -13,14 +15,24 @@ const ChannelButton = ({ channel, activeChannelId, onSelect, showHash = true }) 
       className={`w-full text-left px-3 py-1.5 flex items-center gap-2 hover:bg-zinc-200/50 dark:hover:bg-zinc-700/50 ${
         isActive
           ? 'bg-zinc-200 dark:bg-zinc-700 text-zinc-900 dark:text-white'
-          : 'text-zinc-600 dark:text-zinc-400'
+          : isMuted
+            ? 'text-zinc-400 dark:text-zinc-500'
+            : 'text-zinc-600 dark:text-zinc-400'
       }`}
     >
+      {/* Lock icon for private channels */}
+      {isPrivate && showHash && (
+        <svg className="w-3 h-3 flex-shrink-0 text-zinc-400 dark:text-zinc-500" fill="currentColor" viewBox="0 0 16 16">
+          <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/>
+        </svg>
+      )}
 
-      <span className="truncate">{showHash ? '#' : ''}{channel.name}</span>
+      <span className={`truncate ${isMuted ? 'italic' : ''}`}>
+        {showHash && !isPrivate ? '#' : ''}{channel.name}
+      </span>
 
       {/* Unread count */}
-      {hasUnread && (
+      {hasUnread && !isMuted && (
         <span className="ml-auto text-xs bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 px-1.5 rounded">
           {channel.unreadCount}
         </span>
@@ -104,7 +116,7 @@ const ChannelSwitcher = ({
               New
             </button>
           </div>
-          {channels.filter(c => c.id.startsWith('inc-')).map((channel) => (
+          {channels.filter(c => c.id.startsWith('inc-')).sort((a, b) => (a.isMuted ? 1 : 0) - (b.isMuted ? 1 : 0)).map((channel) => (
             <ChannelButton
               key={channel.id}
               channel={channel}
@@ -116,7 +128,7 @@ const ChannelSwitcher = ({
 
           {/* Ops section */}
           <div className="px-3 py-1 mt-3 text-zinc-500 text-xs uppercase tracking-wider">Ops</div>
-          {channels.filter(c => ['ops-alerts', 'oncall', 'deploy-prod', 'deploy-staging'].includes(c.id)).map((channel) => (
+          {channels.filter(c => ['ops-alerts', 'oncall', 'oncall-leads', 'deploy-prod', 'deploy-staging'].includes(c.id)).sort((a, b) => (a.isMuted ? 1 : 0) - (b.isMuted ? 1 : 0)).map((channel) => (
             <ChannelButton
               key={channel.id}
               channel={channel}
@@ -128,7 +140,7 @@ const ChannelSwitcher = ({
 
           {/* Teams section */}
           <div className="px-3 py-1 mt-3 text-zinc-500 text-xs uppercase tracking-wider">Teams</div>
-          {channels.filter(c => ['platform-eng', 'backend', 'frontend', 'infra', 'sre-team', 'security'].includes(c.id)).map((channel) => (
+          {channels.filter(c => ['platform-eng', 'backend', 'frontend', 'infra', 'sre-team', 'security', 'security-incidents'].includes(c.id)).sort((a, b) => (a.isMuted ? 1 : 0) - (b.isMuted ? 1 : 0)).map((channel) => (
             <ChannelButton
               key={channel.id}
               channel={channel}
@@ -140,7 +152,7 @@ const ChannelSwitcher = ({
 
           {/* General section */}
           <div className="px-3 py-1 mt-3 text-zinc-500 text-xs uppercase tracking-wider">General</div>
-          {channels.filter(c => ['engineering', 'random', 'watercooler'].includes(c.id)).map((channel) => (
+          {channels.filter(c => ['engineering', 'random', 'watercooler'].includes(c.id)).sort((a, b) => (a.isMuted ? 1 : 0) - (b.isMuted ? 1 : 0)).map((channel) => (
             <ChannelButton
               key={channel.id}
               channel={channel}
@@ -152,7 +164,7 @@ const ChannelSwitcher = ({
 
           {/* DMs section */}
           <div className="px-3 py-1 mt-3 text-zinc-500 text-xs uppercase tracking-wider">Direct Messages</div>
-          {channels.filter(c => c.id.startsWith('dm-')).map((channel) => (
+          {channels.filter(c => c.id.startsWith('dm-')).sort((a, b) => (a.isMuted ? 1 : 0) - (b.isMuted ? 1 : 0)).map((channel) => (
             <ChannelButton
               key={channel.id}
               channel={channel}
