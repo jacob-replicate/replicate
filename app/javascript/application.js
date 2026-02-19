@@ -4,7 +4,7 @@ import "./components"
 import "./channels/consumer"
 import "./components/IncidentApp"
 import "./components/conversation/ConversationApp"
-import "./demos/dnsIncidentDemo"
+import "./demos/demoRegistry"
 import "./delete_experience"
 
 // Reload page on back button to show fresh data

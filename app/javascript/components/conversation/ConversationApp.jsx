@@ -11,12 +11,21 @@ import {
   isPrimaryOption,
   isFollowUpOption
 } from '../../demos/demoOrchestrator'
+import { loadDemo } from '../../demos/demoRegistry'
 
 // Timing constants for message streaming
 const TYPING_DURATION = 600
 const MIN_GAP_BETWEEN_AUTHORS = 400
 
 const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms))
+
+/**
+ * Wrapper that forces ConversationView to remount when UUID changes
+ */
+const ConversationViewWrapper = ({ apiRef }) => {
+  const { uuid } = useParams()
+  return <ConversationView key={uuid} apiRef={apiRef} />
+}
 
 /**
  * ConversationView - renders a conversation for a specific UUID
@@ -209,6 +218,8 @@ const ConversationView = ({ apiRef }) => {
    * All messages (including thread replies) and reactions appear immediately at final state
    */
   const loadMessages = useCallback((messagesToLoad) => {
+    console.log('[loadMessages] called with', messagesToLoad?.length, 'messages')
+    console.log('[loadMessages] messagesToLoad:', messagesToLoad)
     // Sort by sequence to ensure correct order
     const sorted = [...messagesToLoad].sort((a, b) => {
       const seqA = a.components?.[0]?.sequence ?? 0
@@ -216,8 +227,10 @@ const ConversationView = ({ apiRef }) => {
       return seqA - seqB
     })
 
+    console.log('[loadMessages] sorted messages:', sorted.length)
     // Add all messages instantly (including thread replies) with full reactions
     for (const message of sorted) {
+      console.log('[loadMessages] adding message:', message.id)
       addMessageRef.current(message)
     }
     setIsLoaded(true)
@@ -334,9 +347,9 @@ const ConversationAppInner = ({ apiRef }) => {
   // Sample channels - in production these would come from API/state
   const [channels] = useState([
     // Active incidents
-    { id: 'incident-2847', name: 'inc-3815-db-locks', unreadCount: 0, isActive: true },
-    { id: 'incident-2846', name: 'inc-3824-redis-oom', unreadCount: 3, isActive: false },
-    { id: 'incident-2845', name: 'inc-3819-api-latency', unreadCount: 0, isActive: false },
+    { id: 'inc-3815-db-locks', name: 'inc-3815-db-locks', unreadCount: 0, isActive: true },
+    { id: 'inc-3824-redis-oom', name: 'inc-3824-redis-oom', unreadCount: 3, isActive: false },
+    { id: 'inc-3819-api-latency', name: 'inc-3819-api-latency', unreadCount: 0, isActive: false },
     // Ops channels
     { id: 'ops-alerts', name: 'ops-alerts', unreadCount: 12, isActive: false },
     { id: 'oncall', name: 'oncall', unreadCount: 1, isActive: false },
@@ -353,7 +366,7 @@ const ConversationAppInner = ({ apiRef }) => {
     { id: 'engineering', name: 'engineering', unreadCount: 0, isActive: false },
     { id: 'random', name: 'random', unreadCount: 0, isActive: false },
     { id: 'watercooler', name: 'watercooler', unreadCount: 0, isActive: false },
-    // DMs (prefixed with user emoji or name pattern)
+    // DMs
     { id: 'dm-maya', name: 'maya', unreadCount: 0, isActive: false },
     { id: 'dm-alex', name: 'alex', unreadCount: 2, isActive: false },
     { id: 'dm-daniel', name: 'daniel', unreadCount: 0, isActive: false },
@@ -362,27 +375,16 @@ const ConversationAppInner = ({ apiRef }) => {
     { id: 'dm-priya', name: 'priya', unreadCount: 0, isActive: false },
   ])
 
-  const [activeChannelId, setActiveChannelId] = useState('incident-2847')
-
-  // Map channel IDs to conversation UUIDs for demos
-  const channelToConversation = {
-    'incident-2847': 'c9f2e8d1-3b4a-5c6d-7e8f-9a0b1c2d3e4f', // DB locks incident
-    'incident-2846': 'redis-oom-incident-demo',                // Redis OOM incident
-    'incident-2845': 'api-latency-incident-demo',              // API latency (placeholder)
-  }
+  const [activeChannelId, setActiveChannelId] = useState('inc-3815-db-locks')
 
   const handleChannelSelect = useCallback((channelId) => {
+    console.log('[handleChannelSelect] called with channelId:', channelId)
     setActiveChannelId(channelId)
+    console.log('[handleChannelSelect] navigating to:', `/conversations/${channelId}`)
+    navigate(`/conversations/${channelId}`)
 
-    // Navigate to the conversation if it's an incident channel
-    const conversationId = channelToConversation[channelId]
-    if (conversationId) {
-      navigate(`/conversations/${conversationId}`)
-      // Trigger demo load for this channel
-      if (window.ReplicateConversation?.loadDemo) {
-        window.ReplicateConversation.loadDemo(channelId)
-      }
-    }
+    console.log('[handleChannelSelect] calling loadDemo directly')
+    loadDemo(channelId)
   }, [navigate])
 
   const handleNotificationNavigate = useCallback((conversationId) => {
@@ -403,14 +405,13 @@ const ConversationAppInner = ({ apiRef }) => {
         channels={channels}
         activeChannelId={activeChannelId}
         onChannelSelect={handleChannelSelect}
-        serverName="invariant.training"
       >
         {/* Routed conversation view */}
         <Routes>
           <Route path="/" element={<RootRedirect />} />
           <Route
             path="/conversations/:uuid"
-            element={<ConversationView apiRef={apiRef} />}
+            element={<ConversationViewWrapper apiRef={apiRef} />}
           />
         </Routes>
       </ChannelSwitcher>
