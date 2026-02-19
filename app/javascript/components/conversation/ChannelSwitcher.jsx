@@ -1,40 +1,37 @@
 import React, { useState, useRef, useEffect } from 'react'
 
 /**
- * ChannelButton - Reusable button for channel/DM list items
+ * ChannelItem - Renders a single channel or DM in the sidebar
  */
-const ChannelButton = ({ channel, activeChannelId, onSelect, showHash = true }) => {
-  const isActive = activeChannelId === channel.id
-  const hasUnread = channel.unreadCount > 0 && !isActive
-  const isMuted = channel.isMuted
-  const isPrivate = channel.isPrivate
+const ChannelItem = ({ item, isActive, onSelect }) => {
+  const hasUnread = item.unreadCount > 0 && !isActive
 
   return (
     <button
-      onClick={() => onSelect(channel.id)}
-      className={`w-full text-left px-3 py-1.5 flex items-center gap-2 hover:bg-zinc-200/50 dark:hover:bg-zinc-700/50 ${
+      onClick={() => onSelect(item.id)}
+      className={`w-full text-left px-3 py-1.5 flex items-center gap-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 ${
         isActive
-          ? 'bg-zinc-200 dark:bg-zinc-700 text-zinc-900 dark:text-white'
-          : isMuted
-            ? 'text-zinc-400 dark:text-zinc-500'
-            : 'text-zinc-600 dark:text-zinc-400'
+          ? 'bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 font-medium'
+          : item.isMuted
+            ? 'text-zinc-400 dark:text-zinc-600'
+            : 'text-zinc-500 dark:text-zinc-400'
       }`}
     >
       {/* Lock icon for private channels */}
-      {isPrivate && showHash && (
-        <svg className="w-3 h-3 flex-shrink-0 text-zinc-400 dark:text-zinc-500" fill="currentColor" viewBox="0 0 16 16">
+      {item.isPrivate && (
+        <svg className="w-3 h-3 flex-shrink-0 text-zinc-400 dark:text-zinc-600" fill="currentColor" viewBox="0 0 16 16">
           <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/>
         </svg>
       )}
 
-      <span className={`truncate ${isMuted ? 'italic' : ''}`}>
-        {showHash && !isPrivate ? '#' : ''}{channel.name}
+      <span className={`truncate ${item.isMuted ? 'italic' : ''}`}>
+        {item.prefix}{item.name}
       </span>
 
       {/* Unread count */}
-      {hasUnread && !isMuted && (
-        <span className="ml-auto text-xs bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 px-1.5 rounded">
-          {channel.unreadCount}
+      {hasUnread && !item.isMuted && (
+        <span className="ml-auto text-xs bg-zinc-900 dark:bg-zinc-100 text-zinc-100 dark:text-zinc-900 px-1.5 py-0.5 rounded-full font-medium min-w-[20px] text-center">
+          {item.unreadCount}
         </span>
       )}
     </button>
@@ -42,12 +39,87 @@ const ChannelButton = ({ channel, activeChannelId, onSelect, showHash = true }) 
 }
 
 /**
- * ChannelSwitcher - Tool for switching between multiple chat channels
+ * ChannelSection - Renders a section header and its items
+ */
+const ChannelSection = ({ section, channels, activeChannelId, onSelect }) => {
+  // Filter channels for this section and sort muted to bottom
+  const sectionChannels = channels
+    .filter(c => section.filter(c))
+    .sort((a, b) => (a.isMuted ? 1 : 0) - (b.isMuted ? 1 : 0))
+
+  if (sectionChannels.length === 0) return null
+
+  return (
+    <div className={section.id !== 'incidents' ? 'mt-4' : ''}>
+      <div className="px-3 py-1 text-zinc-400 dark:text-zinc-500 text-[11px] uppercase tracking-widest font-medium flex items-center justify-between">
+        <span>{section.label}</span>
+        {section.action && (
+          <button
+            className="flex items-center gap-1 text-[10px] font-medium text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors"
+            onClick={section.action.onClick}
+          >
+            {SectionIcons[section.action.icon]}
+            {section.action.label}
+          </button>
+        )}
+      </div>
+      {sectionChannels.map((channel) => (
+        <ChannelItem
+          key={channel.id}
+          item={{
+            ...channel,
+            prefix: section.prefix ?? '#',
+          }}
+          isActive={activeChannelId === channel.id}
+          onSelect={onSelect}
+        />
+      ))}
+    </div>
+  )
+}
+
+/**
+ * ChannelList - Renders all channel sections
+ */
+const ChannelList = ({ sections, channels, activeChannelId, onSelect }) => {
+  return (
+    <div className="flex-1 overflow-y-auto py-2">
+      {sections.map((section) => (
+        <ChannelSection
+          key={section.id}
+          section={section}
+          channels={channels}
+          activeChannelId={activeChannelId}
+          onSelect={onSelect}
+        />
+      ))}
+    </div>
+  )
+}
+
+/**
+ * Icon components for section actions
+ */
+const SectionIcons = {
+  plus: (
+    <svg className="w-3 h-3" viewBox="0 0 16 16" fill="currentColor">
+      <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+    </svg>
+  ),
+}
+
+/**
+ * ChannelSwitcher - Sidebar for switching between channels and DMs
  *
- * IRC-inspired channel list sidebar that can wrap any conversation content.
+ * @param {Array} channels - List of channel objects with id, name, section, unreadCount, isPrivate, isMuted
+ * @param {Array} sections - List of section configs with id, label, filter function, optional prefix and action
+ * @param {string} activeChannelId - Currently selected channel ID
+ * @param {function} onChannelSelect - Callback when a channel is selected
+ * @param {ReactNode} children - Content to render in main area
  */
 const ChannelSwitcher = ({
-  channels = [],
+  channels,
+  sections,
   activeChannelId,
   onChannelSelect,
   children,
@@ -56,6 +128,9 @@ const ChannelSwitcher = ({
     return document.documentElement.classList.contains('dark')
   })
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(() => {
+    return localStorage.getItem('sidebar-collapsed') === 'true'
+  })
   const [bannerDismissed, setBannerDismissed] = useState(() => {
     return localStorage.getItem('training-banner-dismissed') === 'true'
   })
@@ -78,7 +153,7 @@ const ChannelSwitcher = ({
   }
 
   return (
-    <div className="flex bg-zinc-100 dark:bg-zinc-800 overflow-hidden text-sm h-full w-full relative">
+    <div className="flex bg-white dark:bg-zinc-950 overflow-hidden text-sm h-full w-full relative">
 
       {/* Mobile overlay */}
       {sidebarOpen && (
@@ -94,110 +169,79 @@ const ChannelSwitcher = ({
         md:translate-x-0
         fixed md:relative
         z-50 md:z-auto
-        w-64 flex-shrink-0 
-        bg-zinc-100 dark:bg-zinc-800 
-        border-r border-zinc-300 dark:border-zinc-700 
+        ${sidebarCollapsed ? 'md:w-12' : 'w-64'} 
+        flex-shrink-0 
+        bg-zinc-50 dark:bg-zinc-900 
+        border-r border-zinc-200 dark:border-zinc-800 
         flex flex-col
         h-full
-        transition-transform duration-200 ease-in-out
+        transition-all duration-200 ease-in-out
       `}>
-        {/* Channel list */}
-        <div className="flex-1 overflow-y-auto py-2">
-          {/* Incidents section */}
-          <div className="px-3 py-1 text-zinc-500 text-xs uppercase tracking-wider flex items-center justify-between">
-            <span>Incidents</span>
+        {!sidebarCollapsed ? (
+          <>
+            {/* Sidebar header with collapse button */}
+            <div className="hidden md:flex items-center justify-end px-2 py-2 border-b border-zinc-200 dark:border-zinc-800">
+              <button
+                onClick={() => {
+                  setSidebarCollapsed(true)
+                  localStorage.setItem('sidebar-collapsed', 'true')
+                }}
+                className="p-1 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors"
+                title="Collapse sidebar"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M11 19l-7-7 7-7M18 19l-7-7 7-7" />
+                </svg>
+              </button>
+            </div>
+
+            <ChannelList
+              sections={sections}
+              channels={channels}
+              activeChannelId={activeChannelId}
+              onSelect={handleChannelSelect}
+            />
+
+            {/* Footer with links */}
+            <div className="border-t border-zinc-200 dark:border-zinc-800">
+              <div className="px-3 py-2 flex flex-wrap gap-x-3 gap-y-1 text-[11px]">
+                <a href="/privacy" className="text-blue-600 hover:text-blue-800 dark:text-indigo-400 dark:hover:text-indigo-300 transition-colors">Privacy</a>
+                <a href="/terms" className="text-blue-600 hover:text-blue-800 dark:text-indigo-400 dark:hover:text-indigo-300 transition-colors">Terms</a>
+                <a href="/security" className="text-blue-600 hover:text-blue-800 dark:text-indigo-400 dark:hover:text-indigo-300 transition-colors">Security</a>
+              </div>
+            </div>
+          </>
+        ) : (
+          /* Collapsed state - just show expand button */
+          <div className="hidden md:flex flex-col items-center py-2">
             <button
-              className="flex items-center gap-1 text-[10px] font-medium text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 bg-emerald-50 dark:bg-emerald-900/30 hover:bg-emerald-100 dark:hover:bg-emerald-900/50 px-1.5 py-0.5 rounded transition-colors"
-              onClick={() => alert('New incident flow coming soon!')}
+              onClick={() => {
+                setSidebarCollapsed(false)
+                localStorage.setItem('sidebar-collapsed', 'false')
+              }}
+              className="p-2 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors"
+              title="Expand sidebar"
             >
-              <svg className="w-3 h-3" viewBox="0 0 16 16" fill="currentColor">
-                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 5l7 7-7 7M6 5l7 7-7 7" />
               </svg>
-              New
             </button>
           </div>
-          {channels.filter(c => c.id.startsWith('inc-')).sort((a, b) => (a.isMuted ? 1 : 0) - (b.isMuted ? 1 : 0)).map((channel) => (
-            <ChannelButton
-              key={channel.id}
-              channel={channel}
-              activeChannelId={activeChannelId}
-              onSelect={handleChannelSelect}
-              showHash
-            />
-          ))}
-
-          {/* Ops section */}
-          <div className="px-3 py-1 mt-3 text-zinc-500 text-xs uppercase tracking-wider">Ops</div>
-          {channels.filter(c => ['ops-alerts', 'oncall', 'oncall-leads', 'deploy-prod', 'deploy-staging'].includes(c.id)).sort((a, b) => (a.isMuted ? 1 : 0) - (b.isMuted ? 1 : 0)).map((channel) => (
-            <ChannelButton
-              key={channel.id}
-              channel={channel}
-              activeChannelId={activeChannelId}
-              onSelect={handleChannelSelect}
-              showHash
-            />
-          ))}
-
-          {/* Teams section */}
-          <div className="px-3 py-1 mt-3 text-zinc-500 text-xs uppercase tracking-wider">Teams</div>
-          {channels.filter(c => ['platform-eng', 'backend', 'frontend', 'infra', 'sre-team', 'security', 'security-incidents'].includes(c.id)).sort((a, b) => (a.isMuted ? 1 : 0) - (b.isMuted ? 1 : 0)).map((channel) => (
-            <ChannelButton
-              key={channel.id}
-              channel={channel}
-              activeChannelId={activeChannelId}
-              onSelect={handleChannelSelect}
-              showHash
-            />
-          ))}
-
-          {/* General section */}
-          <div className="px-3 py-1 mt-3 text-zinc-500 text-xs uppercase tracking-wider">General</div>
-          {channels.filter(c => ['engineering', 'random', 'watercooler'].includes(c.id)).sort((a, b) => (a.isMuted ? 1 : 0) - (b.isMuted ? 1 : 0)).map((channel) => (
-            <ChannelButton
-              key={channel.id}
-              channel={channel}
-              activeChannelId={activeChannelId}
-              onSelect={handleChannelSelect}
-              showHash
-            />
-          ))}
-
-          {/* DMs section */}
-          <div className="px-3 py-1 mt-3 text-zinc-500 text-xs uppercase tracking-wider">Direct Messages</div>
-          {channels.filter(c => c.id.startsWith('dm-')).sort((a, b) => (a.isMuted ? 1 : 0) - (b.isMuted ? 1 : 0)).map((channel) => (
-            <ChannelButton
-              key={channel.id}
-              channel={channel}
-              activeChannelId={activeChannelId}
-              onSelect={handleChannelSelect}
-              showHash={false}
-            />
-          ))}
-        </div>
-
-        {/* Footer with links */}
-        <div className="border-t border-zinc-300 dark:border-zinc-700">
-          {/* Links */}
-          <div className="px-3 py-2 flex flex-wrap gap-x-3 gap-y-1 text-[11px]">
-            <a href="/privacy" className="text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 hover:underline">Privacy</a>
-            <a href="/terms" className="text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 hover:underline">Terms</a>
-            <a href="/security" className="text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 hover:underline">Security</a>
-          </div>
-        </div>
+        )}
       </div>
 
       {/* Main content area */}
-      <div className="flex-1 flex flex-col min-w-0 min-h-0 bg-white dark:bg-zinc-900">
+      <div className="flex-1 flex flex-col min-w-0 min-h-0 bg-white dark:bg-zinc-950">
         {/* Training mode banner */}
         {!bannerDismissed && (
-          <div className="flex-shrink-0 bg-indigo-600 text-white text-xs font-medium px-3 py-1.5 flex items-center justify-center gap-2">
+          <div className="flex-shrink-0 bg-zinc-900 dark:bg-zinc-100 text-zinc-100 dark:text-zinc-900 text-xs font-medium px-3 py-1.5 flex items-center justify-center gap-2">
             <span>TRAINING MODE — This is a simulated security incident for learning purposes</span>
             <button
               onClick={() => {
                 setBannerDismissed(true)
                 localStorage.setItem('training-banner-dismissed', 'true')
               }}
-              className="ml-2 hover:bg-indigo-500 rounded p-0.5"
+              className="ml-2 hover:bg-zinc-800 dark:hover:bg-zinc-200 rounded p-0.5 transition-colors"
             >
               <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -206,28 +250,28 @@ const ChannelSwitcher = ({
           </div>
         )}
         {/* Mobile header with menu button */}
-        <div className="md:hidden flex-shrink-0 flex items-center gap-2 px-3 py-2 border-b border-zinc-200 dark:border-zinc-700 bg-zinc-100 dark:bg-zinc-800">
+        <div className="md:hidden flex-shrink-0 flex items-center gap-2 px-3 py-2 border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900">
           <button
             onClick={() => setSidebarOpen(true)}
-            className="text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white"
+            className="text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
             </svg>
           </button>
-          <span className="text-zinc-600 dark:text-zinc-400 text-xs">#{channels.find(c => c.id === activeChannelId)?.name || 'channel'}</span>
+          <span className="text-zinc-500 text-xs">#{channels.find(c => c.id === activeChannelId)?.name || 'channel'}</span>
         </div>
         {/* Desktop channel header */}
-        <div className="hidden md:flex flex-shrink-0 items-center justify-between px-4 py-2 border-b border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900">
+        <div className="hidden md:flex flex-shrink-0 items-center justify-between px-4 py-2 border-b border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950">
           <div className="flex items-center gap-2">
-            <span className="font-semibold text-zinc-900 dark:text-white text-[15px]">#{channels.find(c => c.id === activeChannelId)?.name || 'channel'}</span>
+            <span className="font-semibold text-zinc-900 dark:text-zinc-100 text-[15px]">#{channels.find(c => c.id === activeChannelId)?.name || 'channel'}</span>
           </div>
           <div className="flex items-center">
             {/* Segmented dark mode toggle */}
-            <div className="flex rounded-md border border-zinc-200 dark:border-zinc-600 overflow-hidden text-xs">
+            <div className="flex rounded-md border border-zinc-200 dark:border-zinc-800 overflow-hidden text-xs">
               <button
                 onClick={() => { if (isDark) toggleDarkMode() }}
-                className={`px-2.5 py-1.5 transition-colors ${!isDark ? 'bg-zinc-100 dark:bg-zinc-700 text-zinc-700 dark:text-zinc-200' : 'text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800'}`}
+                className={`px-2.5 py-1.5 transition-colors ${!isDark ? 'bg-zinc-100 text-zinc-900' : 'text-zinc-500 hover:bg-zinc-900'}`}
               >
                 <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clipRule="evenodd" />
@@ -235,7 +279,7 @@ const ChannelSwitcher = ({
               </button>
               <button
                 onClick={() => { if (!isDark) toggleDarkMode() }}
-                className={`px-2.5 py-1.5 transition-colors ${isDark ? 'bg-zinc-100 dark:bg-zinc-700 text-zinc-700 dark:text-zinc-200' : 'text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800'}`}
+                className={`px-2.5 py-1.5 transition-colors ${isDark ? 'bg-zinc-800 text-zinc-100' : 'text-zinc-400 hover:bg-zinc-50'}`}
               >
                 <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                   <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />

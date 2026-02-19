@@ -12,6 +12,7 @@ import {
   isFollowUpOption
 } from '../../demos/demoOrchestrator'
 import { loadDemo } from '../../demos/demoRegistry'
+import { DEMO_CHANNELS, DEMO_SECTIONS, DEFAULT_CHANNEL_ID } from '../../demos/channelData'
 
 // Timing constants for message streaming
 const TYPING_DURATION = 600
@@ -344,40 +345,8 @@ const ConversationAppInner = ({ apiRef }) => {
   const navigate = useNavigate()
   const { uuid } = useParams() || {}
 
-  // Sample channels - in production these would come from API/state
-  const [channels] = useState([
-    // Active incidents
-    { id: 'inc-3815-db-locks', name: 'inc-3815-db-locks', unreadCount: 0, isActive: true },
-    { id: 'inc-3824-redis-oom', name: 'inc-3824-redis-oom', unreadCount: 3, isActive: false },
-    { id: 'inc-3819-api-latency', name: 'inc-3819-api-latency', unreadCount: 0, isActive: false },
-    // Ops channels
-    { id: 'ops-alerts', name: 'ops-alerts', unreadCount: 12, isActive: false },
-    { id: 'oncall', name: 'oncall', unreadCount: 1, isActive: false },
-    { id: 'oncall-leads', name: 'oncall-leads', unreadCount: 0, isActive: false, isPrivate: true },
-    { id: 'deploy-prod', name: 'deploy-prod', unreadCount: 0, isActive: false },
-    { id: 'deploy-staging', name: 'deploy-staging', unreadCount: 0, isActive: false, isMuted: true },
-    // Team channels
-    { id: 'platform-eng', name: 'platform-eng', unreadCount: 5, isActive: false },
-    { id: 'backend', name: 'backend', unreadCount: 0, isActive: false },
-    { id: 'frontend', name: 'frontend', unreadCount: 2, isActive: false },
-    { id: 'infra', name: 'infra', unreadCount: 0, isActive: false },
-    { id: 'sre-team', name: 'sre-team', unreadCount: 0, isActive: false },
-    { id: 'security', name: 'security', unreadCount: 1, isActive: false },
-    { id: 'security-incidents', name: 'security-incidents', unreadCount: 0, isActive: false, isPrivate: true },
-    // General
-    { id: 'engineering', name: 'engineering', unreadCount: 0, isActive: false },
-    { id: 'random', name: 'random', unreadCount: 0, isActive: false, isMuted: true },
-    { id: 'watercooler', name: 'watercooler', unreadCount: 0, isActive: false },
-    // DMs
-    { id: 'dm-maya', name: 'maya', unreadCount: 0, isActive: false },
-    { id: 'dm-alex', name: 'alex', unreadCount: 2, isActive: false },
-    { id: 'dm-daniel', name: 'daniel', unreadCount: 0, isActive: false },
-    { id: 'dm-sarah', name: 'sarah', unreadCount: 0, isActive: false },
-    { id: 'dm-chen', name: 'chen', unreadCount: 1, isActive: false },
-    { id: 'dm-priya', name: 'priya', unreadCount: 0, isActive: false },
-  ])
-
-  const [activeChannelId, setActiveChannelId] = useState('inc-3815-db-locks')
+  const [channels] = useState(DEMO_CHANNELS)
+  const [activeChannelId, setActiveChannelId] = useState(DEFAULT_CHANNEL_ID)
 
   const handleChannelSelect = useCallback((channelId) => {
     console.log('[handleChannelSelect] called with channelId:', channelId)
@@ -405,6 +374,7 @@ const ConversationAppInner = ({ apiRef }) => {
     <div className="h-full w-full">
       <ChannelSwitcher
         channels={channels}
+        sections={DEMO_SECTIONS}
         activeChannelId={activeChannelId}
         onChannelSelect={handleChannelSelect}
       >
