@@ -345,7 +345,8 @@ const ConversationAppInner = ({ apiRef }) => {
   const navigate = useNavigate()
   const { uuid } = useParams() || {}
 
-  const [channels] = useState(DEMO_CHANNELS)
+  // Get conversations from context instead of local state
+  const { conversations, findConversation, markAsRead } = useConversationContext()
   const [activeChannelId, setActiveChannelId] = useState(DEFAULT_CHANNEL_ID)
 
   const handleChannelSelect = useCallback((channelId) => {
@@ -354,9 +355,12 @@ const ConversationAppInner = ({ apiRef }) => {
     console.log('[handleChannelSelect] navigating to:', `/conversations/${channelId}`)
     navigate(`/conversations/${channelId}`)
 
+    // Mark as read when selecting
+    markAsRead(channelId)
+
     console.log('[handleChannelSelect] calling loadDemo directly')
     loadDemo(channelId)
-  }, [navigate])
+  }, [navigate, markAsRead])
 
   const handleNotificationNavigate = useCallback((conversationId) => {
     navigate(`/conversations/${conversationId}`)
@@ -373,7 +377,7 @@ const ConversationAppInner = ({ apiRef }) => {
   return (
     <div className="h-full w-full">
       <ChannelSwitcher
-        channels={channels}
+        channels={conversations}
         sections={DEMO_SECTIONS}
         activeChannelId={activeChannelId}
         onChannelSelect={handleChannelSelect}

@@ -44,7 +44,7 @@ export const MessageInput = ({
   return (
     <form
       onSubmit={handleSubmit}
-      className="border-t border-zinc-200 dark:border-zinc-700 flex items-center bg-white dark:bg-zinc-900"
+      className="border-t border-zinc-200 dark:border-zinc-800 flex items-center bg-white dark:bg-zinc-900"
     >
       <input
         ref={inputRef}

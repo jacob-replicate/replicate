@@ -1,48 +1,51 @@
 /**
  * Demo channel data for the conversation UI
  * This is sample data - in production, channels would come from an API
+ *
+ * Shape matches ConversationContext:
+ * - uuid: unique identifier used in URLs and API calls
+ * - name: display name (can repeat across users)
+ * - section: for grouping in sidebar
+ * - unreadCount, isMuted, isPrivate: UI state
+ * - messages, messagesLoading: set by context provider
  */
 
 export const DEMO_CHANNELS = [
-  // Active incidents (filtered by id prefix 'inc-')
-  { id: 'inc-3815-db-locks', name: 'inc-3815-db-locks', unreadCount: 0 },
-  { id: 'inc-3824-redis-oom', name: 'inc-3824-redis-oom', unreadCount: 3 },
-  { id: 'inc-3819-api-latency', name: 'inc-3819-api-latency', unreadCount: 0 },
+  // Active incidents (filtered by uuid prefix 'inc-')
+  { uuid: 'inc-4521-cart-500s', id: 'inc-4521-cart-500s', name: 'inc-4521-cart-500s', unreadCount: 0 },
+  { uuid: 'inc-4519-redis-oom', id: 'inc-4519-redis-oom', name: 'inc-4519-redis-oom', unreadCount: 3 },
+  { uuid: 'inc-4517-payments-timeout', id: 'inc-4517-payments-timeout', name: 'inc-4517-payments-timeout', unreadCount: 0 },
   // Ops channels
-  { id: 'ops-alerts', name: 'ops-alerts', section: 'ops', unreadCount: 12 },
-  { id: 'oncall', name: 'oncall', section: 'ops', unreadCount: 1 },
-  { id: 'oncall-leads', name: 'oncall-leads', section: 'ops', unreadCount: 0, isPrivate: true },
-  { id: 'deploy-prod', name: 'deploy-prod', section: 'ops', unreadCount: 0 },
-  { id: 'deploy-staging', name: 'deploy-staging', section: 'ops', unreadCount: 0, isMuted: true },
+  { uuid: 'prod-alerts', id: 'prod-alerts', name: 'prod-alerts', section: 'ops', unreadCount: 8 },
+  { uuid: 'deploys', id: 'deploys', name: 'deploys', section: 'ops', unreadCount: 0 },
+  { uuid: 'oncall-primary', id: 'oncall-primary', name: 'oncall-primary', section: 'ops', unreadCount: 1 },
+  { uuid: 'oncall-secondary', id: 'oncall-secondary', name: 'oncall-secondary', section: 'ops', unreadCount: 0, isPrivate: true },
+  { uuid: 'change-management', id: 'change-management', name: 'change-management', section: 'ops', unreadCount: 0, isMuted: true },
   // Team channels
-  { id: 'platform-eng', name: 'platform-eng', section: 'teams', unreadCount: 5 },
-  { id: 'backend', name: 'backend', section: 'teams', unreadCount: 0 },
-  { id: 'frontend', name: 'frontend', section: 'teams', unreadCount: 2 },
-  { id: 'infra', name: 'infra', section: 'teams', unreadCount: 0 },
-  { id: 'sre-team', name: 'sre-team', section: 'teams', unreadCount: 0 },
-  { id: 'security', name: 'security', section: 'teams', unreadCount: 1 },
-  { id: 'security-incidents', name: 'security-incidents', section: 'teams', unreadCount: 0, isPrivate: true },
+  { uuid: 'eng-backend', id: 'eng-backend', name: 'eng-backend', section: 'teams', unreadCount: 5 },
+  { uuid: 'eng-frontend', id: 'eng-frontend', name: 'eng-frontend', section: 'teams', unreadCount: 2 },
+  { uuid: 'eng-platform', id: 'eng-platform', name: 'eng-platform', section: 'teams', unreadCount: 0 },
+  { uuid: 'eng-data', id: 'eng-data', name: 'eng-data', section: 'teams', unreadCount: 0 },
+  { uuid: 'security', id: 'security', name: 'security', section: 'teams', unreadCount: 1, isPrivate: true },
   // General
-  { id: 'engineering', name: 'engineering', section: 'general', unreadCount: 0 },
-  { id: 'random', name: 'random', section: 'general', unreadCount: 0, isMuted: true },
-  { id: 'watercooler', name: 'watercooler', section: 'general', unreadCount: 0 },
-  // DMs (filtered by id prefix 'dm-')
-  { id: 'dm-maya', name: 'maya', unreadCount: 0 },
-  { id: 'dm-alex', name: 'alex', unreadCount: 2 },
-  { id: 'dm-daniel', name: 'daniel', unreadCount: 0 },
-  { id: 'dm-sarah', name: 'sarah', unreadCount: 0 },
-  { id: 'dm-chen', name: 'chen', unreadCount: 1 },
-  { id: 'dm-priya', name: 'priya', unreadCount: 0 },
+  { uuid: 'announcements', id: 'announcements', name: 'announcements', section: 'general', unreadCount: 0 },
+  { uuid: 'eng-random', id: 'eng-random', name: 'eng-random', section: 'general', unreadCount: 0, isMuted: true },
+  // DMs (filtered by uuid prefix 'dm-')
+  { uuid: 'dm-sarah-chen', id: 'dm-sarah-chen', name: 'Sarah Chen', unreadCount: 0 },
+  { uuid: 'dm-alex-kumar', id: 'dm-alex-kumar', name: 'Alex Kumar', unreadCount: 2 },
+  { uuid: 'dm-jordan-miles', id: 'dm-jordan-miles', name: 'Jordan Miles', unreadCount: 0 },
+  { uuid: 'dm-priya-patel', id: 'dm-priya-patel', name: 'Priya Patel', unreadCount: 1 },
 ]
 
 /**
  * Section configuration for the channel sidebar
+ * Filters support both uuid and id for backward compatibility
  */
 export const DEMO_SECTIONS = [
   {
     id: 'incidents',
     label: 'Incidents',
-    filter: (c) => c.id.startsWith('inc-'),
+    filter: (c) => (c.uuid || c.id).startsWith('inc-'),
     action: {
       label: 'New',
       icon: 'plus',
@@ -67,9 +70,9 @@ export const DEMO_SECTIONS = [
   {
     id: 'dms',
     label: 'Direct Messages',
-    filter: (c) => c.id.startsWith('dm-'),
+    filter: (c) => (c.uuid || c.id).startsWith('dm-'),
     prefix: '',
   },
 ]
 
-export const DEFAULT_CHANNEL_ID = 'inc-3815-db-locks'
+export const DEFAULT_CHANNEL_ID = 'inc-4521-cart-500s'

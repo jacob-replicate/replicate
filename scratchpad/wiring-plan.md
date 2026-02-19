@@ -6,6 +6,71 @@ This document outlines the architecture for the conversation system, including c
 
 ---
 
+## ✅ DONE: Context Created
+
+`ConversationContext.jsx` has been created at:
+```
+app/javascript/components/conversation/ConversationContext.jsx
+```
+
+It implements the full context shape below with:
+- `ConversationProvider` component
+- `useConversationContext()` hook
+- `useConversationByUuid(uuid)` helper hook
+- localStorage persistence for UI preferences
+- All API methods (fetch, send, markAsRead)
+- Local mutation methods for demos (addMessageLocally, updateMessageLocally, setConversationsDirect)
+
+---
+
+## ✅ DONE: Wired Up
+
+### ✅ 1. Wrap ConversationApp with Provider
+```jsx
+// ConversationApp.jsx - DONE
+<ConversationProvider initialConversations={DEMO_CHANNELS}>
+  <BrowserRouter>...</BrowserRouter>
+</ConversationProvider>
+```
+
+### ✅ 2. Update ChannelSwitcher
+- Now supports both `uuid` and `id` fields for backward compatibility
+- Header displays use `(c.uuid || c.id)` for lookups
+
+### 🔲 3. Update ChannelSwitcher → Use Context Directly (Optional)
+- Currently still receives props from ConversationAppInner
+- Could import `useConversationContext()` directly to eliminate prop drilling
+- Low priority - works fine with current approach
+
+### ✅ 4. Convert DEMO_CHANNELS to new shape
+- Added `uuid` field to each channel (using id value for demo)
+- Updated comments to document context shape
+
+### ✅ 5. Export from index.js
+```js
+export { ConversationProvider, useConversationContext, useConversationByUuid } from './ConversationContext'
+```
+
+---
+
+## 🔲 TODO: Next Steps
+
+### ✅ 1. Use context for dark mode / sidebar collapsed
+- ChannelSwitcher now gets `isDarkMode` / `setIsDarkMode` from context
+- Falls back to local state when context unavailable (standalone usage)
+- Context syncs to DOM and localStorage
+
+### 2. Build Rails API endpoints
+- `Api::ConversationsController` with index, show, update
+- `Api::MessagesController` with create
+- Connect frontend to real API instead of demo data
+
+### 3. Add ActionCable subscription
+- Subscribe to `OwnerChannel` in ConversationProvider
+- Handle `new_message`, `unread_update`, `new_conversation` events
+
+---
+
 ## Context Shape
 
 All shared state lives in a single `ConversationContext`:
@@ -654,159 +719,83 @@ broadcast_to_session(session_id, {
 })
 ```
 
-### No Per-Conversation Subscriptions
-
-The frontend does NOT subscribe/unsubscribe when navigating between conversations. One OwnerChannel handles everything. The context figures out what to do based on `conversation_uuid` in the payload.
-
 ---
 
-## Session Lifecycle & Cleanup
+## ConversationDriverWorker (Bot Responses)
 
-Sessions accumulate over time. Need to handle:
-1. Not broadcasting to dead sessions
-2. Cleaning up old session records
+The `ConversationDriverWorker` is the Sidekiq worker that generates bot/AI responses in conversations.
 
-### Track Active Connections
+### When It Runs
 
-Add `last_seen_at` to sessions table:
+1. **User sends a message** - `Message.after_create` triggers the worker if `user_generated: true`
+2. **User opens empty conversation** - `OwnerChannel.subscribed` can trigger it for a fresh conversation
+
+### Flow
+
+```
+User sends message
+  → Message.create!(user_generated: true)
+  → after_create callback
+  → ConversationDriverWorker.perform_async(conversation_id, min_sequence)
+  → Worker picks up job
+  → MessageGenerators::Incident (or variant).deliver
+  → Generator creates messages + broadcasts via ActionCable
+  → Frontend receives via OwnerChannel → handleNewMessage
+```
+
+### MessageGenerators
+
+Each conversation has a `variant` field that determines which generator to use:
 
 ```ruby
-class AddLastSeenAtToSessions < ActiveRecord::Migration[7.0]
-  def change
-    add_column :sessions, :last_seen_at, :datetime
-    add_column :sessions, :user_id, :uuid
-    add_index :sessions, :user_id
-    add_index :sessions, :last_seen_at
-  end
+# conversation.variant = 'incident'
+generator = "MessageGenerators::#{conversation.variant.camelize}".constantize
+# → MessageGenerators::Incident
+```
+
+Generators are responsible for:
+- Creating `Message` records
+- Broadcasting to ActionCable (so UI updates in real-time)
+- Simulating typing delays, multi-message sequences, etc.
+
+### Broadcasting from Workers
+
+Workers use `broadcast_to_owner` to send messages to all active sessions:
+
+```ruby
+# In MessageGenerators::Base or similar
+def broadcast_to_web(payload)
+  broadcast_to_owner({
+    type: 'new_message',
+    conversation_uuid: conversation.id,
+    message: payload
+  })
 end
-```
 
-Update `last_seen_at` when ActionCable connects/receives:
-
-```ruby
-# app/channels/owner_channel.rb
-class OwnerChannel < ApplicationCable::Channel
-  def subscribed
-    session_id = params[:session_id]
-    return reject unless session_id.present?
-    
-    # Update last_seen_at on connect
-    Session.where(id: session_id).update_all(last_seen_at: Time.current)
-    
-    stream_for "session:#{session_id}"
-  end
-  
-  def unsubscribed
-    # Optional: could mark session as disconnected
-  end
-  
-  # Heartbeat - frontend calls this periodically
-  def ping
-    session_id = params[:session_id]
-    Session.where(id: session_id).update_all(last_seen_at: Time.current)
-  end
-end
-```
-
-### Frontend Heartbeat
-
-Keep the session alive with periodic pings:
-
-```javascript
-useEffect(() => {
-  const sessionId = getSessionId()
-  let pingInterval = 30 * 1000 // Start at 30 seconds
-  const maxInterval = 60 * 60 * 1000 // Cap at 1 hour
-  let pingTimer = null
-  
-  const schedulePing = () => {
-    clearTimeout(pingTimer)
-    pingTimer = setTimeout(() => {
-      subscription.perform('ping')
-      pingInterval = Math.min(pingInterval * 2, maxInterval)
-      schedulePing()
-    }, pingInterval)
-  }
-  
-  const resetPing = () => {
-    pingInterval = 30 * 1000
-    schedulePing()
-  }
-  
-  const subscription = cable.subscriptions.create(
-    { channel: 'OwnerChannel', session_id: sessionId },
-    {
-      received(data) {
-        resetPing()
-        /* ... handle data ... */
-      },
-      connected() {
-        schedulePing()
-      },
-      disconnected() {
-        clearTimeout(pingTimer)
-      }
-    }
-  )
-  
-  return () => {
-    clearTimeout(pingTimer)
-    subscription.unsubscribe()
-  }
-}, [])
-```
-
-Ping backs off: 30s → 60s → 2m → 4m → 8m → 16m → 32m → 1h (capped). Resets to 30s when data is received.
-
-### Smart Broadcasting
-
-Only broadcast to recently active sessions:
-
-```ruby
 def broadcast_to_owner(payload)
-  sessions = current_user&.sessions&.active || [current_session]
+  sessions = conversation.user&.sessions&.active || [conversation.session]
   sessions.each do |session|
     OwnerChannel.broadcast_to("session:#{session.id}", payload)
   end
 end
-
-# On Session model
-scope :active, -> { where('last_seen_at > ?', 5.minutes.ago) }
 ```
 
-### Cleanup Job
+### Sequence Numbers
 
-Periodically delete old sessions:
+Messages have a `sequence` field for ordering. The worker receives `min_sequence` to know where to start generating from (avoids race conditions with multiple messages being created).
+
+### Guard Against Double-Responses
 
 ```ruby
-# app/workers/cleanup_sessions_worker.rb
-class CleanupSessionsWorker
-  include Sidekiq::Worker
+def perform(conversation_id, min_sequence = nil)
+  conversation = Conversation.find_by(id: conversation_id)
+  return if conversation.blank?
+  return if conversation.latest_author == :assistant  # Already responded
   
-  def perform
-    # Delete sessions not seen in 30 days
-    # (But keep sessions that have a user_id - they might come back)
-    Session.where(user_id: nil)
-           .where('last_seen_at < ? OR last_seen_at IS NULL', 30.days.ago)
-           .delete_all
-    
-    # For sessions with a user, just clear last_seen_at after 30 days
-    # Keep the record so we know which sessions belong to which user
-    Session.where('last_seen_at < ?', 30.days.ago)
-           .update_all(last_seen_at: nil)
-  end
+  # Generate response...
 end
-
-# Schedule in sidekiq-scheduler or cron
-# Run daily at 3am
 ```
 
-### Summary
-
-| Concern | Solution |
-|---------|----------|
-| Know if session is alive | `last_seen_at` updated on connect + periodic ping |
-| Don't broadcast to dead sessions | Check `last_seen_at > 5.minutes.ago` before broadcast |
-| Clean up old records | Daily job deletes anonymous sessions older than 30 days |
+If the last message was already from the assistant, the worker exits early. Prevents duplicate bot responses.
 
 ---

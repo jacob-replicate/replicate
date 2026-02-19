@@ -15,6 +15,13 @@ Rails.application.routes.draw do
 
   post "/webhooks/postmark", to: "postmark_webhooks#create"
 
+  # API routes
+  namespace :api do
+    resources :conversations, only: [:index, :show, :update] do
+      resources :messages, only: [:create]
+    end
+  end
+
   get "/terms", to: "static#terms"
   get "/privacy", to: "static#privacy"
   get "/billing", to: "static#billing"
@@ -28,7 +35,8 @@ Rails.application.routes.draw do
   get '/growth', to: "static#growth"
 
   # Demo conversation route - renders React app
-  get '/conversations/:uuid', to: "static#index", constraints: { uuid: /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i }
+  # Supports both UUIDs and slug-style IDs (for demo data)
+  get '/conversations/:uuid', to: "static#index", constraints: { uuid: /[a-z0-9-]+/i }
 
   resources :conversations, only: [:show, :update]
   get '/conversations/:id/destroy', to: "conversations#destroy"

@@ -1,36 +1,39 @@
 import React, { useState, useRef, useEffect } from 'react'
+import { useConversationContext } from './ConversationContext'
 
 /**
  * ChannelItem - Renders a single channel or DM in the sidebar
  */
 const ChannelItem = ({ item, isActive, onSelect }) => {
   const hasUnread = item.unreadCount > 0 && !isActive
+  // Support both uuid and id for backward compatibility
+  const channelId = item.uuid || item.id
 
   return (
     <button
-      onClick={() => onSelect(item.id)}
-      className={`w-full text-left px-3 py-1.5 flex items-center gap-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 ${
+      onClick={() => onSelect(channelId)}
+      className={`w-full text-left px-4 py-2 flex items-center gap-2.5 ${
         isActive
-          ? 'bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 font-medium'
+          ? 'bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400'
           : item.isMuted
             ? 'text-zinc-400 dark:text-zinc-600'
-            : 'text-zinc-500 dark:text-zinc-400'
+            : 'text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-zinc-100'
       }`}
     >
       {/* Lock icon for private channels */}
       {item.isPrivate && (
-        <svg className="w-3 h-3 flex-shrink-0 text-zinc-400 dark:text-zinc-600" fill="currentColor" viewBox="0 0 16 16">
+        <svg className="w-3 h-3 flex-shrink-0 opacity-50" fill="currentColor" viewBox="0 0 16 16">
           <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/>
         </svg>
       )}
 
-      <span className={`truncate ${item.isMuted ? 'italic' : ''}`}>
+      <span className={`truncate tracking-tight ${isActive ? 'font-medium' : ''}`}>
         {item.prefix}{item.name}
       </span>
 
-      {/* Unread count */}
+      {/* Unread indicator - subtle colored count */}
       {hasUnread && !item.isMuted && (
-        <span className="ml-auto text-xs bg-zinc-900 dark:bg-zinc-100 text-zinc-100 dark:text-zinc-900 px-1.5 py-0.5 rounded-full font-medium min-w-[20px] text-center">
+        <span className="ml-auto tabular-nums text-[11px] tracking-tight text-indigo-500 dark:text-indigo-400 font-medium">
           {item.unreadCount}
         </span>
       )}
@@ -43,6 +46,7 @@ const ChannelItem = ({ item, isActive, onSelect }) => {
  */
 const ChannelSection = ({ section, channels, activeChannelId, onSelect }) => {
   // Filter channels for this section and sort muted to bottom
+  // Support both uuid and id in filter functions
   const sectionChannels = channels
     .filter(c => section.filter(c))
     .sort((a, b) => (a.isMuted ? 1 : 0) - (b.isMuted ? 1 : 0))
@@ -50,12 +54,12 @@ const ChannelSection = ({ section, channels, activeChannelId, onSelect }) => {
   if (sectionChannels.length === 0) return null
 
   return (
-    <div className={section.id !== 'incidents' ? 'mt-4' : ''}>
-      <div className="px-3 py-1 text-zinc-400 dark:text-zinc-500 text-[11px] uppercase tracking-widest font-medium flex items-center justify-between">
+    <div className={section.id !== 'incidents' ? 'mt-6' : ''}>
+      <div className="px-4 py-1.5 text-zinc-400 dark:text-zinc-500 text-[10px] uppercase tracking-[0.15em] font-normal flex items-center justify-between">
         <span>{section.label}</span>
         {section.action && (
           <button
-            className="flex items-center gap-1 text-[10px] font-medium text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors"
+            className="flex items-center gap-1 text-[10px] text-indigo-500 dark:text-indigo-400 hover:text-indigo-600 dark:hover:text-indigo-300 transition-colors"
             onClick={section.action.onClick}
           >
             {SectionIcons[section.action.icon]}
@@ -63,17 +67,21 @@ const ChannelSection = ({ section, channels, activeChannelId, onSelect }) => {
           </button>
         )}
       </div>
-      {sectionChannels.map((channel) => (
-        <ChannelItem
-          key={channel.id}
-          item={{
-            ...channel,
-            prefix: section.prefix ?? '#',
-          }}
-          isActive={activeChannelId === channel.id}
-          onSelect={onSelect}
-        />
-      ))}
+      {sectionChannels.map((channel) => {
+        // Support both uuid and id for active comparison
+        const channelId = channel.uuid || channel.id
+        return (
+          <ChannelItem
+            key={channelId}
+            item={{
+              ...channel,
+              prefix: section.prefix ?? '#',
+            }}
+            isActive={activeChannelId === channelId}
+            onSelect={onSelect}
+          />
+        )
+      })}
     </div>
   )
 }
@@ -83,7 +91,7 @@ const ChannelSection = ({ section, channels, activeChannelId, onSelect }) => {
  */
 const ChannelList = ({ sections, channels, activeChannelId, onSelect }) => {
   return (
-    <div className="flex-1 overflow-y-auto py-2">
+    <div className="flex-1 overflow-y-auto py-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
       {sections.map((section) => (
         <ChannelSection
           key={section.id}
@@ -124,13 +132,22 @@ const ChannelSwitcher = ({
   onChannelSelect,
   children,
 }) => {
-  const [isDark, setIsDark] = useState(() => {
+  // Try to use context for dark mode, fallback to local state for standalone usage
+  let contextValue = null
+  try {
+    contextValue = useConversationContext()
+  } catch (e) {
+    // Context not available, will use local state
+  }
+
+  // Dark mode - prefer context, fallback to local state
+  const [localIsDark, setLocalIsDark] = useState(() => {
     return document.documentElement.classList.contains('dark')
   })
+  const isDark = contextValue?.isDarkMode ?? localIsDark
+  const setIsDark = contextValue?.setIsDarkMode ?? setLocalIsDark
+
   const [sidebarOpen, setSidebarOpen] = useState(false)
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(() => {
-    return localStorage.getItem('sidebar-collapsed') === 'true'
-  })
   const [bannerDismissed, setBannerDismissed] = useState(() => {
     return localStorage.getItem('training-banner-dismissed') === 'true'
   })
@@ -138,6 +155,7 @@ const ChannelSwitcher = ({
   const toggleDarkMode = () => {
     const newDark = !isDark
     setIsDark(newDark)
+    // Always sync to DOM and localStorage
     if (newDark) {
       document.documentElement.classList.add('dark')
       localStorage.setItem('theme', 'dark')
@@ -169,65 +187,28 @@ const ChannelSwitcher = ({
         md:translate-x-0
         fixed md:relative
         z-50 md:z-auto
-        ${sidebarCollapsed ? 'md:w-12' : 'w-64'} 
+        w-64
         flex-shrink-0 
         bg-zinc-50 dark:bg-zinc-900 
         border-r border-zinc-200 dark:border-zinc-800 
         flex flex-col
         h-full
-        transition-all duration-200 ease-in-out
+        transition-transform duration-200 ease-in-out
       `}>
-        {!sidebarCollapsed ? (
-          <>
-            {/* Sidebar header with collapse button */}
-            <div className="hidden md:flex items-center justify-end px-2 py-2 border-b border-zinc-200 dark:border-zinc-800">
-              <button
-                onClick={() => {
-                  setSidebarCollapsed(true)
-                  localStorage.setItem('sidebar-collapsed', 'true')
-                }}
-                className="p-1 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors"
-                title="Collapse sidebar"
-              >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M11 19l-7-7 7-7M18 19l-7-7 7-7" />
-                </svg>
-              </button>
-            </div>
-
-            <ChannelList
+        <ChannelList
               sections={sections}
               channels={channels}
               activeChannelId={activeChannelId}
               onSelect={handleChannelSelect}
             />
 
-            {/* Footer with links */}
-            <div className="border-t border-zinc-200 dark:border-zinc-800">
-              <div className="px-3 py-2 flex flex-wrap gap-x-3 gap-y-1 text-[11px]">
-                <a href="/privacy" className="text-blue-600 hover:text-blue-800 dark:text-indigo-400 dark:hover:text-indigo-300 transition-colors">Privacy</a>
-                <a href="/terms" className="text-blue-600 hover:text-blue-800 dark:text-indigo-400 dark:hover:text-indigo-300 transition-colors">Terms</a>
-                <a href="/security" className="text-blue-600 hover:text-blue-800 dark:text-indigo-400 dark:hover:text-indigo-300 transition-colors">Security</a>
-              </div>
-            </div>
-          </>
-        ) : (
-          /* Collapsed state - just show expand button */
-          <div className="hidden md:flex flex-col items-center py-2">
-            <button
-              onClick={() => {
-                setSidebarCollapsed(false)
-                localStorage.setItem('sidebar-collapsed', 'false')
-              }}
-              className="p-2 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors"
-              title="Expand sidebar"
-            >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 5l7 7-7 7M6 5l7 7-7 7" />
-              </svg>
-            </button>
-          </div>
-        )}
+        {/* Footer links */}
+        <div className="flex-shrink-0 border-t border-zinc-200 dark:border-zinc-800 px-4 py-3 flex flex-wrap gap-x-4 gap-y-1 text-[11px] tracking-tight">
+          <a href="/about" className="text-indigo-500 dark:text-indigo-400 hover:text-indigo-600 dark:hover:text-indigo-300 transition-colors">About</a>
+          <a href="/privacy" className="text-indigo-500 dark:text-indigo-400 hover:text-indigo-600 dark:hover:text-indigo-300 transition-colors">Privacy</a>
+          <a href="/terms" className="text-indigo-500 dark:text-indigo-400 hover:text-indigo-600 dark:hover:text-indigo-300 transition-colors">Terms</a>
+          <a href="/security" className="text-indigo-500 dark:text-indigo-400 hover:text-indigo-600 dark:hover:text-indigo-300 transition-colors">Security</a>
+        </div>
       </div>
 
       {/* Main content area */}
@@ -259,12 +240,12 @@ const ChannelSwitcher = ({
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
             </svg>
           </button>
-          <span className="text-zinc-500 text-xs">#{channels.find(c => c.id === activeChannelId)?.name || 'channel'}</span>
+          <span className="text-zinc-500 text-xs">#{channels.find(c => (c.uuid || c.id) === activeChannelId)?.name || 'channel'}</span>
         </div>
         {/* Desktop channel header */}
         <div className="hidden md:flex flex-shrink-0 items-center justify-between px-4 py-2 border-b border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950">
           <div className="flex items-center gap-2">
-            <span className="font-semibold text-zinc-900 dark:text-zinc-100 text-[15px]">#{channels.find(c => c.id === activeChannelId)?.name || 'channel'}</span>
+            <span className="font-semibold text-zinc-900 dark:text-zinc-100 text-[15px]">#{channels.find(c => (c.uuid || c.id) === activeChannelId)?.name || 'channel'}</span>
           </div>
           <div className="flex items-center">
             {/* Segmented dark mode toggle */}

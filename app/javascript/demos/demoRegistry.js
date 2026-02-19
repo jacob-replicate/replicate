@@ -6,7 +6,7 @@ import { INCIDENT_MESSAGES } from './dnsIncidentDemo'
 import { REDIS_INCIDENT_MESSAGES } from './redisOomDemo'
 
 export const DEMO_REGISTRY = {
-  'inc-3815-db-locks': {
+  'inc-4521-cart-500s': {
     messages: INCIDENT_MESSAGES,
   },
   'inc-3824-redis-oom': {
@@ -60,7 +60,7 @@ export const loadDemo = (channelId) => {
  * Initialize the conversation demo
  */
 export const initConversation = () => {
-  const defaultChannel = 'inc-3815-db-locks'
+  const defaultChannel = 'inc-4521-cart-500s'
 
   const waitForReady = () => {
     if (window.ReplicateConversation?.navigate) {
