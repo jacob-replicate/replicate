@@ -46,13 +46,17 @@ const generateTimestamps = () => {
 const timestamps = generateTimestamps()
 
 const INCIDENT_MESSAGES = [
-  // Message 1: PagerDuty alert with OncallAlert component
+  // Message 1: Maya shares the alert
   {
     id: 'msg_1',
     sequence: 1,
-    author: { name: 'ops-prod-alerts', avatar: '/logo.png' },
+    author: { name: 'maya', avatar: '/profile-photo-3.jpg', status: { emoji: '🌴', text: 'OOO - back Monday' } },
     created_at: timestamps[0],
     components: [
+      {
+        type: 'text',
+        content: 'just got paged — connection pool is spiking',
+      },
       {
         type: 'monitor',
         title: 'PostgreSQL Connection Pool',
@@ -67,16 +71,16 @@ const INCIDENT_MESSAGES = [
       { emoji: '👀', count: 7 }
     ]
   },
-  // Message 2: Maya takes IC with Monitor component
+  // Message 2: Maya takes IC
   {
     id: 'msg_2',
     sequence: 2,
-    author: { name: 'maya', avatar: '/profile-photo-3.jpg', status: { emoji: '🌴', text: 'OOO - back Monday' } },
+    author: { name: 'maya', avatar: '/profile-photo-3.jpg' },
     created_at: timestamps[1],
     components: [
       {
         type: 'text',
-        content: 'taking IC. @daniel can you pull up the connection metrics? seeing max_connections=50 but we should have headroom',
+        content: 'taking IC. @daniel can you pull up the connection metrics? seeing `max_connections=50` but we should have headroom',
       },
     ]
   },

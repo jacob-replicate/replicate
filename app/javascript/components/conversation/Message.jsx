@@ -1,9 +1,9 @@
-import React, { useRef, useEffect, useMemo } from 'react'
+import React, { useRef, useEffect, useMemo, useState } from 'react'
 
 
 // Inline code span
 const Code = ({ children }) => (
-  <span className="font-mono bg-zinc-100 dark:bg-zinc-800 px-1 rounded text-[13px]">
+  <span className="font-mono bg-zinc-100 dark:bg-zinc-800 px-1 rounded text-[13px] text-pink-600 dark:text-pink-400">
     {children}
   </span>
 )
@@ -15,14 +15,61 @@ const Mention = ({ children }) => (
   </span>
 )
 
+/**
+ * Parse text content and convert @mentions and `inline code` to components
+ * Returns an array of strings and React elements
+ */
+const parseTextContent = (text) => {
+  if (!text) return null
+
+  // Pattern matches @mentions and `inline code`
+  // @mention: @ followed by word characters (letters, numbers, underscores)
+  // inline code: text between backticks
+  const pattern = /(@\w+)|(`[^`]+`)/g
+
+  const parts = []
+  let lastIndex = 0
+  let match
+
+  while ((match = pattern.exec(text)) !== null) {
+    // Add text before the match
+    if (match.index > lastIndex) {
+      parts.push(text.slice(lastIndex, match.index))
+    }
+
+    if (match[1]) {
+      // @mention
+      parts.push(<Mention key={match.index}>{match[1]}</Mention>)
+    } else if (match[2]) {
+      // `inline code` - remove the backticks
+      const code = match[2].slice(1, -1)
+      parts.push(<Code key={match.index}>{code}</Code>)
+    }
+
+    lastIndex = pattern.lastIndex
+  }
+
+  // Add remaining text after last match
+  if (lastIndex < text.length) {
+    parts.push(text.slice(lastIndex))
+  }
+
+  return parts.length > 0 ? parts : text
+}
+
 // Emoji reaction pill - clickable with hover effects
-const EmojiReaction = ({ emoji, count, onClick }) => (
+// isSelected shows a highlighted state when user has reacted
+const EmojiReaction = ({ emoji, count, onClick, isSelected }) => (
   <button
     onClick={onClick}
-    className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-xs hover:bg-zinc-200 dark:hover:bg-zinc-700 hover:border-zinc-300 dark:hover:border-zinc-600 active:scale-95 transition-all cursor-pointer"
+    className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-xs active:scale-95 transition-all cursor-pointer ${
+      isSelected
+        ? 'bg-indigo-100 dark:bg-indigo-900/50 border border-indigo-300 dark:border-indigo-700 hover:bg-indigo-200 dark:hover:bg-indigo-800/50'
+        : 'bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 hover:bg-zinc-200 dark:hover:bg-zinc-700 hover:border-zinc-300 dark:hover:border-zinc-600'
+    }`}
   >
     <span>{emoji}</span>
-    <span className="text-zinc-600 dark:text-zinc-400">{count}</span>
+    <span className={isSelected ? 'text-indigo-600 dark:text-indigo-400' : 'text-zinc-600 dark:text-zinc-400'}>{count}</span>
   </button>
 )
 
@@ -224,7 +271,7 @@ const OncallAlert = ({ severity = 'SEV-1', service, alert, error, affected, comm
 }
 
 // Monitor component (Datadog-style metric chart)
-const Monitor = ({ title, metric, value, threshold, status = 'warning' }) => {
+const Monitor = ({ title, metric, value, threshold, status = 'warning', highlights = [] }) => {
   const [dataPoints] = React.useState(() => {
     const initial = []
     for (let i = 0; i < 20; i++) {
@@ -236,60 +283,91 @@ const Monitor = ({ title, metric, value, threshold, status = 'warning' }) => {
     return initial
   })
 
-  const toY = (pct) => 40 - (pct / 100) * 40
+  const chartHeight = 44
+  const toY = (pct) => chartHeight - (pct / 100) * chartHeight
   const points = dataPoints.map((val, i) => `${(i / 19) * 200},${toY(val)}`).join(' L')
   const linePath = `M${points}`
-  const areaPath = `${linePath} L200,40 L0,40 Z`
-  const lastY = toY(dataPoints[dataPoints.length - 1])
+  const areaPath = `${linePath} L200,${chartHeight} L0,${chartHeight} Z`
+  const thresholdY = toY(threshold)
 
-  const colors = status === 'critical'
-    ? { bg: '#fef2f2', border: 'border-red-400', text: 'text-red-700', badge: 'bg-red-600', stroke: '#ef4444', fill: '#fee2e2' }
-    : { bg: '#fffbeb', border: 'border-amber-300', text: 'text-amber-700', badge: 'bg-zinc-600', stroke: '#f59e0b', fill: '#fef3c7' }
+  // Neutral colors - severity comes from vertical highlights only
+  const badgeColors = status === 'critical'
+    ? 'bg-red-600'
+    : 'bg-amber-500'
 
   const gradientId = `monitor-grad-${title?.replace(/\s/g, '-') || 'default'}`
 
+  // Default highlights based on status - transition from warning (orange) to critical (red)
+  const defaultHighlights = status === 'critical'
+    ? [
+        { start: 0.5, end: 0.75, color: 'rgba(251, 191, 36, 0.12)' },  // warning zone (amber)
+        { start: 0.75, end: 1, color: 'rgba(220, 38, 38, 0.15)' }      // critical zone (red)
+      ]
+    : [
+        { start: 0.7, end: 1, color: 'rgba(251, 191, 36, 0.12)' }      // warning zone only
+      ]
+  const activeHighlights = highlights.length > 0 ? highlights : defaultHighlights
+
+  // Grid lines at 0%, 50%, 100%
+  const gridLines = [0, 50, 100]
+
   return (
-    <div className={`rounded-lg overflow-hidden border-2 ${colors.border} mt-2`} style={{ backgroundColor: colors.bg }}>
-      <div className="px-4 pt-3 pb-2 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <svg className={`w-4 h-4 ${colors.text}`} viewBox="0 0 24 24" fill="currentColor">
-            <rect x="3" y="4" width="18" height="4" rx="1" opacity="0.5" />
-            <rect x="3" y="10" width="18" height="4" rx="1" opacity="0.7" />
-            <rect x="3" y="16" width="18" height="4" rx="1" />
-          </svg>
-          <span className={`${colors.text} font-medium text-sm`}>Monitor Alert</span>
+    <div className="rounded-lg overflow-hidden border border-zinc-200 dark:border-zinc-700 shadow-sm mt-2 bg-white dark:bg-zinc-900">
+      <div className="px-3 pt-2.5 pb-1">
+        <div className="flex items-center justify-between">
+          <h3 className="text-zinc-900 dark:text-zinc-100 text-[15px] font-semibold leading-tight">{title}</h3>
+          <span className={`px-2 py-0.5 rounded text-[11px] font-semibold ${badgeColors} text-white`}>
+            {status === 'critical' ? 'Critical' : 'Warning'}
+          </span>
         </div>
-        <span className={`px-2 py-1 rounded text-xs font-semibold ${colors.badge} text-white`}>
-          {status === 'critical' ? 'Critical' : 'Warning'}
-        </span>
-      </div>
-      <div className="px-4 pb-1">
-        <h3 className="text-zinc-900 text-base font-semibold">{title}</h3>
-        <div className={`flex items-center gap-2 ${colors.text} text-sm`}>
-          <span>{metric}</span>
-          <span className="opacity-50">•</span>
-          <span>{value}% used</span>
+        <div className="flex items-center gap-1.5 text-[13px]">
+          <span className="text-zinc-500 dark:text-zinc-400">{metric}</span>
+          <span className="text-zinc-300 dark:text-zinc-600">•</span>
+          <span className="font-mono font-medium text-zinc-700 dark:text-zinc-300">{value}%</span>
+          <span className="text-zinc-500 dark:text-zinc-400">used</span>
         </div>
       </div>
-      <div className="px-4 pb-3 pt-1">
-        <div className="flex justify-end mb-1">
-          <span className="text-[10px] text-red-400 font-medium">{threshold}%</span>
-        </div>
+      <div className="px-3 pb-2.5 pt-1">
         <div className="relative">
-          <div className="absolute w-full border-t-2 border-dashed border-red-400/60" style={{ top: `${(1 - threshold/100) * 48}px` }} />
-          <svg viewBox="0 0 200 40" className="w-full h-10" preserveAspectRatio="none">
+          <svg viewBox={`0 0 200 ${chartHeight}`} className="w-full h-11" preserveAspectRatio="none">
             <defs>
               <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor={colors.stroke} stopOpacity="0.4" />
-                <stop offset="100%" stopColor={colors.stroke} stopOpacity="0.1" />
+                <stop offset="0%" stopColor="#71717a" stopOpacity="0.1" />
+                <stop offset="100%" stopColor="#71717a" stopOpacity="0" />
               </linearGradient>
             </defs>
+            {/* Time range highlights - this is where severity is shown */}
+            {activeHighlights.map((h, i) => (
+              <rect
+                key={i}
+                x={h.start * 200}
+                y={0}
+                width={(h.end - h.start) * 200}
+                height={chartHeight}
+                fill={h.color || 'rgba(251, 191, 36, 0.1)'}
+              />
+            ))}
+            {/* Grid lines at 0%, 50%, 100% - 50% is dashed */}
+            {gridLines.map((pct) => (
+              <line
+                key={pct}
+                x1="0"
+                y1={toY(pct)}
+                x2="200"
+                y2={toY(pct)}
+                stroke="#d4d4d8"
+                strokeWidth="1"
+                strokeDasharray={pct === 50 ? "2,2" : "none"}
+                opacity="0.5"
+              />
+            ))}
+            {/* Area fill - neutral grey */}
             <path d={areaPath} fill={`url(#${gradientId})`} />
-            <path d={linePath} fill="none" stroke={colors.stroke} strokeWidth="2" strokeLinecap="round" />
-            <circle cx="200" cy={lastY} r="3" fill={colors.stroke}>
-              <animate attributeName="r" values="3;5;3" dur="1s" repeatCount="indefinite" />
-            </circle>
+            {/* Line - dark grey/black */}
+            <path d={linePath} fill="none" stroke="#3f3f46" strokeWidth="1.5" strokeLinecap="round" />
           </svg>
+          {/* Time label */}
+          <span className="absolute bottom-0 right-0 text-[10px] text-zinc-400 font-medium">15m</span>
         </div>
       </div>
     </div>
@@ -380,6 +458,34 @@ export const Message = ({ message, onSelect, threadReplies }) => {
   // Legacy support for old structure
   const { content, type, metadata, timestamp, edited } = message
   const { name, avatar, status } = author || {}
+
+  // Track which reactions the user has selected (by emoji)
+  const [selectedReactions, setSelectedReactions] = useState(new Set())
+  // Track count adjustments for user clicks (emoji -> adjustment amount)
+  const [reactionAdjustments, setReactionAdjustments] = useState({})
+
+  // Handle reaction click - toggle selected and adjust count
+  const handleReactionClick = (emoji) => {
+    setSelectedReactions(prev => {
+      const newSet = new Set(prev)
+      if (newSet.has(emoji)) {
+        newSet.delete(emoji)
+      } else {
+        newSet.add(emoji)
+      }
+      return newSet
+    })
+    setReactionAdjustments(prev => {
+      const currentAdj = prev[emoji] || 0
+      const isCurrentlySelected = selectedReactions.has(emoji)
+      // If currently selected, we're unselecting so decrement
+      // If not selected, we're selecting so increment
+      return {
+        ...prev,
+        [emoji]: isCurrentlySelected ? currentAdj - 1 : currentAdj + 1
+      }
+    })
+  }
 
   // Derive edited status from updated_at (or use legacy edited field)
   const isEdited = edited || (updated_at && updated_at !== created_at)
@@ -487,7 +593,7 @@ export const Message = ({ message, onSelect, threadReplies }) => {
       default:
         return (
           <div key={index} className="text-[#1d1c1d] dark:text-zinc-200 text-[15px] whitespace-pre-wrap">
-            {component.content}
+            {parseTextContent(component.content)}
           </div>
         )
     }
@@ -599,7 +705,13 @@ export const Message = ({ message, onSelect, threadReplies }) => {
         {(reactions || metadata?.reactions) && (
           <div className="mt-2 flex gap-1">
             {(reactions || metadata?.reactions).map((r, i) => (
-              <EmojiReaction key={i} emoji={r.emoji} count={r.count} />
+              <EmojiReaction
+                key={i}
+                emoji={r.emoji}
+                count={r.count + (reactionAdjustments[r.emoji] || 0)}
+                onClick={() => handleReactionClick(r.emoji)}
+                isSelected={selectedReactions.has(r.emoji)}
+              />
             ))}
           </div>
         )}

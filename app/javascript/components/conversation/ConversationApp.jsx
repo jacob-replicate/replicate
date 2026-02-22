@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route, useParams, useNavigate } from 'react-rout
 import Conversation from './Conversation'
 import BackgroundNotification from './BackgroundNotification'
 import ChannelSwitcher from './ChannelSwitcher'
+import { ConversationProvider, useConversationContext } from './ConversationContext'
 import useConversation from '../../hooks/useConversation'
 import {
   orchestrateDemoResponse,
@@ -321,6 +322,7 @@ const ConversationView = ({ apiRef }) => {
       channelName={channelName}
       variant="irc"
       className=""
+      conversationId={uuid}
     />
   )
 }
@@ -332,9 +334,11 @@ const ConversationApp = () => {
   const apiRef = useRef(null)
 
   return (
-    <BrowserRouter>
-      <ConversationAppInner apiRef={apiRef} />
-    </BrowserRouter>
+    <ConversationProvider initialConversations={DEMO_CHANNELS}>
+      <BrowserRouter>
+        <ConversationAppInner apiRef={apiRef} />
+      </BrowserRouter>
+    </ConversationProvider>
   )
 }
 

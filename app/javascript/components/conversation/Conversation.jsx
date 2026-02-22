@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef, useCallback } from 'react'
 import MessageList from './MessageList'
 import MessageInput from './MessageInput'
 
@@ -27,8 +27,18 @@ export const Conversation = ({
   variant = 'macos',
   topic = null,
   userCount = null,
+  conversationId = null, // Used for scroll behavior on channel switch
 }) => {
   const [isFullscreen, setIsFullscreen] = useState(false)
+  const messageListRef = useRef(null)
+
+  // Wrap onSend to also trigger scroll-to-bottom
+  const handleSend = useCallback((message) => {
+    // Trigger scroll to bottom and lock autoscroll mode
+    messageListRef.current?.scrollToBottom()
+    // Call the original onSend
+    onSend?.(message)
+  }, [onSend])
 
   const baseClasses = 'flex flex-col bg-white dark:bg-zinc-900 overflow-hidden shadow-sm border border-zinc-300 dark:border-zinc-600'
   const fullscreenClasses = isFullscreen
@@ -42,14 +52,16 @@ export const Conversation = ({
 
         {/* Messages area */}
         <MessageList
+          ref={messageListRef}
           messages={messages}
           isTyping={isTyping}
           onSelect={onSelect}
+          conversationId={conversationId}
         />
 
         {/* Input area */}
         <MessageInput
-          onSend={onSend}
+          onSend={handleSend}
           placeholder={placeholder}
           disabled={inputDisabled}
         />
@@ -78,14 +90,16 @@ export const Conversation = ({
 
       {/* Messages area */}
       <MessageList
+        ref={messageListRef}
         messages={messages}
         isTyping={isTyping}
         onSelect={onSelect}
+        conversationId={conversationId}
       />
 
       {/* Input area */}
       <MessageInput
-        onSend={onSend}
+        onSend={handleSend}
         placeholder={placeholder}
         topics={topics}
         currentTopic={currentTopic}

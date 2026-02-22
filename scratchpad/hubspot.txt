@@ -1,0 +1,328 @@
+- You don't have a control plane, you just have a suggestion.
+
+- Workspace Transfer = "Moving a DEAL PIPELINE from one PORTAL to the other" (but also on-prem, where you get 2 major releases per year to patch things up)
+
+
+- If a Super Admin were compromised, what’s the maximum authority that could realistically accumulate before containment collapses it?
+
+
+So let's say a compromised Super Admin installs a private app, exfiltrates CRM data, and triggers a bunch of workflows that mutate state...
+what part of incident response is gonna be... harder than it perhaps should be?
+
+What
+
+When it comes to LLMs, I'm curious how your team thinking about emergent authority
+For example, AI drafts a Workflow... that bulk updates 300 Deals... and triggers customer emails... along with downstream automation
+Orchestrating operations that are usually fine in isolation, but become scary when you wake up, and all of your
+
+- When an AI agent takes action in HubSpot, do you treat it as a first-class principal with its own identity, audit trail, RBAC configurations, etc...
+    - Is it always tied back to an individual user or service account?
+    - How are you thinking about the provisioning of access for agents? Is it different?
+
+- If a RevOps user can create Workflows and modify Deal stages, and AI starts drafting multi-step automations on their behalf,
+    - how do you think about preventing those compositions from accidentally amplifying authority beyond what anyone originally intended?”
+
+
+- Biggest fears?
+    - The AI becomes a high-privilege actor with unclear delegation semantics.
+        - When AI edits a Deal, whose authority is it using?
+
+
+
+Hobbies
+- Climbing
+- Cooking
+
+
+
+# Centralized IAM: Authorization Control Plane Design
+
+## Executive Summary
+
+Centralized IAM is not about owning every permission decision.
+
+It is about owning:
+
+- The **trust model**
+- The **authorization control plane**
+- The **decision authority**
+- The **invariants that cannot be bypassed**
+- The **audit and governance surface**
+
+We centralize semantics and enforcement guarantees.
+We federate policy authorship within strict guardrails.
+
+The goal is structural, non-optional authorization enforcement that scales across product teams without becoming a bottleneck.
+
+---
+
+# Core Principles
+
+## 1. Logical Centralization, Not a “God Server”
+
+Centralization does not mean one physical server.
+
+It means:
+
+- One policy language
+- One decision model
+- One evaluation contract
+- One audit stream
+- One set of invariants
+
+Physically, the PDP may be:
+
+- Multi-region
+- Horizontally scaled
+- Deployed per AZ
+- Embedded locally (e.g., OPA sidecar)
+- Exposed as a centralized service
+
+What cannot fragment is the **semantic model**.
+
+---
+
+## 2. Authorization as Infrastructure, Not App Code
+
+Authorization is enforced in the **request path**, not via optional application-level `authorize()` calls.
+
+Request flow:
+
+1. Client → Service (via Kubernetes networking / mTLS where applicable)
+2. Envoy (sidecar) intercepts request
+3. Envoy performs coarse token validation and optional scope pre-check
+4. Envoy calls PDP (e.g., OPA via ext_authz)
+5. PDP returns deterministic allow/deny decision
+6. Envoy enforces decision
+7. Authorized requests reach application containers
+
+If enforcement is not present, the service does not receive traffic.
+
+Authorization is structural, not discretionary.
+
+---
+
+## 3. PDP / PEP Separation
+
+- **PDP (Policy Decision Point)** evaluates policy.
+- **PEP (Policy Enforcement Point)** enforces the decision.
+
+Envoy acts as the PEP.
+OPA (or equivalent) acts as the PDP.
+
+The app does not evaluate policy.
+It receives only authorized traffic.
+
+---
+
+## 4. The PARC Envelope Model
+
+Every authorization decision is based on a structured input:
+
+- **Principal** – Derived from OIDC JWT (subject, tenant, roles, claims)
+- **Action** – Derived from HTTP method + normalized route (or explicit action mapping)
+- **Resource** – Derived from route template and resource identifiers
+- **Context** – Headers and request metadata (IP class, client type, device signals, etc.)
+
+We avoid mid-request introspection calls wherever possible.
+Authorization inputs should be available up front.
+
+Decisions should be:
+
+- Deterministic
+- Auditable
+- Replayable
+- Versioned
+
+---
+
+# Scopes: Coarse Capability Constraints
+
+OAuth scopes are treated as:
+
+- Coarse-grained capability boundaries
+- Token-level least-privilege constraints
+- Consent/delegation signals
+
+Scopes are not:
+
+- A full authorization model
+- A replacement for policy evaluation
+- A multi-tenant isolation mechanism
+
+Enforcement model:
+
+- Envoy may fast-fail if required scope is absent.
+- PDP evaluates scopes as an input constraint.
+- Fine-grained decisions still occur in policy logic.
+
+We centralize:
+
+- Scope grammar and naming conventions
+- Issuance constraints
+- Least-privilege guardrails
+
+We do not centralize every product-specific scope.
+
+---
+
+# Policy Authorship Model
+
+We centralize:
+
+- Policy language
+- Schema
+- Invariants
+- Evaluation semantics
+- Distribution mechanism
+- Audit pipeline
+- CI guardrails
+
+We federate:
+
+- Product-specific policy logic
+- Resource modeling
+- Action definitions
+
+Policy contributions must:
+
+- Compile against central schema
+- Pass invariant checks
+- Be versioned and traceable
+- Flow through centralized CI validation
+
+Central IAM defines the box.
+Product teams operate within it.
+
+---
+
+# Invariants
+
+Certain policies cannot be bypassed:
+
+- Tenant isolation
+- Cross-tenant access constraints
+- Privileged access controls
+- Global compliance constraints
+- Critical Tier-0 protections
+
+These invariants:
+
+- Live in centrally owned policy modules
+- Cannot be overridden by product policy
+- Are enforced for every decision
+
+---
+
+# Audit & Observability
+
+Every authorization decision emits:
+
+- Subject
+- Action
+- Resource
+- Context
+- Decision (allow/deny)
+- Policy version/hash
+- Timestamp
+- Service identity
+
+All logs flow to a unified sink (e.g., SIEM).
+
+We must be able to:
+
+- Reconstruct decisions
+- Detect drift
+- Detect bypass attempts
+- Replay historical policy versions
+
+Authorization without auditability is not real.
+
+---
+
+# Enforcement Guarantees
+
+We guarantee enforcement via:
+
+- Sidecar (Envoy) in request path
+- Standardized service bootstrap
+- Kubernetes admission policies
+- Hardened Terraform provisioning flows
+- CI checks preventing unauthenticated route registration
+- Runtime detection of requests lacking decision metadata
+
+If enforcement primitive is absent, traffic does not reach the service.
+
+---
+
+# Failure Modes & Resilience
+
+Authorization is Tier-0 infrastructure.
+
+Default behavior:
+
+- PDP failure → fail closed for sensitive routes
+- Explicit, centrally tracked, time-bound exceptions allowed where necessary
+- Tiered resource classification for availability tradeoffs
+
+We predefine:
+
+- Which routes are public
+- Which require identity
+- Which must always fail closed
+- How degraded modes operate
+- How exceptions are approved and audited
+
+Correctness vs availability is a conscious design decision, not an outage improvisation.
+
+---
+
+# What We Are Not Doing
+
+We are not:
+
+- Centralizing every business rule
+- Becoming a release bottleneck
+- Forcing product teams to wait on IAM PRs
+- Encoding product semantics in infrastructure
+- Building multiple fragmented PDP systems
+- Allowing ad-hoc scope sprawl
+- Trusting developers to “remember to authorize”
+
+---
+
+# Summary
+
+Centralized IAM is an authorization control plane.
+
+We centralize:
+
+- Decision authority
+- Evaluation semantics
+- Invariants
+- Auditability
+- Enforcement guarantees
+
+We federate:
+
+- Product-specific policy logic
+- Scope definitions (within guardrails)
+- Resource modeling
+
+Authorization enforcement is:
+
+- Inline
+- Structural
+- Non-optional
+- Observable
+- Deterministic
+
+The objective is not control for its own sake.
+
+The objective is:
+
+- Reduced blast radius
+- Unified audit surface
+- Regulatory defensibility
+- Developer velocity within safe boundaries
+- Coherent, durable trust architecture

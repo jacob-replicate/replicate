@@ -6,72 +6,61 @@ This document outlines the architecture for the conversation system, including c
 
 ---
 
-## ✅ DONE: Context Created
+## ✅ DONE: Context Created & Wired Up (Feb 22, 2026)
 
-`ConversationContext.jsx` has been created at:
+`ConversationContext.jsx` exists at:
 ```
 app/javascript/components/conversation/ConversationContext.jsx
 ```
 
-It implements the full context shape below with:
-- `ConversationProvider` component
-- `useConversationContext()` hook
-- `useConversationByUuid(uuid)` helper hook
-- localStorage persistence for UI preferences
-- All API methods (fetch, send, markAsRead)
-- Local mutation methods for demos (addMessageLocally, updateMessageLocally, setConversationsDirect)
-
----
-
-## ✅ DONE: Wired Up
-
-### ✅ 1. Wrap ConversationApp with Provider
+**ConversationApp.jsx** now wraps with provider:
 ```jsx
-// ConversationApp.jsx - DONE
 <ConversationProvider initialConversations={DEMO_CHANNELS}>
-  <BrowserRouter>...</BrowserRouter>
+  <BrowserRouter>
+    <ConversationAppInner apiRef={apiRef} />
+  </BrowserRouter>
 </ConversationProvider>
 ```
 
-### ✅ 2. Update ChannelSwitcher
-- Now supports both `uuid` and `id` fields for backward compatibility
-- Header displays use `(c.uuid || c.id)` for lookups
-
-### 🔲 3. Update ChannelSwitcher → Use Context Directly (Optional)
-- Currently still receives props from ConversationAppInner
-- Could import `useConversationContext()` directly to eliminate prop drilling
-- Low priority - works fine with current approach
-
-### ✅ 4. Convert DEMO_CHANNELS to new shape
-- Added `uuid` field to each channel (using id value for demo)
-- Updated comments to document context shape
-
-### ✅ 5. Export from index.js
-```js
-export { ConversationProvider, useConversationContext, useConversationByUuid } from './ConversationContext'
+**Imports added:**
+```jsx
+import { ConversationProvider, useConversationContext } from './ConversationContext'
 ```
 
 ---
 
-## 🔲 TODO: Next Steps
+## 🔲 TODO: Wire Up Remaining Features
 
-### ✅ 1. Use context for dark mode / sidebar collapsed
-- ChannelSwitcher now gets `isDarkMode` / `setIsDarkMode` from context
-- Falls back to local state when context unavailable (standalone usage)
-- Context syncs to DOM and localStorage
+### 1. Connect Context to ChannelSwitcher (optional)
+- Currently receives `channels` as prop from `ConversationAppInner`
+- Could use `useConversationContext()` directly to eliminate prop drilling
+- Low priority - already works
 
 ### 2. Build Rails API endpoints
-- `Api::ConversationsController` with index, show, update
-- `Api::MessagesController` with create
-- Connect frontend to real API instead of demo data
+- `Api::ConversationsController` - index, show, update
+- `Api::MessagesController` - create
+- Routes already exist in `routes.rb`:
+  ```ruby
+  namespace :api do
+    resources :conversations, only: [:index, :show, :update] do
+      resources :messages, only: [:create]
+    end
+  end
+  ```
 
-### 3. Add ActionCable subscription
-- Subscribe to `OwnerChannel` in ConversationProvider
-- Handle `new_message`, `unread_update`, `new_conversation` events
+### 3. Connect frontend to real API
+- Replace demo data with API calls in `ConversationContext`
+- `fetchConversations()` → `GET /api/conversations`
+- `fetchConversation(uuid)` → `GET /api/conversations/:uuid`
+- `sendMessage(uuid, body)` → `POST /api/conversations/:uuid/messages`
+
+### 4. Add ActionCable subscription
+- Subscribe to `OwnerChannel` in `ConversationProvider`
+- Handle events: `new_message`, `unread_update`, `new_conversation`
 
 ---
 
-## Context Shape
+## Context Shape Reference
 
 All shared state lives in a single `ConversationContext`:
 
@@ -721,81 +710,101 @@ broadcast_to_session(session_id, {
 
 ---
 
-## ConversationDriverWorker (Bot Responses)
+## WebSocket Scaling Notes
 
-The `ConversationDriverWorker` is the Sidekiq worker that generates bot/AI responses in conversations.
+### ActionCable Limitations
 
-### When It Runs
+ActionCable works well for smaller scale but has limits:
 
-1. **User sends a message** - `Message.after_create` triggers the worker if `user_generated: true`
-2. **User opens empty conversation** - `OwnerChannel.subscribed` can trigger it for a fresh conversation
+- Each Rails server holds WebSocket connections in memory
+- Requires Redis pub/sub to coordinate across multiple servers
+- You're still managing/scaling the servers yourself
+- Typically maxes out around 10-20k concurrent connections per server
 
-### Flow
+### AWS API Gateway WebSocket APIs
 
+When you outgrow ActionCable, **AWS API Gateway WebSocket APIs** is a managed pub/sub replacement:
+
+- AWS manages all the connections (millions possible)
+- You just write Lambda functions for `$connect`, `$disconnect`, and `$default` (message) routes
+- Store connection IDs in DynamoDB
+- To broadcast: query DynamoDB for connection IDs, call `postToConnection` API for each
+- Pay per message (~$1 per million messages) + connection minutes
+
+**Basic architecture:**
 ```
-User sends message
-  → Message.create!(user_generated: true)
-  → after_create callback
-  → ConversationDriverWorker.perform_async(conversation_id, min_sequence)
-  → Worker picks up job
-  → MessageGenerators::Incident (or variant).deliver
-  → Generator creates messages + broadcasts via ActionCable
-  → Frontend receives via OwnerChannel → handleNewMessage
-```
-
-### MessageGenerators
-
-Each conversation has a `variant` field that determines which generator to use:
-
-```ruby
-# conversation.variant = 'incident'
-generator = "MessageGenerators::#{conversation.variant.camelize}".constantize
-# → MessageGenerators::Incident
+Client <--WebSocket--> API Gateway <--invoke--> Lambda
+                                                  |
+                                            DynamoDB (connection IDs)
 ```
 
-Generators are responsible for:
-- Creating `Message` records
-- Broadcasting to ActionCable (so UI updates in real-time)
-- Simulating typing delays, multi-message sequences, etc.
+It's essentially AWS-managed pub/sub where you don't think about servers at all. You lose the tight Rails integration (no `ActionCable.server.broadcast`), but you gain infinite scale without ops overhead.
 
-### Broadcasting from Workers
+**Alternatives:**
+- **Pusher** / **Ably** - Third-party managed WebSocket pub/sub with nicer developer APIs
+- **AWS AppSync** - GraphQL with built-in subscriptions/real-time
+- **AWS IoT Core** - MQTT-based, scales to millions of connections
 
-Workers use `broadcast_to_owner` to send messages to all active sessions:
+### How WebSockets Work
 
-```ruby
-# In MessageGenerators::Base or similar
-def broadcast_to_web(payload)
-  broadcast_to_owner({
-    type: 'new_message',
-    conversation_uuid: conversation.id,
-    message: payload
-  })
-end
+WebSockets establish a single TCP connection during the initial HTTP handshake (the "upgrade" request), and then that TCP connection stays open for bidirectional communication until either side closes it.
 
-def broadcast_to_owner(payload)
-  sessions = conversation.user&.sessions&.active || [conversation.session]
-  sessions.each do |session|
-    OwnerChannel.broadcast_to("session:#{session.id}", payload)
-  end
-end
+1. Client sends HTTP request with `Upgrade: websocket` header
+2. Server responds with `101 Switching Protocols`
+3. Same TCP socket is now a persistent WebSocket connection
+4. Both sides can send frames (messages) at any time
+5. Connection stays open for minutes, hours, days — until explicitly closed or network failure
+
+**Why this matters for scaling:**
+- Each open WebSocket = one open TCP socket on the server
+- OS has limits on file descriptors (each socket is a file descriptor)
+- Memory overhead per connection (buffers, state)
+
+### Connection Termination & Reconnection
+
+The server (or intermediaries) can terminate WebSocket connections:
+
+1. **Server-initiated close** - Send a close frame with a status code
+2. **Idle timeout** - Server closes connections with no activity (e.g., 30 min)
+3. **Load balancer timeout** - AWS ALB defaults to 60s idle timeout (configurable)
+4. **API Gateway** - 10 min idle timeout, 2 hour max connection duration
+5. **Network issues** - Connection dies silently (no close frame)
+
+**Client-side handling:**
+
+```javascript
+const ws = new WebSocket(url)
+
+ws.onclose = (event) => {
+  if (event.code === 1000) {
+    // Normal closure
+  } else if (event.code === 1006) {
+    // Abnormal closure (network died, no close frame received)
+  }
+  showReconnectButton()
+}
+
+// Heartbeat to detect dead connections
+setInterval(() => {
+  if (ws.readyState === WebSocket.OPEN) {
+    ws.send(JSON.stringify({ type: 'ping' }))
+  }
+}, 30000)
 ```
 
-### Sequence Numbers
+**ActionCable already handles some of this** - it has built-in heartbeats (ping/pong every 3 seconds by default) and automatic reconnection attempts. Hook into disconnect events:
 
-Messages have a `sequence` field for ordering. The worker receives `min_sequence` to know where to start generating from (avoids race conditions with multiple messages being created).
-
-### Guard Against Double-Responses
-
-```ruby
-def perform(conversation_id, min_sequence = nil)
-  conversation = Conversation.find_by(id: conversation_id)
-  return if conversation.blank?
-  return if conversation.latest_author == :assistant  # Already responded
-  
-  # Generate response...
-end
+```javascript
+consumer.subscriptions.create("ChatChannel", {
+  disconnected() {
+    // Show reconnect UI
+  },
+  connected() {
+    // Hide reconnect UI
+  }
+})
 ```
 
-If the last message was already from the assistant, the worker exits early. Prevents duplicate bot responses.
+The key is ping/pong heartbeats — without them, a dead connection can go undetected for a long time (TCP keepalive defaults are often 2+ hours).
 
 ---
