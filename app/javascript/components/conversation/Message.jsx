@@ -271,130 +271,191 @@ const OncallAlert = ({ severity = 'SEV-1', service, alert, error, affected, comm
 }
 
 // Monitor component (Datadog-style metric chart)
-const Monitor = ({ title, metric, value, threshold, status = 'warning', highlights = [] }) => {
-  const [dataPoints] = React.useState(() => {
-    // Realistic connection pool pattern: steady baseline, then pressure builds with spikes
+// Base scaffolding colors (Datadog Classic)
+const BASE_THEME = {
+  bg: '#f9f8fc',
+  border: 'rgba(99, 79, 135, 0.12)',
+  titleColor: '#1a1523',
+  metaColor: '#5c5470',
+  dimColor: '#7a7189',
+  valueColor: '#c4314b',
+  lineColor: '#634f87',
+  gridColor: '#eeeaf4',
+  gridDashColor: '#b3a9c4',
+  warningLight: 'rgba(99, 79, 135, 0.04)',
+}
+
+// 5 separator styles (header → chart divider variations)
+const THEMES = [
+  {
+    name: '1. Solid Border',
+    ...BASE_THEME,
+    border: 'rgba(99, 79, 135, 0.25)',
+    warningMid: 'rgba(253, 224, 71, 0.10)',
+    warningDeep: 'rgba(251, 146, 60, 0.14)',
+    critical: 'rgba(244, 63, 94, 0.20)',
+    separatorStyle: 'solid',
+    separatorColor: 'rgba(99, 79, 135, 0.15)',
+  },
+  {
+    name: '2. Thick Separator',
+    ...BASE_THEME,
+    border: 'rgba(99, 79, 135, 0.25)',
+    warningMid: 'rgba(253, 224, 71, 0.10)',
+    warningDeep: 'rgba(251, 146, 60, 0.14)',
+    critical: 'rgba(244, 63, 94, 0.20)',
+    separatorStyle: 'thick',
+    separatorColor: 'rgba(99, 79, 135, 0.12)',
+  },
+  {
+    name: '3. Gradient Fade',
+    ...BASE_THEME,
+    border: 'rgba(99, 79, 135, 0.25)',
+    warningMid: 'rgba(253, 224, 71, 0.10)',
+    warningDeep: 'rgba(251, 146, 60, 0.14)',
+    critical: 'rgba(244, 63, 94, 0.20)',
+    separatorStyle: 'gradient',
+    separatorColor: 'rgba(99, 79, 135, 0.08)',
+  },
+  {
+    name: '4. Inset Shadow',
+    ...BASE_THEME,
+    border: 'rgba(99, 79, 135, 0.25)',
+    warningMid: 'rgba(253, 224, 71, 0.10)',
+    warningDeep: 'rgba(251, 146, 60, 0.14)',
+    critical: 'rgba(244, 63, 94, 0.20)',
+    separatorStyle: 'inset',
+    separatorColor: 'rgba(99, 79, 135, 0.06)',
+  },
+  {
+    name: '5. Double Line',
+    ...BASE_THEME,
+    border: 'rgba(99, 79, 135, 0.25)',
+    warningMid: 'rgba(253, 224, 71, 0.10)',
+    warningDeep: 'rgba(251, 146, 60, 0.14)',
+    critical: 'rgba(244, 63, 94, 0.20)',
+    separatorStyle: 'double',
+    separatorColor: 'rgba(99, 79, 135, 0.12)',
+  },
+]
+
+// Single themed monitor card
+const ThemedMonitorCard = ({ theme, title, metric, value }) => {
+  const dataPoints = React.useMemo(() => {
     const points = [
-      12, 14, 13, 15, 18, 16, 22, 25, 24, 28,  // steady low usage, slight growth
-      35, 32, 38, 45, 42, 52, 58, 65, 72, 68,  // pressure building, some drops as connections return
-      75, 82, 78, 85, 88, 92, 89, 94, 96, 98   // critical zone, less headroom for drops
+      12, 14, 13, 15, 18, 16, 22, 25, 24, 28,
+      35, 32, 38, 45, 42, 52, 58, 65, 72, 68,
+      75, 82, 78, 85, 88, 92, 89, 94, 96, 98
     ]
-    // Add small noise to make it feel real
     return points.map(p => Math.max(0, Math.min(100, p + (Math.random() - 0.5) * 3)))
-  })
+  }, [])
 
   const chartHeight = 36
   const toY = (pct) => chartHeight - (pct / 100) * chartHeight
   const points = dataPoints.map((val, i) => `${(i / (dataPoints.length - 1)) * 200},${toY(val)}`).join(' L')
   const linePath = `M${points}`
   const areaPath = `${linePath} L200,${chartHeight} L0,${chartHeight} Z`
+  const gradientId = `theme-grad-${theme.name.replace(/\s/g, '-')}`
 
-  const gradientId = `monitor-grad-${title?.replace(/\s/g, '-') || 'default'}`
-  const lineGradientId = `monitor-line-${title?.replace(/\s/g, '-') || 'default'}`
-
-  // Refined color palette - muted terracotta as single accent
-  const accentColor = '#b85450'  // Muted terracotta
-  const accentColorLight = 'rgba(184, 84, 80, 0.35)'  // For critical zone
-  const warningColor = 'rgba(180, 140, 100, 0.15)'   // Desaturated amber/ochre
-  const warningColorDeep = 'rgba(180, 140, 100, 0.25)'
-
-  // Default highlights - tell the story: long build-up, narrow critical breach
-  // Warning grows from 40% of timeline, critical is just the last ~15% (the recent breach)
-  const defaultHighlights = status === 'critical'
-    ? [
-        { start: 0, end: 0.4, color: 'rgba(180, 140, 100, 0.06)' },  // Calm early period
-        { start: 0.4, end: 0.65, color: warningColor },              // Pressure building
-        { start: 0.65, end: 0.85, color: warningColorDeep },         // Escalating
-        { start: 0.85, end: 1.05, color: accentColorLight }          // Critical breach (narrow)
-      ]
-    : [
-        { start: 0, end: 0.6, color: 'rgba(180, 140, 100, 0.08)' },
-        { start: 0.6, end: 1.05, color: warningColor }
-      ]
-  const activeHighlights = highlights.length > 0 ? highlights : defaultHighlights
-
-  // Grid lines at 0%, 50%, 100%
+  const highlights = [
+    { start: 0, end: 0.4, color: theme.warningLight },
+    { start: 0.4, end: 0.65, color: theme.warningMid },
+    { start: 0.65, end: 0.85, color: theme.warningDeep },
+    { start: 0.85, end: 1.05, color: theme.critical }
+  ]
   const gridLines = [0, 50, 100]
 
   return (
     <div
-      className="rounded-md overflow-hidden mt-2"
+      className="rounded-md overflow-hidden"
       style={{
-        backgroundColor: status === 'critical' ? '#faf8f6' : '#ffffff',
-        boxShadow: 'inset 0 0 0 1px rgba(45, 41, 38, 0.12)'
+        backgroundColor: theme.bg,
+        boxShadow: `inset 0 0 0 1px ${theme.border}`
       }}
     >
       <div className="px-3.5 pt-3 pb-2.5">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <h3
-              className="text-[15px] font-semibold"
-              style={{ color: '#1a1817' }}
-            >
-              {title}
-            </h3>
+            <h3 className="text-[15px] font-semibold" style={{ color: theme.titleColor }}>{title}</h3>
             <div className="flex items-center gap-1.5 text-[13px]">
-              <span style={{ color: '#57534e' }}>{metric}</span>
-              <span style={{ color: '#a8a29e' }}>·</span>
-              <span
-                className="font-mono font-semibold tabular-nums"
-                style={{ color: status === 'critical' ? accentColor : '#44403c' }}
-              >
-                {value}%
-              </span>
-              <span style={{ color: '#57534e' }}>used</span>
-              <span style={{ color: '#a8a29e' }}>·</span>
-              <span style={{ color: '#78716c' }}>us-east-1</span>
+              <span style={{ color: theme.metaColor }}>{metric}</span>
+              <span style={{ color: theme.dimColor }}>·</span>
+              <span className="font-mono font-semibold tabular-nums" style={{ color: theme.valueColor }}>{value}%</span>
+              <span style={{ color: theme.metaColor }}>used</span>
+              <span style={{ color: theme.dimColor }}>·</span>
+              <span style={{ color: theme.dimColor }}>us-east-1</span>
             </div>
           </div>
-          <span className="text-[12px] tabular-nums" style={{ color: '#78716c' }}>Last 15m</span>
+          <span className="text-[12px] tabular-nums" style={{ color: theme.dimColor }}>Last 15m</span>
         </div>
       </div>
+      {/* Separator between header and chart */}
+      {theme.separatorStyle === 'solid' && (
+        <div style={{ height: '1px', backgroundColor: theme.separatorColor }} />
+      )}
+      {theme.separatorStyle === 'thick' && (
+        <div style={{ height: '2px', backgroundColor: theme.separatorColor }} />
+      )}
+      {theme.separatorStyle === 'gradient' && (
+        <div style={{
+          height: '8px',
+          background: `linear-gradient(to bottom, ${theme.separatorColor}, transparent)`
+        }} />
+      )}
+      {theme.separatorStyle === 'inset' && (
+        <div style={{
+          height: '4px',
+          boxShadow: `inset 0 2px 4px ${theme.separatorColor}`,
+          backgroundColor: 'transparent'
+        }} />
+      )}
+      {theme.separatorStyle === 'double' && (
+        <div style={{
+          height: '3px',
+          borderTop: `1px solid ${theme.separatorColor}`,
+          borderBottom: `1px solid ${theme.separatorColor}`,
+          backgroundColor: 'transparent'
+        }} />
+      )}
       <div className="relative overflow-hidden">
         <svg viewBox={`0 0 200 ${chartHeight}`} className="w-full h-12 block" preserveAspectRatio="none">
           <defs>
             <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#78716c" stopOpacity="0.08" />
-              <stop offset="100%" stopColor="#78716c" stopOpacity="0" />
+              <stop offset="0%" stopColor={theme.lineColor} stopOpacity="0.08" />
+              <stop offset="100%" stopColor={theme.lineColor} stopOpacity="0" />
             </linearGradient>
           </defs>
-          {/* Time range highlights */}
-          {activeHighlights.map((h, i) => (
-            <rect
-              key={i}
-              x={h.start * 200}
-              y={0}
-              width={(h.end - h.start) * 200}
-              height={chartHeight}
-              fill={h.color}
-            />
+          {highlights.map((h, i) => (
+            <rect key={i} x={h.start * 200} y={0} width={(h.end - h.start) * 200} height={chartHeight} fill={h.color} />
           ))}
-          {/* Grid lines - barely visible */}
           {gridLines.map((pct) => (
             <line
               key={pct}
-              x1="0"
-              y1={toY(pct)}
-              x2="200"
-              y2={toY(pct)}
-              stroke={pct === 50 ? "#78716c" : "#e8e6e4"}
+              x1="0" y1={toY(pct)} x2="200" y2={toY(pct)}
+              stroke={pct === 50 ? theme.gridDashColor : theme.gridColor}
               strokeWidth="1"
               strokeDasharray={pct === 50 ? "2,3" : "none"}
-              opacity={pct === 50 ? "0.4" : "0.6"}
+              opacity={pct === 50 ? "0.5" : "0.8"}
             />
           ))}
-          {/* Area fill */}
           <path d={areaPath} fill={`url(#${gradientId})`} />
-          {/* Data line - confident charcoal */}
-          <path
-            d={linePath}
-            fill="none"
-            stroke="#1a1817"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-          />
+          <path d={linePath} fill="none" stroke={theme.lineColor} strokeWidth="1.5" strokeLinecap="round" />
         </svg>
       </div>
+    </div>
+  )
+}
+
+// Shows all 10 themes stacked
+const Monitor = ({ title, metric, value }) => {
+  return (
+    <div className="mt-2 space-y-3">
+      {THEMES.map((theme) => (
+        <div key={theme.name}>
+          <p className="text-xs text-zinc-500 mb-1">{theme.name}</p>
+          <ThemedMonitorCard theme={theme} title={title} metric={metric} value={value} />
+        </div>
+      ))}
     </div>
   )
 }
