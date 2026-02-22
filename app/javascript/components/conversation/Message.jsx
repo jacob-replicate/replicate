@@ -273,38 +273,43 @@ const OncallAlert = ({ severity = 'SEV-1', service, alert, error, affected, comm
 // Monitor component (Datadog-style metric chart)
 const Monitor = ({ title, metric, value, threshold, status = 'warning', highlights = [] }) => {
   const [dataPoints] = React.useState(() => {
-    const initial = []
-    for (let i = 0; i < 20; i++) {
-      const progress = i / 19
-      const base = 15 + progress * (value - 15)
-      const noise = (Math.random() - 0.5) * 5
-      initial.push(Math.max(0, Math.min(100, base + noise)))
-    }
-    return initial
+    // Realistic connection pool pattern: steady baseline, then pressure builds with spikes
+    const points = [
+      12, 14, 13, 15, 18, 16, 22, 25, 24, 28,  // steady low usage, slight growth
+      35, 32, 38, 45, 42, 52, 58, 65, 72, 68,  // pressure building, some drops as connections return
+      75, 82, 78, 85, 88, 92, 89, 94, 96, 98   // critical zone, less headroom for drops
+    ]
+    // Add small noise to make it feel real
+    return points.map(p => Math.max(0, Math.min(100, p + (Math.random() - 0.5) * 3)))
   })
 
-  const chartHeight = 44
+  const chartHeight = 36
   const toY = (pct) => chartHeight - (pct / 100) * chartHeight
-  const points = dataPoints.map((val, i) => `${(i / 19) * 200},${toY(val)}`).join(' L')
+  const points = dataPoints.map((val, i) => `${(i / (dataPoints.length - 1)) * 200},${toY(val)}`).join(' L')
   const linePath = `M${points}`
   const areaPath = `${linePath} L200,${chartHeight} L0,${chartHeight} Z`
-  const thresholdY = toY(threshold)
-
-  // Neutral colors - severity comes from vertical highlights only
-  const badgeColors = status === 'critical'
-    ? 'bg-red-600'
-    : 'bg-amber-500'
 
   const gradientId = `monitor-grad-${title?.replace(/\s/g, '-') || 'default'}`
+  const lineGradientId = `monitor-line-${title?.replace(/\s/g, '-') || 'default'}`
 
-  // Default highlights based on status - transition from warning (orange) to critical (red)
+  // Refined color palette - muted terracotta as single accent
+  const accentColor = '#b85450'  // Muted terracotta
+  const accentColorLight = 'rgba(184, 84, 80, 0.35)'  // For critical zone
+  const warningColor = 'rgba(180, 140, 100, 0.15)'   // Desaturated amber/ochre
+  const warningColorDeep = 'rgba(180, 140, 100, 0.25)'
+
+  // Default highlights - tell the story: long build-up, narrow critical breach
+  // Warning grows from 40% of timeline, critical is just the last ~15% (the recent breach)
   const defaultHighlights = status === 'critical'
     ? [
-        { start: 0.5, end: 0.75, color: 'rgba(251, 191, 36, 0.12)' },  // warning zone (amber)
-        { start: 0.75, end: 1, color: 'rgba(220, 38, 38, 0.15)' }      // critical zone (red)
+        { start: 0, end: 0.4, color: 'rgba(180, 140, 100, 0.06)' },  // Calm early period
+        { start: 0.4, end: 0.65, color: warningColor },              // Pressure building
+        { start: 0.65, end: 0.85, color: warningColorDeep },         // Escalating
+        { start: 0.85, end: 1.05, color: accentColorLight }          // Critical breach (narrow)
       ]
     : [
-        { start: 0.7, end: 1, color: 'rgba(251, 191, 36, 0.12)' }      // warning zone only
+        { start: 0, end: 0.6, color: 'rgba(180, 140, 100, 0.08)' },
+        { start: 0.6, end: 1.05, color: warningColor }
       ]
   const activeHighlights = highlights.length > 0 ? highlights : defaultHighlights
 
@@ -312,63 +317,83 @@ const Monitor = ({ title, metric, value, threshold, status = 'warning', highligh
   const gridLines = [0, 50, 100]
 
   return (
-    <div className="rounded-lg overflow-hidden border border-zinc-200 dark:border-zinc-700 shadow-sm mt-2 bg-white dark:bg-zinc-900">
-      <div className="px-3 pt-2.5 pb-1">
+    <div
+      className="rounded-md overflow-hidden mt-2"
+      style={{
+        backgroundColor: status === 'critical' ? '#faf8f6' : '#ffffff',
+        boxShadow: 'inset 0 0 0 1px rgba(45, 41, 38, 0.12)'
+      }}
+    >
+      <div className="px-3.5 pt-3 pb-2.5">
         <div className="flex items-center justify-between">
-          <h3 className="text-zinc-900 dark:text-zinc-100 text-[15px] font-semibold leading-tight">{title}</h3>
-          <span className={`px-2 py-0.5 rounded text-[11px] font-semibold ${badgeColors} text-white`}>
-            {status === 'critical' ? 'Critical' : 'Warning'}
-          </span>
-        </div>
-        <div className="flex items-center gap-1.5 text-[13px]">
-          <span className="text-zinc-500 dark:text-zinc-400">{metric}</span>
-          <span className="text-zinc-300 dark:text-zinc-600">•</span>
-          <span className="font-mono font-medium text-zinc-700 dark:text-zinc-300">{value}%</span>
-          <span className="text-zinc-500 dark:text-zinc-400">used</span>
+          <div className="flex items-center gap-3">
+            <h3
+              className="text-[15px] font-semibold"
+              style={{ color: '#1a1817' }}
+            >
+              {title}
+            </h3>
+            <div className="flex items-center gap-1.5 text-[13px]">
+              <span style={{ color: '#57534e' }}>{metric}</span>
+              <span style={{ color: '#a8a29e' }}>·</span>
+              <span
+                className="font-mono font-semibold tabular-nums"
+                style={{ color: status === 'critical' ? accentColor : '#44403c' }}
+              >
+                {value}%
+              </span>
+              <span style={{ color: '#57534e' }}>used</span>
+              <span style={{ color: '#a8a29e' }}>·</span>
+              <span style={{ color: '#78716c' }}>us-east-1</span>
+            </div>
+          </div>
+          <span className="text-[12px] tabular-nums" style={{ color: '#78716c' }}>Last 15m</span>
         </div>
       </div>
-      <div className="px-3 pb-2.5 pt-1">
-        <div className="relative">
-          <svg viewBox={`0 0 200 ${chartHeight}`} className="w-full h-11" preserveAspectRatio="none">
-            <defs>
-              <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#71717a" stopOpacity="0.1" />
-                <stop offset="100%" stopColor="#71717a" stopOpacity="0" />
-              </linearGradient>
-            </defs>
-            {/* Time range highlights - this is where severity is shown */}
-            {activeHighlights.map((h, i) => (
-              <rect
-                key={i}
-                x={h.start * 200}
-                y={0}
-                width={(h.end - h.start) * 200}
-                height={chartHeight}
-                fill={h.color || 'rgba(251, 191, 36, 0.1)'}
-              />
-            ))}
-            {/* Grid lines at 0%, 50%, 100% - 50% is dashed */}
-            {gridLines.map((pct) => (
-              <line
-                key={pct}
-                x1="0"
-                y1={toY(pct)}
-                x2="200"
-                y2={toY(pct)}
-                stroke="#d4d4d8"
-                strokeWidth="1"
-                strokeDasharray={pct === 50 ? "2,2" : "none"}
-                opacity="0.5"
-              />
-            ))}
-            {/* Area fill - neutral grey */}
-            <path d={areaPath} fill={`url(#${gradientId})`} />
-            {/* Line - dark grey/black */}
-            <path d={linePath} fill="none" stroke="#3f3f46" strokeWidth="1.5" strokeLinecap="round" />
-          </svg>
-          {/* Time label */}
-          <span className="absolute bottom-0 right-0 text-[10px] text-zinc-400 font-medium">15m</span>
-        </div>
+      <div className="relative overflow-hidden">
+        <svg viewBox={`0 0 200 ${chartHeight}`} className="w-full h-12 block" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#78716c" stopOpacity="0.08" />
+              <stop offset="100%" stopColor="#78716c" stopOpacity="0" />
+            </linearGradient>
+          </defs>
+          {/* Time range highlights */}
+          {activeHighlights.map((h, i) => (
+            <rect
+              key={i}
+              x={h.start * 200}
+              y={0}
+              width={(h.end - h.start) * 200}
+              height={chartHeight}
+              fill={h.color}
+            />
+          ))}
+          {/* Grid lines - barely visible */}
+          {gridLines.map((pct) => (
+            <line
+              key={pct}
+              x1="0"
+              y1={toY(pct)}
+              x2="200"
+              y2={toY(pct)}
+              stroke={pct === 50 ? "#78716c" : "#e8e6e4"}
+              strokeWidth="1"
+              strokeDasharray={pct === 50 ? "2,3" : "none"}
+              opacity={pct === 50 ? "0.4" : "0.6"}
+            />
+          ))}
+          {/* Area fill */}
+          <path d={areaPath} fill={`url(#${gradientId})`} />
+          {/* Data line - confident charcoal */}
+          <path
+            d={linePath}
+            fill="none"
+            stroke="#1a1817"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+          />
+        </svg>
       </div>
     </div>
   )
