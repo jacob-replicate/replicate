@@ -25,7 +25,7 @@ Rails.application.routes.draw do
   get "/terms", to: "static#terms"
   get "/privacy", to: "static#privacy"
   get "/billing", to: "static#billing"
-  get "/security", to: "static#security"
+  get "/security", to: "static#index"
   get '/incidents(/:sharing_code)', to: "conversations#show"
   get '/members/:id/unsubscribe', to: "members#unsubscribe"
   post '/members/:id/unsubscribe', to: "members#unsubscribe_confirm"

@@ -41,28 +41,17 @@ export const fetchConversation = (channelId) => {
  * Load a specific demo by channel ID
  */
 export const loadDemo = (channelId) => {
-  console.log('[loadDemo] called with channelId:', channelId)
   const conversation = fetchConversation(channelId)
-  console.log('[loadDemo] fetchConversation result:', conversation)
   if (!conversation) {
-    console.log('[loadDemo] No conversation found, returning')
     return
   }
 
-  console.log('[loadDemo] Setting timeout for 100ms')
   setTimeout(() => {
-    console.log('[loadDemo] Timeout fired')
-    console.log('[loadDemo] window.ReplicateConversation:', window.ReplicateConversation)
     if (window.ReplicateConversation) {
-      console.log('[loadDemo] Calling clear()')
       window.ReplicateConversation.clear()
-      console.log('[loadDemo] Calling setChannelName:', '#' + channelId)
       window.ReplicateConversation.setChannelName('#' + channelId)
-      console.log('[loadDemo] Calling loadMessages with', conversation.messages?.length, 'messages')
       window.ReplicateConversation.loadMessages(conversation.messages)
-      console.log('[loadDemo] Done loading')
     } else {
-      console.log('[loadDemo] window.ReplicateConversation is null/undefined')
     }
   }, 100)
 }
@@ -73,15 +62,22 @@ export const loadDemo = (channelId) => {
 export const initConversation = () => {
   const defaultChannel = 'inc-4521-cart-500s'
 
+  // Only auto-navigate if on root or conversations path
+  const path = window.location.pathname
+  const shouldAutoNavigate = path === '/' || path.startsWith('/conversations')
+
   const waitForReady = () => {
     if (window.ReplicateConversation?.navigate) {
       window.ReplicateConversation.loadDemo = loadDemo
-      window.ReplicateConversation.navigate(`/conversations/${defaultChannel}`)
 
-      window.ReplicateConversation.onReady((api) => {
-        api.setChannelName('#' + defaultChannel)
-        api.streamMessages(DEMO_REGISTRY[defaultChannel].messages)
-      })
+      if (shouldAutoNavigate) {
+        window.ReplicateConversation.navigate(`/conversations/${defaultChannel}`)
+
+        window.ReplicateConversation.onReady((api) => {
+          api.setChannelName('#' + defaultChannel)
+          api.streamMessages(DEMO_REGISTRY[defaultChannel].messages)
+        })
+      }
     } else {
       setTimeout(waitForReady, 50)
     }

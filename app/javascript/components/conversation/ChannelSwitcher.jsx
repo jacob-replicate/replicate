@@ -210,8 +210,10 @@ const ChannelSwitcher = ({
           </button>
           {/* Wordmark */}
           <div className="flex items-center gap-4">
-            <a href="/" className="text-zinc-100 text-[13px] tracking-[0.15em] uppercase font-light hover:text-zinc-300 transition-colors">Invariant</a>
-            <span className="text-zinc-500 text-[13px] tracking-[0.02em] font-light hidden md:inline">Realistic infra/sec drills for experienced software engineers</span>
+            <a href="/" className="text-zinc-100 text-[15px] tracking-[0.15em] uppercase font-light hover:text-zinc-300 transition-colors">Invariant</a>
+            <span className="text-[#F5D77A] text-[13px] tracking-[0.04em] font-light hidden md:inline">
+              Realistic drills to surface your SRE blind spots (before production does)
+            </span>
           </div>
         </div>
         <div className="flex items-center gap-4">

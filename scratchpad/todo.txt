@@ -10,3 +10,7 @@
 - Convert conversations/show to React
 - Move Security/Privacy/Terms into JSX + cut the old ERB files
 - Lock down (and/or just delete) AWS account
+- Make monitor component responsive
+- Hint at collapsed sidebar on mobile somehow.
+- Fix the weird double bottom border during sends
+- zinc-200 to separate messages, not zinc-100
