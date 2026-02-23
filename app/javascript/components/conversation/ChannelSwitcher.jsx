@@ -72,7 +72,7 @@ const ChannelSection = ({ section, channels, activeChannelId, onSelect, onClose 
   if (sectionChannels.length === 0) return null
 
   return (
-    <div className={section.id !== 'incidents' ? 'mt-6' : ''}>
+    <div className={section.id !== 'incidents' ? 'mt-4 pt-4 border-t border-zinc-300 dark:border-zinc-700' : ''}>
       <div className="px-4 py-1.5 text-zinc-500 dark:text-zinc-400 text-[11px] uppercase tracking-[0.12em] font-medium flex items-center justify-between">
         <span>{section.label}</span>
         {section.action && (
@@ -213,10 +213,9 @@ const ChannelSwitcher = ({
             </svg>
           </button>
           {/* Wordmark */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-4">
             <a href="/" className="text-zinc-100 text-[13px] tracking-[0.15em] uppercase font-light hover:text-zinc-300 transition-colors">Invariant</a>
-            <span className="text-zinc-600 hidden md:inline">·</span>
-            <span className="text-zinc-400 text-[12px] tracking-normal font-normal hidden md:inline">Realistic infra/sec drills for experienced software engineers</span>
+            <span className="text-zinc-500 text-[13px] tracking-[0.02em] font-light hidden md:inline">Realistic infra/sec drills for experienced software engineers</span>
           </div>
         </div>
         <div className="flex items-center gap-4">

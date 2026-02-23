@@ -37,9 +37,7 @@ export const DEMO_CHANNELS = [
   { uuid: 'consensus', id: 'consensus', name: 'consensus', section: 'fundamentals', unreadCount: 0 },
   { uuid: 'zero-trust', id: 'zero-trust', name: 'zero-trust', section: 'fundamentals', unreadCount: 1 },
   { uuid: 'chaos-engineering', id: 'chaos-engineering', name: 'chaos-engineering', section: 'fundamentals', unreadCount: 0 },
-  { uuid: 'incident-response', id: 'incident-response', name: 'incident-response', section: 'fundamentals', unreadCount: 4 },
-  { uuid: 'k8s-networking', id: 'k8s-networking', name: 'k8s-networking', section: 'fundamentals', unreadCount: 0 },
-  { uuid: 'load-balancing', id: 'load-balancing', name: 'load-balancing', section: 'fundamentals', unreadCount: 2 },
+  { uuid: 'incident-response', id: 'incident-response', name: 'incident-response', section: 'fundamentals', unreadCount: 0 },
   { uuid: 'distributed-tracing', id: 'distributed-tracing', name: 'distributed-tracing', section: 'fundamentals', unreadCount: 0 },
   { uuid: 'blue-green-deploys', id: 'blue-green-deploys', name: 'blue-green-deploys', section: 'fundamentals', unreadCount: 1 },
 ]
