@@ -45,11 +45,9 @@ const ChannelItem = ({ item, isActive, onSelect, onClose }) => {
         </span>
       )}
 
-      {/* Unread indicator - circle badge */}
+      {/* Unread indicator - subtle dot */}
       {hasUnread && !item.isMuted && (
-        <span className="ml-auto w-5 h-5 min-w-5 rounded-full bg-red-500 dark:bg-red-500 text-white text-[11px] font-semibold tabular-nums flex items-center justify-center flex-shrink-0">
-          {item.unreadCount}
-        </span>
+        <span className="ml-auto w-2 h-2 rounded-full bg-red-500 flex-shrink-0" />
       )}
     </button>
   )
@@ -196,7 +194,7 @@ const ChannelSwitcher = ({
     <div className="flex flex-col bg-white dark:bg-zinc-950 overflow-hidden text-sm h-full w-full relative">
 
       {/* Full-width header */}
-      <div className="flex-shrink-0 flex items-center justify-between px-4 py-1.5 border-b border-[rgb(50,50,54)] bg-[rgb(39,39,42)]">
+      <div className="flex-shrink-0 flex items-center justify-between px-4 py-1.5 border-b border-[#1A1D24] bg-[#0D0F14]">
         <div className="flex items-center gap-2">
           {/* Mobile menu button */}
           <button
