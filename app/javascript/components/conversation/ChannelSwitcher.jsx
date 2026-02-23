@@ -3,12 +3,11 @@ import { useConversationContext } from './ConversationContext'
 
 const ChannelItem = ({ item, isActive, onSelect, onClose }) => {
   const hasUnread = item.unreadCount > 0 && !isActive
-  const channelId = item.uuid || item.id
 
   return (
     <button
-      onClick={() => onSelect(channelId)}
-      className={`w-full text-left px-4 pr-3 py-2 flex items-center gap-2.5 text-[14px] ${
+      onClick={() => onSelect(item.id)}
+      className={`w-full text-left px-4 py-2 flex items-center gap-2.5 text-[14px] ${
         isActive
           ? 'bg-[rgb(235,238,245)] dark:bg-[rgb(45,48,58)] text-[#3D4250] dark:text-[rgb(190,195,210)]'
           : item.isMuted
@@ -18,47 +17,42 @@ const ChannelItem = ({ item, isActive, onSelect, onClose }) => {
               : 'text-[#6B7280] dark:text-zinc-500 hover:text-[#3D4250] dark:hover:text-zinc-300'
       }`}
     >
-      {/* Lock icon for private channels */}
       {item.isPrivate && (
         <svg className="w-3 h-3 flex-shrink-0 opacity-50" fill="currentColor" viewBox="0 0 16 16">
           <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/>
         </svg>
       )}
 
-      <span className={`truncate ${hasUnread ? 'font-medium' : ''}`}>
+      <span className={`truncate flex-1 ${hasUnread ? 'font-medium' : ''}`}>
         {item.name}
       </span>
 
-      {/* X button when active */}
-      {isActive && onClose && (
-        <span
-          role="button"
-          onClick={(e) => {
-            e.stopPropagation()
-            onClose(channelId)
-          }}
-          className="ml-auto w-5 h-5 rounded-full flex items-center justify-center text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700"
-        >
-          <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </span>
-      )}
+      <span className="w-4 h-4 flex items-center justify-center flex-shrink-0">
+        {isActive && onClose && (
+          <span
+            role="button"
+            onClick={(e) => {
+              e.stopPropagation()
+              onClose(item.id)
+            }}
+            className="w-4 h-4 rounded-full flex items-center justify-center text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700"
+          >
+            <svg className="w-2.5 h-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </span>
+        )}
 
-      {/* Unread indicator - subtle dot */}
-      {hasUnread && !item.isMuted && (
-        <span className="ml-auto w-2 h-2 rounded-full bg-red-500 flex-shrink-0" />
-      )}
+        {/* Unread indicator - subtle dot */}
+        {hasUnread && !item.isMuted && !isActive && (
+          <span className="w-2 h-2 rounded-full bg-red-500" />
+        )}
+      </span>
     </button>
   )
 }
 
-/**
- * ChannelSection - Renders a section header and its items
- */
 const ChannelSection = ({ section, channels, activeChannelId, onSelect, onClose }) => {
-  // Filter channels for this section and sort muted to bottom
-  // Support both uuid and id in filter functions
   const sectionChannels = channels
     .filter(c => section.filter(c))
     .sort((a, b) => (a.isMuted ? 1 : 0) - (b.isMuted ? 1 : 0))
@@ -67,40 +61,38 @@ const ChannelSection = ({ section, channels, activeChannelId, onSelect, onClose 
 
   return (
     <div className={section.id !== 'incidents' ? '' : ''}>
-      <div className="pl-4 pr-3 py-1.5 bg-gradient-to-r from-[#3A3E48] to-[#343842] text-white text-[14px] tracking-[0.03em] flex items-center justify-between" style={{ textShadow: '0 1px 0 rgba(0,0,0,0.2)' }}>
-        <span>{section.label}</span>
-        {section.action && (
-          <button
-            className="px-2 py-0.5 rounded-full bg-[#059669] text-[11px] text-white font-medium hover:bg-[#10b981] transition-colors"
-            onClick={section.action.onClick}
-          >
-            + New
-          </button>
-        )}
+      <div className="pl-4 pr-4 bg-gradient-to-r from-[#3A3E48] to-[#343842] text-white text-[14px] tracking-[0.03em] flex items-center justify-between" style={{ paddingTop: 10, paddingBottom: 10, textShadow: '0 1px 0 rgba(0,0,0,0.2)' }}>
+        <span className="leading-none">{section.label}</span>
+        <span className="w-4 flex items-center justify-center">
+          {section.action && (
+            <button
+              className="w-4 h-4 rounded-full flex items-center justify-center text-white hover:opacity-90 transition-opacity"
+              style={{ backgroundColor: '#2563EB' }}
+              onClick={section.action.onClick}
+            >
+              <svg className="w-2.5 h-2.5" viewBox="0 0 16 16" fill="currentColor">
+                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+              </svg>
+            </button>
+          )}
+        </span>
       </div>
-      {sectionChannels.map((channel) => {
-        // Support both uuid and id for active comparison
-        const channelId = channel.uuid || channel.id
-        return (
+      {sectionChannels.map((channel) => (
           <ChannelItem
-            key={channelId}
+            key={channel.id}
             item={{
               ...channel,
               prefix: section.prefix ?? '#',
             }}
-            isActive={activeChannelId === channelId}
+            isActive={activeChannelId === channel.id}
             onSelect={onSelect}
             onClose={onClose}
           />
-        )
-      })}
+        ))}
     </div>
   )
 }
 
-/**
- * ChannelList - Renders all channel sections
- */
 const ChannelList = ({ sections, channels, activeChannelId, onSelect, onClose }) => {
   return (
     <div className="flex-1 overflow-y-auto pb-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
@@ -118,9 +110,6 @@ const ChannelList = ({ sections, channels, activeChannelId, onSelect, onClose })
   )
 }
 
-/**
- * Icon components for section actions
- */
 const SectionIcons = {
   plus: (
     <svg className="w-3 h-3" viewBox="0 0 16 16" fill="currentColor">
@@ -129,15 +118,6 @@ const SectionIcons = {
   ),
 }
 
-/**
- * ChannelSwitcher - Sidebar for switching between channels and DMs
- *
- * @param {Array} channels - List of channel objects with id, name, section, unreadCount, isPrivate, isMuted
- * @param {Array} sections - List of section configs with id, label, filter function, optional prefix and action
- * @param {string} activeChannelId - Currently selected channel ID
- * @param {function} onChannelSelect - Callback when a channel is selected
- * @param {ReactNode} children - Content to render in main area
- */
 const ChannelSwitcher = ({
   channels,
   sections,
@@ -167,7 +147,7 @@ const ChannelSwitcher = ({
   })
 
   // Filter out closed channels
-  const visibleChannels = channels.filter(c => !closedChannels.includes(c.uuid || c.id))
+  const visibleChannels = channels.filter(c => !closedChannels.includes(c.id))
 
   const toggleDarkMode = () => {
     const newDark = !isDark
@@ -187,14 +167,14 @@ const ChannelSwitcher = ({
     setSidebarOpen(false) // Close sidebar on mobile after selection
   }
 
-  const activeChannel = channels.find(c => (c.uuid || c.id) === activeChannelId)
+  const activeChannel = channels.find(c => c.id === activeChannelId)
   const activeChannelName = activeChannel?.name || 'channel'
 
   return (
     <div className="flex flex-col bg-white dark:bg-zinc-950 overflow-hidden text-sm h-full w-full relative">
 
       {/* Full-width header */}
-      <div className="flex-shrink-0 flex items-center justify-between px-4 py-1.5 border-b border-[#1A1D24] bg-[#0D0F14]">
+      <div className="flex-shrink-0 flex items-center justify-between px-4 py-1.5" style={{ backgroundColor: '#1C1F26' }}>
         <div className="flex items-center gap-2">
           {/* Mobile menu button */}
           <button
@@ -303,9 +283,9 @@ const ChannelSwitcher = ({
               localStorage.setItem('closed-channels', JSON.stringify(newClosed))
 
               // Switch to next available channel
-              const remaining = visibleChannels.filter(c => (c.uuid || c.id) !== channelId)
+              const remaining = visibleChannels.filter(c => c.id !== channelId)
               if (remaining.length > 0) {
-                handleChannelSelect(remaining[0].uuid || remaining[0].id)
+                handleChannelSelect(remaining[0].id)
               }
             }}
           />
@@ -338,9 +318,6 @@ const ChannelSwitcher = ({
 
 export default ChannelSwitcher
 
-/**
- * IRCHeader - Topic bar for the active channel
- */
 export const IRCHeader = ({ channelName, topic, userCount }) => {
   return (
     <div className="bg-zinc-900 border-b border-zinc-800 px-3 py-2 flex items-center gap-3">
@@ -358,10 +335,6 @@ export const IRCHeader = ({ channelName, topic, userCount }) => {
   )
 }
 
-/**
- * IRCMessage - IRC-style message format
- * Format: [HH:MM] <nick> message
- */
 export const IRCMessageFormat = ({ timestamp, nick, message, isAction = false }) => {
   const time = new Date(timestamp).toLocaleTimeString('en-US', {
     hour: '2-digit',
