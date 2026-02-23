@@ -8,14 +8,14 @@ const ChannelItem = ({ item, isActive, onSelect, onClose }) => {
   return (
     <button
       onClick={() => onSelect(channelId)}
-      className={`w-full text-left px-4 py-2 flex items-center gap-2.5 ${
+      className={`w-full text-left px-4 pr-3 py-2 flex items-center gap-2.5 text-[14px] ${
         isActive
-          ? 'bg-[rgb(235,238,245)] dark:bg-[rgb(45,48,58)] text-[rgb(50,55,70)] dark:text-[rgb(190,195,210)]'
+          ? 'bg-[rgb(235,238,245)] dark:bg-[rgb(45,48,58)] text-[#3D4250] dark:text-[rgb(190,195,210)]'
           : item.isMuted
             ? 'text-zinc-400 dark:text-zinc-600'
             : hasUnread
-              ? 'text-zinc-900 dark:text-zinc-50 font-medium hover:bg-zinc-100 dark:hover:bg-zinc-800/50'
-              : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100'
+              ? 'text-[#3D4250] dark:text-zinc-50 font-medium hover:bg-zinc-100 dark:hover:bg-zinc-800/50'
+              : 'text-[#6B7280] dark:text-zinc-500 hover:text-[#3D4250] dark:hover:text-zinc-300'
       }`}
     >
       {/* Lock icon for private channels */}
@@ -69,15 +69,14 @@ const ChannelSection = ({ section, channels, activeChannelId, onSelect, onClose 
 
   return (
     <div className={section.id !== 'incidents' ? '' : ''}>
-      <div className="px-4 py-2.5 bg-[#5C6370] dark:bg-[#232629] text-white dark:text-[#E8EAED] text-[13px] tracking-wide flex items-center justify-between">
+      <div className="pl-4 pr-3 py-1.5 bg-gradient-to-r from-[#3A3E48] to-[#343842] text-white text-[14px] tracking-[0.03em] flex items-center justify-between" style={{ textShadow: '0 1px 0 rgba(0,0,0,0.2)' }}>
         <span>{section.label}</span>
         {section.action && (
           <button
-            className="flex items-center gap-1 text-[11px] text-white/60 hover:text-white font-medium transition-colors"
+            className="px-2 py-0.5 rounded-full bg-[#059669] text-[11px] text-white font-medium hover:bg-[#10b981] transition-colors"
             onClick={section.action.onClick}
           >
-            {SectionIcons[section.action.icon]}
-            {section.action.label}
+            + New
           </button>
         )}
       </div>
@@ -197,7 +196,7 @@ const ChannelSwitcher = ({
     <div className="flex flex-col bg-white dark:bg-zinc-950 overflow-hidden text-sm h-full w-full relative">
 
       {/* Full-width header */}
-      <div className="flex-shrink-0 flex items-center justify-between px-4 py-2 border-b border-[rgb(50,50,54)] bg-[rgb(39,39,42)]">
+      <div className="flex-shrink-0 flex items-center justify-between px-4 py-1.5 border-b border-[rgb(50,50,54)] bg-[rgb(39,39,42)]">
         <div className="flex items-center gap-2">
           {/* Mobile menu button */}
           <button
@@ -212,7 +211,7 @@ const ChannelSwitcher = ({
           <div className="flex items-center gap-4">
             <a href="/" className="text-zinc-100 text-[15px] tracking-[0.15em] uppercase font-light hover:text-zinc-300 transition-colors">Invariant</a>
             <span className="text-[#F5D77A] text-[13px] tracking-[0.04em] font-light hidden md:inline">
-              Hard SRE drills that expose fragile production instincts
+              Hard SRE drills that sharpen your production instincts
             </span>
           </div>
         </div>
