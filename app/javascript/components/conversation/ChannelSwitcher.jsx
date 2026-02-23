@@ -14,7 +14,7 @@ const ChannelItem = ({ item, isActive, onSelect }) => {
       onClick={() => onSelect(channelId)}
       className={`w-full text-left px-4 py-2 flex items-center gap-2.5 ${
         isActive
-          ? 'bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400'
+          ? 'bg-[rgb(235,235,238)] dark:bg-[rgb(55,55,60)] text-[rgb(60,60,65)] dark:text-[rgb(200,200,205)]'
           : item.isMuted
             ? 'text-zinc-400 dark:text-zinc-600'
             : 'text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-zinc-100'
@@ -33,7 +33,7 @@ const ChannelItem = ({ item, isActive, onSelect }) => {
 
       {/* Unread indicator - subtle colored count */}
       {hasUnread && !item.isMuted && (
-        <span className="ml-auto tabular-nums text-[11px] tracking-tight text-indigo-500 dark:text-indigo-400 font-medium">
+        <span className="ml-auto tabular-nums text-[11px] tracking-tight text-[rgb(100,100,110)] dark:text-[rgb(160,160,170)] font-medium">
           {item.unreadCount}
         </span>
       )}
@@ -59,7 +59,7 @@ const ChannelSection = ({ section, channels, activeChannelId, onSelect }) => {
         <span>{section.label}</span>
         {section.action && (
           <button
-            className="flex items-center gap-1 text-[10px] text-indigo-500 dark:text-indigo-400 hover:text-indigo-600 dark:hover:text-indigo-300 transition-colors"
+            className="flex items-center gap-1 text-[10px] text-[rgb(100,100,110)] dark:text-[rgb(140,140,150)] hover:text-[rgb(70,70,75)] dark:hover:text-[rgb(180,180,190)] transition-colors"
             onClick={section.action.onClick}
           >
             {SectionIcons[section.action.icon]}
@@ -194,7 +194,7 @@ const ChannelSwitcher = ({
       )}
 
       {/* Full-width header */}
-      <div className="flex-shrink-0 flex items-center justify-between px-4 py-2 border-b border-zinc-800 bg-zinc-900">
+      <div className="flex-shrink-0 flex items-center justify-between px-4 py-2 border-b border-[rgb(50,50,54)] bg-[rgb(39,39,42)]">
         <div className="flex items-center gap-2">
           {/* Mobile menu button */}
           <button
@@ -257,7 +257,7 @@ const ChannelSwitcher = ({
           z-50 md:z-auto
           w-64
           flex-shrink-0 
-          bg-zinc-50 dark:bg-zinc-900 
+          bg-[rgb(245,245,247)] dark:bg-[rgb(39,39,42)] 
           border-r border-zinc-200 dark:border-zinc-800 
           flex flex-col
           md:h-full

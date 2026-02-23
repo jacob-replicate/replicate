@@ -743,7 +743,7 @@ export const Message = ({ message, onSelect, threadReplies }) => {
   // Wrap in accent container if needed
   if (message.accent) {
     return (
-      <div className="bg-gradient-to-br from-indigo-50 to-violet-50 dark:from-indigo-950/30 dark:to-violet-950/30 py-4 px-4 border-b border-zinc-200 dark:border-zinc-700">
+      <div className="bg-[rgb(255,251,235)] dark:bg-[rgb(66,58,36)] py-4 px-4 border-b border-[rgb(253,224,71,0.3)] dark:border-[rgb(253,224,71,0.2)]">
         {messageContent}
       </div>
     )
