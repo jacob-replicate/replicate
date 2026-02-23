@@ -12,12 +12,14 @@ const ChannelItem = ({ item, isActive, onSelect }) => {
   return (
     <button
       onClick={() => onSelect(channelId)}
-      className={`w-full text-left px-4 py-2 flex items-center gap-2.5 ${
+      className={`w-full text-left px-4 py-2 flex items-center gap-2.5 transition-colors ${
         isActive
-          ? 'bg-[rgb(235,235,238)] dark:bg-[rgb(55,55,60)] text-[rgb(60,60,65)] dark:text-[rgb(200,200,205)]'
+          ? 'bg-[rgb(235,238,245)] dark:bg-[rgb(45,48,58)] text-[rgb(50,55,70)] dark:text-[rgb(190,195,210)]'
           : item.isMuted
             ? 'text-zinc-400 dark:text-zinc-600'
-            : 'text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-zinc-100'
+            : hasUnread
+              ? 'text-zinc-900 dark:text-zinc-50 hover:bg-zinc-100 dark:hover:bg-zinc-800/50'
+              : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100'
       }`}
     >
       {/* Lock icon for private channels */}
@@ -27,13 +29,13 @@ const ChannelItem = ({ item, isActive, onSelect }) => {
         </svg>
       )}
 
-      <span className={`truncate tracking-tight ${isActive ? 'font-medium' : ''}`}>
+      <span className={`truncate tracking-tight ${hasUnread ? 'font-medium' : ''}`}>
         {item.prefix}{item.name}
       </span>
 
-      {/* Unread indicator - subtle colored count */}
+      {/* Unread indicator - circle badge */}
       {hasUnread && !item.isMuted && (
-        <span className="ml-auto tabular-nums text-[11px] tracking-tight text-[rgb(100,100,110)] dark:text-[rgb(160,160,170)] font-medium">
+        <span className="ml-auto w-5 h-5 rounded-full bg-red-500 dark:bg-red-600 text-white text-[10px] font-semibold tabular-nums flex items-center justify-center">
           {item.unreadCount}
         </span>
       )}
