@@ -63,19 +63,6 @@ const ChannelSection = ({ section, channels, activeChannelId, onSelect, onClose 
     <div className={section.id !== 'incidents' ? '' : ''}>
       <div className="pl-4 pr-4 bg-gradient-to-r from-[#3A3E48] to-[#343842] text-white text-[14px] tracking-[0.03em] flex items-center justify-between" style={{ paddingTop: 10, paddingBottom: 10, textShadow: '0 1px 0 rgba(0,0,0,0.2)' }}>
         <span className="leading-none">{section.label}</span>
-        <span className="w-4 flex items-center justify-center">
-          {section.action && (
-            <button
-              className="w-4 h-4 rounded-full flex items-center justify-center text-white hover:opacity-90 transition-opacity"
-              style={{ backgroundColor: '#2563EB' }}
-              onClick={section.action.onClick}
-            >
-              <svg className="w-2.5 h-2.5" viewBox="0 0 16 16" fill="currentColor">
-                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-              </svg>
-            </button>
-          )}
-        </span>
       </div>
       {sectionChannels.map((channel) => (
           <ChannelItem
