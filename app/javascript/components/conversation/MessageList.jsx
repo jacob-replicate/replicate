@@ -128,7 +128,11 @@ export const MessageList = forwardRef(({
       {rootMessages.map((message) => (
         <div
           key={message.id}
-          className={message.isSystem || message.accent ? '' : 'py-4 px-4 border-b border-zinc-200 dark:border-zinc-700'}
+          className={
+            message.isSystem ? ''
+            : message.accent ? 'sticky top-0 z-10'
+            : 'py-4 px-4 border-b border-zinc-200 dark:border-zinc-700'
+          }
         >
           <Message
             message={message}

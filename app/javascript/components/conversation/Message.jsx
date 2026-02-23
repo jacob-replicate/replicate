@@ -494,6 +494,11 @@ export const Message = ({ message, onSelect, threadReplies }) => {
   const [selectedReactions, setSelectedReactions] = useState(new Set())
   // Track count adjustments for user clicks (emoji -> adjustment amount)
   const [reactionAdjustments, setReactionAdjustments] = useState({})
+  // Track if accent message has been dismissed
+  const [accentDismissed, setAccentDismissed] = useState(() => {
+    if (!message.accent) return false
+    return localStorage.getItem(`accent-dismissed-${message.id}`) === 'true'
+  })
 
   // Handle reaction click - toggle selected and adjust count
   const handleReactionClick = (emoji) => {
@@ -740,10 +745,23 @@ export const Message = ({ message, onSelect, threadReplies }) => {
     </div>
   )
 
-  // Wrap in accent container if needed
+  // Wrap in accent container if needed - sticky banner with close button
   if (message.accent) {
+    if (accentDismissed) return null
+
     return (
-      <div className="bg-[rgb(255,251,235)] dark:bg-[rgb(66,58,36)] py-4 px-4 border-b border-[rgb(253,224,71,0.3)] dark:border-[rgb(253,224,71,0.2)]">
+      <div className="sticky top-0 z-10 bg-[rgb(255,251,235)] dark:bg-[rgb(66,58,36)] py-4 px-4 border-b border-[rgb(253,224,71,0.3)] dark:border-[rgb(253,224,71,0.2)] relative">
+        <button
+          onClick={() => {
+            setAccentDismissed(true)
+            localStorage.setItem(`accent-dismissed-${message.id}`, 'true')
+          }}
+          className="absolute top-3 right-3 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors"
+        >
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
         {messageContent}
       </div>
     )
