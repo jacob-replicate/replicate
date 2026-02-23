@@ -29,8 +29,8 @@ const ChannelItem = ({ item, isActive, onSelect }) => {
         </svg>
       )}
 
-      <span className={`truncate tracking-tight ${hasUnread ? 'font-medium' : ''}`}>
-        {item.prefix}{item.name}
+      <span className={`truncate ${hasUnread ? 'font-medium' : ''}`}>
+        <span className="opacity-60">{item.prefix}</span>{item.name}
       </span>
 
       {/* Unread indicator - circle badge */}
@@ -57,7 +57,7 @@ const ChannelSection = ({ section, channels, activeChannelId, onSelect }) => {
 
   return (
     <div className={section.id !== 'incidents' ? 'mt-6' : ''}>
-      <div className="px-4 py-1.5 text-zinc-400 dark:text-zinc-500 text-[10px] uppercase tracking-[0.15em] font-normal flex items-center justify-between">
+      <div className="px-4 py-1.5 text-zinc-500 dark:text-zinc-400 text-[11px] uppercase tracking-[0.12em] font-medium flex items-center justify-between">
         <span>{section.label}</span>
         {section.action && (
           <button
@@ -209,9 +209,9 @@ const ChannelSwitcher = ({
           </button>
           {/* Wordmark */}
           <div className="flex items-center gap-3">
-            <span className="text-zinc-200 text-[13px] tracking-[0.25em] uppercase font-extralight">Invariant</span>
+            <span className="text-zinc-100 text-[13px] tracking-[0.15em] uppercase font-light">Invariant</span>
             <span className="text-zinc-600 hidden md:inline">·</span>
-            <span className="text-zinc-500 text-[12px] tracking-normal font-light hidden md:inline">Realistic infra/sec training for experienced software engineers</span>
+            <span className="text-zinc-400 text-[12px] tracking-normal font-normal hidden md:inline">Realistic infra/sec training for experienced software engineers</span>
           </div>
         </div>
         <div className="flex items-center gap-4">
