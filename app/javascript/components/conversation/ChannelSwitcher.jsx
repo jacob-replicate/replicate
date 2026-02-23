@@ -69,11 +69,11 @@ const ChannelSection = ({ section, channels, activeChannelId, onSelect, onClose 
 
   return (
     <div className={section.id !== 'incidents' ? '' : ''}>
-      <div className="px-4 py-2.5 bg-zinc-300 dark:bg-zinc-700 text-zinc-700 dark:text-zinc-100 text-[13px] font-semibold flex items-center justify-between">
+      <div className="px-4 py-2.5 bg-[#5C6370] dark:bg-[#232629] text-white dark:text-[#E8EAED] text-[13px] tracking-wide flex items-center justify-between">
         <span>{section.label}</span>
         {section.action && (
           <button
-            className="flex items-center gap-1 text-[11px] text-indigo-500 dark:text-indigo-400 hover:text-indigo-600 dark:hover:text-indigo-300 font-medium transition-colors"
+            className="flex items-center gap-1 text-[11px] text-white/60 hover:text-white font-medium transition-colors"
             onClick={section.action.onClick}
           >
             {SectionIcons[section.action.icon]}
@@ -212,7 +212,7 @@ const ChannelSwitcher = ({
           <div className="flex items-center gap-4">
             <a href="/" className="text-zinc-100 text-[15px] tracking-[0.15em] uppercase font-light hover:text-zinc-300 transition-colors">Invariant</a>
             <span className="text-[#F5D77A] text-[13px] tracking-[0.04em] font-light hidden md:inline">
-              Hard SRE drills that expose fragile mental models (before production does)
+              Hard SRE drills that expose fragile production instincts
             </span>
           </div>
         </div>
