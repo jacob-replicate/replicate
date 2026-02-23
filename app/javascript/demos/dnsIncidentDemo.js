@@ -46,6 +46,19 @@ const generateTimestamps = () => {
 const timestamps = generateTimestamps()
 
 const INCIDENT_MESSAGES = [
+  // Message 0: Demo intro from Jacob
+  {
+    id: 'msg_intro',
+    sequence: 0,
+    author: { name: 'Jacob Comer', avatar: '/jacob-square.jpg' },
+    accent: true,
+    components: [
+      {
+        type: 'text',
+        content: 'You\'re the on-call engineer. Connection pool just hit 98%. Follow along and make the call when it\'s your turn.',
+      },
+    ],
+  },
   // Message 1: Maya shares the alert
   {
     id: 'msg_1',
@@ -62,9 +75,9 @@ const INCIDENT_MESSAGES = [
         title: 'PostgreSQL Connection Pool',
         metric: 'orders-db-primary',
         value: 98,
-        threshold: 90,
-        status: 'critical',
-      }
+        zoneBreaks: [0, 0.6, 0.85, 1.05],
+        dataPoints: [10, 12, 14, 14, 14, 28, 32, 35, 35, 35, 52, 58, 62, 62, 62, 78, 82, 85, 85, 85, 92, 95, 96, 96, 96, 98, 98, 98, 98, 98],
+      },
     ],
     reactions: [
       { emoji: '🔥', count: 4 },
@@ -82,18 +95,6 @@ const INCIDENT_MESSAGES = [
         type: 'text',
         content: 'taking IC. @daniel can you pull up the connection metrics? seeing `max_connections=50` but we should have headroom',
       },
-    ]
-  },
-  // Message 2b: Channel join - jacob
-  {
-    id: 'msg_2b',
-    sequence: 2.5,
-    components: [
-      {
-        type: 'channel_join',
-        name: 'jacob',
-        avatar: '/jacob-square.jpg',
-      }
     ]
   },
   // Message 3: Thread reply - daniel on it
@@ -238,18 +239,6 @@ JOIN pg_stat_activity blocking ON l.pid = blocking.pid
 WHERE NOT bl.granted;`,
       },
     ],
-  },
-  // Channel join - chris (eng manager) joins mid-incident
-  {
-    id: 'msg_11b',
-    sequence: 11.5,
-    components: [
-      {
-        type: 'channel_join',
-        name: 'chris',
-        avatar: '/profile-photo-1.jpg',
-      }
-    ]
   },
   // Message 13: Daniel proposes options
   {

@@ -271,10 +271,10 @@ const OncallAlert = ({ severity = 'SEV-1', service, alert, error, affected, comm
 }
 
 // Monitor component (Datadog-style metric chart)
-// Base scaffolding colors (Datadog Classic)
-const BASE_THEME = {
+// Default theme values
+const DEFAULT_MONITOR_THEME = {
   bg: '#f9f8fc',
-  border: 'rgba(99, 79, 135, 0.12)',
+  border: 'rgba(99, 79, 135, 0.25)',
   titleColor: '#1a1523',
   metaColor: '#5c5470',
   dimColor: '#7a7189',
@@ -282,86 +282,52 @@ const BASE_THEME = {
   lineColor: '#634f87',
   gridColor: '#eeeaf4',
   gridDashColor: '#b3a9c4',
-  warningLight: 'rgba(99, 79, 135, 0.04)',
+  // 3 zone colors: neutral, warning, alert
+  neutral: 'rgba(99, 79, 135, 0.04)',
+  warning: 'rgba(253, 224, 71, 0.12)',
+  alert: 'rgba(244, 63, 94, 0.20)',
+  separatorColor: 'rgba(99, 79, 135, 0.15)',
+  areaFillTop: 0.10,
+  areaFillBottom: 0.10,
+  areaColor: '#4f46e5',
 }
 
-// 5 separator styles (header → chart divider variations)
-const THEMES = [
-  {
-    name: '1. Solid Border',
-    ...BASE_THEME,
-    border: 'rgba(99, 79, 135, 0.25)',
-    warningMid: 'rgba(253, 224, 71, 0.10)',
-    warningDeep: 'rgba(251, 146, 60, 0.14)',
-    critical: 'rgba(244, 63, 94, 0.20)',
-    separatorStyle: 'solid',
-    separatorColor: 'rgba(99, 79, 135, 0.15)',
-  },
-  {
-    name: '2. Thick Separator',
-    ...BASE_THEME,
-    border: 'rgba(99, 79, 135, 0.25)',
-    warningMid: 'rgba(253, 224, 71, 0.10)',
-    warningDeep: 'rgba(251, 146, 60, 0.14)',
-    critical: 'rgba(244, 63, 94, 0.20)',
-    separatorStyle: 'thick',
-    separatorColor: 'rgba(99, 79, 135, 0.12)',
-  },
-  {
-    name: '3. Gradient Fade',
-    ...BASE_THEME,
-    border: 'rgba(99, 79, 135, 0.25)',
-    warningMid: 'rgba(253, 224, 71, 0.10)',
-    warningDeep: 'rgba(251, 146, 60, 0.14)',
-    critical: 'rgba(244, 63, 94, 0.20)',
-    separatorStyle: 'gradient',
-    separatorColor: 'rgba(99, 79, 135, 0.08)',
-  },
-  {
-    name: '4. Inset Shadow',
-    ...BASE_THEME,
-    border: 'rgba(99, 79, 135, 0.25)',
-    warningMid: 'rgba(253, 224, 71, 0.10)',
-    warningDeep: 'rgba(251, 146, 60, 0.14)',
-    critical: 'rgba(244, 63, 94, 0.20)',
-    separatorStyle: 'inset',
-    separatorColor: 'rgba(99, 79, 135, 0.06)',
-  },
-  {
-    name: '5. Double Line',
-    ...BASE_THEME,
-    border: 'rgba(99, 79, 135, 0.25)',
-    warningMid: 'rgba(253, 224, 71, 0.10)',
-    warningDeep: 'rgba(251, 146, 60, 0.14)',
-    critical: 'rgba(244, 63, 94, 0.20)',
-    separatorStyle: 'double',
-    separatorColor: 'rgba(99, 79, 135, 0.12)',
-  },
+// Default data points (rising to critical)
+const DEFAULT_DATA_POINTS = [
+  12, 14, 13, 15, 18, 16, 22, 25, 24, 28,
+  35, 32, 38, 45, 42, 52, 58, 65, 72, 68,
+  75, 82, 78, 85, 88, 92, 89, 94, 96, 98
 ]
 
-// Single themed monitor card
-const ThemedMonitorCard = ({ theme, title, metric, value }) => {
-  const dataPoints = React.useMemo(() => {
-    const points = [
-      12, 14, 13, 15, 18, 16, 22, 25, 24, 28,
-      35, 32, 38, 45, 42, 52, 58, 65, 72, 68,
-      75, 82, 78, 85, 88, 92, 89, 94, 96, 98
-    ]
-    return points.map(p => Math.max(0, Math.min(100, p + (Math.random() - 0.5) * 3)))
-  }, [])
+// Default zone breaks [neutral, warning, alert] - 3 zones
+const DEFAULT_ZONE_BREAKS = [0, 0.6, 0.85, 1.05]
+
+// Data-driven monitor card - all config comes from props
+const Monitor = ({ title, metric, value, theme = {}, dataPoints, zoneBreaks, region = 'us-east-1', timeRange = 'Last 15m' }) => {
+  // Merge provided theme with defaults
+  const t = { ...DEFAULT_MONITOR_THEME, ...theme }
+
+  // Use provided data points or defaults
+  const points = React.useMemo(() => {
+    const basePoints = dataPoints || DEFAULT_DATA_POINTS
+    return basePoints.map(p => Math.max(0, Math.min(100, p + (Math.random() - 0.5) * 2)))
+  }, [dataPoints])
+
+  // Use provided zone breaks or defaults
+  const zones = zoneBreaks || DEFAULT_ZONE_BREAKS
 
   const chartHeight = 36
   const toY = (pct) => chartHeight - (pct / 100) * chartHeight
-  const points = dataPoints.map((val, i) => `${(i / (dataPoints.length - 1)) * 200},${toY(val)}`).join(' L')
-  const linePath = `M${points}`
+  const pathPoints = points.map((val, i) => `${(i / (points.length - 1)) * 200},${toY(val)}`).join(' L')
+  const linePath = `M${pathPoints}`
   const areaPath = `${linePath} L200,${chartHeight} L0,${chartHeight} Z`
-  const gradientId = `theme-grad-${theme.name.replace(/\s/g, '-')}`
+  const gradientId = `monitor-grad-${title?.replace(/\s/g, '-') || 'default'}-${Math.random().toString(36).substr(2, 9)}`
 
+  // 3 zones: neutral, warning, alert
   const highlights = [
-    { start: 0, end: 0.4, color: theme.warningLight },
-    { start: 0.4, end: 0.65, color: theme.warningMid },
-    { start: 0.65, end: 0.85, color: theme.warningDeep },
-    { start: 0.85, end: 1.05, color: theme.critical }
+    { start: zones[0], end: zones[1], color: t.neutral },
+    { start: zones[1], end: zones[2], color: t.warning },
+    { start: zones[2], end: zones[3], color: t.alert }
   ]
   const gridLines = [0, 50, 100]
 
@@ -369,60 +335,53 @@ const ThemedMonitorCard = ({ theme, title, metric, value }) => {
     <div
       className="rounded-md overflow-hidden"
       style={{
-        backgroundColor: theme.bg,
-        boxShadow: `inset 0 0 0 1px ${theme.border}`
+        backgroundColor: t.bg,
+        boxShadow: `inset 0 0 0 1px ${t.border}`
       }}
     >
       <div className="px-3.5 pt-3 pb-2.5">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <h3 className="text-[15px] font-semibold" style={{ color: theme.titleColor }}>{title}</h3>
-            <div className="flex items-center gap-1.5 text-[13px]">
-              <span style={{ color: theme.metaColor }}>{metric}</span>
-              <span style={{ color: theme.dimColor }}>·</span>
-              <span className="font-mono font-semibold tabular-nums" style={{ color: theme.valueColor }}>{value}%</span>
-              <span style={{ color: theme.metaColor }}>used</span>
-              <span style={{ color: theme.dimColor }}>·</span>
-              <span style={{ color: theme.dimColor }}>us-east-1</span>
+            <h3
+              className="font-mono"
+              style={{
+                color: t.titleColor,
+                fontSize: '13px',
+                fontWeight: '600',
+              }}
+            >
+              {title}
+            </h3>
+            <div className="flex items-center gap-1.5 font-mono" style={{ fontSize: '12px' }}>
+              <span style={{ color: t.metaColor }}>{metric}</span>
+              <span style={{ color: t.dimColor }}>·</span>
+              <span
+                className="tabular-nums"
+                style={{ color: t.valueColor, fontWeight: '600' }}
+              >
+                {value}%
+              </span>
+              <span style={{ color: t.metaColor }}>used</span>
+              <span style={{ color: t.dimColor }}>·</span>
+              <span style={{ color: t.dimColor }}>{region}</span>
             </div>
           </div>
-          <span className="text-[12px] tabular-nums" style={{ color: theme.dimColor }}>Last 15m</span>
+          <span
+            className="tabular-nums font-mono"
+            style={{ color: t.dimColor, fontSize: '11px' }}
+          >
+            {timeRange}
+          </span>
         </div>
       </div>
-      {/* Separator between header and chart */}
-      {theme.separatorStyle === 'solid' && (
-        <div style={{ height: '1px', backgroundColor: theme.separatorColor }} />
-      )}
-      {theme.separatorStyle === 'thick' && (
-        <div style={{ height: '2px', backgroundColor: theme.separatorColor }} />
-      )}
-      {theme.separatorStyle === 'gradient' && (
-        <div style={{
-          height: '8px',
-          background: `linear-gradient(to bottom, ${theme.separatorColor}, transparent)`
-        }} />
-      )}
-      {theme.separatorStyle === 'inset' && (
-        <div style={{
-          height: '4px',
-          boxShadow: `inset 0 2px 4px ${theme.separatorColor}`,
-          backgroundColor: 'transparent'
-        }} />
-      )}
-      {theme.separatorStyle === 'double' && (
-        <div style={{
-          height: '3px',
-          borderTop: `1px solid ${theme.separatorColor}`,
-          borderBottom: `1px solid ${theme.separatorColor}`,
-          backgroundColor: 'transparent'
-        }} />
-      )}
+      {/* Separator */}
+      <div style={{ height: '1px', backgroundColor: t.separatorColor }} />
       <div className="relative overflow-hidden">
         <svg viewBox={`0 0 200 ${chartHeight}`} className="w-full h-12 block" preserveAspectRatio="none">
           <defs>
             <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor={theme.lineColor} stopOpacity="0.08" />
-              <stop offset="100%" stopColor={theme.lineColor} stopOpacity="0" />
+              <stop offset="0%" stopColor={t.areaColor || t.lineColor} stopOpacity={t.areaFillTop} />
+              <stop offset="100%" stopColor={t.areaColor || t.lineColor} stopOpacity={t.areaFillBottom} />
             </linearGradient>
           </defs>
           {highlights.map((h, i) => (
@@ -432,30 +391,16 @@ const ThemedMonitorCard = ({ theme, title, metric, value }) => {
             <line
               key={pct}
               x1="0" y1={toY(pct)} x2="200" y2={toY(pct)}
-              stroke={pct === 50 ? theme.gridDashColor : theme.gridColor}
+              stroke={pct === 50 ? t.gridDashColor : t.gridColor}
               strokeWidth="1"
               strokeDasharray={pct === 50 ? "2,3" : "none"}
               opacity={pct === 50 ? "0.5" : "0.8"}
             />
           ))}
           <path d={areaPath} fill={`url(#${gradientId})`} />
-          <path d={linePath} fill="none" stroke={theme.lineColor} strokeWidth="1.5" strokeLinecap="round" />
+          <path d={linePath} fill="none" stroke={t.lineColor} strokeWidth="1.5" strokeLinecap="round" vectorEffect="non-scaling-stroke" />
         </svg>
       </div>
-    </div>
-  )
-}
-
-// Shows all 10 themes stacked
-const Monitor = ({ title, metric, value }) => {
-  return (
-    <div className="mt-2 space-y-3">
-      {THEMES.map((theme) => (
-        <div key={theme.name}>
-          <p className="text-xs text-zinc-500 mb-1">{theme.name}</p>
-          <ThemedMonitorCard theme={theme} title={title} metric={metric} value={value} />
-        </div>
-      ))}
     </div>
   )
 }
@@ -661,19 +606,14 @@ export const Message = ({ message, onSelect, threadReplies }) => {
             title={component.title}
             metric={component.metric}
             value={component.value}
-            threshold={component.threshold}
-            status={component.status}
+            theme={component.theme}
+            dataPoints={component.dataPoints}
+            zoneBreaks={component.zoneBreaks}
+            region={component.region}
+            timeRange={component.timeRange}
           />
         )
 
-      case 'channel_join':
-        return (
-          <div key={index} className="-mx-4 px-4 py-2 bg-violet-50/60 dark:bg-violet-950/20 flex items-center justify-center gap-3 text-[12px] text-violet-600 dark:text-violet-400">
-            <div className="h-px flex-1 bg-violet-200 dark:bg-violet-800 max-w-[80px]" />
-            <span><span className="font-medium">{component.name}</span> joined</span>
-            <div className="h-px flex-1 bg-violet-200 dark:bg-violet-800 max-w-[80px]" />
-          </div>
-        )
 
       case 'text':
       default:
@@ -743,21 +683,13 @@ export const Message = ({ message, onSelect, threadReplies }) => {
     }
   }
 
-  // Special rendering for system prompts - no avatar, name, timestamp
+  // Special rendering for system messages - no avatar/name, flush content
   if (isSystem) {
-    return (
-      <div className="!py-0 !-mx-4">
-        {renderContent()}
-      </div>
-    )
+    return renderContent()
   }
 
-  // Special rendering for channel_join - no avatar/name wrapper needed
-  if (components?.length === 1 && components[0].type === 'channel_join') {
-    return renderComponent(components[0], 0)
-  }
 
-  return (
+  const messageContent = (
     <div className="flex items-start gap-3">
       {avatar ? (
         <img src={avatar} alt="" className="w-10 h-10 rounded-full flex-shrink-0" />
@@ -807,6 +739,17 @@ export const Message = ({ message, onSelect, threadReplies }) => {
       </div>
     </div>
   )
+
+  // Wrap in accent container if needed
+  if (message.accent) {
+    return (
+      <div className="bg-gradient-to-br from-indigo-50 to-violet-50 dark:from-indigo-950/30 dark:to-violet-950/30 py-4 px-4 border-b border-zinc-200 dark:border-zinc-700">
+        {messageContent}
+      </div>
+    )
+  }
+
+  return messageContent
 }
 
 // Export helper components for direct use

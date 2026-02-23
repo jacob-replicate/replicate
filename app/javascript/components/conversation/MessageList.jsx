@@ -113,24 +113,29 @@ export const MessageList = forwardRef(({
     // If user scrolled more than 100px from bottom, they're reading history
     if (distanceFromBottom > 100) {
       scrollModeRef.current = 'free-scroll'
+    } else if (distanceFromBottom < 20) {
+      // User scrolled back to bottom, re-enable autoscroll
+      scrollModeRef.current = 'locked-to-bottom'
     }
-    // Note: We do NOT re-enable locked mode when they scroll back to bottom.
-    // They must send a message to re-enable autoscroll.
   }
 
   return (
     <div
       ref={containerRef}
       onScroll={handleScroll}
-      className="flex-1 overflow-y-auto overflow-x-hidden divide-y divide-zinc-200 dark:divide-zinc-700 [&>*]:py-4 [&>*]:px-4"
+      className="flex-1 overflow-y-auto overflow-x-hidden"
     >
       {rootMessages.map((message) => (
-        <Message
+        <div
           key={message.id}
-          message={message}
-          onSelect={onSelect}
-          threadReplies={threadMap.get(message.id)}
-        />
+          className={message.isSystem || message.accent ? '' : 'py-4 px-4 border-b border-zinc-200 dark:border-zinc-700'}
+        >
+          <Message
+            message={message}
+            onSelect={onSelect}
+            threadReplies={threadMap.get(message.id)}
+          />
+        </div>
       ))}
       {isTyping && (
         <div className="py-4 px-4">
