@@ -68,8 +68,8 @@ const ChannelSection = ({ section, channels, activeChannelId, onSelect, onClose 
   if (sectionChannels.length === 0) return null
 
   return (
-    <div className={section.id !== 'incidents' ? 'mt-4 pt-4 border-t border-zinc-300 dark:border-zinc-700' : ''}>
-      <div className="px-4 py-1.5 text-zinc-500 dark:text-zinc-400 text-[11px] uppercase tracking-[0.12em] font-medium flex items-center justify-between">
+    <div className={section.id !== 'incidents' ? 'mt-4' : ''}>
+      <div className="px-4 py-2 bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 text-[11px] uppercase tracking-[0.12em] font-medium flex items-center justify-between">
         <span>{section.label}</span>
         {section.action && (
           <button
@@ -106,7 +106,7 @@ const ChannelSection = ({ section, channels, activeChannelId, onSelect, onClose 
  */
 const ChannelList = ({ sections, channels, activeChannelId, onSelect, onClose }) => {
   return (
-    <div className="flex-1 overflow-y-auto py-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+    <div className="flex-1 overflow-y-auto pb-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
       {sections.map((section) => (
         <ChannelSection
           key={section.id}
@@ -212,7 +212,7 @@ const ChannelSwitcher = ({
           <div className="flex items-center gap-4">
             <a href="/" className="text-zinc-100 text-[15px] tracking-[0.15em] uppercase font-light hover:text-zinc-300 transition-colors">Invariant</a>
             <span className="text-[#F5D77A] text-[13px] tracking-[0.04em] font-light hidden md:inline">
-              Realistic drills to surface your SRE blind spots (before production does)
+              Hard infra/sec puzzles that surface SRE blind spots (before production does)
             </span>
           </div>
         </div>
