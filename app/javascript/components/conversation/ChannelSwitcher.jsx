@@ -68,8 +68,8 @@ const ChannelSection = ({ section, channels, activeChannelId, onSelect, onClose 
   if (sectionChannels.length === 0) return null
 
   return (
-    <div className={section.id !== 'incidents' ? 'mt-4' : ''}>
-      <div className="px-4 py-2 bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 text-[11px] uppercase tracking-[0.12em] font-medium flex items-center justify-between">
+    <div className={section.id !== 'incidents' ? '' : ''}>
+      <div className="px-4 py-2.5 bg-zinc-300 dark:bg-zinc-700 text-zinc-700 dark:text-zinc-100 text-[13px] font-semibold flex items-center justify-between">
         <span>{section.label}</span>
         {section.action && (
           <button
@@ -212,7 +212,7 @@ const ChannelSwitcher = ({
           <div className="flex items-center gap-4">
             <a href="/" className="text-zinc-100 text-[15px] tracking-[0.15em] uppercase font-light hover:text-zinc-300 transition-colors">Invariant</a>
             <span className="text-[#F5D77A] text-[13px] tracking-[0.04em] font-light hidden md:inline">
-              Hard infra/sec puzzles that surface SRE blind spots (before production does)
+              Hard SRE drills that expose fragile mental models (before production does)
             </span>
           </div>
         </div>
