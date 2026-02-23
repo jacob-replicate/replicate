@@ -12,24 +12,38 @@
 
 export const DEMO_CHANNELS = [
   // Active incidents (filtered by uuid prefix 'inc-')
-  { uuid: 'inc-4521-cart-500s', id: 'inc-4521-cart-500s', name: 'inc-4521-cart-500s', unreadCount: 0 },
-  { uuid: 'inc-4519-redis-oom', id: 'inc-4519-redis-oom', name: 'inc-4519-redis-oom', unreadCount: 3 },
-  { uuid: 'inc-4517-payments-timeout', id: 'inc-4517-payments-timeout', name: 'inc-4517-payments-timeout', unreadCount: 0 },
-  // Topics - SRE/Security learning channels
-  { uuid: 'data-migrations', id: 'data-migrations', name: 'data-migrations', section: 'topics', unreadCount: 2 },
-  { uuid: 'consensus', id: 'consensus', name: 'consensus', section: 'topics', unreadCount: 0 },
-  { uuid: 'zero-trust', id: 'zero-trust', name: 'zero-trust', section: 'topics', unreadCount: 1 },
-  { uuid: 'chaos-engineering', id: 'chaos-engineering', name: 'chaos-engineering', section: 'topics', unreadCount: 0 },
-  { uuid: 'incident-response', id: 'incident-response', name: 'incident-response', section: 'topics', unreadCount: 4 },
-  { uuid: 'k8s-networking', id: 'k8s-networking', name: 'k8s-networking', section: 'topics', unreadCount: 0 },
-  // Ops channels
-  { uuid: 'oncall-primary', id: 'oncall-primary', name: 'oncall-primary', section: 'ops', unreadCount: 1 },
-  { uuid: 'oncall-secondary', id: 'oncall-secondary', name: 'oncall-secondary', section: 'ops', unreadCount: 0, isPrivate: true },
-  { uuid: 'postmortems', id: 'postmortems', name: 'postmortems', section: 'ops', unreadCount: 0 },
-  // DMs (filtered by uuid prefix 'dm-')
-  { uuid: 'dm-sarah-chen', id: 'dm-sarah-chen', name: 'Sarah Chen', unreadCount: 0 },
-  { uuid: 'dm-alex-kumar', id: 'dm-alex-kumar', name: 'Alex Kumar', unreadCount: 2 },
-  { uuid: 'dm-jordan-miles', id: 'dm-jordan-miles', name: 'Jordan Miles', unreadCount: 0 },
+  { uuid: 'inc-4521-cart-500s', id: 'inc-4521-cart-500s', name: 'cart-service-500s', unreadCount: 0 },
+  { uuid: 'inc-4519-redis-oom', id: 'inc-4519-redis-oom', name: 'redis-cluster-oom', unreadCount: 3 },
+  { uuid: 'inc-4517-payments-timeout', id: 'inc-4517-payments-timeout', name: 'stripe-webhook-timeout', unreadCount: 0 },
+  { uuid: 'inc-4515-dns-propagation', id: 'inc-4515-dns-propagation', name: 'dns-propagation-delay', unreadCount: 1 },
+  { uuid: 'inc-4513-kafka-lag', id: 'inc-4513-kafka-lag', name: 'kafka-consumer-lag', unreadCount: 5 },
+  { uuid: 'inc-4511-ssl-expiry', id: 'inc-4511-ssl-expiry', name: 'ssl-cert-expiry', unreadCount: 0 },
+  // Code Review - PR discussions
+  { uuid: 'pr-auth-refactor', id: 'pr-auth-refactor', name: 'oauth2-token-rotation', section: 'code-review', unreadCount: 2 },
+  { uuid: 'pr-rate-limiter', id: 'pr-rate-limiter', name: 'sliding-window-rate-limiter', section: 'code-review', unreadCount: 0 },
+  { uuid: 'pr-db-migration', id: 'pr-db-migration', name: 'zero-downtime-schema-migration', section: 'code-review', unreadCount: 1 },
+  { uuid: 'pr-retry-logic', id: 'pr-retry-logic', name: 'exponential-backoff-jitter', section: 'code-review', unreadCount: 0 },
+  { uuid: 'pr-audit-logging', id: 'pr-audit-logging', name: 'immutable-audit-trail', section: 'code-review', unreadCount: 3 },
+  { uuid: 'pr-circuit-breaker', id: 'pr-circuit-breaker', name: 'circuit-breaker-pattern', section: 'code-review', unreadCount: 1 },
+  { uuid: 'pr-connection-pool', id: 'pr-connection-pool', name: 'connection-pool-tuning', section: 'code-review', unreadCount: 0 },
+  { uuid: 'pr-idempotency-keys', id: 'pr-idempotency-keys', name: 'idempotency-key-handling', section: 'code-review', unreadCount: 2 },
+  // Design Docs - architecture and design discussions
+  { uuid: 'rfc-auth-service', id: 'rfc-auth-service', name: 'auth-service-redesign', section: 'design-docs', unreadCount: 1 },
+  { uuid: 'adr-event-sourcing', id: 'adr-event-sourcing', name: 'event-sourcing', section: 'design-docs', unreadCount: 0 },
+  { uuid: 'rfc-multi-region', id: 'rfc-multi-region', name: 'multi-region-failover', section: 'design-docs', unreadCount: 2 },
+  { uuid: 'rfc-cqrs', id: 'rfc-cqrs', name: 'cqrs-read-replicas', section: 'design-docs', unreadCount: 0 },
+  { uuid: 'adr-service-mesh', id: 'adr-service-mesh', name: 'service-mesh-adoption', section: 'design-docs', unreadCount: 3 },
+  { uuid: 'rfc-cache-invalidation', id: 'rfc-cache-invalidation', name: 'cache-invalidation-strategy', section: 'design-docs', unreadCount: 1 },
+  // Fundamentals - SRE/Security learning channels
+  { uuid: 'data-migrations', id: 'data-migrations', name: 'data-migrations', section: 'fundamentals', unreadCount: 2 },
+  { uuid: 'consensus', id: 'consensus', name: 'consensus', section: 'fundamentals', unreadCount: 0 },
+  { uuid: 'zero-trust', id: 'zero-trust', name: 'zero-trust', section: 'fundamentals', unreadCount: 1 },
+  { uuid: 'chaos-engineering', id: 'chaos-engineering', name: 'chaos-engineering', section: 'fundamentals', unreadCount: 0 },
+  { uuid: 'incident-response', id: 'incident-response', name: 'incident-response', section: 'fundamentals', unreadCount: 4 },
+  { uuid: 'k8s-networking', id: 'k8s-networking', name: 'k8s-networking', section: 'fundamentals', unreadCount: 0 },
+  { uuid: 'load-balancing', id: 'load-balancing', name: 'load-balancing', section: 'fundamentals', unreadCount: 2 },
+  { uuid: 'distributed-tracing', id: 'distributed-tracing', name: 'distributed-tracing', section: 'fundamentals', unreadCount: 0 },
+  { uuid: 'blue-green-deploys', id: 'blue-green-deploys', name: 'blue-green-deploys', section: 'fundamentals', unreadCount: 1 },
 ]
 
 /**
@@ -44,29 +58,38 @@ export const DEMO_SECTIONS = [
     action: {
       label: 'New',
       icon: 'plus',
-      onClick: () => alert('New incident flow coming soon!'),
+      onClick: () => alert('Generate a new incident scenario based on your skill gaps'),
     },
   },
   {
-    id: 'topics',
-    label: 'Topics',
-    filter: (c) => c.section === 'topics',
+    id: 'code-review',
+    label: 'Code Review',
+    filter: (c) => c.section === 'code-review',
     action: {
       label: 'New',
       icon: 'plus',
-      onClick: () => alert('New topic flow coming soon!'),
+      onClick: () => alert('Get a PR with subtle bugs to catch'),
     },
   },
   {
-    id: 'ops',
-    label: 'Ops',
-    filter: (c) => c.section === 'ops',
+    id: 'design-docs',
+    label: 'Design Docs',
+    filter: (c) => c.section === 'design-docs',
+    action: {
+      label: 'New',
+      icon: 'plus',
+      onClick: () => alert('Get a new architecture problem to solve'),
+    },
   },
   {
-    id: 'dms',
-    label: 'Direct Messages',
-    filter: (c) => (c.uuid || c.id).startsWith('dm-'),
-    prefix: '',
+    id: 'fundamentals',
+    label: 'Fundamentals',
+    filter: (c) => c.section === 'fundamentals',
+    action: {
+      label: 'New',
+      icon: 'plus',
+      onClick: () => alert('Explore a new concept with guided examples'),
+    },
   },
 ]
 

@@ -38,6 +38,7 @@ const ConversationView = ({ apiRef }) => {
   const navigate = useNavigate()
   const [channelName, setChannelName] = useState('#ops-alerts')
   const [isLoaded, setIsLoaded] = useState(false)
+  const conversationRef = useRef(null)
 
   const {
     messages,
@@ -317,6 +318,7 @@ const ConversationView = ({ apiRef }) => {
       variant="irc"
       className=""
       conversationId={uuid}
+      autoFocusInput={true}
     />
   )
 }

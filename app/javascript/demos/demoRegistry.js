@@ -4,6 +4,7 @@
 
 import { INCIDENT_MESSAGES } from './dnsIncidentDemo'
 import { REDIS_INCIDENT_MESSAGES } from './redisOomDemo'
+import { DESIGN_DOC_DEMOS } from './designDocDemo'
 
 export const DEMO_REGISTRY = {
   'inc-4521-cart-500s': {
@@ -11,6 +12,16 @@ export const DEMO_REGISTRY = {
   },
   'inc-3824-redis-oom': {
     messages: REDIS_INCIDENT_MESSAGES,
+  },
+  // Design docs
+  'rfc-auth-service': {
+    messages: DESIGN_DOC_DEMOS['rfc-auth-service'],
+  },
+  'adr-event-sourcing': {
+    messages: DESIGN_DOC_DEMOS['adr-event-sourcing'],
+  },
+  'rfc-multi-region': {
+    messages: DESIGN_DOC_DEMOS['rfc-multi-region'],
   },
 }
 

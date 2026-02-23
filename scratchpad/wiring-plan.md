@@ -710,7 +710,7 @@ broadcast_to_session(session_id, {
 
 ---
 
-## WebSocket Scaling Notes
+~~~~## WebSocket Scaling Notes
 
 ### ActionCable Limitations
 

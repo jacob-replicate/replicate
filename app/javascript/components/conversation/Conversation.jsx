@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback } from 'react'
+import React, { useState, useRef, useCallback, forwardRef, useImperativeHandle, useEffect } from 'react'
 import MessageList from './MessageList'
 import MessageInput from './MessageInput'
 
@@ -12,7 +12,7 @@ import MessageInput from './MessageInput'
  * - 'macos' (default): macOS-style window chrome with traffic lights
  * - 'irc': Minimal IRC-style header
  */
-export const Conversation = ({
+export const Conversation = forwardRef(({
   messages = [],
   isTyping = false,
   onSend,
@@ -28,9 +28,28 @@ export const Conversation = ({
   topic = null,
   userCount = null,
   conversationId = null, // Used for scroll behavior on channel switch
-}) => {
+  autoFocusInput = false, // Focus input on mount
+}, ref) => {
   const [isFullscreen, setIsFullscreen] = useState(false)
   const messageListRef = useRef(null)
+  const inputRef = useRef(null)
+
+  // Expose focusInput method to parent via ref
+  useImperativeHandle(ref, () => ({
+    focusInput: () => {
+      inputRef.current?.focus()
+    }
+  }), [])
+
+  // Auto-focus input on mount if requested
+  useEffect(() => {
+    if (autoFocusInput) {
+      // Small delay to ensure DOM is ready
+      requestAnimationFrame(() => {
+        inputRef.current?.focus()
+      })
+    }
+  }, [autoFocusInput])
 
   // Wrap onSend to also trigger scroll-to-bottom
   const handleSend = useCallback((message) => {
@@ -61,6 +80,7 @@ export const Conversation = ({
 
         {/* Input area */}
         <MessageInput
+          ref={inputRef}
           onSend={handleSend}
           placeholder={placeholder}
           disabled={inputDisabled}
@@ -99,6 +119,7 @@ export const Conversation = ({
 
       {/* Input area */}
       <MessageInput
+        ref={inputRef}
         onSend={handleSend}
         placeholder={placeholder}
         topics={topics}
@@ -108,6 +129,8 @@ export const Conversation = ({
       />
     </div>
   )
-}
+})
+
+Conversation.displayName = 'Conversation'
 
 export default Conversation

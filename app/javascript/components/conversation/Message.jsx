@@ -270,6 +270,76 @@ const OncallAlert = ({ severity = 'SEV-1', service, alert, error, affected, comm
   )
 }
 
+// Countdown component for timed thinking exercises
+const Countdown = ({ duration = 30, label = 'Think through your approach', onComplete }) => {
+  const [timeLeft, setTimeLeft] = useState(duration)
+  const [isComplete, setIsComplete] = useState(false)
+
+  useEffect(() => {
+    if (timeLeft <= 0) {
+      setIsComplete(true)
+      onComplete?.()
+      return
+    }
+
+    const timer = setTimeout(() => {
+      setTimeLeft(t => t - 1)
+    }, 1000)
+
+    return () => clearTimeout(timer)
+  }, [timeLeft, onComplete])
+
+  const progress = ((duration - timeLeft) / duration) * 100
+  const minutes = Math.floor(timeLeft / 60)
+  const seconds = timeLeft % 60
+  const timeDisplay = minutes > 0 ? `${minutes}:${seconds.toString().padStart(2, '0')}` : `${seconds}s`
+
+  if (isComplete) {
+    return (
+      <div className="rounded-lg bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 p-4 mt-2">
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center">
+            <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+            </svg>
+          </div>
+          <div>
+            <div className="font-medium text-emerald-900 dark:text-emerald-100">Time's up!</div>
+            <div className="text-sm text-emerald-700 dark:text-emerald-300">Now let's see how another engineer approached this...</div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <div className="rounded-lg bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 p-4 mt-2">
+      <div className="flex items-center justify-between mb-3">
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 rounded-full bg-amber-500 flex items-center justify-center">
+            <svg className="w-5 h-5 text-white animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <div>
+            <div className="font-medium text-amber-900 dark:text-amber-100">{label}</div>
+            <div className="text-sm text-amber-700 dark:text-amber-300">Visualize your solution before seeing the draft</div>
+          </div>
+        </div>
+        <div className="text-2xl font-mono font-bold text-amber-600 dark:text-amber-400 tabular-nums">
+          {timeDisplay}
+        </div>
+      </div>
+      <div className="h-2 bg-amber-200 dark:bg-amber-800 rounded-full overflow-hidden">
+        <div
+          className="h-full bg-amber-500 transition-all duration-1000 ease-linear"
+          style={{ width: `${progress}%` }}
+        />
+      </div>
+    </div>
+  )
+}
+
 // Monitor component (Datadog-style metric chart)
 // Default theme values
 const DEFAULT_MONITOR_THEME = {
@@ -562,6 +632,16 @@ export const Message = ({ message, onSelect, threadReplies }) => {
 
       case 'code':
         return <CodeBlock key={index} code={component.content} language={component.language} />
+
+      case 'countdown':
+        return (
+          <Countdown
+            key={index}
+            duration={component.duration}
+            label={component.label}
+            onComplete={component.onComplete}
+          />
+        )
 
       case 'diff':
         return (

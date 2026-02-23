@@ -1,20 +1,27 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, useEffect, forwardRef, useImperativeHandle } from 'react'
 
 /**
  * MessageInput - chat input with optional topic dropdown
  */
-export const MessageInput = ({
+export const MessageInput = forwardRef(({
   onSend,
   placeholder = 'Say something...',
   topics = null,
   currentTopic = null,
   onTopicChange = null,
   disabled = false,
-}) => {
+}, ref) => {
   const [value, setValue] = useState('')
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const inputRef = useRef(null)
   const dropdownRef = useRef(null)
+
+  // Expose focus method to parent via ref
+  useImperativeHandle(ref, () => ({
+    focus: () => {
+      inputRef.current?.focus({ preventScroll: true })
+    }
+  }), [])
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -105,6 +112,8 @@ export const MessageInput = ({
       )}
     </form>
   )
-}
+})
+
+MessageInput.displayName = 'MessageInput'
 
 export default MessageInput
