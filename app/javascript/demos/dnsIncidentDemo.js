@@ -46,19 +46,6 @@ const generateTimestamps = () => {
 const timestamps = generateTimestamps()
 
 const INCIDENT_MESSAGES = [
-  // Message 0: Demo intro from Jacob
-  {
-    id: 'msg_intro',
-    sequence: 0,
-    author: { name: 'Jacob Comer', avatar: '/jacob-square.jpg' },
-    accent: true,
-    components: [
-      {
-        type: 'text',
-        content: 'You\'re the on-call engineer. Connection pool just hit 98%. Follow along and make the call when it\'s your turn.',
-      },
-    ],
-  },
   // Message 1: Maya shares the alert
   {
     id: 'msg_1',
