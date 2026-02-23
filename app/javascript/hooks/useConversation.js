@@ -25,7 +25,6 @@ export function useConversation({ conversationId, autoSubscribe = true, initialS
 
   // Add a message to the conversation
   const addMessage = useCallback((msgPartial) => {
-    console.log('[useConversation.addMessage] called with:', msgPartial?.id)
     const message = {
       ...msgPartial,
       id: msgPartial.id || generateId(),
@@ -34,7 +33,6 @@ export function useConversation({ conversationId, autoSubscribe = true, initialS
       isSystem: msgPartial.isSystem ?? false,
     }
     setMessages(prev => {
-      console.log('[useConversation.addMessage] prev messages:', prev.length, '-> adding 1')
       return [...prev, message]
     })
     return message.id
@@ -54,7 +52,6 @@ export function useConversation({ conversationId, autoSubscribe = true, initialS
 
   // Clear all messages
   const clear = useCallback(() => {
-    console.log('[useConversation.clear] called')
     setMessages([])
     setIsTyping(false)
     // Reset sequence tracking

@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route, useParams, useNavigate } from 'react-rout
 import Conversation from './Conversation'
 import BackgroundNotification from './BackgroundNotification'
 import ChannelSwitcher from './ChannelSwitcher'
+import SecurityPage from './SecurityPage'
 import { ConversationProvider, useConversationContext } from './ConversationContext'
 import useConversation from '../../hooks/useConversation'
 import {
@@ -385,6 +386,7 @@ const ConversationAppInner = ({ apiRef }) => {
         {/* Routed conversation view */}
         <Routes>
           <Route path="/" element={<RootRedirect />} />
+          <Route path="/security" element={<SecurityPage />} />
           <Route
             path="/conversations/:uuid"
             element={<ConversationViewWrapper apiRef={apiRef} />}

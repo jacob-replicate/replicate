@@ -1,43 +1,12 @@
-- Your decisions can spawn new incidents, as an integrated way to break off into new experiences + surface novelty by design.
-    - "Hey, just crossposting #inc-5938"... - Put a tab bar in the toolbar to switch between incidents at the top + send notifications in popup that are interesting
-
-- You can make it social. Live refresh if people are playing (once it starts picking up steam)
-- Team mode lets you play async and solve the problem together. Switch between different categories. Escape the room style team building. Solo is free. Team mode is like daily chess.
-- Invite your team -> share link -> "Jeff joined (with avatar)"
-- If multiplayer, leave old decisions lingering + leave an X to close them out. Still relevant.
-    - Ask LLM to generate chat message live (so old chat messags don't get stale -- the multi choice prompt provides context, not an actual message)
-
-- GitHub recent PR links.
-
-- Click "New SEV" button. Show a new one ASAP, along with a link to browser after it reloads. Amazon "one click buy"
-- Better sharing text in navbar when you click on links. Has generic "Check out this incident" text now.
 - IBM disclosure. Make sure to update the dates on your terms/privacy/security pages to be recent.
-- Make incident generation intents align with your old INCIDENTS constant format.
+ F
 - Rerender the multiple choice questions on page reload + back button
 - Merge progress with existing account after logging in
-- Make sure you're returning to old convos in static/index. You're forking every time, which is bad.
-- Make the conversation descriptions closer to incidents, not invariants?
-- Review the list of topics again. Do they all align with incident-focused conversations in V1?
-- Add another engineer during a handoff. Hey Jacob, I can take this one over. Want to try another incident?
-- Replace the navbar filesystem breadcrumbs. Not as relevant anymore. Make a callout to other incidents somehow.
 - Meta tags + sharing images/text
-- "Generating" spinner in category list when topics are generating.
-- Fire logo emoji next to conversation title/description (to make room for different icons for design review, articles, etc)
-- Add language tags (e.g., "Go", "Python", etc) to the conversations
 - Better error handling + retries. Don't just let the loop die.
-- Cancel try-replicate + Apollo billing. Zero traction from cold email + feels spammy. Seeing traction from ads. Lean in.
-- Cut article variant completely
+- Cancel try-replicate + Apollo billing. Cold email isn't the GTM path.
 - Let people edit/delete messages
-- Stop showing a blank conversation when you use the back button -- did that one JS change you made for navigation links persist?
 - Cloudflare
 - Convert conversations/show to React
-- Show multiple choice options in persisted conversation -- can't just generate in JS -- MessageElement, maybe?
-- Protect your S3 credentials from misuse -- spin down old keys, or just delete it?
-- If still a thing, disable all radio button on clicks when sending message. You can click give me a hint + answer old radios.
-
-
-Ads
-- Let's see if you actually understand DNS
-- Let's see if you can debug DNS under pressure
-- Can you debug DNS under pressure?
-- Do you actually know how leader election works?
+- Move Security/Privacy/Terms into JSX + cut the old ERB files
+- Lock down (and/or just delete) AWS account

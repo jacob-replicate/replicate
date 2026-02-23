@@ -1,12 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { useConversationContext } from './ConversationContext'
 
-/**
- * ChannelItem - Renders a single channel or DM in the sidebar
- */
 const ChannelItem = ({ item, isActive, onSelect, onClose }) => {
   const hasUnread = item.unreadCount > 0 && !isActive
-  // Support both uuid and id for backward compatibility
   const channelId = item.uuid || item.id
 
   return (
@@ -30,7 +26,7 @@ const ChannelItem = ({ item, isActive, onSelect, onClose }) => {
       )}
 
       <span className={`truncate ${hasUnread ? 'font-medium' : ''}`}>
-        <span className="opacity-50">{item.prefix}</span>{item.name}
+        {item.name}
       </span>
 
       {/* X button when active */}
@@ -77,7 +73,7 @@ const ChannelSection = ({ section, channels, activeChannelId, onSelect, onClose 
         <span>{section.label}</span>
         {section.action && (
           <button
-            className="flex items-center gap-1 text-[10px] text-indigo-500 dark:text-indigo-400 hover:text-indigo-600 dark:hover:text-indigo-300 font-medium transition-colors"
+            className="flex items-center gap-1 text-[11px] text-indigo-500 dark:text-indigo-400 hover:text-indigo-600 dark:hover:text-indigo-300 font-medium transition-colors"
             onClick={section.action.onClick}
           >
             {SectionIcons[section.action.icon]}
@@ -418,9 +414,6 @@ export const IRCSystemMessage = ({ timestamp, message, type = 'info' }) => {
   )
 }
 
-/**
- * IRCInput - Input field styled like IRC
- */
 export const IRCInput = ({ channelName, onSend }) => {
   const [value, setValue] = useState('')
   const inputRef = useRef(null)

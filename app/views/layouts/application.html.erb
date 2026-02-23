@@ -77,26 +77,6 @@
       <div class="h-screen w-screen overflow-hidden">
         <%= yield %>
       </div>
-    <% elsif params[:action] == "growth" || params[:action] == "show" %>
-      <div class="container mx-auto">
-        <div class="px-4 pb-6 pt-4 md:pt-6 md:pb-8 md:px-6 lg:px-12 xl:px-24 2xl:px-32">
-          <%= render 'layouts/navbar' %>
-
-          <div class="pt-4 md:pt-0 lg:pt-2">
-            <% if flash[:notice] %>
-              <div class="mb-4 px-4 py-3 rounded-md bg-emerald-50 dark:bg-emerald-900/30 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300 text-sm">
-                <%= flash[:notice] %>
-              </div>
-            <% end %>
-            <% if flash[:alert] %>
-              <div class="mb-4 px-4 py-3 rounded-md bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-300 text-sm">
-                <%= flash[:alert] %>
-              </div>
-            <% end %>
-            <%= yield %>
-          </div>
-        </div>
-      </div>
     <% else %>
       <div class="h-screen flex flex-col container mx-auto">
         <div class="px-4 xl:px-32 2xl:px-56 py-4 md:py-6">
