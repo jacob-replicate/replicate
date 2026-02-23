@@ -19,7 +19,7 @@ export const DEMO_CHANNELS = [
   { uuid: 'inc-4513-kafka-lag', id: 'inc-4513-kafka-lag', name: 'kafka-consumer-lag', unreadCount: 5 },
   { uuid: 'inc-4511-ssl-expiry', id: 'inc-4511-ssl-expiry', name: 'ssl-cert-expiry', unreadCount: 0 },
   // Code Review - PR discussions
-  { uuid: 'pr-auth-refactor', id: 'pr-auth-refactor', name: 'oauth2-token-rotation', section: 'code-review', unreadCount: 2 },
+  { uuid: 'pr-auth-refactor', id: 'pr-auth-refactor', name: 'oauth2-token-rotation', section: 'code-review', unreadCount: 0 },
   { uuid: 'pr-rate-limiter', id: 'pr-rate-limiter', name: 'sliding-window-rate-limiter', section: 'code-review', unreadCount: 0 },
   { uuid: 'pr-db-migration', id: 'pr-db-migration', name: 'zero-downtime-schema-migration', section: 'code-review', unreadCount: 1 },
   { uuid: 'pr-retry-logic', id: 'pr-retry-logic', name: 'exponential-backoff-jitter', section: 'code-review', unreadCount: 0 },
@@ -28,8 +28,6 @@ export const DEMO_CHANNELS = [
   { uuid: 'pr-connection-pool', id: 'pr-connection-pool', name: 'connection-pool-tuning', section: 'code-review', unreadCount: 0 },
   { uuid: 'pr-idempotency-keys', id: 'pr-idempotency-keys', name: 'idempotency-key-handling', section: 'code-review', unreadCount: 2 },
   // Design Docs - architecture and design discussions
-  { uuid: 'rfc-auth-service', id: 'rfc-auth-service', name: 'auth-service-redesign', section: 'design-docs', unreadCount: 0 },
-  { uuid: 'adr-event-sourcing', id: 'adr-event-sourcing', name: 'event-sourcing', section: 'design-docs', unreadCount: 0 },
   { uuid: 'rfc-multi-region', id: 'rfc-multi-region', name: 'multi-region-failover', section: 'design-docs', unreadCount: 0 },
   { uuid: 'rfc-cqrs', id: 'rfc-cqrs', name: 'cqrs-read-replicas', section: 'design-docs', unreadCount: 0 },
   { uuid: 'adr-service-mesh', id: 'adr-service-mesh', name: 'service-mesh-adoption', section: 'design-docs', unreadCount: 3 },
