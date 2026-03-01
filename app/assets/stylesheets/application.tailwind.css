@@ -222,11 +222,13 @@ pre code {
 }
 
 .hljs {
-  background-color: #1e1e1e !important;
+  background-color: transparent !important;
+  padding: 0 !important;
 }
 
 html.dark .hljs {
-  background-color: #1a1a1a !important;
+  background-color: transparent !important;
+  padding: 0 !important;
 }
 
 .file-name {

@@ -3,14 +3,21 @@ import React, { useRef, useEffect, useMemo, useState } from 'react'
 
 // Inline code span
 const Code = ({ children }) => (
-  <span className="font-mono bg-zinc-100 dark:bg-zinc-800 px-1 rounded text-[13px] text-pink-600 dark:text-pink-400">
+  <span
+    className="font-mono text-[13px] px-1.5 py-0.5 rounded"
+    style={{
+      color: 'rgba(253, 230, 138, 0.9)',
+      backgroundColor: 'rgba(39, 39, 42, 0.8)',
+      border: '1px solid rgba(113, 113, 122, 0.7)'
+    }}
+  >
     {children}
   </span>
 )
 
 // Mention component
 const Mention = ({ children }) => (
-  <span className="text-[#1264a3] dark:text-blue-400 bg-[#e8f5fa] dark:bg-blue-900/30 rounded px-0.5 font-medium">
+  <span className="text-[#7eb8f5] font-medium hover:underline cursor-pointer">
     {children}
   </span>
 )
@@ -229,8 +236,8 @@ const CodeBlock = ({ code, language }) => {
   }, [code])
 
   return (
-    <pre className="rounded-md text-[13px] leading-[1.5] overflow-x-auto !p-0 border border-zinc-200 dark:border-zinc-600">
-      <code ref={codeRef} className={`language-${language || 'plaintext'} !p-4 block`}>
+    <pre className="text-[13px] leading-[1.5] overflow-x-auto">
+      <code ref={codeRef} className={`language-${language || 'plaintext'} block`}>
         {code}
       </code>
     </pre>
@@ -341,25 +348,23 @@ const Countdown = ({ duration = 30, label = 'Think through your approach', onCom
 }
 
 // Monitor component (Datadog-style metric chart)
-// Default theme values
-const DEFAULT_MONITOR_THEME = {
-  bg: '#f9f8fc',
-  border: 'rgba(99, 79, 135, 0.25)',
-  titleColor: '#1a1523',
-  metaColor: '#5c5470',
-  dimColor: '#7a7189',
-  valueColor: '#c4314b',
-  lineColor: '#634f87',
-  gridColor: '#eeeaf4',
-  gridDashColor: '#b3a9c4',
-  // 3 zone colors: neutral, warning, alert
-  neutral: 'rgba(99, 79, 135, 0.04)',
-  warning: 'rgba(253, 224, 71, 0.12)',
-  alert: 'rgba(244, 63, 94, 0.20)',
-  separatorColor: 'rgba(99, 79, 135, 0.15)',
-  areaFillTop: 0.10,
-  areaFillBottom: 0.10,
-  areaColor: '#4f46e5',
+const MONITOR_THEME = {
+  bg: '#1f1f23',
+  border: 'rgba(113, 113, 122, 0.3)',
+  titleColor: '#f4f4f5',
+  metaColor: '#a1a1aa',
+  dimColor: '#71717a',
+  valueColor: '#f87171',
+  lineColor: '#a78bfa',
+  gridColor: 'rgba(63, 63, 70, 0.5)',
+  gridDashColor: 'rgba(113, 113, 122, 0.4)',
+  neutral: 'rgba(113, 113, 122, 0.08)',
+  warning: 'rgba(253, 224, 71, 0.15)',
+  alert: 'rgba(244, 63, 94, 0.25)',
+  separatorColor: 'rgba(63, 63, 70, 0.6)',
+  areaFillTop: 0.15,
+  areaFillBottom: 0.05,
+  areaColor: '#8b5cf6',
 }
 
 // Default data points (rising to critical)
@@ -375,7 +380,7 @@ const DEFAULT_ZONE_BREAKS = [0, 0.6, 0.85, 1.05]
 // Data-driven monitor card - all config comes from props
 const Monitor = ({ title, metric, value, theme = {}, dataPoints, zoneBreaks, region = 'us-east-1', timeRange = 'Last 15m' }) => {
   // Merge provided theme with defaults
-  const t = { ...DEFAULT_MONITOR_THEME, ...theme }
+  const t = { ...MONITOR_THEME, ...theme }
 
   // Use provided data points or defaults
   const points = React.useMemo(() => {

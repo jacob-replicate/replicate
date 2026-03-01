@@ -128,7 +128,7 @@ export const MessageList = forwardRef(({
       {rootMessages.map((message) => (
         <div
           key={message.id}
-          className={message.isSystem ? '' : 'py-4 px-4 border-b border-zinc-200 dark:border-zinc-700'}
+          className={message.isSystem ? '' : 'py-4 px-4 border-b border-zinc-800/50'}
         >
           <Message
             message={message}
