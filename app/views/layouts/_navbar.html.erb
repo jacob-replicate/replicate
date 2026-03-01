@@ -10,15 +10,15 @@
       <!-- Left: Brand -->
       <div class="flex-shrink-0">
         <div class="flex flex-col gap-[10px] text-[19px]">
-          <a href="<%= root_path %>" style="font-family: 'Roboto Mono', monospace;" class="tracking-tight text-zinc-900 dark:text-zinc-100"><span style="font-weight: 500;">invariant</span><span style="font-weight: 400; margin: 0 -0.05em;">.</span><span style="font-weight: 500;" class="text-purple-500 tracking-tight">training</span></a>
+          <a href="<%= root_path %>" style="font-family: 'Roboto Mono', monospace;" class="tracking-tight text-zinc-100"><span style="font-weight: 500;">invariant</span><span style="font-weight: 400; margin: 0 -0.05em;">.</span><span style="font-weight: 500;" class="text-purple-500 tracking-tight">training</span></a>
         </div>
 
         <div class="text-[13px] flex gap-x-4 mt-[3px]">
           <% %i[privacy security terms].each do |action| %>
             <% if controller_name == 'static' && action_name == action.to_s %>
-              <span class="text-zinc-800 dark:text-zinc-100 font-semibold"><%= action.to_s.capitalize %></span>
+              <span class="text-zinc-100 font-semibold"><%= action.to_s.capitalize %></span>
             <% else %>
-              <a href="/<%= action %>" class="text-[#0066cc] dark:text-blue-400 hover:text-[#004499] dark:hover:text-blue-300 hover:underline hover:underline-offset-8"><%= action.to_s.capitalize %></a>
+              <a href="/<%= action %>" class="text-blue-400 hover:text-blue-300 hover:underline hover:underline-offset-8"><%= action.to_s.capitalize %></a>
             <% end %>
           <% end %>
         </div>
@@ -29,49 +29,49 @@
         <!-- Breadcrumb - hidden on mobile, shown inline on md+ -->
         <% unless controller_name == 'static' && action_name == 'index' %>
           <% if @topic.present? || @experience.present? %>
-            <div class="hidden md:inline-flex items-center gap-[3px] rounded-md border border-zinc-200 dark:border-zinc-700/40 bg-zinc-100 dark:bg-zinc-800/50 px-3 py-1 text-[13px] font-mono">
-              <span class="text-zinc-400 dark:text-zinc-500">/</span>
+            <div class="hidden md:inline-flex items-center gap-[3px] rounded-md border border-zinc-700/40 bg-zinc-800/50 px-3 py-1 text-[13px] font-mono">
+              <span class="text-zinc-500">/</span>
 
               <a
                 href="<%= root_path %>"
-                class="text-[#0066cc] dark:text-blue-400 hover:text-[#004499] dark:hover:text-blue-300"
+                class="text-blue-400 hover:text-blue-300"
               >
                 home
               </a>
 
               <% if @topic.present? %>
-                <span class="text-zinc-400 dark:text-zinc-500">/</span>
+                <span class="text-zinc-500">/</span>
 
                 <% if @experience.present? %>
                   <a
                     href="<%= topic_path(@topic.code) %>"
-                    class="text-[#0066cc] dark:text-blue-400 hover:text-[#004499] dark:hover:text-blue-300"
+                    class="text-blue-400 hover:text-blue-300"
                   >
                     <%= @topic.code %>
                   </a>
 
-                  <span class="text-zinc-400 dark:text-zinc-500">/</span>
+                  <span class="text-zinc-500">/</span>
 
                   <% if controller_name == 'experiences' %>
-                    <span class="text-zinc-800 dark:text-zinc-100 font-semibold">
+                    <span class="text-zinc-100 font-semibold">
                       <%= @experience.code %>
                     </span>
                   <% else %>
                     <a
                       href="<%= topic_experience_path(@topic.code, @experience.code) %>"
-                      class="text-[#0066cc] dark:text-blue-400 hover:text-[#004499] dark:hover:text-blue-300"
+                      class="text-blue-400 hover:text-blue-300"
                     >
                       <%= @experience.code %>
                     </a>
                   <% end %>
                 <% else %>
-                  <span class="text-zinc-800 dark:text-zinc-100 font-semibold">
+                  <span class="text-zinc-100 font-semibold">
                     <%= @topic.code %>
                   </span>
                 <% end %>
               <% elsif @experience.present? %>
-                <span class="text-zinc-400 dark:text-zinc-500">/</span>
-                <span class="text-zinc-800 dark:text-zinc-100 font-semibold">
+                <span class="text-zinc-500">/</span>
+                <span class="text-zinc-100 font-semibold">
                   <%= @experience.code %>
                 </span>
               <% end %>
@@ -87,8 +87,8 @@
             class="md:hidden group relative"
             title="Share"
           >
-            <div class="w-[28px] h-[28px] rounded-full bg-zinc-200 dark:bg-zinc-700 flex items-center justify-center group-hover:bg-zinc-300 dark:group-hover:bg-zinc-600">
-              <svg class="w-4 h-4 text-zinc-700 dark:text-zinc-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <div class="w-[28px] h-[28px] rounded-full bg-zinc-700 flex items-center justify-center group-hover:bg-zinc-600">
+              <svg class="w-4 h-4 text-zinc-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
               </svg>
             </div>
@@ -98,12 +98,12 @@
           <div class="hidden md:flex items-center gap-2">
               <%# LinkedIn share %>
               <%= link_to "https://www.linkedin.com/sharing/share-offsite/?url=#{CGI.escape(request.original_url)}", target: "_blank", class: "group relative", title: "Share on LinkedIn" do %>
-                <img src="/icons/linkedin.png" class="w-[25px] h-[25px] rounded-full opacity-80 dark:opacity-90 group-hover:opacity-100" alt="Share on LinkedIn" />
+                <img src="/icons/linkedin.png" class="w-[25px] h-[25px] rounded-full opacity-90 group-hover:opacity-100" alt="Share on LinkedIn" />
               <% end %>
               <%# Twitter/X share %>
               <%= link_to "https://twitter.com/intent/tweet?url=#{CGI.escape(request.original_url)}", target: "_blank", class: "group relative", title: "Share on X" do %>
-                <div class="w-[25px] h-[25px] rounded-full bg-black dark:bg-white flex items-center justify-center opacity-80 dark:opacity-90 group-hover:opacity-100">
-                  <svg class="w-3.5 h-3.5 text-white dark:text-black" viewBox="0 0 24 24" fill="currentColor">
+                <div class="w-[25px] h-[25px] rounded-full bg-white flex items-center justify-center opacity-90 group-hover:opacity-100">
+                  <svg class="w-3.5 h-3.5 text-black" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
                   </svg>
                 </div>
@@ -118,7 +118,7 @@
               <% end %>
               <%# Reddit share %>
               <%= link_to "https://www.reddit.com/submit?url=#{CGI.escape(request.original_url)}", target: "_blank", class: "group relative", title: "Share on Reddit" do %>
-                <img src="/icons/reddit.png" class="w-[25px] h-[25px] rounded-full opacity-80 dark:opacity-90 group-hover:opacity-100" alt="Share on Reddit" />
+                <img src="/icons/reddit.png" class="w-[25px] h-[25px] rounded-full opacity-90 group-hover:opacity-100" alt="Share on Reddit" />
               <% end %>
               <%# Email share %>
               <%= link_to "mailto:?body=#{CGI.escape(request.original_url)}", class: "group relative", title: "Share via Email" do %>
@@ -143,20 +143,20 @@
         <% end %>
 
         <!-- Separator -->
-        <div class="hidden md:block w-px h-6 bg-zinc-200 dark:bg-zinc-700"></div>
+        <div class="hidden md:block w-px h-6 bg-zinc-700"></div>
 
         <!-- Login/User -->
         <% if logged_in? %>
           <div class="relative">
-            <button type="button" onclick="this.nextElementSibling.classList.toggle('hidden')" class="flex items-center gap-1.5 rounded-full hover:ring-2 hover:ring-zinc-200 dark:hover:ring-zinc-700 transition-all">
+            <button type="button" onclick="this.nextElementSibling.classList.toggle('hidden')" class="flex items-center gap-1.5 rounded-full hover:ring-2 hover:ring-zinc-700 transition-all">
               <img src="<%= current_user.avatar_url %>" class="w-[26px] h-[26px] rounded-full" alt="<%= current_user.name %>" referrerpolicy="no-referrer" />
             </button>
-            <div class="hidden absolute right-0 mt-2 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg shadow-lg py-1 z-50">
-              <div class="px-3 py-2 border-b border-zinc-100 dark:border-zinc-700">
-                <p class="text-sm font-medium text-zinc-800 dark:text-zinc-100 whitespace-nowrap"><%= current_user.name %></p>
-                <p class="text-xs text-zinc-500 dark:text-zinc-400 whitespace-nowrap"><%= current_user.email %></p>
+            <div class="hidden absolute right-0 mt-2 bg-zinc-800 border border-zinc-700 rounded-lg shadow-lg py-1 z-50">
+              <div class="px-3 py-2 border-b border-zinc-700">
+                <p class="text-sm font-medium text-zinc-100 whitespace-nowrap"><%= current_user.name %></p>
+                <p class="text-xs text-zinc-400 whitespace-nowrap"><%= current_user.email %></p>
               </div>
-              <%= button_to logout_path, method: :delete, class: "w-full text-left px-3 py-2 text-sm text-zinc-600 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-700" do %>
+              <%= button_to logout_path, method: :delete, class: "w-full text-left px-3 py-2 text-sm text-zinc-300 hover:bg-zinc-700" do %>
                 Sign out
               <% end %>
             </div>
@@ -164,7 +164,7 @@
         <%# Sign-in button - shown when not logged in and not on landing page %>
         <% elsif controller_name != 'static' || action_name != 'index' %>
           <%= form_tag("/auth/google_oauth2", method: :post, class: "inline") do %>
-            <button type="submit" class="inline-flex items-center gap-2 px-3 py-1.5 text-[13px] font-medium text-zinc-600 dark:text-zinc-300 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-md hover:bg-zinc-50 dark:hover:bg-zinc-700 transition-colors">
+            <button type="submit" class="inline-flex items-center gap-2 px-3 py-1.5 text-[13px] font-medium text-zinc-300 bg-zinc-800 border border-zinc-700 rounded-md hover:bg-zinc-700 transition-colors">
               <svg class="w-4 h-4" viewBox="0 0 24 24">
                 <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
                 <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
@@ -175,24 +175,6 @@
             </button>
           <% end %>
         <% end %>
-
-        <!-- Theme toggle -->
-        <button
-          id="theme-toggle"
-          type="button"
-          class="theme-toggle"
-          aria-label="Toggle dark mode"
-          title="Toggle dark mode"
-        >
-          <div class="theme-toggle-knob">
-            <svg class="theme-toggle-icon theme-toggle-sun" fill="currentColor" viewBox="0 0 20 20">
-              <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd"></path>
-            </svg>
-            <svg class="theme-toggle-icon theme-toggle-moon" fill="currentColor" viewBox="0 0 20 20">
-              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
-            </svg>
-          </div>
-        </button>
       </div>
     </div>
 
@@ -200,49 +182,49 @@
     <% unless controller_name == 'static' && action_name == 'index' %>
       <% if @topic.present? || @experience.present? %>
         <div class="mt-3 md:hidden">
-          <div class="inline-flex items-center gap-[3px] rounded-md border border-zinc-200 dark:border-zinc-700/40 bg-zinc-100 dark:bg-zinc-800/50 px-3 py-1 text-[13px] font-mono">
-            <span class="text-zinc-400 dark:text-zinc-500">/</span>
+          <div class="inline-flex items-center gap-[3px] rounded-md border border-zinc-700/40 bg-zinc-800/50 px-3 py-1 text-[13px] font-mono">
+            <span class="text-zinc-500">/</span>
 
             <a
               href="<%= root_path %>"
-              class="text-[#0066cc] dark:text-blue-400 hover:text-[#004499] dark:hover:text-blue-300"
+              class="text-blue-400 hover:text-blue-300"
             >
               home
             </a>
 
             <% if @topic.present? %>
-              <span class="text-zinc-400 dark:text-zinc-500">/</span>
+              <span class="text-zinc-500">/</span>
 
               <% if @experience.present? %>
                 <a
                   href="<%= topic_path(@topic.code) %>"
-                  class="text-[#0066cc] dark:text-blue-400 hover:text-[#004499] dark:hover:text-blue-300"
+                  class="text-blue-400 hover:text-blue-300"
                 >
                   <%= @topic.code %>
                 </a>
 
-                <span class="text-zinc-400 dark:text-zinc-500">/</span>
+                <span class="text-zinc-500">/</span>
 
                 <% if controller_name == 'experiences' %>
-                  <span class="text-zinc-800 dark:text-zinc-100 font-semibold">
+                  <span class="text-zinc-100 font-semibold">
                     <%= @experience.code %>
                   </span>
                 <% else %>
                   <a
                     href="<%= topic_experience_path(@topic.code, @experience.code) %>"
-                    class="text-[#0066cc] dark:text-blue-400 hover:text-[#004499] dark:hover:text-blue-300"
+                    class="text-blue-400 hover:text-blue-300"
                   >
                     <%= @experience.code %>
                   </a>
                 <% end %>
               <% else %>
-                <span class="text-zinc-800 dark:text-zinc-100 font-semibold">
+                <span class="text-zinc-100 font-semibold">
                   <%= @topic.code %>
                 </span>
               <% end %>
             <% elsif @experience.present? %>
-              <span class="text-zinc-400 dark:text-zinc-500">/</span>
-              <span class="text-zinc-800 dark:text-zinc-100 font-semibold">
+              <span class="text-zinc-500">/</span>
+              <span class="text-zinc-100 font-semibold">
                 <%= @experience.code %>
               </span>
             <% end %>
@@ -252,23 +234,3 @@
     <% end %>
   </nav>
 </header>
-
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const toggle = document.getElementById('theme-toggle');
-    if (!toggle) return;
-
-    toggle.addEventListener('click', function() {
-      const html = document.documentElement;
-      const isDark = html.classList.contains('dark');
-
-      if (isDark) {
-        html.classList.remove('dark');
-        localStorage.setItem('theme', 'light');
-      } else {
-        html.classList.add('dark');
-        localStorage.setItem('theme', 'dark');
-      }
-    });
-  });
-</script>

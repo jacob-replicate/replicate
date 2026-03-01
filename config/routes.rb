@@ -34,10 +34,6 @@ Rails.application.routes.draw do
   post '/sessions/pulse', to: "sessions#pulse"
   get '/growth', to: "static#growth"
 
-  # Demo conversation route - renders React app
-  # Supports both UUIDs and slug-style IDs (for demo data)
-  get '/conversations/:uuid', to: "static#index", constraints: { uuid: /[a-z0-9-]+/i }
-
   resources :conversations, only: [:show, :update]
   get '/conversations/:id/destroy', to: "conversations#destroy"
   resources :messages, only: [:create]
@@ -57,8 +53,9 @@ Rails.application.routes.draw do
   delete '/:topic_code/:conversation_code', to: "conversations#destroy_template", as: "destroy_conversation_template"
   get '/:topic_code/:conversation_code', to: "conversations#show_by_code", as: "topic_conversation"
 
-  # Topic show (must be last of the wildcard routes)
-  get '/:code', to: "topics#show", as: "topic"
+  # Topic show - renders React app for topic slugs (e.g., /dns, /iam, /kubernetes)
+  # Supports kebab-case slugs like: dns, load-balancing, ci-cd, tls-ssl
+  get '/:code', to: "static#index", as: "topic", constraints: { code: /[a-z0-9-]+/i }
 
   root "static#index"
 end

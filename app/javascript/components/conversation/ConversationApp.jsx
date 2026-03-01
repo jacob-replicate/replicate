@@ -14,7 +14,7 @@ import {
   isFollowUpOption
 } from '../../demos/demoOrchestrator'
 import { loadDemo } from '../../demos/demoRegistry'
-import { DEMO_CHANNELS, DEMO_SECTIONS, DEFAULT_CHANNEL_ID } from '../../demos/channelData'
+import { DEMO_CHANNELS, DEFAULT_CHANNEL_ID } from '../../demos/channelData'
 
 // Timing constants for message streaming
 const TYPING_DURATION = 600
@@ -353,8 +353,8 @@ const ConversationAppInner = ({ apiRef }) => {
   const handleChannelSelect = useCallback((channelId) => {
     console.log('[handleChannelSelect] called with channelId:', channelId)
     setActiveChannelId(channelId)
-    console.log('[handleChannelSelect] navigating to:', `/conversations/${channelId}`)
-    navigate(`/conversations/${channelId}`)
+    console.log('[handleChannelSelect] navigating to:', `/${channelId}`)
+    navigate(`/${channelId}`)
 
     // Mark as read when selecting
     markAsRead(channelId)
@@ -364,7 +364,7 @@ const ConversationAppInner = ({ apiRef }) => {
   }, [navigate, markAsRead])
 
   const handleNotificationNavigate = useCallback((conversationId) => {
-    navigate(`/conversations/${conversationId}`)
+    navigate(`/${conversationId}`)
   }, [navigate])
 
   // Expose navigate function globally for demo script
@@ -379,7 +379,6 @@ const ConversationAppInner = ({ apiRef }) => {
     <div className="h-full w-full">
       <ChannelSwitcher
         channels={conversations}
-        sections={DEMO_SECTIONS}
         activeChannelId={activeChannelId}
         onChannelSelect={handleChannelSelect}
       >
@@ -388,7 +387,7 @@ const ConversationAppInner = ({ apiRef }) => {
           <Route path="/" element={<RootRedirect />} />
           <Route path="/security" element={<SecurityPage />} />
           <Route
-            path="/conversations/:uuid"
+            path="/:uuid"
             element={<ConversationViewWrapper apiRef={apiRef} />}
           />
         </Routes>

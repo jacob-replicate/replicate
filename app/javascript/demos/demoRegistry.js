@@ -2,26 +2,11 @@
  * Demo Registry - central place for all demo conversations
  */
 
-import { INCIDENT_MESSAGES } from './dnsIncidentDemo'
-import { REDIS_INCIDENT_MESSAGES } from './redisOomDemo'
-import { DESIGN_DOC_DEMOS } from './designDocDemo'
+import { INCIDENT_MESSAGES } from './demoConversation'
 
 export const DEMO_REGISTRY = {
-  'inc-4521-cart-500s': {
+  'dns': {
     messages: INCIDENT_MESSAGES,
-  },
-  'inc-3824-redis-oom': {
-    messages: REDIS_INCIDENT_MESSAGES,
-  },
-  // Design docs
-  'rfc-auth-service': {
-    messages: DESIGN_DOC_DEMOS['rfc-auth-service'],
-  },
-  'adr-event-sourcing': {
-    messages: DESIGN_DOC_DEMOS['adr-event-sourcing'],
-  },
-  'rfc-multi-region': {
-    messages: DESIGN_DOC_DEMOS['rfc-multi-region'],
   },
 }
 
@@ -51,7 +36,6 @@ export const loadDemo = (channelId) => {
       window.ReplicateConversation.clear()
       window.ReplicateConversation.setChannelName('#' + channelId)
       window.ReplicateConversation.loadMessages(conversation.messages)
-    } else {
     }
   }, 100)
 }
@@ -60,7 +44,7 @@ export const loadDemo = (channelId) => {
  * Initialize the conversation demo
  */
 export const initConversation = () => {
-  const defaultChannel = 'inc-4521-cart-500s'
+  const defaultChannel = 'dns'
 
   // Only auto-navigate if on root or conversations path
   const path = window.location.pathname
@@ -71,11 +55,11 @@ export const initConversation = () => {
       window.ReplicateConversation.loadDemo = loadDemo
 
       if (shouldAutoNavigate) {
-        window.ReplicateConversation.navigate(`/conversations/${defaultChannel}`)
+        window.ReplicateConversation.navigate(`/${defaultChannel}`)
 
         window.ReplicateConversation.onReady((api) => {
           api.setChannelName('#' + defaultChannel)
-          api.streamMessages(DEMO_REGISTRY[defaultChannel].messages)
+          api.streamMessages(DEMO_REGISTRY[defaultChannel]?.messages || [])
         })
       }
     } else {

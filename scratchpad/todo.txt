@@ -1,5 +1,5 @@
 - IBM disclosure. Make sure to update the dates on your terms/privacy/security pages to be recent.
- F
+ - Make editing messages part of the process.
 - Rerender the multiple choice questions on page reload + back button
 - Merge progress with existing account after logging in
 - Meta tags + sharing images/text

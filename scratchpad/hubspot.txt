@@ -1,3 +1,5 @@
+- Janice, permissions, scopes, everything else --  useful, but challenging
+
 - You don't have a control plane, you just have a suggestion.
 
 - Workspace Transfer = "Moving a DEAL PIPELINE from one PORTAL to the other" (but also on-prem, where you get 2 major releases per year to patch things up)
