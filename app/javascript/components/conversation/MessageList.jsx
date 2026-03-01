@@ -125,10 +125,11 @@ export const MessageList = forwardRef(({
       onScroll={handleScroll}
       className="flex-1 overflow-y-auto overflow-x-hidden"
     >
-      {rootMessages.map((message) => (
+      {rootMessages.map((message, index) => (
         <div
           key={message.id}
-          className={message.isSystem ? '' : 'py-4 px-4 border-b border-zinc-800/50'}
+          className={message.isSystem ? '' : 'py-4 px-4'}
+          style={message.isSystem ? {} : index > 0 ? { borderTop: '1px solid #2a2a2e' } : {}}
         >
           <Message
             message={message}
@@ -138,7 +139,10 @@ export const MessageList = forwardRef(({
         </div>
       ))}
       {isTyping && (
-        <div className="py-4 px-4">
+        <div
+          className="py-4 px-4"
+          style={rootMessages.length > 0 ? { borderTop: '1px solid #2a2a2e' } : {}}
+        >
           <TypingIndicator author={isTyping} />
         </div>
       )}

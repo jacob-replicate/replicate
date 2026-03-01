@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState } from 'react'
 
 const ChannelItem = ({ item, isActive, onSelect, onClose }) => {
   const hasUnread = item.unreadCount > 0 && !isActive
@@ -6,15 +6,25 @@ const ChannelItem = ({ item, isActive, onSelect, onClose }) => {
   return (
     <button
       onClick={() => onSelect(item.id)}
-      className={`w-full text-left px-4 py-2 flex items-center gap-2.5 text-[14px] ${
-        isActive
-          ? 'bg-[rgb(45,48,58)] text-[rgb(190,195,210)]'
+      className="w-full text-left px-4 py-2 flex items-center gap-2.5 text-[14px]"
+      style={{
+        backgroundColor: isActive ? '#252529' : 'transparent',
+        borderLeft: isActive ? '5px solid #8b5cf6' : '5px solid transparent',
+        color: isActive
+          ? '#e4e4e7'
           : item.isMuted
-            ? 'text-zinc-600'
+            ? '#52525b'
             : hasUnread
-              ? 'text-zinc-50 font-medium hover:bg-zinc-800/50'
-              : 'text-zinc-500 hover:text-zinc-300'
-      }`}
+              ? '#fafafa'
+              : '#71717a',
+        fontWeight: isActive || hasUnread ? 500 : 400,
+      }}
+      onMouseEnter={(e) => {
+        if (!isActive) e.currentTarget.style.backgroundColor = '#1a1a1c'
+      }}
+      onMouseLeave={(e) => {
+        if (!isActive) e.currentTarget.style.backgroundColor = 'transparent'
+      }}
     >
       {item.isPrivate && (
         <svg className="w-3 h-3 flex-shrink-0 opacity-50" fill="currentColor" viewBox="0 0 16 16">
@@ -98,26 +108,37 @@ const ChannelSwitcher = ({
   const activeChannelName = activeChannel?.name || 'channel'
 
   return (
-    <div className="flex flex-col bg-zinc-950 overflow-hidden text-sm h-full w-full relative">
+    <div className="flex flex-col overflow-hidden text-sm h-full w-full relative" style={{ backgroundColor: '#18181b' }}>
 
       {/* Full-width header */}
-      <div className="flex-shrink-0 flex items-center justify-between px-5 py-2 border-b bg-[#16181d] border-[#252830]">
+      <div className="flex-shrink-0 flex items-center justify-between px-5 py-2" style={{ backgroundColor: '#131316' }}>
         <div className="flex items-center gap-3">
-          {/* Mobile menu button */}
+          {/* Mobile: tappable header that toggles sidebar */}
           <button
-            onClick={() => setSidebarOpen(true)}
-            className="md:hidden text-[#6b7080] hover:text-[#e8e9ed] transition-colors duration-200 mr-1"
+            onClick={() => setSidebarOpen(!sidebarOpen)}
+            className="flex items-center gap-1.5 md:hidden"
           >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5M3.75 17.25h16.5" />
+            <span className="text-zinc-100 text-[15px] font-light">Invariant</span>
+            <span style={{ color: '#52525b' }}>/</span>
+            <span className="text-[15px] font-medium" style={{ color: '#e4e4e7' }}>{activeChannelName}</span>
+            <svg
+              className="w-4 h-4 ml-0.5"
+              style={{ color: '#71717a', transform: sidebarOpen ? 'rotate(180deg)' : 'none' }}
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={2}
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
             </svg>
           </button>
-          {/* Wordmark */}
-          <div className="flex items-center gap-4">
+          {/* Desktop: wordmark + tagline */}
+          <div className="hidden md:flex md:items-center gap-4">
             <a href="/" className="text-zinc-100 text-[15px] tracking-[0.08em] uppercase font-light hover:text-zinc-300 transition-colors">
               Invariant
             </a>
-            <span className="text-[#8B9099] text-[13px] tracking-[0.02em] font-light hidden md:inline">
+            {/* Desktop tagline - hidden on tablet */}
+            <span className="text-[#8B9099] text-[13px] tracking-[0.02em] font-light hidden lg:inline">
               Reason through distributed system failures. The LLM points out what you missed.
             </span>
           </div>
@@ -155,66 +176,57 @@ const ChannelSwitcher = ({
 
       {/* Main layout with sidebar and content */}
       <div className="flex flex-1 min-h-0 overflow-hidden">
-        {/* Mobile overlay */}
-        {sidebarOpen && (
-          <div
-            className="md:hidden fixed inset-0 bg-black/50 z-40"
-            onClick={() => setSidebarOpen(false)}
-          />
-        )}
 
-        {/* Channel sidebar - hidden on mobile unless open */}
-        <div className={`
-          ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} 
-          md:translate-x-0
-          fixed md:relative
-          top-0 bottom-0 md:top-auto md:bottom-auto
-          z-50 md:z-auto
-          w-64
-          flex-shrink-0 
-          bg-[rgb(39,39,42)] 
-          border-r border-zinc-800 
-          flex flex-col
-          md:h-full
-        `}>
+        {/* Channel sidebar - always visible on desktop */}
+        <div
+          className="hidden md:flex md:w-64 flex-shrink-0 flex-col"
+          style={{ backgroundColor: '#19191c' }}
+        >
           <ChannelList
             channels={visibleChannels}
             activeChannelId={activeChannelId}
             onSelect={handleChannelSelect}
             onClose={(channelId) => {
-              // Add to closed channels
               const newClosed = [...closedChannels, channelId]
               setClosedChannels(newClosed)
               localStorage.setItem('closed-channels', JSON.stringify(newClosed))
-
-              // Switch to next available channel
               const remaining = visibleChannels.filter(c => c.id !== channelId)
               if (remaining.length > 0) {
                 handleChannelSelect(remaining[0].id)
               }
             }}
           />
-
-          {/* Footer links - only on mobile since navbar hides them there */}
-          <div className="md:hidden flex-shrink-0 border-t border-zinc-800 px-4 py-3 flex justify-center items-center text-[13px] text-zinc-500">
-            <a href="/about" className="hover:text-zinc-300 transition-colors">About</a>
-            <span className="mx-2 text-zinc-600">·</span>
-            <a href="/privacy" className="hover:text-zinc-300 transition-colors">Privacy</a>
-            <span className="mx-2 text-zinc-600">·</span>
-            <a href="/terms" className="hover:text-zinc-300 transition-colors">Terms</a>
-            <span className="mx-2 text-zinc-600">·</span>
-            <a href="/security" className="hover:text-zinc-300 transition-colors">Security</a>
-          </div>
         </div>
 
-        {/* Main content area */}
-        <div className="flex-1 flex flex-col min-w-0 min-h-0 bg-zinc-950">
-          {/* Children container */}
-          <div className="flex-1 min-h-0 flex">
-            <div className="flex-1 flex flex-col min-w-0">
-              {children}
+        {/* Mobile: show either channel list OR content */}
+        {sidebarOpen ? (
+          <div className="flex-1 flex flex-col md:hidden" style={{ backgroundColor: '#19191c' }}>
+            <ChannelList
+              channels={visibleChannels}
+              activeChannelId={activeChannelId}
+              onSelect={handleChannelSelect}
+              onClose={null}
+            />
+            {/* Footer links */}
+            <div className="flex-shrink-0 border-t px-4 py-3 flex justify-center items-center text-[13px]" style={{ borderColor: '#232326', color: '#71717a' }}>
+              <a href="/about" className="hover:text-zinc-300 transition-colors">About</a>
+              <span className="mx-2" style={{ color: '#3f3f46' }}>·</span>
+              <a href="/privacy" className="hover:text-zinc-300 transition-colors">Privacy</a>
+              <span className="mx-2" style={{ color: '#3f3f46' }}>·</span>
+              <a href="/terms" className="hover:text-zinc-300 transition-colors">Terms</a>
+              <span className="mx-2" style={{ color: '#3f3f46' }}>·</span>
+              <a href="/security" className="hover:text-zinc-300 transition-colors">Security</a>
             </div>
           </div>
+        ) : (
+          <div className="flex-1 flex flex-col min-w-0 min-h-0 md:hidden" style={{ backgroundColor: '#1c1c20' }}>
+            {children}
+          </div>
+        )}
+
+        {/* Desktop: always show content */}
+        <div className="hidden md:flex flex-1 flex-col min-w-0 min-h-0" style={{ backgroundColor: '#1c1c20' }}>
+          {children}
         </div>
       </div>
     </div>
@@ -222,100 +234,3 @@ const ChannelSwitcher = ({
 }
 
 export default ChannelSwitcher
-
-export const IRCHeader = ({ channelName, topic, userCount }) => {
-  return (
-    <div className="bg-zinc-900 border-b border-zinc-800 px-3 py-2 flex items-center gap-3">
-      <span className="text-white font-medium">#{channelName}</span>
-      {topic && (
-        <>
-          <span className="text-zinc-600">|</span>
-          <span className="text-zinc-400 truncate flex-1">{topic}</span>
-        </>
-      )}
-      {userCount && (
-        <span className="text-zinc-500 text-xs">{userCount} users</span>
-      )}
-    </div>
-  )
-}
-
-export const IRCMessageFormat = ({ timestamp, nick, message, isAction = false }) => {
-  const time = new Date(timestamp).toLocaleTimeString('en-US', {
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: false
-  })
-
-  if (isAction) {
-    return (
-      <div className="px-3 py-0.5 hover:bg-zinc-800/30">
-        <span className="text-zinc-500">[{time}]</span>
-        <span className="text-purple-400"> * {nick}</span>
-        <span className="text-zinc-300"> {message}</span>
-      </div>
-    )
-  }
-
-  return (
-    <div className="px-3 py-0.5 hover:bg-zinc-800/30">
-      <span className="text-zinc-500">[{time}]</span>
-      <span className="text-cyan-400"> &lt;{nick}&gt;</span>
-      <span className="text-zinc-200"> {message}</span>
-    </div>
-  )
-}
-
-/**
- * IRCSystemMessage - Join/part/mode messages
- */
-export const IRCSystemMessage = ({ timestamp, message, type = 'info' }) => {
-  const time = new Date(timestamp).toLocaleTimeString('en-US', {
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: false
-  })
-
-  const colors = {
-    join: 'text-green-400',
-    part: 'text-red-400',
-    mode: 'text-yellow-400',
-    info: 'text-zinc-500',
-  }
-
-  return (
-    <div className="px-3 py-0.5">
-      <span className="text-zinc-500">[{time}]</span>
-      <span className={colors[type]}> *** {message}</span>
-    </div>
-  )
-}
-
-export const IRCInput = ({ channelName, onSend }) => {
-  const [value, setValue] = useState('')
-  const inputRef = useRef(null)
-
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    if (value.trim()) {
-      onSend(value)
-      setValue('')
-    }
-  }
-
-  return (
-    <form onSubmit={handleSubmit} className="border-t border-zinc-800 bg-zinc-950">
-      <div className="flex items-center px-3 py-2 gap-2">
-        <span className="text-zinc-500">[#{channelName}]</span>
-        <input
-          ref={inputRef}
-          type="text"
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
-          className="flex-1 bg-transparent text-zinc-200 outline-none placeholder-zinc-600"
-          placeholder="Type a message..."
-        />
-      </div>
-    </form>
-  )
-}

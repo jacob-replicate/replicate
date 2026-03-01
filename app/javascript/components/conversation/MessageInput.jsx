@@ -51,7 +51,8 @@ export const MessageInput = forwardRef(({
   return (
     <form
       onSubmit={handleSubmit}
-      className="border-t border-zinc-300 dark:border-zinc-700 flex items-center bg-white dark:bg-zinc-900"
+      className="flex items-center"
+      style={{ backgroundColor: '#1c1c20', borderTop: '1px solid #2a2a2e' }}
     >
       <input
         ref={inputRef}
@@ -61,7 +62,8 @@ export const MessageInput = forwardRef(({
         onKeyDown={handleKeyDown}
         placeholder={placeholder}
         disabled={disabled}
-        className="flex-1 px-4 py-3 text-[15px] text-zinc-800 dark:text-zinc-200 placeholder-zinc-400 dark:placeholder-zinc-500 outline-none border-none bg-transparent ring-0 focus:ring-0 focus:outline-none disabled:opacity-50"
+        className="flex-1 px-4 py-3 text-[15px] outline-none border-none bg-transparent ring-0 focus:ring-0 focus:outline-none disabled:opacity-50 placeholder-[#71717a]"
+        style={{ color: '#e4e4e7' }}
       />
 
       {/* Topic dropdown */}
