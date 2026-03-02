@@ -478,33 +478,14 @@ const Monitor = ({ title, metric, value, theme = {}, dataPoints, zoneBreaks, reg
   )
 }
 
-// Multiple choice component - clean grayscale with refined typography
+// Multiple choice component - terminal-style numbered options
 const MultipleChoice = ({ question, options, onSelect, selectedId, disabled = false }) => {
   const hasSelection = selectedId !== undefined && selectedId !== null
 
   return (
-    <div
-      className="mb-4 rounded-xl overflow-hidden mx-4"
-      style={{
-        backgroundColor: '#111113',
-        border: '1px solid rgba(255, 255, 255, 0.04)',
-        boxShadow: '0 4px 24px rgba(0,0,0,0.5)'
-      }}
-    >
-      {question && (
-        <div
-          className="text-[15px] leading-relaxed px-5 py-4 font-medium tracking-[-0.01em]"
-          style={{
-            color: '#fafafa',
-            backgroundColor: '#18181b',
-            borderBottom: '1px solid rgba(255, 255, 255, 0.04)'
-          }}
-        >
-          {question}
-        </div>
-      )}
+    <div className="pt-0.5 pb-2 pl-14 pr-4">
       {options && options.length > 0 && (
-        <div className="py-3 px-3">
+        <div>
           {options.map((option, idx) => {
             const optionId = option.id !== undefined ? option.id : idx
             const isSelected = selectedId === optionId
@@ -515,26 +496,32 @@ const MultipleChoice = ({ question, options, onSelect, selectedId, disabled = fa
             const messageText = option.message || option.text
 
             return (
-              <label
+              <div
                 key={optionId}
-                className={`flex items-center py-3 px-3 rounded-lg transition-all duration-150 ${
-                  isSelected
-                    ? 'bg-white/[0.06]'
-                    : isDisabled
-                      ? 'opacity-35 cursor-default'
-                      : 'cursor-pointer hover:bg-white/[0.04]'
+                className={`flex items-baseline leading-snug ${
+                  isDisabled
+                    ? 'opacity-30'
+                    : canInteract ? 'cursor-pointer' : ''
                 }`}
+                style={{ paddingTop: '2px', paddingBottom: '2px' }}
                 onClick={() => canInteract && onSelect?.(optionId, messageText)}
               >
-                <div className={`w-[18px] h-[18px] rounded-full border flex items-center justify-center flex-shrink-0 transition-all ${
-                  isSelected 
-                    ? 'border-zinc-400 bg-zinc-400' 
-                    : 'border-zinc-600 bg-transparent'
-                }`}>
-                  {isSelected && <div className="w-2 h-2 rounded-full bg-zinc-900" />}
-                </div>
-                <span className="ml-3.5 text-zinc-300 text-[14px] leading-snug tracking-[-0.01em]">{displayText}</span>
-              </label>
+                <span
+                  className="font-mono text-[13px] w-5 flex-shrink-0"
+                  style={{ color: canInteract ? 'rgba(140, 160, 220, 0.7)' : '#3f3f46' }}
+                >
+                  {idx + 1}.
+                </span>
+                <span
+                  className={`text-[14px] ${canInteract ? 'hover:underline underline-offset-2' : ''}`}
+                  style={{
+                    color: canInteract ? '#93a8f4' : '#3f3f46',
+                    textDecorationColor: 'rgba(147, 168, 244, 0.5)'
+                  }}
+                >
+                  {displayText}
+                </span>
+              </div>
             )
           })}
         </div>

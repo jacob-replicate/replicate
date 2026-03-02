@@ -37,7 +37,7 @@ export const Conversation = forwardRef(({
   // Expose focusInput method to parent via ref
   useImperativeHandle(ref, () => ({
     focusInput: () => {
-      inputRef.current?.focus()
+      inputRef.current?.focus({ preventScroll: true })
     }
   }), [])
 
@@ -46,10 +46,17 @@ export const Conversation = forwardRef(({
     if (autoFocusInput) {
       // Small delay to ensure DOM is ready
       requestAnimationFrame(() => {
-        inputRef.current?.focus()
+        inputRef.current?.focus({ preventScroll: true })
       })
     }
   }, [autoFocusInput])
+
+  // Refocus input when new messages come in (without scrolling)
+  useEffect(() => {
+    if (messages.length > 0) {
+      inputRef.current?.focus({ preventScroll: true })
+    }
+  }, [messages.length])
 
   // Wrap onSend to also trigger scroll-to-bottom
   const handleSend = useCallback((message) => {
@@ -67,7 +74,7 @@ export const Conversation = forwardRef(({
   // IRC variant - minimal header, supports light/dark
   if (variant === 'irc') {
     return (
-      <div className="flex flex-col h-full text-sm overflow-hidden" style={{ backgroundColor: '#18181b' }}>
+      <div className="flex flex-col h-full text-sm overflow-hidden" style={{ backgroundColor: '#18181a' }}>
 
         {/* Messages area */}
         <MessageList

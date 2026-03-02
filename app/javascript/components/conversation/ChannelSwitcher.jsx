@@ -67,10 +67,11 @@ const ChannelItem = React.forwardRef(({ item, isActive, onSelect, onClose }, ref
       onClick={() => onSelect(item.id)}
       className="w-full text-left px-4 py-1.5 flex items-center gap-2.5 text-[14px]"
       style={{
-        backgroundColor: isActive ? '#252529' : 'transparent',
-        borderLeft: isActive ? '5px solid #8b5cf6' : '5px solid transparent',
+        backgroundColor: isActive ? '#1e1e24' : 'transparent',
+        borderLeft: isActive ? '4px solid #7c6aab' : '4px solid transparent',
+        boxShadow: isActive ? 'inset 0 1px 2px rgba(0,0,0,0.15)' : 'none',
         color: isActive
-          ? '#e4e4e7'
+          ? '#f4f4f5'
           : item.isMuted
             ? '#27272a'
             : hasUnread
@@ -103,7 +104,8 @@ const ChannelItem = React.forwardRef(({ item, isActive, onSelect, onClose }, ref
               e.stopPropagation()
               onClose(item.id)
             }}
-            className="w-4 h-4 rounded-full flex items-center justify-center text-zinc-400 hover:text-zinc-300 hover:bg-zinc-700"
+            className="w-4 h-4 rounded-full flex items-center justify-center hover:bg-zinc-700/50"
+            style={{ color: 'rgba(161, 161, 170, 0.7)' }}
           >
             <svg className="w-2.5 h-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -111,9 +113,9 @@ const ChannelItem = React.forwardRef(({ item, isActive, onSelect, onClose }, ref
           </span>
         )}
 
-        {/* Unread indicator - deep infra red, not alert red */}
+        {/* Unread indicator - desaturated, open issue not alert badge */}
         {hasUnread && !item.isMuted && !isActive && (
-          <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: '#991b1b' }} />
+          <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: '#7f1d1d' }} />
         )}
       </span>
     </button>
@@ -198,19 +200,25 @@ const ChannelSwitcher = ({
     <div className="flex flex-col overflow-hidden text-sm h-full w-full relative" style={{ backgroundColor: '#09090b' }}>
 
       {/* Full-width header - system rail */}
-      <div className="flex-shrink-0 flex items-center justify-between px-4 py-1" style={{ backgroundColor: '#09090b' }}>
+      <div
+        className="flex-shrink-0 flex items-center justify-between px-5 py-1.5"
+        style={{
+          background: 'linear-gradient(180deg, #141416 0%, #0c0c0e 100%)',
+          boxShadow: '0 1px 0 rgba(255,255,255,0.03), 0 4px 12px rgba(0,0,0,0.4)',
+        }}
+      >
         <div className="flex items-center gap-2">
           {/* Mobile: tappable header that toggles sidebar */}
           <button
             onClick={() => setSidebarOpen(!sidebarOpen)}
             className="flex items-center gap-1.5 md:hidden"
           >
-            <span className="text-[13px] font-medium tracking-tight" style={{ color: '#a1a1aa' }}>Invariant</span>
-            <span className="text-[13px] font-light" style={{ color: '#27272a' }}>/</span>
-            <span className="text-[13px]" style={{ color: '#3f3f46' }}>{activeChannelName}</span>
+            <span className="text-[14px] tracking-tight" style={{ color: '#9d8ec4', fontFamily: "'DM Sans', sans-serif", fontWeight: 500 }}>Invariant</span>
+            <span className="text-[13px] font-light" style={{ color: '#3f3f46' }}>/</span>
+            <span className="text-[13px]" style={{ color: '#52525b' }}>{activeChannelName}</span>
             <svg
               className="w-3 h-3"
-              style={{ color: '#27272a', transform: sidebarOpen ? 'rotate(180deg)' : 'none' }}
+              style={{ color: '#3f3f46', transform: sidebarOpen ? 'rotate(180deg)' : 'none' }}
               fill="none"
               stroke="currentColor"
               strokeWidth={2}
@@ -220,12 +228,12 @@ const ChannelSwitcher = ({
             </svg>
           </button>
           {/* Desktop: wordmark + tagline */}
-          <div className="hidden md:flex md:items-center gap-3">
-            <a href="/" className="text-[13px] font-medium tracking-tight hover:opacity-70 transition-opacity" style={{ color: '#a1a1aa' }}>
+          <div className="hidden md:flex md:items-baseline gap-2">
+            <a href="/" className="text-[13px] hover:opacity-70 transition-opacity" style={{ color: '#9d8ec4', fontFamily: "'DM Sans', sans-serif", fontWeight: 600 }}>
               Invariant
             </a>
             {/* Tagline */}
-            <span className="text-[11px] tracking-[0.01em] hidden md:inline" style={{ color: '#27272a' }}>
+            <span className="text-[13px] hidden md:inline" style={{ color: '#52525b', fontFamily: "'DM Sans', sans-serif", fontWeight: 400 }}>
               Sharpen how you think about distributed systems.
             </span>
           </div>
@@ -233,9 +241,9 @@ const ChannelSwitcher = ({
         <div className="flex items-center gap-4">
           {/* Navigation links */}
           <nav className="hidden md:flex items-center gap-3 text-[11px]">
-            <a href="/security" className="transition-colors" style={{ color: '#27272a' }} onMouseEnter={(e) => e.target.style.color = '#52525b'} onMouseLeave={(e) => e.target.style.color = '#27272a'}>Security</a>
-            <a href="/privacy" className="transition-colors" style={{ color: '#27272a' }} onMouseEnter={(e) => e.target.style.color = '#52525b'} onMouseLeave={(e) => e.target.style.color = '#27272a'}>Privacy</a>
-            <a href="/terms" className="transition-colors" style={{ color: '#27272a' }} onMouseEnter={(e) => e.target.style.color = '#52525b'} onMouseLeave={(e) => e.target.style.color = '#27272a'}>Terms</a>
+            <a href="/security" className="transition-colors" style={{ color: '#52525b' }} onMouseEnter={(e) => e.target.style.color = '#71717a'} onMouseLeave={(e) => e.target.style.color = '#52525b'}>Security</a>
+            <a href="/privacy" className="transition-colors" style={{ color: '#52525b' }} onMouseEnter={(e) => e.target.style.color = '#71717a'} onMouseLeave={(e) => e.target.style.color = '#52525b'}>Privacy</a>
+            <a href="/terms" className="transition-colors" style={{ color: '#52525b' }} onMouseEnter={(e) => e.target.style.color = '#71717a'} onMouseLeave={(e) => e.target.style.color = '#52525b'}>Terms</a>
           </nav>
 
 
@@ -268,7 +276,7 @@ const ChannelSwitcher = ({
         {/* Channel sidebar - always visible on desktop */}
         <div
           className="hidden md:flex md:w-64 flex-shrink-0 flex-col"
-          style={{ backgroundColor: '#131316', borderRight: '1px solid #27272a' }}
+          style={{ backgroundColor: '#131315', borderRight: '1px solid #27272a' }}
         >
           <ChannelList
             channels={visibleChannels}
@@ -288,7 +296,7 @@ const ChannelSwitcher = ({
 
         {/* Mobile: show either channel list OR content */}
         {sidebarOpen ? (
-          <div className="flex-1 flex flex-col md:hidden" style={{ backgroundColor: '#131316' }}>
+          <div className="flex-1 flex flex-col md:hidden" style={{ backgroundColor: '#131315' }}>
             <ChannelList
               channels={visibleChannels}
               activeChannelId={activeChannelId}

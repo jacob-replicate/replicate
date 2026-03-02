@@ -374,27 +374,21 @@ WHERE state = 'active'
     components: [
       {
         type: 'multiple_choice',
-        question: "The team reverted the change, but the underlying problem remains: orders can still be double-processed. What's the right architectural fix?",
         options: [
           {
             id: 'a',
-            thought: 'Use SELECT FOR UPDATE SKIP LOCKED to avoid blocking',
+            thought: 'Keep using row locks, but switch to SKIP LOCKED',
             message: 'for the follow-up ticket — we could use SKIP LOCKED instead of FOR UPDATE. that way workers skip rows that are already being processed instead of blocking'
           },
           {
             id: 'b',
-            thought: 'Add a distributed lock service like Redis or Zookeeper',
+            thought: 'Introduce a distributed lock service (Redis/Zookeeper)',
             message: 'thinking we need a distributed lock here — Redis or ZK. database row locks aren\'t meant for this kind of coordination'
           },
           {
             id: 'c',
-            thought: 'Use a proper job queue with exactly-once delivery guarantees',
+            thought: 'Move job coordination into a proper queue with delivery guarantees',
             message: 'this needs a proper job queue with exactly-once semantics. SQS FIFO or something similar — row locking for job coordination is always going to be fragile'
-          },
-          {
-            id: 'd',
-            thought: 'Increase the connection pool size to handle lock contention',
-            message: 'should we just bump the connection pool? might give us more headroom for lock contention'
           },
         ],
       }
