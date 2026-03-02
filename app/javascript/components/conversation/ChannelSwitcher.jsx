@@ -62,13 +62,13 @@ const ChannelSwitcher = ({
             </svg>
           </button>
           {/* Desktop: wordmark + tagline */}
-          <div className="hidden md:flex md:items-baseline gap-2">
+          <div className="hidden md:flex md:items-baseline gap-3">
             <a href="/" className="text-[15px] hover:opacity-70 transition-opacity" style={{ color: '#9d8ec4', fontFamily: "'DM Sans', sans-serif", fontWeight: 600 }}>
               Invariant
             </a>
-            <span style={{ color: '#71717a' }}>/</span>
+            <span className="text-[13px]" style={{ color: '#2a2a2e', fontWeight: 300 }}>/</span>
             {/* Tagline */}
-            <span className="hidden md:inline" style={{ color: '#71717a', fontFamily: "'DM Sans', sans-serif", fontWeight: 400 }}>
+            <span className="text-[13px] hidden md:inline" style={{ color: '#52525b', fontFamily: "'DM Sans', sans-serif", fontWeight: 400 }}>
               Sharpen how you think about distributed systems.
             </span>
           </div>
