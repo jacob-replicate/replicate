@@ -1,6 +1,91 @@
-import React, { useState, useRef, useCallback, forwardRef, useImperativeHandle, useEffect } from 'react'
+import React, { useState, useRef, useCallback, forwardRef, useImperativeHandle, useEffect, useMemo } from 'react'
 import MessageList from './MessageList'
 import MessageInput from './MessageInput'
+
+/**
+ * Extract active MCQ from messages - finds the last system message with multiple_choice
+ * Returns { mcq, mcqMessageId, filteredMessages }
+ */
+const extractActiveMCQ = (messages, onSelect) => {
+  let mcq = null
+  let mcqMessageId = null
+
+  // Find the last system message with an unselected multiple_choice component
+  for (let i = messages.length - 1; i >= 0; i--) {
+    const msg = messages[i]
+    if (msg.isSystem && msg.components) {
+      const mcqComponent = msg.components.find(c => c.type === 'multiple_choice')
+      if (mcqComponent && !mcqComponent.selected) {
+        mcq = mcqComponent
+        mcqMessageId = msg.id
+        break
+      }
+    }
+  }
+
+  // Filter out multiple_choice components from messages (keep other components like text)
+  const filteredMessages = messages.map(msg => {
+    if (!msg.components) return msg
+    const filteredComponents = msg.components.filter(c => c.type !== 'multiple_choice')
+    if (filteredComponents.length === msg.components.length) return msg
+    if (filteredComponents.length === 0) return null // Remove message entirely if only had MCQ
+    return { ...msg, components: filteredComponents }
+  }).filter(Boolean)
+
+  return { mcq, mcqMessageId, filteredMessages }
+}
+
+/**
+ * MCQ Options rendered below input - clickable hints
+ */
+const InputHints = ({ mcq, messageId, onSelect, highlightIndex }) => {
+  const [hoveredIndex, setHoveredIndex] = React.useState(-1)
+
+  if (!mcq || !mcq.options || mcq.options.length === 0) return null
+
+  return (
+    <div
+      className="px-4 py-2"
+      style={{
+        backgroundColor: '#131316',
+        borderTop: '1px solid #1f1f23'
+      }}
+    >
+      {mcq.options.map((option, idx) => {
+        const optionId = option.id !== undefined ? option.id : idx
+        const displayText = option.thought || option.text
+        const messageText = option.message || option.text
+        const isHighlighted = highlightIndex === idx || hoveredIndex === idx
+
+        return (
+          <div
+            key={optionId}
+            className="flex items-baseline leading-snug cursor-pointer"
+            style={{ paddingTop: '3px', paddingBottom: '3px' }}
+            onClick={() => onSelect?.(messageId, optionId, messageText)}
+            onMouseEnter={() => setHoveredIndex(idx)}
+            onMouseLeave={() => setHoveredIndex(-1)}
+          >
+            <span
+              className="font-mono text-[13px] w-5 flex-shrink-0"
+              style={{ color: isHighlighted ? '#a8b8e8' : 'rgba(120, 135, 180, 0.6)' }}
+            >
+              {idx + 1}.
+            </span>
+            <span
+              className="text-[14px]"
+              style={{
+                color: isHighlighted ? '#d4daf5' : '#6b7aa0',
+              }}
+            >
+              {displayText}
+            </span>
+          </div>
+        )
+      })}
+    </div>
+  )
+}
 
 /**
  * Conversation - the main chat container
@@ -31,6 +116,7 @@ export const Conversation = forwardRef(({
   autoFocusInput = false, // Focus input on mount
 }, ref) => {
   const [isFullscreen, setIsFullscreen] = useState(false)
+  const [inputValue, setInputValue] = useState('')
   const messageListRef = useRef(null)
   const inputRef = useRef(null)
 
@@ -59,12 +145,52 @@ export const Conversation = forwardRef(({
   }, [messages.length])
 
   // Wrap onSend to also trigger scroll-to-bottom
+  // Also intercepts number inputs (1, 2, 3) when MCQ is active
   const handleSend = useCallback((message) => {
     // Trigger scroll to bottom and lock autoscroll mode
     messageListRef.current?.scrollToBottom()
     // Call the original onSend
     onSend?.(message)
+    // Clear input value tracking
+    setInputValue('')
   }, [onSend])
+
+  // Extract active MCQ from messages (renders below input instead of in message list)
+  const { mcq, mcqMessageId, filteredMessages } = useMemo(
+    () => extractActiveMCQ(messages, onSelect),
+    [messages, onSelect]
+  )
+
+  // Compute which option to highlight based on input value
+  const highlightIndex = useMemo(() => {
+    if (!mcq || !inputValue) return -1
+    const trimmed = inputValue.trim()
+    const num = parseInt(trimmed, 10)
+    if (!isNaN(num) && num >= 1 && num <= mcq.options.length && trimmed === String(num)) {
+      return num - 1
+    }
+    return -1
+  }, [mcq, inputValue])
+
+  // Handle number selection - intercepts send when input is just a number matching an option
+  const handleSendWithMCQ = useCallback((message) => {
+    const trimmed = message.trim()
+    const num = parseInt(trimmed, 10)
+
+    // If MCQ is active and input is just a number (1, 2, 3, etc.)
+    if (mcq && !isNaN(num) && num >= 1 && num <= mcq.options.length && trimmed === String(num)) {
+      const option = mcq.options[num - 1]
+      const optionId = option.id !== undefined ? option.id : num - 1
+      const messageText = option.message || option.text
+      // Clear input and trigger selection
+      setInputValue('')
+      onSelect?.(mcqMessageId, optionId, messageText)
+      return
+    }
+
+    // Otherwise, normal send
+    handleSend(message)
+  }, [mcq, mcqMessageId, onSelect, handleSend])
 
   const baseClasses = 'flex flex-col bg-white dark:bg-zinc-900 overflow-hidden shadow-sm border border-zinc-300 dark:border-zinc-600'
   const fullscreenClasses = isFullscreen
@@ -79,7 +205,7 @@ export const Conversation = forwardRef(({
         {/* Messages area */}
         <MessageList
           ref={messageListRef}
-          messages={messages}
+          messages={filteredMessages}
           isTyping={isTyping}
           onSelect={onSelect}
           conversationId={conversationId}
@@ -88,10 +214,14 @@ export const Conversation = forwardRef(({
         {/* Input area */}
         <MessageInput
           ref={inputRef}
-          onSend={handleSend}
+          onSend={handleSendWithMCQ}
+          onChange={setInputValue}
           placeholder={placeholder}
           disabled={inputDisabled}
         />
+
+        {/* MCQ hints below input */}
+        <InputHints mcq={mcq} messageId={mcqMessageId} onSelect={onSelect} highlightIndex={highlightIndex} />
       </div>
     )
   }

@@ -356,7 +356,7 @@ const ConversationAppInner = ({ apiRef, currentUser }) => {
   const { uuid } = useParams() || {}
 
   // Get conversations from context instead of local state
-  const { conversations, findConversation, markAsRead } = useConversationContext()
+  const { conversations, findConversation, markAsRead, updateConversation } = useConversationContext()
 
   // Initialize activeChannelId from URL path (e.g., /dns -> dns)
   const getChannelIdFromPath = useCallback((pathname) => {
@@ -375,6 +375,41 @@ const ConversationAppInner = ({ apiRef, currentUser }) => {
   }
 
   const [activeChannelId, setActiveChannelId] = useState(getInitialChannelId)
+
+  // Trickle in fake unread notifications after page load
+  useEffect(() => {
+    // Channels that can receive fake unreads (not the active one)
+    const getEligibleChannels = () => {
+      return conversations
+        .filter(c => c.id !== activeChannelId && !c.unreadCount)
+        .map(c => c.uuid)
+    }
+
+    // Schedule unread notifications with varying delays
+    const delays = [
+      2000 + Math.random() * 1000,   // 2-3s
+      4500 + Math.random() * 1500,   // 4.5-6s
+      7000 + Math.random() * 2000,   // 7-9s
+    ]
+
+    const timeoutIds = []
+
+    delays.forEach((delay, index) => {
+      const timeoutId = setTimeout(() => {
+        const eligible = getEligibleChannels()
+        if (eligible.length === 0) return
+
+        // Pick a random channel from eligible ones
+        const randomUuid = eligible[Math.floor(Math.random() * eligible.length)]
+        updateConversation(randomUuid, { unreadCount: 1 })
+      }, delay)
+      timeoutIds.push(timeoutId)
+    })
+
+    return () => {
+      timeoutIds.forEach(id => clearTimeout(id))
+    }
+  }, []) // Only run once on mount
 
   // Update document title when channel changes
   useEffect(() => {

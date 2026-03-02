@@ -5,6 +5,7 @@ import React, { useState, useRef, useEffect, forwardRef, useImperativeHandle } f
  */
 export const MessageInput = forwardRef(({
   onSend,
+  onChange,
   placeholder = 'Say something...',
   topics = null,
   currentTopic = null,
@@ -34,11 +35,19 @@ export const MessageInput = forwardRef(({
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
 
+  // Notify parent of value changes
+  const handleChange = (e) => {
+    const newValue = e.target.value
+    setValue(newValue)
+    onChange?.(newValue)
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault()
     if (!value.trim() || disabled) return
     onSend?.(value.trim())
     setValue('')
+    onChange?.('')
   }
 
   const handleKeyDown = (e) => {
@@ -58,12 +67,12 @@ export const MessageInput = forwardRef(({
         ref={inputRef}
         type="text"
         value={value}
-        onChange={(e) => setValue(e.target.value)}
+        onChange={handleChange}
         onKeyDown={handleKeyDown}
         placeholder={placeholder}
         disabled={disabled}
-        className="flex-1 px-4 py-3 text-[15px] outline-none border-none bg-transparent ring-0 focus:ring-0 focus:outline-none disabled:opacity-50 placeholder-[#71717a]"
-        style={{ color: '#e4e4e7' }}
+        className="flex-1 px-4 py-3 text-[15px] outline-none border-none bg-transparent ring-0 focus:ring-0 focus:outline-none disabled:opacity-50 placeholder-[#52525b]"
+        style={{ color: '#f4f4f5' }}
       />
 
       {/* Topic dropdown */}

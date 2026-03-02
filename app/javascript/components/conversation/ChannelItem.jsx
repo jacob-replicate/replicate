@@ -20,15 +20,21 @@ const ChannelItem = React.forwardRef(({ item, isActive, onSelect, onClose }, ref
           : item.isMuted
             ? '#27272a'
             : hasUnread
-              ? '#a1a1aa'
-              : '#3f3f46',
+              ? '#d4d4d8'
+              : '#52525b',
         fontWeight: isActive ? 600 : hasUnread ? 500 : 400,
       }}
       onMouseEnter={(e) => {
-        if (!isActive) e.currentTarget.style.backgroundColor = '#1a1a1c'
+        if (!isActive) {
+          e.currentTarget.style.backgroundColor = '#18181b'
+          e.currentTarget.style.color = '#a1a1aa'
+        }
       }}
       onMouseLeave={(e) => {
-        if (!isActive) e.currentTarget.style.backgroundColor = 'transparent'
+        if (!isActive) {
+          e.currentTarget.style.backgroundColor = 'transparent'
+          e.currentTarget.style.color = hasUnread ? '#d4d4d8' : '#52525b'
+        }
       }}
     >
       {item.isPrivate && (
@@ -37,12 +43,17 @@ const ChannelItem = React.forwardRef(({ item, isActive, onSelect, onClose }, ref
         </svg>
       )}
 
-      <span className={`truncate flex-1 ${hasUnread ? 'font-medium' : ''}`}>
+      <span className="truncate flex-1">
         {item.name}
       </span>
 
       <span className="w-4 h-4 flex items-center justify-center flex-shrink-0">
-        {isActive && onClose && (
+        {hasUnread ? (
+          <span
+            className="w-2 h-2 rounded-full"
+            style={{ backgroundColor: '#ef4444' }}
+          />
+        ) : isActive && onClose ? (
           <span
             role="button"
             onClick={(e) => {
@@ -56,12 +67,7 @@ const ChannelItem = React.forwardRef(({ item, isActive, onSelect, onClose }, ref
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
           </span>
-        )}
-
-        {/* Unread indicator - desaturated, open issue not alert badge */}
-        {hasUnread && !item.isMuted && !isActive && (
-          <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: '#7f1d1d' }} />
-        )}
+        ) : null}
       </span>
     </button>
   )

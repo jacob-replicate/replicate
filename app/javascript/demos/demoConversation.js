@@ -590,4 +590,284 @@ Success! Both keys now active.`,
   },
 ]
 
-export { INCIDENT_MESSAGES, AUTH_INCIDENT_MESSAGES }
+/**
+ * Partitioning Cold Case Demo
+ *
+ * A "resolved" incident from 3 days ago where the team thought they fixed
+ * a hot partition issue by adding more shards. But the real flaw remains:
+ * their partition key choice (user_id) doesn't account for power users.
+ */
+const PARTITIONING_INCIDENT_MESSAGES = [
+  {
+    id: 'part_1',
+    sequence: 1,
+    author: { name: 'alex', avatar: '/profile-photo-1.jpg' },
+    created_at: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000 - 45 * 60 * 1000).toISOString(), // 3 days + 45 min ago
+    components: [
+      {
+        type: 'text',
+        content: 'events service latency spiking hard — p99 is through the roof',
+      },
+      {
+        type: 'monitor',
+        title: 'Events Service p99 Latency',
+        metric: 'events-api-latency',
+        value: 2847,
+        unit: 'ms',
+        zoneBreaks: [0, 0.2, 0.5, 0.8],
+        dataPoints: [45, 48, 52, 55, 61, 89, 134, 198, 287, 445, 612, 834, 1102, 1456, 1823, 2103, 2412, 2634, 2756, 2847],
+      },
+    ],
+    reactions: [
+      { emoji: '🔥', count: 5 },
+    ]
+  },
+  {
+    id: 'part_2',
+    sequence: 2,
+    author: { name: 'maya', avatar: '/profile-photo-3.jpg' },
+    created_at: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000 - 42 * 60 * 1000).toISOString(),
+    components: [
+      {
+        type: 'text',
+        content: 'taking IC. @daniel what does the partition distribution look like? I\'m seeing uneven load on the Kafka dashboard',
+      },
+    ],
+  },
+  {
+    id: 'part_3',
+    sequence: 3,
+    author: { name: 'daniel', avatar: '/profile-photo-2.jpg' },
+    created_at: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000 - 38 * 60 * 1000).toISOString(),
+    components: [
+      {
+        type: 'text',
+        content: 'yep, we have a hot partition. partition 7 is getting hammered while the others are basically idle',
+      },
+      {
+        type: 'code',
+        language: 'text',
+        content: `Partition | Events/sec | Lag    | Consumer
+----------|------------|--------|----------
+    0     |     124    |    2   | consumer-1
+    1     |      98    |    0   | consumer-2
+    2     |     156    |    4   | consumer-3
+    3     |     112    |    1   | consumer-4
+    4     |     134    |    3   | consumer-5
+    5     |      89    |    0   | consumer-6
+    6     |     145    |    2   | consumer-7
+    7     |  12,847    | 34,291 | consumer-8  ← hot partition
+    8     |     167    |    5   | consumer-9
+    9     |     103    |    1   | consumer-10`,
+      }
+    ],
+  },
+  {
+    id: 'part_4',
+    sequence: 4,
+    parent_message_id: 'part_3',
+    author: { name: 'alex', avatar: '/profile-photo-1.jpg' },
+    created_at: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000 - 36 * 60 * 1000).toISOString(),
+    components: [
+      { type: 'text', content: 'whoa, partition 7 has 100x the traffic. what\'s the partition key?' }
+    ],
+  },
+  {
+    id: 'part_5',
+    sequence: 5,
+    parent_message_id: 'part_3',
+    author: { name: 'daniel', avatar: '/profile-photo-2.jpg' },
+    created_at: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000 - 35 * 60 * 1000).toISOString(),
+    components: [
+      { type: 'text', content: 'user_id — we partition by user to keep all events for a user on the same consumer for ordering' }
+    ],
+  },
+  {
+    id: 'part_6',
+    sequence: 6,
+    author: { name: 'alex', avatar: '/profile-photo-1.jpg' },
+    created_at: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000 - 32 * 60 * 1000).toISOString(),
+    components: [
+      {
+        type: 'text',
+        content: 'found it — Acme Corp\'s integration went live yesterday. they\'re pushing 12k events/sec through user_id `acme_service_account`',
+      },
+      {
+        type: 'code',
+        language: 'sql',
+        content: `SELECT user_id, count(*) as events_last_hour
+FROM events 
+WHERE created_at > now() - interval '1 hour'
+GROUP BY user_id
+ORDER BY events_last_hour DESC
+LIMIT 5;
+
+     user_id          | events_last_hour
+----------------------+------------------
+ acme_service_account |       46,123,847
+ user_8847123         |           12,445
+ user_2234891         |            8,234
+ user_9912834         |            6,122
+ user_4456721         |            5,891`,
+      }
+    ],
+    reactions: [
+      { emoji: '💀', count: 3 },
+    ],
+  },
+  {
+    id: 'part_7',
+    sequence: 7,
+    parent_message_id: 'part_6',
+    author: { name: 'maya', avatar: '/profile-photo-3.jpg' },
+    created_at: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000 - 30 * 60 * 1000).toISOString(),
+    components: [
+      { type: 'text', content: 'one user is 99.9% of traffic on that partition. classic hot key problem' }
+    ],
+  },
+  {
+    id: 'part_8',
+    sequence: 8,
+    author: { name: 'daniel', avatar: '/profile-photo-2.jpg' },
+    created_at: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000 - 27 * 60 * 1000).toISOString(),
+    components: [
+      {
+        type: 'text',
+        content: 'we only have 10 partitions — let me bump it to 100. that should spread the load better, and I\'ll add more consumers to match',
+      },
+    ],
+  },
+  {
+    id: 'part_9',
+    sequence: 9,
+    parent_message_id: 'part_8',
+    author: { name: 'alex', avatar: '/profile-photo-1.jpg' },
+    created_at: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000 - 25 * 60 * 1000).toISOString(),
+    components: [
+      { type: 'text', content: 'will that actually help? same user_id will still hash to one partition' }
+    ],
+  },
+  {
+    id: 'part_10',
+    sequence: 10,
+    parent_message_id: 'part_8',
+    author: { name: 'daniel', avatar: '/profile-photo-2.jpg' },
+    created_at: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000 - 24 * 60 * 1000).toISOString(),
+    components: [
+      { type: 'text', content: 'true but with more partitions we get better overall distribution — reduces the probability any single partition becomes a bottleneck' }
+    ],
+  },
+  {
+    id: 'part_11',
+    sequence: 11,
+    author: { name: 'maya', avatar: '/profile-photo-3.jpg' },
+    created_at: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000 - 20 * 60 * 1000).toISOString(),
+    components: [
+      {
+        type: 'text',
+        content: 'let\'s do it. @daniel go ahead with the partition expansion. I\'ll coordinate with Acme to see if they can rate limit on their end while we scale up',
+      },
+    ],
+  },
+  {
+    id: 'part_12',
+    sequence: 12,
+    author: { name: 'daniel', avatar: '/profile-photo-2.jpg' },
+    created_at: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000 - 12 * 60 * 1000).toISOString(),
+    components: [
+      {
+        type: 'text',
+        content: 'partition expansion complete — 100 partitions now, spun up 50 more consumers. lag is clearing',
+      },
+      {
+        type: 'code',
+        language: 'bash',
+        content: `$ kafka-reassign-partitions.sh --execute \\
+    --reassignment-json-file expand-to-100.json
+
+Partition reassignment completed successfully.
+
+$ kubectl scale deployment events-consumer --replicas=50
+deployment.apps/events-consumer scaled`,
+      }
+    ],
+    reactions: [
+      { emoji: '🚀', count: 2 },
+    ],
+  },
+  {
+    id: 'part_13',
+    sequence: 13,
+    author: { name: 'alex', avatar: '/profile-photo-1.jpg' },
+    created_at: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000 - 8 * 60 * 1000).toISOString(),
+    components: [
+      {
+        type: 'text',
+        content: 'latency recovering — p99 down to 180ms and dropping. Acme also said they can batch their events instead of sending individually which should help',
+      },
+    ],
+  },
+  {
+    id: 'part_14',
+    sequence: 14,
+    author: { name: 'maya', avatar: '/profile-photo-3.jpg' },
+    created_at: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000 - 5 * 60 * 1000).toISOString(),
+    components: [
+      {
+        type: 'text',
+        content: 'perfect, marking this resolved. good work everyone 🎉',
+      },
+    ],
+    reactions: [
+      { emoji: '🎉', count: 4 },
+      { emoji: '💪', count: 2 },
+    ],
+  },
+  {
+    id: 'part_15',
+    sequence: 15,
+    author: { name: 'daniel', avatar: '/profile-photo-2.jpg' },
+    created_at: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000 - 3 * 60 * 1000).toISOString(),
+    components: [
+      {
+        type: 'text',
+        content: 'filed the postmortem. root cause was insufficient partitions for the scale of our enterprise customers. we\'re in a better spot now with 100 partitions and autoscaling consumers',
+      },
+    ],
+    reactions: [
+      { emoji: '👍', count: 3 },
+    ],
+  },
+  // System message: the "cold case" question
+  // The team thinks they fixed it by adding partitions, but the real issue is the partition key choice
+  {
+    id: 'part_16',
+    sequence: 16,
+    isSystem: true,
+    created_at: new Date().toISOString(),
+    components: [
+      {
+        type: 'multiple_choice',
+        options: [
+          {
+            id: 'a',
+            thought: 'we never modeled asymmetric user growth. partitions don\'t fix hot accounts',
+            message: 'we never modeled asymmetric user growth. partitions don\'t fix hot accounts'
+          },
+          {
+            id: 'b',
+            thought: 'there\'s no backpressure. we find out a partition is overloaded after it\'s too late',
+            message: 'there\'s no backpressure. we find out a partition is overloaded after it\'s too late'
+          },
+          {
+            id: 'c',
+            thought: 'the partition key is wrong. user_id guarantees this happens again for any high-volume account',
+            message: 'the partition key is wrong. user_id guarantees this happens again for any high-volume account'
+          },
+        ],
+      }
+    ],
+  },
+]
+
+export { INCIDENT_MESSAGES, AUTH_INCIDENT_MESSAGES, PARTITIONING_INCIDENT_MESSAGES }
