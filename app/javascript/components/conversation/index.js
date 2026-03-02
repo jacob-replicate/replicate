@@ -6,6 +6,9 @@ export { default as MessageList } from './MessageList'
 export { default as MessageInput } from './MessageInput'
 export { default as TypingIndicator } from './TypingIndicator'
 export { default as ChannelSwitcher } from './ChannelSwitcher'
+export { default as ChannelList } from './ChannelList'
+export { default as ChannelItem } from './ChannelItem'
+export { default as UserMenu } from './UserMenu'
 
 // Context for shared conversation state
 export { ConversationProvider, useConversationContext, useConversationByUuid } from './ConversationContext'

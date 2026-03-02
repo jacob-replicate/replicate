@@ -1,0 +1,72 @@
+import React from 'react'
+
+/**
+ * ChannelItem - Single channel row in the sidebar
+ */
+const ChannelItem = React.forwardRef(({ item, isActive, onSelect, onClose }, ref) => {
+  const hasUnread = item.unreadCount > 0 && !isActive
+
+  return (
+    <button
+      ref={ref}
+      onClick={() => onSelect(item.id)}
+      className="w-full text-left px-4 py-1.5 flex items-center gap-2.5 text-[14px]"
+      style={{
+        backgroundColor: isActive ? '#1e1e24' : 'transparent',
+        borderLeft: isActive ? '4px solid #7c6aab' : '4px solid transparent',
+        boxShadow: isActive ? 'inset 0 1px 2px rgba(0,0,0,0.15)' : 'none',
+        color: isActive
+          ? '#f4f4f5'
+          : item.isMuted
+            ? '#27272a'
+            : hasUnread
+              ? '#a1a1aa'
+              : '#3f3f46',
+        fontWeight: isActive ? 600 : hasUnread ? 500 : 400,
+      }}
+      onMouseEnter={(e) => {
+        if (!isActive) e.currentTarget.style.backgroundColor = '#1a1a1c'
+      }}
+      onMouseLeave={(e) => {
+        if (!isActive) e.currentTarget.style.backgroundColor = 'transparent'
+      }}
+    >
+      {item.isPrivate && (
+        <svg className="w-3 h-3 flex-shrink-0 opacity-50" fill="currentColor" viewBox="0 0 16 16">
+          <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/>
+        </svg>
+      )}
+
+      <span className={`truncate flex-1 ${hasUnread ? 'font-medium' : ''}`}>
+        {item.name}
+      </span>
+
+      <span className="w-4 h-4 flex items-center justify-center flex-shrink-0">
+        {isActive && onClose && (
+          <span
+            role="button"
+            onClick={(e) => {
+              e.stopPropagation()
+              onClose(item.id)
+            }}
+            className="w-4 h-4 rounded-full flex items-center justify-center hover:bg-zinc-700/50"
+            style={{ color: 'rgba(161, 161, 170, 0.7)' }}
+          >
+            <svg className="w-2.5 h-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </span>
+        )}
+
+        {/* Unread indicator - desaturated, open issue not alert badge */}
+        {hasUnread && !item.isMuted && !isActive && (
+          <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: '#7f1d1d' }} />
+        )}
+      </span>
+    </button>
+  )
+})
+
+ChannelItem.displayName = 'ChannelItem'
+
+export default ChannelItem

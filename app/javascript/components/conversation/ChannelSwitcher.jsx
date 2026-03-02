@@ -1,176 +1,10 @@
-import React, { useState, useRef, useEffect, useLayoutEffect } from 'react'
+import React, { useState } from 'react'
+import UserMenu from './UserMenu'
+import ChannelList from './ChannelList'
 
 /**
- * UserMenu - Profile photo with dropdown for sign out
+ * ChannelSwitcher - Main layout with sidebar and content area
  */
-const UserMenu = ({ user }) => {
-  const [isOpen, setIsOpen] = useState(false)
-  const menuRef = useRef(null)
-
-  // Close dropdown when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (menuRef.current && !menuRef.current.contains(e.target)) {
-        setIsOpen(false)
-      }
-    }
-    document.addEventListener('mousedown', handleClickOutside)
-    return () => document.removeEventListener('mousedown', handleClickOutside)
-  }, [])
-
-  return (
-    <div className="relative" ref={menuRef}>
-      <button
-        type="button"
-        onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-1"
-      >
-        <img
-          src={user.avatar_url}
-          className="w-[26px] h-[26px] rounded-full ring-1 ring-zinc-700/80"
-          style={{ filter: 'brightness(0.92)' }}
-          alt={user.name}
-          referrerPolicy="no-referrer"
-        />
-        <svg className="w-3 h-3 text-zinc-400" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-        </svg>
-      </button>
-      {isOpen && (
-        <div className="absolute right-0 mt-2 bg-zinc-800 border border-zinc-700 rounded-lg shadow-lg py-1 z-50 min-w-[180px]">
-          <div className="px-3 py-2 border-b border-zinc-700">
-            <p className="text-sm font-medium text-zinc-100 whitespace-nowrap">{user.name}</p>
-            <p className="text-xs text-zinc-400 whitespace-nowrap">{user.email}</p>
-          </div>
-          <form action="/logout" method="post">
-            <input type="hidden" name="_method" value="delete" />
-            <input type="hidden" name="authenticity_token" value={document.querySelector('meta[name="csrf-token"]')?.content || ''} />
-            <button
-              type="submit"
-              className="w-full text-left px-3 py-2 text-sm text-zinc-300 hover:bg-zinc-700"
-            >
-              Sign out
-            </button>
-          </form>
-        </div>
-      )}
-    </div>
-  )
-}
-
-const ChannelItem = React.forwardRef(({ item, isActive, onSelect, onClose }, ref) => {
-  const hasUnread = item.unreadCount > 0 && !isActive
-
-  return (
-    <button
-      ref={ref}
-      onClick={() => onSelect(item.id)}
-      className="w-full text-left px-4 py-1.5 flex items-center gap-2.5 text-[14px]"
-      style={{
-        backgroundColor: isActive ? '#1e1e24' : 'transparent',
-        borderLeft: isActive ? '4px solid #7c6aab' : '4px solid transparent',
-        boxShadow: isActive ? 'inset 0 1px 2px rgba(0,0,0,0.15)' : 'none',
-        color: isActive
-          ? '#f4f4f5'
-          : item.isMuted
-            ? '#27272a'
-            : hasUnread
-              ? '#a1a1aa'
-              : '#3f3f46',
-        fontWeight: isActive ? 600 : hasUnread ? 500 : 400,
-      }}
-      onMouseEnter={(e) => {
-        if (!isActive) e.currentTarget.style.backgroundColor = '#1a1a1c'
-      }}
-      onMouseLeave={(e) => {
-        if (!isActive) e.currentTarget.style.backgroundColor = 'transparent'
-      }}
-    >
-      {item.isPrivate && (
-        <svg className="w-3 h-3 flex-shrink-0 opacity-50" fill="currentColor" viewBox="0 0 16 16">
-          <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/>
-        </svg>
-      )}
-
-      <span className={`truncate flex-1 ${hasUnread ? 'font-medium' : ''}`}>
-        {item.name}
-      </span>
-
-      <span className="w-4 h-4 flex items-center justify-center flex-shrink-0">
-        {isActive && onClose && (
-          <span
-            role="button"
-            onClick={(e) => {
-              e.stopPropagation()
-              onClose(item.id)
-            }}
-            className="w-4 h-4 rounded-full flex items-center justify-center hover:bg-zinc-700/50"
-            style={{ color: 'rgba(161, 161, 170, 0.7)' }}
-          >
-            <svg className="w-2.5 h-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </span>
-        )}
-
-        {/* Unread indicator - desaturated, open issue not alert badge */}
-        {hasUnread && !item.isMuted && !isActive && (
-          <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: '#7f1d1d' }} />
-        )}
-      </span>
-    </button>
-  )
-})
-
-const ChannelList = ({ channels, activeChannelId, onSelect, onClose }) => {
-  const listRef = useRef(null)
-  const activeItemRef = useRef(null)
-  const hasScrolledRef = useRef(false)
-
-  // Sort channels: unmuted first, then by name
-  const sortedChannels = [...channels].sort((a, b) => {
-    if (a.isMuted !== b.isMuted) return a.isMuted ? 1 : -1
-    return a.name.localeCompare(b.name)
-  })
-
-  // Scroll active channel to center on initial load only, with slight offset for visual hint
-  useLayoutEffect(() => {
-    if (hasScrolledRef.current || !activeItemRef.current || !listRef.current) return
-
-    // Use rAF to ensure layout is complete before measuring
-    const frameId = requestAnimationFrame(() => {
-      const container = listRef.current
-      const item = activeItemRef.current
-      if (!container || !item) return
-
-      const itemTop = item.offsetTop
-      const itemHeight = item.offsetHeight
-      const containerHeight = container.clientHeight
-      // Position item in center, then offset by ~half an item height to show partial cutoff
-      const scrollPosition = itemTop - (containerHeight / 2) + (itemHeight / 2) - 3
-      container.scrollTop = Math.max(0, scrollPosition)
-      hasScrolledRef.current = true
-    })
-
-    return () => cancelAnimationFrame(frameId)
-  }, [activeChannelId])
-
-  return (
-    <div ref={listRef} className="flex-1 overflow-y-auto pb-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-      {sortedChannels.map((channel) => (
-        <ChannelItem
-          key={channel.id}
-          item={channel}
-          isActive={activeChannelId === channel.id}
-          onSelect={onSelect}
-          onClose={onClose}
-          ref={activeChannelId === channel.id ? activeItemRef : null}
-        />
-      ))}
-    </div>
-  )
-}
-
 
 const ChannelSwitcher = ({
   channels,
@@ -232,7 +66,7 @@ const ChannelSwitcher = ({
             <a href="/" className="text-[15px] hover:opacity-70 transition-opacity" style={{ color: '#9d8ec4', fontFamily: "'DM Sans', sans-serif", fontWeight: 600 }}>
               Invariant
             </a>
-            <span style={{ color: '#71717a' }}>-</span>
+            <span style={{ color: '#71717a' }}>/</span>
             {/* Tagline */}
             <span className="hidden md:inline" style={{ color: '#71717a', fontFamily: "'DM Sans', sans-serif", fontWeight: 400 }}>
               Sharpen how you think about distributed systems.
