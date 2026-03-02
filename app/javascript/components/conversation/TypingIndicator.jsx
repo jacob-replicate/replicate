@@ -10,7 +10,7 @@ export const TypingIndicator = ({ author }) => {
   return (
     <div className="flex items-start gap-3">
       {avatar ? (
-        <img src={avatar} alt="" className="w-10 h-10 rounded-full flex-shrink-0" />
+        <img src={avatar} alt="" className="w-10 h-10 rounded-full flex-shrink-0 ring-1 ring-zinc-700/60" style={{ filter: 'brightness(0.9) saturate(0.9)' }} />
       ) : (
         <div className="w-10 h-10 rounded-full flex-shrink-0 bg-zinc-200 dark:bg-zinc-700" />
       )}

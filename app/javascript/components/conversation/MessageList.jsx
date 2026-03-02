@@ -123,7 +123,7 @@ export const MessageList = forwardRef(({
     <div
       ref={containerRef}
       onScroll={handleScroll}
-      className="flex-1 overflow-y-auto overflow-x-hidden"
+      className="flex-1 overflow-y-auto overflow-x-hidden min-h-0"
     >
       {rootMessages.map((message, index) => (
         <div

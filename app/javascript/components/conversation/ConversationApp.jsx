@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useCallback, useState } from 'react'
 import ReactDOM from 'react-dom/client'
-import { BrowserRouter, Routes, Route, useParams, useNavigate } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, useParams, useNavigate, useLocation } from 'react-router-dom'
 import Conversation from './Conversation'
 import BackgroundNotification from './BackgroundNotification'
 import ChannelSwitcher from './ChannelSwitcher'
@@ -276,6 +276,14 @@ const ConversationView = ({ apiRef }) => {
     }
   }, [addMessage, updateMessage, removeMessage, clear, setTyping, setExpectedSequence, setChannelName, messages, isTyping, isLoaded, apiRef, streamMessages, loadMessages])
 
+  // Load demo when component mounts (uuid from route)
+  useEffect(() => {
+    if (uuid) {
+      setChannelName('#' + uuid)
+      loadDemo(uuid)
+    }
+  }, []) // Only on mount
+
   // Handle message selection (for multiple choice, etc)
   // Removes the system prompt, shows typing indicator, then sends user's message
   // Then orchestrates demo responses based on the selected option
@@ -327,13 +335,13 @@ const ConversationView = ({ apiRef }) => {
 /**
  * ConversationApp - Root component with routing
  */
-const ConversationApp = () => {
+const ConversationApp = ({ currentUser }) => {
   const apiRef = useRef(null)
 
   return (
     <ConversationProvider initialConversations={DEMO_CHANNELS}>
       <BrowserRouter>
-        <ConversationAppInner apiRef={apiRef} />
+        <ConversationAppInner apiRef={apiRef} currentUser={currentUser} />
       </BrowserRouter>
     </ConversationProvider>
   )
@@ -342,13 +350,48 @@ const ConversationApp = () => {
 /**
  * Inner component that has access to router hooks
  */
-const ConversationAppInner = ({ apiRef }) => {
+const ConversationAppInner = ({ apiRef, currentUser }) => {
   const navigate = useNavigate()
+  const location = useLocation()
   const { uuid } = useParams() || {}
 
   // Get conversations from context instead of local state
   const { conversations, findConversation, markAsRead } = useConversationContext()
-  const [activeChannelId, setActiveChannelId] = useState(DEFAULT_CHANNEL_ID)
+
+  // Initialize activeChannelId from URL path (e.g., /dns -> dns)
+  const getChannelIdFromPath = useCallback((pathname) => {
+    const pathChannel = pathname.replace(/^\//, '').split('/')[0]
+    // Only use path if it matches a known channel (check against DEMO_CHANNELS for initial load)
+    const knownChannels = conversations.length > 0 ? conversations : DEMO_CHANNELS
+    const isKnownChannel = knownChannels.some(c => c.id === pathChannel)
+    return isKnownChannel ? pathChannel : DEFAULT_CHANNEL_ID
+  }, [conversations])
+
+  // Get initial channel from URL (use DEMO_CHANNELS directly to avoid timing issues)
+  const getInitialChannelId = () => {
+    const pathChannel = location.pathname.replace(/^\//, '').split('/')[0]
+    const isKnownChannel = DEMO_CHANNELS.some(c => c.id === pathChannel)
+    return isKnownChannel ? pathChannel : DEFAULT_CHANNEL_ID
+  }
+
+  const [activeChannelId, setActiveChannelId] = useState(getInitialChannelId)
+
+  // Update document title when channel changes
+  useEffect(() => {
+    const channel = conversations.find(c => c.id === activeChannelId) || DEMO_CHANNELS.find(c => c.id === activeChannelId)
+    const channelName = channel?.name || activeChannelId
+    // Capitalize first letter
+    const formattedName = channelName.charAt(0).toUpperCase() + channelName.slice(1)
+    document.title = `Invariant: ${formattedName}`
+  }, [activeChannelId, conversations])
+
+  // Sync activeChannelId when URL changes (e.g., direct navigation to /dns)
+  useEffect(() => {
+    const channelFromPath = getChannelIdFromPath(location.pathname)
+    if (channelFromPath !== activeChannelId) {
+      setActiveChannelId(channelFromPath)
+    }
+  }, [location.pathname, getChannelIdFromPath, activeChannelId])
 
   const handleChannelSelect = useCallback((channelId) => {
     console.log('[handleChannelSelect] called with channelId:', channelId)
@@ -381,6 +424,7 @@ const ConversationAppInner = ({ apiRef }) => {
         channels={conversations}
         activeChannelId={activeChannelId}
         onChannelSelect={handleChannelSelect}
+        currentUser={currentUser}
       >
         {/* Routed conversation view */}
         <Routes>
@@ -403,9 +447,15 @@ const ConversationAppInner = ({ apiRef }) => {
  * Root redirect - waits for demo script to navigate, or shows loading
  */
 const RootRedirect = () => {
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    navigate(`/${DEFAULT_CHANNEL_ID}`, { replace: true })
+  }, [navigate])
+
   return (
     <div className="flex items-center justify-center h-64 text-zinc-400">
-      Loading conversation...
+      Loading...
     </div>
   )
 }
@@ -425,9 +475,12 @@ const mount = () => {
   const container = document.querySelector('[data-conversation-app]')
   if (!container) return
 
+  // Read current user from data attribute
+  const currentUserJson = container.dataset.currentUser
+  const currentUser = currentUserJson && currentUserJson !== 'null' ? JSON.parse(currentUserJson) : null
 
   const root = ReactDOM.createRoot(container)
-  root.render(<ConversationApp />)
+  root.render(<ConversationApp currentUser={currentUser} />)
 }
 
 if (document.readyState === 'loading') {

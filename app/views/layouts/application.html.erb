@@ -72,15 +72,13 @@
 
   <body class="bg-[#fbfbfb] dark:bg-zinc-900">
     <% if params[:controller] == "static" && params[:action] == "index" %>
-      <!-- Full-screen IRC app mode - navbar hidden -->
-      <div class="hidden"><%= render 'layouts/navbar' %></div>
+      <!-- Full-screen IRC app mode -->
       <div class="h-screen w-screen overflow-hidden">
         <%= yield %>
       </div>
     <% else %>
       <div class="h-screen flex flex-col container mx-auto">
         <div class="px-4 xl:px-32 2xl:px-56 py-4 md:py-6">
-          <div class="max-w-5xl mx-auto"><%= render 'layouts/navbar' %></div>
 
           <div class="max-w-5xl mx-auto">
             <%= yield %>

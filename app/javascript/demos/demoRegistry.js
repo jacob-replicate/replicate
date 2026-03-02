@@ -2,11 +2,14 @@
  * Demo Registry - central place for all demo conversations
  */
 
-import { INCIDENT_MESSAGES } from './demoConversation'
+import { INCIDENT_MESSAGES, AUTH_INCIDENT_MESSAGES } from './demoConversation'
 
 export const DEMO_REGISTRY = {
   'dns': {
     messages: INCIDENT_MESSAGES,
+  },
+  'authentication': {
+    messages: AUTH_INCIDENT_MESSAGES,
   },
 }
 
@@ -24,50 +27,54 @@ export const fetchConversation = (channelId) => {
 
 /**
  * Load a specific demo by channel ID
+ * @param {string} channelId - Channel to load
+ * @param {object} options - { stream: boolean } - if true, animate typing indicators
  */
-export const loadDemo = (channelId) => {
+export const loadDemo = (channelId, options = {}) => {
+  const { stream = false } = options
   const conversation = fetchConversation(channelId)
   if (!conversation) {
     return
   }
 
-  setTimeout(() => {
-    if (window.ReplicateConversation) {
+  const tryLoad = (attempts = 0) => {
+    if (window.ReplicateConversation?.loadMessages) {
       window.ReplicateConversation.clear()
       window.ReplicateConversation.setChannelName('#' + channelId)
-      window.ReplicateConversation.loadMessages(conversation.messages)
+
+      if (stream) {
+        // Animated: typing indicators, staggered messages
+        window.ReplicateConversation.streamMessages(conversation.messages)
+      } else {
+        // Instant: populate immediately
+        window.ReplicateConversation.loadMessages(conversation.messages)
+      }
+    } else if (attempts < 30) {
+      // Retry up to 30 times (3 seconds total)
+      setTimeout(() => tryLoad(attempts + 1), 100)
     }
-  }, 100)
+  }
+
+  tryLoad()
 }
 
 /**
  * Initialize the conversation demo
+ * Set DEMO_STREAM=true to enable typing animation on first load
  */
+const DEMO_STREAM = false // Toggle this to enable/disable typing animation
+
 export const initConversation = () => {
-  const defaultChannel = 'dns'
-
-  // Only auto-navigate if on root or conversations path
-  const path = window.location.pathname
-  const shouldAutoNavigate = path === '/' || path.startsWith('/conversations')
-
-  const waitForReady = () => {
-    if (window.ReplicateConversation?.navigate) {
+  // Just attach loadDemo to window API when ready
+  // ConversationView handles initial load on mount
+  const attachLoadDemo = () => {
+    if (window.ReplicateConversation) {
       window.ReplicateConversation.loadDemo = loadDemo
-
-      if (shouldAutoNavigate) {
-        window.ReplicateConversation.navigate(`/${defaultChannel}`)
-
-        window.ReplicateConversation.onReady((api) => {
-          api.setChannelName('#' + defaultChannel)
-          api.streamMessages(DEMO_REGISTRY[defaultChannel]?.messages || [])
-        })
-      }
     } else {
-      setTimeout(waitForReady, 50)
+      setTimeout(attachLoadDemo, 100)
     }
   }
-
-  waitForReady()
+  attachLoadDemo()
 }
 
 // Start when DOM is ready

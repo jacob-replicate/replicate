@@ -52,7 +52,7 @@ export const MessageInput = forwardRef(({
     <form
       onSubmit={handleSubmit}
       className="flex items-center"
-      style={{ backgroundColor: '#1c1c20', borderTop: '1px solid #2a2a2e' }}
+      style={{ backgroundColor: '#18181b', borderTop: '1px solid #27272a' }}
     >
       <input
         ref={inputRef}

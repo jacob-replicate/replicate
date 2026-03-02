@@ -67,7 +67,7 @@ export const Conversation = forwardRef(({
   // IRC variant - minimal header, supports light/dark
   if (variant === 'irc') {
     return (
-      <div className="flex flex-col h-full text-sm" style={{ backgroundColor: '#1c1c20' }}>
+      <div className="flex flex-col h-full text-sm overflow-hidden" style={{ backgroundColor: '#18181b' }}>
 
         {/* Messages area */}
         <MessageList

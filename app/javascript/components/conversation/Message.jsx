@@ -75,7 +75,7 @@ const EmojiReaction = ({ emoji, count, onClick, isSelected }) => (
         : 'bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 hover:bg-zinc-200 dark:hover:bg-zinc-700 hover:border-zinc-300 dark:hover:border-zinc-600'
     }`}
   >
-    <span>{emoji}</span>
+    <span className="dark:grayscale-[30%] dark:opacity-90">{emoji}</span>
     <span className={isSelected ? 'text-indigo-600 dark:text-indigo-400' : 'text-zinc-600 dark:text-zinc-400'}>{count}</span>
   </button>
 )
@@ -136,7 +136,7 @@ const ThreadReplies = ({ replies }) => {
         </span>
         {!expanded && lastReply && (
           <span className="text-zinc-500 dark:text-zinc-400 truncate max-w-[200px]">
-            {lastReply.name}:{lastReply.avatar && <img src={lastReply.avatar} alt="" className="w-4 h-4 rounded-full inline ml-1 mr-1" />} {lastReply.text?.slice(0, 25)}{lastReply.text?.length > 25 ? '...' : ''}
+            {lastReply.name}:{lastReply.avatar && <img src={lastReply.avatar} alt="" className="w-4 h-4 rounded-full inline ml-1 mr-1 ring-1 ring-zinc-700/60" style={{ filter: 'brightness(0.9) saturate(0.9)' }} />} {lastReply.text?.slice(0, 25)}{lastReply.text?.length > 25 ? '...' : ''}
           </span>
         )}
       </button>
@@ -146,7 +146,7 @@ const ThreadReplies = ({ replies }) => {
           {replies.slice(0, totalVisible).map((reply, i) => (
             <div key={i} className="flex items-start gap-2">
               {reply.avatar && (
-                <img src={reply.avatar} alt="" className="w-6 h-6 rounded-full flex-shrink-0" />
+                <img src={reply.avatar} alt="" className="w-6 h-6 rounded-full flex-shrink-0 ring-1 ring-zinc-700/60" style={{ filter: 'brightness(0.9) saturate(0.9)' }} />
               )}
               <div>
                 <span className="font-semibold text-[13px] text-[#1d1c1d] dark:text-zinc-100">
@@ -349,21 +349,21 @@ const Countdown = ({ duration = 30, label = 'Think through your approach', onCom
 
 // Monitor component (Datadog-style metric chart)
 const MONITOR_THEME = {
-  bg: '#1f1f23',
-  border: 'rgba(113, 113, 122, 0.3)',
-  titleColor: '#f4f4f5',
+  bg: '#1a1a1d',
+  border: 'rgba(39, 39, 42, 0.6)',
+  titleColor: '#e4e4e7',
   metaColor: '#a1a1aa',
   dimColor: '#71717a',
-  valueColor: '#f87171',
+  valueColor: '#fb923c',
   lineColor: '#a78bfa',
-  gridColor: 'rgba(63, 63, 70, 0.5)',
-  gridDashColor: 'rgba(113, 113, 122, 0.4)',
-  neutral: 'rgba(113, 113, 122, 0.08)',
-  warning: 'rgba(253, 224, 71, 0.15)',
-  alert: 'rgba(244, 63, 94, 0.25)',
-  separatorColor: 'rgba(63, 63, 70, 0.6)',
-  areaFillTop: 0.15,
-  areaFillBottom: 0.05,
+  gridColor: 'rgba(39, 39, 42, 0.4)',
+  gridDashColor: 'rgba(63, 63, 70, 0.25)',
+  neutral: 'rgba(39, 39, 42, 0.5)',
+  warning: 'rgba(161, 98, 7, 0.2)',
+  alert: 'rgba(153, 27, 27, 0.35)',
+  separatorColor: 'rgba(39, 39, 42, 0.5)',
+  areaFillTop: 0.25,
+  areaFillBottom: 0.02,
   areaColor: '#8b5cf6',
 }
 
@@ -378,7 +378,7 @@ const DEFAULT_DATA_POINTS = [
 const DEFAULT_ZONE_BREAKS = [0, 0.6, 0.85, 1.05]
 
 // Data-driven monitor card - all config comes from props
-const Monitor = ({ title, metric, value, theme = {}, dataPoints, zoneBreaks, region = 'us-east-1', timeRange = 'Last 15m' }) => {
+const Monitor = ({ title, metric, value, theme = {}, dataPoints, zoneBreaks, region = 'us-east-1' }) => {
   // Merge provided theme with defaults
   const t = { ...MONITOR_THEME, ...theme }
 
@@ -437,15 +437,13 @@ const Monitor = ({ title, metric, value, theme = {}, dataPoints, zoneBreaks, reg
                 {value}%
               </span>
               <span style={{ color: t.metaColor }}>used</span>
-              <span style={{ color: t.dimColor }}>·</span>
-              <span style={{ color: t.dimColor }}>{region}</span>
             </div>
           </div>
           <span
-            className="tabular-nums font-mono"
+            className="font-mono"
             style={{ color: t.dimColor, fontSize: '11px' }}
           >
-            {timeRange}
+            {region}
           </span>
         </div>
       </div>
@@ -480,19 +478,33 @@ const Monitor = ({ title, metric, value, theme = {}, dataPoints, zoneBreaks, reg
   )
 }
 
-// Multiple choice component - terminal style
+// Multiple choice component - clean grayscale with refined typography
 const MultipleChoice = ({ question, options, onSelect, selectedId, disabled = false }) => {
   const hasSelection = selectedId !== undefined && selectedId !== null
 
   return (
-    <div className="bg-zinc-900 p-4 font-mono">
+    <div
+      className="mb-4 rounded-xl overflow-hidden mx-4"
+      style={{
+        backgroundColor: '#111113',
+        border: '1px solid rgba(255, 255, 255, 0.04)',
+        boxShadow: '0 4px 24px rgba(0,0,0,0.5)'
+      }}
+    >
       {question && (
-        <div className="text-[15px] text-emerald-400">
+        <div
+          className="text-[15px] leading-relaxed px-5 py-4 font-medium tracking-[-0.01em]"
+          style={{
+            color: '#fafafa',
+            backgroundColor: '#18181b',
+            borderBottom: '1px solid rgba(255, 255, 255, 0.04)'
+          }}
+        >
           {question}
         </div>
       )}
       {options && options.length > 0 && (
-        <div className="space-y-0 mt-3">
+        <div className="py-3 px-3">
           {options.map((option, idx) => {
             const optionId = option.id !== undefined ? option.id : idx
             const isSelected = selectedId === optionId
@@ -505,23 +517,23 @@ const MultipleChoice = ({ question, options, onSelect, selectedId, disabled = fa
             return (
               <label
                 key={optionId}
-                className={`flex items-center py-2 px-2.5 rounded ${
+                className={`flex items-center py-3 px-3 rounded-lg transition-all duration-150 ${
                   isSelected
-                    ? 'bg-emerald-900/40'
+                    ? 'bg-white/[0.06]'
                     : isDisabled
-                      ? 'opacity-50 cursor-default'
-                      : 'cursor-pointer hover:bg-zinc-800'
+                      ? 'opacity-35 cursor-default'
+                      : 'cursor-pointer hover:bg-white/[0.04]'
                 }`}
                 onClick={() => canInteract && onSelect?.(optionId, messageText)}
               >
-                <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${
+                <div className={`w-[18px] h-[18px] rounded-full border flex items-center justify-center flex-shrink-0 transition-all ${
                   isSelected 
-                    ? 'border-emerald-500 bg-emerald-500' 
-                    : 'border-zinc-500 bg-transparent'
+                    ? 'border-zinc-400 bg-zinc-400' 
+                    : 'border-zinc-600 bg-transparent'
                 }`}>
-                  {isSelected && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
+                  {isSelected && <div className="w-2 h-2 rounded-full bg-zinc-900" />}
                 </div>
-                <span className="ml-3 text-white text-[14px]">{displayText}</span>
+                <span className="ml-3.5 text-zinc-300 text-[14px] leading-snug tracking-[-0.01em]">{displayText}</span>
               </label>
             )
           })}
@@ -703,7 +715,7 @@ export const Message = ({ message, onSelect, threadReplies }) => {
       case 'text':
       default:
         return (
-          <div key={index} className="text-[#1d1c1d] dark:text-zinc-200 text-[15px] whitespace-pre-wrap">
+          <div key={index} className="text-zinc-200 text-[15px] whitespace-pre-wrap">
             {parseTextContent(component.content)}
           </div>
         )
@@ -761,7 +773,7 @@ export const Message = ({ message, onSelect, threadReplies }) => {
       default:
         if (!content) return null
         return (
-          <div className="text-[#1d1c1d] dark:text-zinc-200 text-[15px] whitespace-pre-wrap">
+          <div className="text-zinc-200 text-[15px] whitespace-pre-wrap">
             {content}
           </div>
         )
@@ -777,7 +789,7 @@ export const Message = ({ message, onSelect, threadReplies }) => {
   const messageContent = (
     <div className="flex items-start gap-3">
       {avatar ? (
-        <img src={avatar} alt="" className="w-10 h-10 rounded-full flex-shrink-0" />
+        <img src={avatar} alt="" className="w-10 h-10 rounded-full flex-shrink-0 ring-1 ring-zinc-700/60" style={{ filter: 'brightness(0.9) saturate(0.9)' }} />
       ) : (
         <div className="w-10 h-10 rounded-full flex-shrink-0 bg-zinc-200 dark:bg-zinc-700 flex items-center justify-center text-zinc-500 dark:text-zinc-400 text-sm font-medium">
           {name?.[0]?.toUpperCase() || '?'}
@@ -787,7 +799,7 @@ export const Message = ({ message, onSelect, threadReplies }) => {
         {(name || timeStr || isEdited) && (
           <div className="flex items-baseline gap-2 flex-wrap">
             {name && (
-              <span className="font-semibold text-[#1d1c1d] dark:text-zinc-100 text-[15px] tracking-[-0.01em]">
+              <span className="font-semibold text-zinc-100 text-[15px] tracking-[-0.01em]">
                 {name}
               </span>
             )}
@@ -795,10 +807,10 @@ export const Message = ({ message, onSelect, threadReplies }) => {
               <span className="text-[12px] text-zinc-500 dark:text-zinc-400">{status.emoji} {status.text}</span>
             )}
             {timeStr && (
-              <span className="text-[#616061] dark:text-zinc-500 text-[12px]">{timeStr}</span>
+              <span className="text-zinc-500 text-[12px]">{timeStr}</span>
             )}
             {isEdited && (
-              <span className="text-[#616061] dark:text-zinc-500 text-[11px]">(edited)</span>
+              <span className="text-zinc-500 text-[11px]">(edited)</span>
             )}
           </div>
         )}

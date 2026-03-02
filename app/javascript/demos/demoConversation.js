@@ -63,7 +63,7 @@ const INCIDENT_MESSAGES = [
         metric: 'orders-db-primary',
         value: 98,
         zoneBreaks: [0, 0.6, 0.85, 1.05],
-        dataPoints: [10, 12, 14, 14, 14, 28, 32, 35, 35, 35, 52, 58, 62, 62, 62, 78, 82, 85, 85, 85, 92, 95, 96, 96, 96, 98, 98, 98, 98, 98],
+        dataPoints: [8, 9, 11, 10, 12, 14, 13, 15, 18, 17, 21, 24, 26, 29, 33, 38, 42, 48, 53, 61, 68, 74, 79, 83, 88, 91, 94, 96, 97, 98],
       },
     ],
     reactions: [
@@ -402,4 +402,198 @@ WHERE state = 'active'
   },
 ]
 
-export { INCIDENT_MESSAGES }
+/**
+ * Authentication Outage Demo Data
+ * JWT signing key rotation gone wrong
+ */
+const AUTH_INCIDENT_MESSAGES = [
+  {
+    id: 'auth_1',
+    sequence: 1,
+    author: { name: 'alex', avatar: '/profile-photo-1.jpg', status: { emoji: '💻', text: 'Focusing' } },
+    created_at: new Date(Date.now() - 12 * 60 * 1000).toISOString(),
+    components: [
+      {
+        type: 'text',
+        content: 'getting reports of users being logged out across all services. support queue is blowing up',
+      },
+    ],
+    reactions: [
+      { emoji: '😬', count: 5 },
+    ]
+  },
+  {
+    id: 'auth_2',
+    sequence: 2,
+    author: { name: 'maya', avatar: '/profile-photo-3.jpg' },
+    created_at: new Date(Date.now() - 11 * 60 * 1000).toISOString(),
+    components: [
+      {
+        type: 'text',
+        content: 'I\'ll take IC. seeing 401s spike in the API gateway — this started about 10 min ago',
+      },
+      {
+        type: 'monitor',
+        title: 'API Gateway 401 Responses',
+        metric: 'auth-gateway',
+        value: 34,
+        unit: '%',
+        zoneBreaks: [0, 0.05, 0.15, 0.30],
+        dataPoints: [1, 1, 1, 2, 1, 2, 1, 2, 3, 4, 6, 9, 13, 17, 21, 25, 28, 30, 32, 34],
+      },
+    ],
+  },
+  {
+    id: 'auth_3',
+    sequence: 3,
+    parent_message_id: 'auth_2',
+    author: { name: 'daniel', avatar: '/profile-photo-2.jpg' },
+    created_at: new Date(Date.now() - 10.5 * 60 * 1000).toISOString(),
+    components: [
+      { type: 'text', content: 'checking the auth service logs now' }
+    ],
+  },
+  {
+    id: 'auth_4',
+    sequence: 4,
+    author: { name: 'daniel', avatar: '/profile-photo-2.jpg' },
+    created_at: new Date(Date.now() - 9 * 60 * 1000).toISOString(),
+    components: [
+      {
+        type: 'text',
+        content: 'found it — JWT validation is failing. the signing key doesn\'t match',
+      },
+      {
+        type: 'code',
+        language: 'text',
+        content: `level=error msg="token validation failed" error="signature is invalid"
+level=error msg="token validation failed" error="signature is invalid"
+level=error msg="token validation failed" error="signature is invalid"
+[... 847 more in last 5 minutes]`,
+      }
+    ],
+  },
+  {
+    id: 'auth_5',
+    sequence: 5,
+    parent_message_id: 'auth_4',
+    author: { name: 'alex', avatar: '/profile-photo-1.jpg' },
+    created_at: new Date(Date.now() - 8.5 * 60 * 1000).toISOString(),
+    components: [
+      { type: 'text', content: 'wait, didn\'t we rotate the JWT keys this morning?' }
+    ],
+  },
+  {
+    id: 'auth_6',
+    sequence: 6,
+    parent_message_id: 'auth_4',
+    author: { name: 'maya', avatar: '/profile-photo-3.jpg' },
+    created_at: new Date(Date.now() - 8 * 60 * 1000).toISOString(),
+    components: [
+      { type: 'text', content: 'yes — scheduled rotation at 6am. but we should have both keys active during the transition window' }
+    ],
+  },
+  {
+    id: 'auth_7',
+    sequence: 7,
+    author: { name: 'alex', avatar: '/profile-photo-1.jpg' },
+    created_at: new Date(Date.now() - 7 * 60 * 1000).toISOString(),
+    components: [
+      {
+        type: 'text',
+        content: 'found the problem — the key rotation script removed the old key immediately instead of keeping both active',
+      },
+      {
+        type: 'diff',
+        filename: 'scripts/rotate-jwt-keys.sh',
+        lines: [
+          { type: 'context', text: '# Rotate JWT signing keys' },
+          { type: 'context', text: 'vault write auth/jwt/config key="$NEW_KEY"' },
+          { type: 'remove', text: '# Keep old key active for 24h transition' },
+          { type: 'remove', text: '# vault write auth/jwt/config old_key="$OLD_KEY" old_key_ttl=24h' },
+          { type: 'add', text: '# Clean rotation - remove old key' },
+          { type: 'add', text: 'vault delete auth/jwt/old_key' },
+        ],
+      }
+    ],
+    reactions: [
+      { emoji: '🤦', count: 4 },
+    ],
+  },
+  {
+    id: 'auth_8',
+    sequence: 8,
+    parent_message_id: 'auth_7',
+    author: { name: 'daniel', avatar: '/profile-photo-2.jpg' },
+    created_at: new Date(Date.now() - 6.5 * 60 * 1000).toISOString(),
+    components: [
+      { type: 'text', content: 'so every token issued before 6am is now invalid 😬' }
+    ],
+  },
+  {
+    id: 'auth_9',
+    sequence: 9,
+    author: { name: 'maya', avatar: '/profile-photo-3.jpg' },
+    created_at: new Date(Date.now() - 5 * 60 * 1000).toISOString(),
+    components: [
+      {
+        type: 'text',
+        content: 'we need to restore the old key ASAP. @daniel can you pull it from vault audit logs? it should still be in the backup',
+      },
+    ],
+  },
+  {
+    id: 'auth_10',
+    sequence: 10,
+    author: { name: 'daniel', avatar: '/profile-photo-2.jpg' },
+    created_at: new Date(Date.now() - 3 * 60 * 1000).toISOString(),
+    components: [
+      {
+        type: 'text',
+        content: 'got it from the hourly backup. restoring old key alongside the new one now',
+      },
+      {
+        type: 'code',
+        language: 'bash',
+        content: `$ vault write auth/jwt/config \\
+    key="$NEW_KEY" \\
+    old_key="$RESTORED_KEY" \\
+    old_key_ttl="23h"
+
+Success! Both keys now active.`,
+      }
+    ],
+    reactions: [
+      { emoji: '🎉', count: 3 },
+    ],
+  },
+  {
+    id: 'auth_11',
+    sequence: 11,
+    author: { name: 'alex', avatar: '/profile-photo-1.jpg' },
+    created_at: new Date(Date.now() - 2 * 60 * 1000).toISOString(),
+    components: [
+      {
+        type: 'text',
+        content: '401 rate dropping — down to 2% and falling. users should be able to refresh and get back in',
+      },
+    ],
+  },
+  {
+    id: 'auth_12',
+    sequence: 12,
+    author: { name: 'maya', avatar: '/profile-photo-3.jpg' },
+    created_at: new Date(Date.now() - 1 * 60 * 1000).toISOString(),
+    components: [
+      {
+        type: 'text',
+        content: 'good catch everyone. closing this out — @alex can you file the postmortem? we need to fix that rotation script and add a test that validates both keys stay active during transition',
+      },
+    ],
+    reactions: [
+      { emoji: '👍', count: 2 },
+    ],
+  },
+]
+
+export { INCIDENT_MESSAGES, AUTH_INCIDENT_MESSAGES }
