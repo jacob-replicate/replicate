@@ -72,7 +72,7 @@ export const MessageInput = forwardRef(({
         placeholder={placeholder}
         disabled={disabled}
         className="flex-1 px-4 py-3 text-[15px] outline-none border-none bg-transparent ring-0 focus:ring-0 focus:outline-none disabled:opacity-50 placeholder-[#52525b]"
-        style={{ color: '#f4f4f5' }}
+        style={{ color: '#f4f4f5', caretColor: '#d4d4d8' }}
       />
 
       {/* Topic dropdown */}

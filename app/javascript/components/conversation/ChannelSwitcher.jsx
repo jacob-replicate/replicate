@@ -52,7 +52,7 @@ const ChannelSwitcher = ({
             <span className="text-[13px]" style={{ color: '#9d8ec4' }}>{activeChannelName}</span>
             <svg
               className="w-3 h-3"
-              style={{ color: '#3f3f46', transform: sidebarOpen ? 'rotate(180deg)' : 'none' }}
+              style={{ color: '#71717a', transform: sidebarOpen ? 'rotate(180deg)' : 'none' }}
               fill="none"
               stroke="currentColor"
               strokeWidth={2}
@@ -138,7 +138,7 @@ const ChannelSwitcher = ({
             </div>
             <div className="flex items-center gap-2 text-[12px]">
               <span className="font-mono" style={{ color: '#a39e6e' }}>/new</span>
-              <span style={{ color: '#3f3f46' }}>new invariant</span>
+              <span style={{ color: '#3f3f46' }}>new scenario</span>
             </div>
             <div className="flex items-center gap-2 text-[12px]">
               <span className="font-mono" style={{ color: '#a39e6e' }}>/restart</span>
