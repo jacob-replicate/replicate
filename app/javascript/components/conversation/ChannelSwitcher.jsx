@@ -47,9 +47,9 @@ const ChannelSwitcher = ({
             onClick={() => setSidebarOpen(!sidebarOpen)}
             className="flex items-center gap-1.5 md:hidden"
           >
-            <span className="text-[14px]" style={{ color: '#ffffff', fontFamily: "'DM Sans', sans-serif", fontWeight: 600 }}>Invariant</span>
-            <span className="text-[13px]" style={{ color: '#52525b', fontWeight: 500 }}>/</span>
-            <span className="text-[13px]" style={{ color: '#9d8ec4' }}>{activeChannelName}</span>
+            <span className="text-[14px]" style={{ color: '#ffffff', fontWeight: 600 }}>Invariant</span>
+            <span className="text-[14px]" style={{ color: '#52525b', fontWeight: 600 }}>/</span>
+            <span className="text-[14px]" style={{ color: '#9d8ec4' }}>{activeChannelName}</span>
             <svg
               className="w-3 h-3"
               style={{ color: '#71717a', transform: sidebarOpen ? 'rotate(180deg)' : 'none' }}
@@ -62,20 +62,20 @@ const ChannelSwitcher = ({
             </svg>
           </button>
           {/* Desktop: wordmark + tagline */}
-          <div className="hidden md:flex md:items-baseline gap-3">
-            <a href="/" className="text-[15px] hover:opacity-70 transition-opacity" style={{ color: '#ffffff', fontFamily: "'DM Sans', sans-serif", fontWeight: 600 }}>
+          <div className="hidden md:flex md:items-baseline gap-[10px]">
+            <a href="/" className="text-[15px] hover:opacity-70 transition-opacity" style={{ color: '#ffffff', fontWeight: 600 }}>
               Invariant
             </a>
-            <span className="text-[13px]" style={{ color: '#52525b', fontWeight: 500 }}>/</span>
+            <span className="text-[15px]" style={{ color: '#52525b', fontWeight: 600 }}>/</span>
             {/* Tagline */}
-            <span className="text-[13px] hidden md:inline" style={{ color: '#52525b', fontFamily: "'DM Sans', sans-serif", fontWeight: 400 }}>
+            <span className="text-[13px]" style={{ color: '#52525b', fontWeight: 400 }}>
               Sharpen how you think about distributed systems.
             </span>
           </div>
         </div>
         <div className="flex items-center gap-6">
           {/* Navigation links */}
-          <nav className="hidden md:flex items-center gap-4 text-[13px]" style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 400 }}>
+          <nav className="hidden md:flex items-center gap-4 text-[13px]" style={{ fontWeight: 400 }}>
             <a href="/security" className="transition-colors" style={{ color: '#3f3f46' }} onMouseEnter={(e) => e.target.style.color = '#71717a'} onMouseLeave={(e) => e.target.style.color = '#3f3f46'}>Security</a>
             <a href="/privacy" className="transition-colors" style={{ color: '#3f3f46' }} onMouseEnter={(e) => e.target.style.color = '#71717a'} onMouseLeave={(e) => e.target.style.color = '#3f3f46'}>Privacy</a>
             <a href="/terms" className="transition-colors" style={{ color: '#3f3f46' }} onMouseEnter={(e) => e.target.style.color = '#71717a'} onMouseLeave={(e) => e.target.style.color = '#3f3f46'}>Terms</a>
@@ -90,7 +90,7 @@ const ChannelSwitcher = ({
               <button
                 type="submit"
                 className="inline-flex items-center gap-2 px-3 py-1.5 text-[13px] transition-colors"
-                style={{ color: '#52525b', fontFamily: "'DM Sans', sans-serif", fontWeight: 500 }}
+                style={{ color: '#52525b', fontWeight: 500 }}
                 onMouseEnter={(e) => e.target.style.color = '#71717a'}
                 onMouseLeave={(e) => e.target.style.color = '#52525b'}
               >

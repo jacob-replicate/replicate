@@ -10,11 +10,6 @@ import TypingIndicator from './TypingIndicator'
  * - User sends message: Lock to bottom (autoscroll) until they scroll away
  * - Incoming messages: Only autoscroll if in "locked-to-bottom" mode
  * - User scrolls up: Enter "free-scroll" mode, no autoscroll until they send again
- *
- * Thread support:
- * - Messages with `parent_message_id` are thread replies
- * - Thread replies are dynamically grouped under their parent message
- * - Messages are sorted by `sequence` (enforced by DB locks)
  */
 export const MessageList = forwardRef(({
   messages,
@@ -48,24 +43,9 @@ export const MessageList = forwardRef(({
     setScrollMode: (mode) => { scrollModeRef.current = mode },
   }), [])
 
-  // Build thread structure from flat message list
-  const { rootMessages, threadMap } = useMemo(() => {
-    const threadMap = new Map()
-    const rootMessages = []
-
-    const sorted = [...messages].sort((a, b) => (a.sequence ?? 0) - (b.sequence ?? 0))
-
-    for (const message of sorted) {
-      if (message.parent_message_id) {
-        const replies = threadMap.get(message.parent_message_id) || []
-        replies.push(message)
-        threadMap.set(message.parent_message_id, replies)
-      } else {
-        rootMessages.push(message)
-      }
-    }
-
-    return { rootMessages, threadMap }
+  // Sort messages by sequence
+  const sortedMessages = useMemo(() => {
+    return [...messages].sort((a, b) => (a.sequence ?? 0) - (b.sequence ?? 0))
   }, [messages])
 
   // Handle channel switch - always scroll to bottom
@@ -125,7 +105,7 @@ export const MessageList = forwardRef(({
       onScroll={handleScroll}
       className="flex-1 overflow-y-auto overflow-x-hidden min-h-0"
     >
-      {rootMessages.map((message, index) => (
+      {sortedMessages.map((message, index) => (
         <div
           key={message.id}
           className={message.isSystem ? '' : 'py-4 px-4'}
@@ -134,14 +114,13 @@ export const MessageList = forwardRef(({
           <Message
             message={message}
             onSelect={onSelect}
-            threadReplies={threadMap.get(message.id)}
           />
         </div>
       ))}
       {isTyping && (
         <div
           className="py-4 px-4"
-          style={rootMessages.length > 0 ? { borderTop: '1px solid #2a2a2e' } : {}}
+          style={sortedMessages.length > 0 ? { borderTop: '1px solid #2a2a2e' } : {}}
         >
           <TypingIndicator author={isTyping} />
         </div>

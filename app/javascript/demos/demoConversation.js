@@ -84,33 +84,30 @@ const INCIDENT_MESSAGES = [
       },
     ]
   },
-  // Message 3: Thread reply - daniel on it
+  // Message 3: daniel on it
   {
     id: 'msg_3',
     sequence: 3,
-    parent_message_id: 'msg_2',
     author: { name: 'daniel', avatar: '/profile-photo-2.jpg', status: { emoji: '📅', text: 'In a meeting' } },
     created_at: timestamps[2],
     components: [
       { type: 'text', content: 'on it — pulling grafana now' }
     ],
   },
-  // Message 4: Thread reply - alex offers help
+  // Message 4: alex offers help
   {
     id: 'msg_4',
     sequence: 4,
-    parent_message_id: 'msg_2',
     author: { name: 'alex', avatar: '/profile-photo-1.jpg', status: { emoji: '💻', text: 'Focusing' } },
     created_at: timestamps[3],
     components: [
       { type: 'text', content: 'anything I can help with?' }
     ],
   },
-  // Message 5: Thread reply - maya assigns alex
+  // Message 5: maya assigns alex
   {
     id: 'msg_5',
     sequence: 5,
-    parent_message_id: 'msg_2',
     author: { name: 'maya', avatar: '/profile-photo-3.jpg' },
     created_at: timestamps[4],
     components: [
@@ -170,33 +167,30 @@ GROUP BY state;
       }
     ],
   },
-  // Message 8: Thread reply - daniel explains
+  // Message 8: daniel explains
   {
     id: 'msg_8',
     sequence: 8,
-    parent_message_id: 'msg_7',
     author: { name: 'daniel', avatar: '/profile-photo-2.jpg' },
     created_at: timestamps[7],
     components: [
       { type: 'text', content: 'oh no... FOR UPDATE with no timeout will wait forever for the lock' }
     ],
   },
-  // Message 9: Thread reply - alex connects the dots
+  // Message 9: alex connects the dots
   {
     id: 'msg_9',
     sequence: 9,
-    parent_message_id: 'msg_7',
     author: { name: 'alex', avatar: '/profile-photo-1.jpg' },
     created_at: timestamps[8],
     components: [
       { type: 'text', content: 'and if multiple workers try to process the same order...' }
     ],
   },
-  // Message 10: Thread reply - daniel names it
+  // Message 10: daniel names it
   {
     id: 'msg_10',
     sequence: 10,
-    parent_message_id: 'msg_7',
     author: { name: 'daniel', avatar: '/profile-photo-2.jpg' },
     created_at: timestamps[9],
     components: [

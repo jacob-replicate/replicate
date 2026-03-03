@@ -579,7 +579,7 @@ export const SlackThread = ({ category = 'networking', topic = 'dns' }) => {
   const codeRef = React.useRef(null)
   const codeRef2 = React.useRef(null)
   const [visibleMessages, setVisibleMessages] = React.useState(0)
-  const [typingUser, setTypingUser] = React.useState({ avatar: '/jacob-square.jpg', name: 'pagerduty' })
+  const [typingUser, setTypingUser] = React.useState({ avatar: '/user-avatar.png', name: 'pagerduty' })
   const [showUserList, setShowUserList] = React.useState(false)
 
   const messageSequence = [
@@ -633,7 +633,7 @@ export const SlackThread = ({ category = 'networking', topic = 'dns' }) => {
 
           {/* Message 1: PagerDuty Alert */}
           {visibleMessages >= 1 && (
-            <ChatMessage avatar="/jacob-square.jpg" name="pagerduty" time="2:47 AM">
+            <ChatMessage avatar="/user-avatar.png" name="pagerduty" time="2:47 AM">
               <OncallAlert
                 severity="SEV-1"
                 service="orders-api"

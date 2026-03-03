@@ -80,103 +80,6 @@ const EmojiReaction = ({ emoji, count, onClick, isSelected }) => (
   </button>
 )
 
-// Thread replies component
-const ThreadReplies = ({ replies }) => {
-  const [expanded, setExpanded] = React.useState(false)
-  // Track how many replies existed when we expanded - these show instantly
-  const [repliesAtExpand, setRepliesAtExpand] = React.useState(0)
-  // Track how many NEW replies (after expand) are visible (for typing animation)
-  const [visibleNewReplies, setVisibleNewReplies] = React.useState(0)
-
-  // When expanding, snapshot current reply count - these show instantly
-  useEffect(() => {
-    if (expanded) {
-      setRepliesAtExpand(replies.length)
-      setVisibleNewReplies(0)
-    }
-  }, [expanded])
-
-  // Animate in only NEW replies that arrive after expansion
-  const newRepliesCount = replies.length - repliesAtExpand
-  useEffect(() => {
-    if (!expanded || visibleNewReplies >= newRepliesCount) return
-    const timeout = setTimeout(() => {
-      setVisibleNewReplies(v => v + 1)
-    }, 800 + Math.random() * 600)
-    return () => clearTimeout(timeout)
-  }, [expanded, visibleNewReplies, newRepliesCount])
-
-  // Total visible = all replies at expand time + animated new replies
-  const totalVisible = expanded ? repliesAtExpand + visibleNewReplies : 0
-
-  const lastReply = replies[replies.length - 1]
-
-  return (
-    <div className="mt-2">
-      <button
-        onClick={() => setExpanded(!expanded)}
-        className="flex items-center gap-2 text-[13px] text-[#1264a3] dark:text-blue-400 hover:underline"
-      >
-        <svg
-          className={`w-4 h-4 transition-transform ${expanded ? 'rotate-90' : ''}`}
-          viewBox="0 0 16 16"
-          fill="currentColor"
-        >
-          <path
-            d="M6 12l4-4-4-4"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            fill="none"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-        <span className="font-medium">
-          {replies.length} {replies.length === 1 ? 'reply' : 'replies'}
-        </span>
-        {!expanded && lastReply && (
-          <span className="text-zinc-500 dark:text-zinc-400 truncate max-w-[200px]">
-            {lastReply.name}:{lastReply.avatar && <img src={lastReply.avatar} alt="" className="w-4 h-4 rounded-full inline ml-1 mr-1 ring-1 ring-zinc-700/60" style={{ filter: 'brightness(0.9) saturate(0.9)' }} />} {lastReply.text?.slice(0, 25)}{lastReply.text?.length > 25 ? '...' : ''}
-          </span>
-        )}
-      </button>
-
-      {expanded && (
-        <div className="mt-2 ml-1 pl-3 border-l-2 border-zinc-200 dark:border-zinc-700 space-y-2">
-          {replies.slice(0, totalVisible).map((reply, i) => (
-            <div key={i} className="flex items-start gap-2">
-              {reply.avatar && (
-                <img src={reply.avatar} alt="" className="w-6 h-6 rounded-full flex-shrink-0 ring-1 ring-zinc-700/60" style={{ filter: 'brightness(0.9) saturate(0.9)' }} />
-              )}
-              <div>
-                <span className="font-semibold text-[13px] text-[#1d1c1d] dark:text-zinc-100">
-                  {reply.name}
-                </span>
-                {reply.time && (
-                  <span className="text-zinc-500 dark:text-zinc-400 text-[11px] ml-1.5">
-                    {reply.time}
-                  </span>
-                )}
-                <div className="text-[13px] text-[#1d1c1d] dark:text-zinc-300">
-                  {reply.text}
-                </div>
-              </div>
-            </div>
-          ))}
-          {totalVisible < replies.length && (
-            <div className="flex items-center gap-2 text-zinc-400 text-[12px]">
-              <div className="flex gap-0.5">
-                <div className="w-1.5 h-1.5 bg-zinc-400 dark:bg-zinc-500 rounded-full animate-bounce" style={{ animationDelay: '0ms', animationDuration: '600ms' }} />
-                <div className="w-1.5 h-1.5 bg-zinc-400 dark:bg-zinc-500 rounded-full animate-bounce" style={{ animationDelay: '150ms', animationDuration: '600ms' }} />
-                <div className="w-1.5 h-1.5 bg-zinc-400 dark:bg-zinc-500 rounded-full animate-bounce" style={{ animationDelay: '300ms', animationDuration: '600ms' }} />
-              </div>
-            </div>
-          )}
-        </div>
-      )}
-    </div>
-  )
-}
 
 // Diff component
 const Diff = ({ filename, lines }) => {
@@ -558,8 +461,8 @@ const AlertBlock = ({ severity, title, description, metadata }) => {
 /**
  * Main Message component - renders different message types
  */
-export const Message = ({ message, onSelect, threadReplies }) => {
-  const { author, components, reactions, thread, created_at, updated_at, isSystem } = message
+export const Message = ({ message, onSelect }) => {
+  const { author, components, reactions, created_at, updated_at, isSystem } = message
   // Legacy support for old structure
   const { content, type, metadata, timestamp, edited } = message
   const { name, avatar, status } = author || {}
@@ -595,25 +498,6 @@ export const Message = ({ message, onSelect, threadReplies }) => {
   // Derive edited status from updated_at (or use legacy edited field)
   const isEdited = edited || (updated_at && updated_at !== created_at)
 
-  // Convert threadReplies (full messages) to the format ThreadReplies component expects
-  // This allows both the old `thread` array format and the new `parent_message_id` approach
-  const computedThread = useMemo(() => {
-    if (thread || metadata?.thread) {
-      return thread || metadata?.thread // Legacy format
-    }
-    if (threadReplies && threadReplies.length > 0) {
-      // Convert full messages to thread reply format
-      return threadReplies.map(reply => ({
-        avatar: reply.author?.avatar,
-        name: reply.author?.name,
-        time: reply.created_at
-          ? new Date(reply.created_at).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })
-          : null,
-        text: reply.components?.[0]?.content || reply.content || '',
-      }))
-    }
-    return null
-  }, [thread, metadata?.thread, threadReplies])
 
   // Format timestamp - prefer created_at, fall back to legacy timestamp
   const timeStr = (created_at || timestamp)
@@ -817,9 +701,6 @@ export const Message = ({ message, onSelect, threadReplies }) => {
             ))}
           </div>
         )}
-        {computedThread && computedThread.length > 0 && (
-          <ThreadReplies replies={computedThread} />
-        )}
       </div>
     </div>
   )
@@ -828,5 +709,5 @@ export const Message = ({ message, onSelect, threadReplies }) => {
 }
 
 // Export helper components for direct use
-export { Code, Mention, EmojiReaction, ThreadReplies, Diff, CodeBlock, MultipleChoice, AlertBlock }
+export { Code, Mention, EmojiReaction, Diff, CodeBlock, MultipleChoice, AlertBlock }
 export default Message
