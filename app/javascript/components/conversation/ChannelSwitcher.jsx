@@ -38,7 +38,7 @@ const ChannelSwitcher = ({
         className="flex-shrink-0 flex items-center justify-between px-5 py-1.5"
         style={{
           background: 'linear-gradient(180deg, #141416 0%, #0c0c0e 100%)',
-          boxShadow: '0 1px 0 rgba(255,255,255,0.03), 0 4px 12px rgba(0,0,0,0.4)',
+          borderBottom: '1px solid #27272a',
         }}
       >
         <div className="flex items-center gap-2">
@@ -68,33 +68,33 @@ const ChannelSwitcher = ({
             </a>
             <span className="text-[15px]" style={{ color: '#52525b', fontWeight: 600 }}>/</span>
             {/* Tagline */}
-            <span className="text-[13px]" style={{ color: '#52525b', fontWeight: 400 }}>
+            <span className="text-[13px]" style={{ color: '#9d8ec4', fontWeight: 400 }}>
               Sharpen how you think about distributed systems.
             </span>
           </div>
         </div>
         <div className="flex items-center gap-6">
           {/* Navigation links */}
-          <nav className="hidden md:flex items-center gap-4 text-[13px]" style={{ fontWeight: 400 }}>
-            <a href="/security" className="transition-colors" style={{ color: '#3f3f46' }} onMouseEnter={(e) => e.target.style.color = '#71717a'} onMouseLeave={(e) => e.target.style.color = '#3f3f46'}>Security</a>
-            <a href="/privacy" className="transition-colors" style={{ color: '#3f3f46' }} onMouseEnter={(e) => e.target.style.color = '#71717a'} onMouseLeave={(e) => e.target.style.color = '#3f3f46'}>Privacy</a>
-            <a href="/terms" className="transition-colors" style={{ color: '#3f3f46' }} onMouseEnter={(e) => e.target.style.color = '#71717a'} onMouseLeave={(e) => e.target.style.color = '#3f3f46'}>Terms</a>
+          <nav className="hidden md:flex items-center gap-4 text-[13px] tracking-tight" style={{ fontWeight: 400 }}>
+            <a href="/security" style={{ color: '#71717a' }} onMouseEnter={(e) => e.target.style.color = '#a1a1aa'} onMouseLeave={(e) => e.target.style.color = '#71717a'}>Security</a>
+            <a href="/privacy" style={{ color: '#71717a' }} onMouseEnter={(e) => e.target.style.color = '#a1a1aa'} onMouseLeave={(e) => e.target.style.color = '#71717a'}>Privacy</a>
+            <a href="/terms" style={{ color: '#71717a' }} onMouseEnter={(e) => e.target.style.color = '#a1a1aa'} onMouseLeave={(e) => e.target.style.color = '#71717a'}>Terms</a>
           </nav>
 
           {/* User menu - show profile when logged in, sign-in button when not */}
           {currentUser ? (
             <UserMenu user={currentUser} />
           ) : (
-            <form action="/auth/google_oauth2" method="post">
+            <form action="/auth/google_oauth2" method="post" className="flex items-center">
               <input type="hidden" name="authenticity_token" value={document.querySelector('meta[name="csrf-token"]')?.content || ''} />
               <button
                 type="submit"
-                className="inline-flex items-center gap-2 px-3 py-1.5 text-[13px] transition-colors"
-                style={{ color: '#52525b', fontWeight: 500 }}
-                onMouseEnter={(e) => e.target.style.color = '#71717a'}
-                onMouseLeave={(e) => e.target.style.color = '#52525b'}
+                className="inline-flex items-center gap-1.5 text-[13px]"
+                style={{ color: '#71717a', fontWeight: 400 }}
+                onMouseEnter={(e) => e.target.style.color = '#a1a1aa'}
+                onMouseLeave={(e) => e.target.style.color = '#71717a'}
               >
-                <svg className="w-3.5 h-3.5 opacity-60" viewBox="0 0 24 24">
+                <svg className="w-3.5 h-3.5" viewBox="0 0 24 24">
                   <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
                   <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
                   <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
@@ -112,7 +112,7 @@ const ChannelSwitcher = ({
 
         {/* Channel sidebar - always visible on desktop */}
         <div
-          className="hidden md:flex md:w-64 flex-shrink-0 flex-col"
+          className="hidden md:flex md:w-64 flex-shrink-0 flex-col pt-2"
           style={{ backgroundColor: '#131315', borderRight: '1px solid #27272a' }}
         >
           <ChannelList
@@ -133,16 +133,12 @@ const ChannelSwitcher = ({
           {/* Command legend */}
           <div className="mt-auto px-4 py-3 space-y-1">
             <div className="flex items-center gap-2 text-[12px]">
-              <span className="font-mono" style={{ color: '#a39e6e' }}>/hint</span>
-              <span style={{ color: '#3f3f46' }}>get a nudge</span>
+              <span className="font-mono w-24" style={{ color: '#a39e6e' }}>/h /hint</span>
+              <span style={{ color: '#71717a' }}>get a nudge</span>
             </div>
             <div className="flex items-center gap-2 text-[12px]">
-              <span className="font-mono" style={{ color: '#a39e6e' }}>/new</span>
-              <span style={{ color: '#3f3f46' }}>new scenario</span>
-            </div>
-            <div className="flex items-center gap-2 text-[12px]">
-              <span className="font-mono" style={{ color: '#a39e6e' }}>/restart</span>
-              <span style={{ color: '#3f3f46' }}>restart conversation</span>
+              <span className="font-mono w-24" style={{ color: '#a39e6e' }}>/n /new</span>
+              <span style={{ color: '#71717a' }}>new scenario</span>
             </div>
           </div>
         </div>
@@ -158,7 +154,7 @@ const ChannelSwitcher = ({
             />
             {/* Footer with tagline and links */}
             <div className="flex-shrink-0 border-t px-4 py-3 flex flex-col items-center gap-2" style={{ borderColor: '#232326' }}>
-              <span className="text-[12px] tracking-[0.01em]" style={{ color: '#52525b' }}>
+              <span className="text-[12px] tracking-[0.01em]" style={{ color: '#9d8ec4' }}>
                 Sharpen how you think about distributed systems.
               </span>
               <div className="flex items-center text-[13px]" style={{ color: '#71717a' }}>

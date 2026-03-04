@@ -253,7 +253,7 @@ export const Diff = ({ filename, lines }) => {
   const deletions = lines.filter(line => line.type === 'remove').length
 
   return (
-    <div className="rounded border border-zinc-200 dark:border-zinc-700 overflow-hidden text-[13px] font-mono">
+    <div className="rounded border border-zinc-200 dark:border-zinc-700 overflow-hidden text-[13px]" style={{ fontFamily: 'Source Code Pro, monospace' }}>
       {filename && (
         <div className="bg-zinc-100 dark:bg-zinc-800 px-2 py-1 text-zinc-500 dark:text-zinc-400 border-b border-zinc-200 dark:border-zinc-700 flex items-center justify-between">
           <span>{filename}</span>
@@ -509,7 +509,7 @@ const CHANNEL_USERS = [
 
 // User list panel component
 const UserListPanel = ({ users, onClose }) => (
-  <div className="w-48 border-l border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800/50 flex flex-col">
+  <div className="w-40 border-l border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800/50 flex flex-col">
     <div className="px-3 py-2 border-b border-zinc-200 dark:border-zinc-700 flex items-center justify-between">
       <span className="text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wide">Users — {users.length}</span>
       <button onClick={onClose} className="text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300">
@@ -579,7 +579,7 @@ export const SlackThread = ({ category = 'networking', topic = 'dns' }) => {
   const codeRef = React.useRef(null)
   const codeRef2 = React.useRef(null)
   const [visibleMessages, setVisibleMessages] = React.useState(0)
-  const [typingUser, setTypingUser] = React.useState({ avatar: '/user-avatar.png', name: 'pagerduty' })
+  const [typingUser, setTypingUser] = React.useState({ avatar: '/user-profile.jpg', name: 'pagerduty' })
   const [showUserList, setShowUserList] = React.useState(false)
 
   const messageSequence = [
@@ -633,7 +633,7 @@ export const SlackThread = ({ category = 'networking', topic = 'dns' }) => {
 
           {/* Message 1: PagerDuty Alert */}
           {visibleMessages >= 1 && (
-            <ChatMessage avatar="/user-avatar.png" name="pagerduty" time="2:47 AM">
+            <ChatMessage avatar="/user-profile.jpg" name="pagerduty" time="2:47 AM">
               <OncallAlert
                 severity="SEV-1"
                 service="orders-api"

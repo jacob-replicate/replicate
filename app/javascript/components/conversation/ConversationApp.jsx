@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useCallback, useState } from 'react'
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter, Routes, Route, useParams, useNavigate, useLocation } from 'react-router-dom'
 import Conversation from './Conversation'
-import BackgroundNotification from './BackgroundNotification'
 import ChannelSwitcher from './ChannelSwitcher'
 import SecurityPage from './SecurityPage'
 import { ConversationProvider, useConversationContext } from './ConversationContext'
@@ -221,7 +220,7 @@ const ConversationView = ({ apiRef }) => {
     removeMessage(messageId)
 
     // Show typing indicator for "You"
-    setTyping({ name: 'You', avatar: '/user-avatar.png' })
+    setTyping({ name: 'You', avatar: '/user-profile.jpg' })
 
     // Wait a moment (simulates typing)
     await new Promise(resolve => setTimeout(resolve, 600))
@@ -246,12 +245,49 @@ const ConversationView = ({ apiRef }) => {
     }
   }, [removeMessage, setTyping, sendUserMessage])
 
+  // Handle hint request - surfaces options when scaffolding has faded
+  const handleRequestHint = useCallback(() => {
+    const getNextSequence = () => {
+      const currentMessages = messages
+      return currentMessages.reduce((max, m) => Math.max(max, m.sequence ?? 0), 0) + 1
+    }
+
+    // Add a hint message as a subtle teammate nudge
+    addMessage({
+      id: `msg_hint_${Date.now()}`,
+      sequence: getNextSequence(),
+      created_at: new Date().toISOString(),
+      isSystem: true,
+      components: [{
+        type: 'multiple_choice',
+        options: [
+          {
+            id: 'hint_a',
+            thought: 'Ask the team what they think the root cause is',
+            message: 'so what are we thinking is the actual root cause here?'
+          },
+          {
+            id: 'hint_b',
+            thought: 'Suggest checking the recent changes',
+            message: 'let me pull up the recent deploys — maybe something changed'
+          },
+          {
+            id: 'hint_c',
+            thought: 'Ask for more context on the symptoms',
+            message: 'can someone walk me through exactly what we\'re seeing?'
+          },
+        ],
+      }],
+    })
+  }, [addMessage, messages])
+
   return (
     <Conversation
       messages={messages}
       isTyping={isTyping}
       onSend={sendUserMessage}
       onSelect={handleSelect}
+      onRequestHint={handleRequestHint}
       channelName={channelName}
       variant="irc"
       className=""
@@ -349,6 +385,13 @@ const ConversationAppInner = ({ apiRef, currentUser }) => {
     document.title = `Invariant: ${formattedName}`
   }, [activeChannelId, conversations])
 
+  // Persist last visited channel to localStorage
+  useEffect(() => {
+    if (activeChannelId) {
+      localStorage.setItem('lastChannelId', activeChannelId)
+    }
+  }, [activeChannelId])
+
   // Sync activeChannelId when URL changes (e.g., direct navigation to /dns)
   useEffect(() => {
     const channelFromPath = getChannelIdFromPath(location.pathname)
@@ -369,10 +412,6 @@ const ConversationAppInner = ({ apiRef, currentUser }) => {
     console.log('[handleChannelSelect] calling loadDemo directly')
     loadDemo(channelId)
   }, [navigate, markAsRead])
-
-  const handleNotificationNavigate = useCallback((conversationId) => {
-    navigate(`/${conversationId}`)
-  }, [navigate])
 
   // Expose navigate function globally for demo script
   useEffect(() => {
@@ -400,21 +439,21 @@ const ConversationAppInner = ({ apiRef, currentUser }) => {
           />
         </Routes>
       </ChannelSwitcher>
-
-      {/* Background notifications for subscribed conversations */}
-      <BackgroundNotification onNavigate={handleNotificationNavigate} />
     </div>
   )
 }
 
 /**
- * Root redirect - waits for demo script to navigate, or shows loading
+ * Root redirect - navigates to last visited channel (from localStorage) or default
  */
 const RootRedirect = () => {
   const navigate = useNavigate()
 
   useEffect(() => {
-    navigate(`/${DEFAULT_CHANNEL_ID}`, { replace: true })
+    const lastChannel = localStorage.getItem('lastChannelId')
+    const isValidChannel = lastChannel && DEMO_CHANNELS.some(c => c.id === lastChannel)
+    const channelToUse = isValidChannel ? lastChannel : DEFAULT_CHANNEL_ID
+    navigate(`/${channelToUse}`, { replace: true })
   }, [navigate])
 
   return (

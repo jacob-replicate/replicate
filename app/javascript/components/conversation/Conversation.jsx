@@ -43,6 +43,8 @@ const InputHints = ({ mcq, messageId, onSelect, highlightIndex }) => {
 
   if (!mcq || !mcq.options || mcq.options.length === 0) return null
 
+  const isKeyboardMode = highlightIndex >= 0
+
   return (
     <div
       className="px-4 py-2"
@@ -68,14 +70,18 @@ const InputHints = ({ mcq, messageId, onSelect, highlightIndex }) => {
           >
             <span
               className="font-mono text-[13px] w-5 flex-shrink-0"
-              style={{ color: isHighlighted ? '#a8b8e8' : 'rgba(120, 135, 180, 0.6)' }}
+              style={{
+                color: isHighlighted ? '#FFFFFF' : '#8DA2FB',
+                opacity: isKeyboardMode && !isHighlighted ? 0.4 : 1
+              }}
             >
               {idx + 1}.
             </span>
             <span
               className="text-[14px]"
               style={{
-                color: isHighlighted ? '#d4daf5' : '#6b7aa0',
+                color: isHighlighted ? '#FFFFFF' : '#8DA2FB',
+                opacity: isKeyboardMode && !isHighlighted ? 0.4 : 1
               }}
             >
               {displayText}
@@ -83,6 +89,9 @@ const InputHints = ({ mcq, messageId, onSelect, highlightIndex }) => {
           </div>
         )
       })}
+      <div className="text-[12px] mt-1" style={{ color: 'rgba(255, 255, 255, 0.45)' }}>
+        Type a number, click an option, or write your own response
+      </div>
     </div>
   )
 }
@@ -102,6 +111,7 @@ export const Conversation = forwardRef(({
   isTyping = false,
   onSend,
   onSelect,
+  onRequestHint = null,
   placeholder,
   topics = null,
   currentTopic = null,
@@ -172,6 +182,12 @@ export const Conversation = forwardRef(({
     return -1
   }, [mcq, inputValue])
 
+  // Wrap onSelect to also trigger scroll-to-bottom (for MCQ clicks)
+  const handleSelect = useCallback((messageId, optionId, optionText) => {
+    messageListRef.current?.scrollToBottom()
+    onSelect?.(messageId, optionId, optionText)
+  }, [onSelect])
+
   // Handle number selection - intercepts send when input is just a number matching an option
   const handleSendWithMCQ = useCallback((message) => {
     const trimmed = message.trim()
@@ -184,13 +200,13 @@ export const Conversation = forwardRef(({
       const messageText = option.message || option.text
       // Clear input and trigger selection
       setInputValue('')
-      onSelect?.(mcqMessageId, optionId, messageText)
+      handleSelect(mcqMessageId, optionId, messageText)
       return
     }
 
     // Otherwise, normal send
     handleSend(message)
-  }, [mcq, mcqMessageId, onSelect, handleSend])
+  }, [mcq, mcqMessageId, handleSelect, handleSend])
 
   const baseClasses = 'flex flex-col bg-white dark:bg-zinc-900 overflow-hidden shadow-sm border border-zinc-300 dark:border-zinc-600'
   const fullscreenClasses = isFullscreen
@@ -207,7 +223,7 @@ export const Conversation = forwardRef(({
           ref={messageListRef}
           messages={filteredMessages}
           isTyping={isTyping}
-          onSelect={onSelect}
+          onSelect={handleSelect}
           conversationId={conversationId}
         />
 
@@ -218,10 +234,12 @@ export const Conversation = forwardRef(({
           onChange={setInputValue}
           placeholder={placeholder}
           disabled={inputDisabled}
+          showHintIcon={!mcq && !!onRequestHint}
+          onRequestHint={onRequestHint}
         />
 
         {/* MCQ hints below input */}
-        <InputHints mcq={mcq} messageId={mcqMessageId} onSelect={onSelect} highlightIndex={highlightIndex} />
+        <InputHints mcq={mcq} messageId={mcqMessageId} onSelect={handleSelect} highlightIndex={highlightIndex} />
       </div>
     )
   }
@@ -250,7 +268,7 @@ export const Conversation = forwardRef(({
         ref={messageListRef}
         messages={messages}
         isTyping={isTyping}
-        onSelect={onSelect}
+        onSelect={handleSelect}
         conversationId={conversationId}
       />
 
@@ -263,6 +281,8 @@ export const Conversation = forwardRef(({
         currentTopic={currentTopic}
         onTopicChange={onTopicChange}
         disabled={inputDisabled}
+        showHintIcon={!!onRequestHint}
+        onRequestHint={onRequestHint}
       />
     </div>
   )

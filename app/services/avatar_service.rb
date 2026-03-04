@@ -1,6 +1,6 @@
 class AvatarService
   def self.jacob_avatar_row
-    avatar_row(name: "Jacob Comer", photo_path: "user-avatar.png")
+    avatar_row(name: "Jacob Comer", photo_path: "user-profile.jpg")
   end
 
   def self.coach_avatar_row

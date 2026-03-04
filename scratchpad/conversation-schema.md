@@ -262,7 +262,7 @@ Returns the full conversation state. Client renders immediately, no animations.
       "id": "msg_1",
       "sequence": 1,
       "parent_message_id": null,
-      "author": { "name": "PagerDuty", "avatar": "/user-avatar.png" },
+      "author": { "name": "PagerDuty", "avatar": "/user-profile.jpg" },
       "components": [
         { "type": "alert", "title": "[SEV-1] DNS failures...", "description": "..." }
       ],

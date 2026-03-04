@@ -27,7 +27,7 @@ const ChannelItem = React.forwardRef(({ item, isActive, onSelect, onClose }, ref
       onMouseEnter={(e) => {
         if (!isActive) {
           e.currentTarget.style.backgroundColor = '#18181b'
-          e.currentTarget.style.color = '#a1a1aa'
+          e.currentTarget.style.color = hasUnread ? '#ffffff' : '#a1a1aa'
         }
       }}
       onMouseLeave={(e) => {
@@ -53,20 +53,6 @@ const ChannelItem = React.forwardRef(({ item, isActive, onSelect, onClose }, ref
             className="w-2 h-2 rounded-full"
             style={{ backgroundColor: '#ef4444' }}
           />
-        ) : isActive && onClose ? (
-          <span
-            role="button"
-            onClick={(e) => {
-              e.stopPropagation()
-              onClose(item.id)
-            }}
-            className="w-4 h-4 rounded-full flex items-center justify-center hover:bg-zinc-700/50"
-            style={{ color: 'rgba(161, 161, 170, 0.7)' }}
-          >
-            <svg className="w-2.5 h-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </span>
         ) : null}
       </span>
     </button>

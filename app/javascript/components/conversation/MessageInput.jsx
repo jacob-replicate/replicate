@@ -11,6 +11,8 @@ export const MessageInput = forwardRef(({
   currentTopic = null,
   onTopicChange = null,
   disabled = false,
+  showHintIcon = false,
+  onRequestHint = null,
 }, ref) => {
   const [value, setValue] = useState('')
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
@@ -63,17 +65,34 @@ export const MessageInput = forwardRef(({
       className="flex items-center"
       style={{ backgroundColor: '#18181a', borderTop: '1px solid #27272a' }}
     >
-      <input
-        ref={inputRef}
-        type="text"
-        value={value}
-        onChange={handleChange}
-        onKeyDown={handleKeyDown}
-        placeholder={placeholder}
-        disabled={disabled}
-        className="flex-1 px-4 py-3 text-[15px] outline-none border-none bg-transparent ring-0 focus:ring-0 focus:outline-none disabled:opacity-50 placeholder-[#52525b]"
-        style={{ color: '#f4f4f5', caretColor: '#d4d4d8' }}
-      />
+      <div className="relative flex-1">
+        <input
+          ref={inputRef}
+          type="text"
+          value={value}
+          onChange={handleChange}
+          onKeyDown={handleKeyDown}
+          placeholder={placeholder}
+          disabled={disabled}
+          className={`w-full px-4 py-3 text-[15px] outline-none border-none bg-transparent ring-0 focus:ring-0 focus:outline-none disabled:opacity-50 placeholder-[#52525b] ${showHintIcon ? 'pr-20' : ''}`}
+          style={{ color: '#f4f4f5', caretColor: '#d4d4d8' }}
+        />
+
+        {/* Hint button - styled as a button within the input */}
+        {showHintIcon && onRequestHint && (
+          <button
+            type="button"
+            onClick={onRequestHint}
+            className="absolute right-2 top-1/2 -translate-y-1/2 px-2.5 py-1 rounded-md transition-all duration-200 bg-sky-500/20 hover:bg-sky-500/30"
+            title="Need a nudge? Click for options"
+            style={{ color: '#38bdf8' }}
+            onMouseEnter={(e) => e.currentTarget.style.color = '#e0f2fe'}
+            onMouseLeave={(e) => e.currentTarget.style.color = '#38bdf8'}
+          >
+            <span className="text-xs font-mono font-medium">/hint</span>
+          </button>
+        )}
+      </div>
 
       {/* Topic dropdown */}
       {topics && topics.length > 0 && (

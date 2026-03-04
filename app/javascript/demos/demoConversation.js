@@ -55,15 +55,7 @@ const INCIDENT_MESSAGES = [
     components: [
       {
         type: 'text',
-        content: 'just got paged — connection pool is spiking',
-      },
-      {
-        type: 'monitor',
-        title: 'PostgreSQL Connection Pool',
-        metric: 'orders-db-primary',
-        value: 98,
-        zoneBreaks: [0, 0.6, 0.85, 1.05],
-        dataPoints: [8, 9, 11, 10, 12, 14, 13, 15, 18, 17, 21, 24, 26, 29, 33, 38, 42, 48, 53, 61, 68, 74, 79, 83, 88, 91, 94, 96, 97, 98],
+        content: 'just got paged — connection pool is spiking hard. sitting at 98% used on orders-db-primary',
       },
     ],
     reactions: [
@@ -418,16 +410,7 @@ const AUTH_INCIDENT_MESSAGES = [
     components: [
       {
         type: 'text',
-        content: 'I\'ll take IC. seeing 401s spike in the API gateway — this started about 10 min ago',
-      },
-      {
-        type: 'monitor',
-        title: 'API Gateway 401 Responses',
-        metric: 'auth-gateway',
-        value: 34,
-        unit: '%',
-        zoneBreaks: [0, 0.05, 0.15, 0.30],
-        dataPoints: [1, 1, 1, 2, 1, 2, 1, 2, 3, 4, 6, 9, 13, 17, 21, 25, 28, 30, 32, 34],
+        content: 'I\'ll take IC. seeing 401s spike in the API gateway — jumped to 34% error rate in the last 10 min',
       },
     ],
   },
@@ -600,16 +583,7 @@ const PARTITIONING_INCIDENT_MESSAGES = [
     components: [
       {
         type: 'text',
-        content: 'events service latency spiking hard — p99 is through the roof',
-      },
-      {
-        type: 'monitor',
-        title: 'Events Service p99 Latency',
-        metric: 'events-api-latency',
-        value: 2847,
-        unit: 'ms',
-        zoneBreaks: [0, 0.2, 0.5, 0.8],
-        dataPoints: [45, 48, 52, 55, 61, 89, 134, 198, 287, 445, 612, 834, 1102, 1456, 1823, 2103, 2412, 2634, 2756, 2847],
+        content: 'events service latency spiking hard — p99 is at 2847ms, completely through the roof',
       },
     ],
     reactions: [
