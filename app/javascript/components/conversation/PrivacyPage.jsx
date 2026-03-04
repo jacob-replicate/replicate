@@ -1,6 +1,6 @@
 import React from 'react'
 
-const SecurityPage = () => {
+const PrivacyPage = () => {
   return (
     <div className="flex flex-col h-full overflow-hidden" style={{ backgroundColor: '#18181a' }}>
       {/* Page header - matches conversation view */}
@@ -12,9 +12,9 @@ const SecurityPage = () => {
       >
         <div className="flex items-center gap-2">
           <svg className="w-4 h-4" style={{ color: '#71717a' }} fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
           </svg>
-          <span className="text-[15px] font-semibold" style={{ color: '#e4e4e7' }}>Security</span>
+          <span className="text-[15px] font-semibold" style={{ color: '#e4e4e7' }}>Privacy</span>
         </div>
       </div>
 
@@ -22,79 +22,31 @@ const SecurityPage = () => {
       <div className="flex-1 overflow-y-auto">
         <div className="max-w-2xl mx-auto py-10 px-6 text-[15px] leading-relaxed text-zinc-400">
 
-          {/* Architecture */}
+          {/* Information Collected */}
           <section className="mb-10">
             <h2 className="text-[13px] font-semibold uppercase tracking-wider mb-4" style={{ color: '#71717a' }}>
-              Architecture
-            </h2>
-
-            <p className="mb-6">
-              All infra is provisioned/managed by <span className="text-zinc-200">Heroku</span> (in <span className="text-zinc-200">US-based</span> AWS regions), and uses their HA failover. Data is encrypted at rest using AES-256, and TLS 1.2+ in transit. The tool is ephemeral, and wipes data older than 3 months.
-            </p>
-
-            <div className="space-y-3">
-              <div className="rounded-lg p-4" style={{ backgroundColor: '#1f1f23', border: '1px solid #27272a' }}>
-                <h3 className="font-medium mb-2 text-zinc-200 text-[14px]">Automated Dependency Scanning</h3>
-                <p className="text-[14px]">
-                  The codebase is continuously scanned using{' '}
-                  <a
-                    href="https://docs.github.com/en/code-security/getting-started/dependabot-quickstart-guide"
-                    className="text-blue-400 hover:text-blue-300 hover:underline"
-                  >
-                    GitHub Dependabot
-                  </a>{' '}
-                  to patch vulnerable libraries. Critical vulnerabilities are patched within 7 days of public disclosure.
-                </p>
-              </div>
-
-              <div className="rounded-lg p-4" style={{ backgroundColor: '#1f1f23', border: '1px solid #27272a' }}>
-                <h3 className="font-medium mb-2 text-zinc-200 text-[14px]">Cookie Policy</h3>
-                <p className="text-[14px]">
-                  This site uses a session ID cookie to track which difficulty you selected. No marketing cookies or analytics JS plugins of any kind.
-                </p>
-              </div>
-
-              <div className="rounded-lg p-4" style={{ backgroundColor: '#1f1f23', border: '1px solid #27272a' }}>
-                <h3 className="font-medium mb-2 text-zinc-200 text-[14px]">Database Backups</h3>
-                <p className="text-[14px]">
-                  <a
-                    href="https://www.heroku.com/postgres"
-                    className="text-blue-400 hover:text-blue-300 hover:underline"
-                  >
-                    Heroku Postgres
-                  </a>{' '}
-                  maintains rolling database backups, and prunes old snapshots automatically over time. Backups can be restored in minutes, and are captured at least once every 24 hours.
-                </p>
-              </div>
-            </div>
-          </section>
-
-          {/* Data Lifecycle */}
-          <section className="mb-10">
-            <h2 className="text-[13px] font-semibold uppercase tracking-wider mb-4" style={{ color: '#71717a' }}>
-              Data Lifecycle
+              Information Collected
             </h2>
 
             <div className="rounded-lg p-4" style={{ backgroundColor: '#1f1f23', border: '1px solid #27272a' }}>
+              <h3 className="font-medium mb-2 text-zinc-200 text-[14px]">Conversation History</h3>
               <p className="text-[14px]">
-                Inactive chats are auto-deleted after 3 months.
-                Email{' '}
-                <a
-                  href="mailto:support@invariant.training"
-                  className="text-blue-400 hover:text-blue-300 hover:underline"
-                >
-                  support@invariant.training
-                </a>{' '}
-                to request immediate deletion.
+                Copies of your coaching threads, stored temporarily to deliver replies in case you reopen an old conversation. They're automatically deleted after 3 months of inactivity.
               </p>
             </div>
           </section>
 
           {/* Subprocessors */}
-          <section>
+          <section className="mb-10">
             <h2 className="text-[13px] font-semibold uppercase tracking-wider mb-4" style={{ color: '#71717a' }}>
               Subprocessors
             </h2>
+
+            <div className="rounded-lg p-4 mb-5" style={{ backgroundColor: '#1f1f23', border: '1px solid #27272a' }}>
+              <p className="text-[14px]">
+                We do <span className="text-zinc-200 font-medium">not</span> sell, rent, or share your information for marketing purposes.
+              </p>
+            </div>
 
             <p className="text-[13px] text-zinc-500 mb-5">
               All vendors are GDPR compliant, offer Standard Contractual Clauses (SCCs), and underwent security review prior to onboarding. This is the complete list. No additional tools (e.g., Google Analytics) are used beyond those listed here.
@@ -148,10 +100,23 @@ const SecurityPage = () => {
             </div>
           </section>
 
+          {/* Children's Privacy */}
+          <section>
+            <h2 className="text-[13px] font-semibold uppercase tracking-wider mb-4" style={{ color: '#71717a' }}>
+              Children's Privacy
+            </h2>
+
+            <div className="rounded-lg p-4" style={{ backgroundColor: '#1f1f23', border: '1px solid #27272a' }}>
+              <p className="text-[14px]">
+                This service is not directed to individuals under 13, and we do not knowingly collect data from them.
+              </p>
+            </div>
+          </section>
+
         </div>
       </div>
     </div>
   )
 }
 
-export default SecurityPage
+export default PrivacyPage

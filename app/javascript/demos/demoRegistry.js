@@ -2,7 +2,7 @@
  * Demo Registry - central place for all demo conversations
  */
 
-import { INCIDENT_MESSAGES, AUTH_INCIDENT_MESSAGES, PARTITIONING_INCIDENT_MESSAGES } from './demoConversation'
+import { INCIDENT_MESSAGES, AUTH_INCIDENT_MESSAGES, PARTITIONING_INCIDENT_MESSAGES, REPLICATION_INCIDENT_MESSAGES } from './demoConversation'
 
 export const DEMO_REGISTRY = {
   'dns': {
@@ -13,6 +13,9 @@ export const DEMO_REGISTRY = {
   },
   'partitioning': {
     messages: PARTITIONING_INCIDENT_MESSAGES,
+  },
+  'replication': {
+    messages: REPLICATION_INCIDENT_MESSAGES,
   },
 }
 

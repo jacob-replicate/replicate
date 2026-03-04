@@ -76,38 +76,12 @@ export const MessageInput = forwardRef(({
           onKeyDown={handleKeyDown}
           placeholder={placeholder}
           disabled={disabled}
-          className={`w-full px-4 py-3 text-[15px] outline-none border-none bg-transparent ring-0 focus:ring-0 focus:outline-none disabled:opacity-50 placeholder-[#52525b] ${(onRequestHint || onRequestNew) ? 'pr-36' : ''}`}
+          className={`w-full px-4 py-3 text-[15px] outline-none border-none bg-transparent ring-0 focus:ring-0 focus:outline-none disabled:opacity-50 placeholder-[#52525b] ${onRequestHint ? 'pr-24' : ''}`}
           style={{ color: '#f4f4f5', caretColor: '#d4d4d8' }}
         />
 
         {/* Action buttons - terminal/engineer aesthetic */}
         <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-2">
-          {onRequestNew && (
-            <button
-              type="button"
-              onClick={onRequestNew}
-              className="px-3 py-1 rounded-md"
-              title="Start a new scenario"
-              style={{
-                backgroundColor: '#252528',
-                color: '#4ade80',
-                boxShadow: '0 1px 3px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.05)',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = '#2d2d30'
-                e.currentTarget.style.color = '#86efac'
-                e.currentTarget.style.boxShadow = '0 2px 6px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.08)'
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = '#252528'
-                e.currentTarget.style.color = '#4ade80'
-                e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.05)'
-              }}
-            >
-              <span className="text-sm font-mono">/new</span>
-            </button>
-          )}
-
           {onRequestHint && (
             <button
               type="button"

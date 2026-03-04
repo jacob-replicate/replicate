@@ -38,12 +38,26 @@ const extractActiveMCQ = (messages, onSelect) => {
 /**
  * MCQ Options rendered below input - clickable hints
  */
-const InputHints = ({ mcq, messageId, onSelect, highlightIndex }) => {
+const InputHints = ({ mcq, messageId, onSelect, highlightIndex, inputValue }) => {
   const [hoveredIndex, setHoveredIndex] = React.useState(-1)
+  const [hasUsedTypingHint, setHasUsedTypingHint] = React.useState(() => {
+    return localStorage.getItem('has-used-typing-hint') === 'true'
+  })
 
   if (!mcq || !mcq.options || mcq.options.length === 0) return null
 
   const isKeyboardMode = highlightIndex >= 0
+  const showEnterHint = highlightIndex >= 0 // User typed a valid number
+
+  // Determine help text - only show if user hasn't successfully typed a number + enter before
+  let helpText = null
+  if (!hasUsedTypingHint) {
+    if (showEnterHint) {
+      helpText = 'Now press Enter.'
+    } else {
+      helpText = 'Type a number, click an option, or write your own response'
+    }
+  }
 
   return (
     <div
@@ -89,9 +103,11 @@ const InputHints = ({ mcq, messageId, onSelect, highlightIndex }) => {
           </div>
         )
       })}
-      <div className="text-[12px] mt-1" style={{ color: 'rgba(255, 255, 255, 0.45)' }}>
-        Type a number, click an option, or write your own response
-      </div>
+      {helpText && (
+        <div className="text-[12px] mt-1" style={{ color: '#a3a374' }}>
+          {helpText}
+        </div>
+      )}
     </div>
   )
 }
@@ -192,6 +208,14 @@ export const Conversation = forwardRef(({
   // Handle number selection - intercepts send when input is just a number matching an option
   const handleSendWithMCQ = useCallback((message) => {
     const trimmed = message.trim()
+
+    // Handle /reset command - clear all localStorage
+    if (trimmed === '/reset') {
+      localStorage.clear()
+      setInputValue('')
+      return
+    }
+
     const num = parseInt(trimmed, 10)
 
     // If MCQ is active and input is just a number (1, 2, 3, etc.)
@@ -199,6 +223,8 @@ export const Conversation = forwardRef(({
       const option = mcq.options[num - 1]
       const optionId = option.id !== undefined ? option.id : num - 1
       const messageText = option.message || option.text
+      // Mark that user has successfully used the typing mechanism
+      localStorage.setItem('has-used-typing-hint', 'true')
       // Clear input and trigger selection
       setInputValue('')
       handleSelect(mcqMessageId, optionId, messageText)

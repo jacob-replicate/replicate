@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route, useParams, useNavigate, useLocation } fro
 import Conversation from './Conversation'
 import ChannelSwitcher from './ChannelSwitcher'
 import SecurityPage from './SecurityPage'
+import PrivacyPage from './PrivacyPage'
 import { ConversationProvider, useConversationContext } from './ConversationContext'
 import useConversation from '../../hooks/useConversation'
 import {
@@ -441,6 +442,7 @@ const ConversationAppInner = ({ apiRef, currentUser }) => {
         <Routes>
           <Route path="/" element={<RootRedirect />} />
           <Route path="/security" element={<SecurityPage />} />
+          <Route path="/privacy" element={<PrivacyPage />} />
           <Route
             path="/:uuid"
             element={<ConversationViewWrapper apiRef={apiRef} />}

@@ -66,19 +66,34 @@ const parseTextContent = (text) => {
 
 // Emoji reaction pill - clickable with hover effects
 // isSelected shows a highlighted state when user has reacted
-const EmojiReaction = ({ emoji, count, onClick, isSelected }) => (
-  <button
-    onClick={onClick}
-    className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-xs active:scale-95 transition-all cursor-pointer ${
-      isSelected
-        ? 'bg-indigo-100 dark:bg-indigo-900/50 border border-indigo-300 dark:border-indigo-700 hover:bg-indigo-200 dark:hover:bg-indigo-800/50'
-        : 'bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 hover:bg-zinc-200 dark:hover:bg-zinc-700 hover:border-zinc-300 dark:hover:border-zinc-600'
-    }`}
-  >
-    <span className="dark:grayscale-[30%] dark:opacity-90">{emoji}</span>
-    <span className={isSelected ? 'text-indigo-600 dark:text-indigo-400' : 'text-zinc-600 dark:text-zinc-400'}>{count}</span>
-  </button>
-)
+const EmojiReaction = ({ emoji, count, onClick, isSelected }) => {
+  const [isHovered, setIsHovered] = React.useState(false)
+
+  const baseStyle = isSelected
+    ? {
+        backgroundColor: isHovered ? 'rgba(99, 102, 241, 0.3)' : 'rgba(99, 102, 241, 0.2)',
+        border: '1px solid rgba(99, 102, 241, 0.5)',
+        color: '#a5b4fc'
+      }
+    : {
+        backgroundColor: isHovered ? '#3f3f46' : '#27272a',
+        border: '1px solid #3f3f46',
+        color: '#a1a1aa'
+      }
+
+  return (
+    <button
+      onClick={onClick}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-xs active:scale-95 transition-all cursor-pointer"
+      style={baseStyle}
+    >
+      <span style={{ filter: 'grayscale(30%)', opacity: 0.9 }}>{emoji}</span>
+      <span>{count}</span>
+    </button>
+  )
+}
 
 
 // Diff component
@@ -88,14 +103,14 @@ const Diff = ({ filename, lines }) => {
   const deletions = lines.filter(line => line.type === 'remove').length
 
   return (
-    <div className="rounded border border-zinc-200 dark:border-zinc-700 overflow-hidden text-[13px] font-mono">
+    <div className="rounded overflow-hidden text-[13px] font-mono" style={{ border: '1px solid #27272a' }}>
       {filename && (
-        <div className="bg-zinc-100 dark:bg-zinc-800 px-2 py-1 text-zinc-500 dark:text-zinc-400 border-b border-zinc-200 dark:border-zinc-700 flex items-center justify-between">
+        <div className="px-2 py-1 flex items-center justify-between" style={{ backgroundColor: '#1f1f23', color: '#a1a1aa', borderBottom: '1px solid #27272a' }}>
           <span>{filename}</span>
           {(additions > 0 || deletions > 0) && (
             <div className="flex items-center gap-2">
-              {additions > 0 && <span className="text-green-600 dark:text-green-400">+{additions}</span>}
-              {deletions > 0 && <span className="text-red-500 dark:text-red-400">-{deletions}</span>}
+              {additions > 0 && <span style={{ color: '#4ade80' }}>+{additions}</span>}
+              {deletions > 0 && <span style={{ color: '#f87171' }}>-{deletions}</span>}
             </div>
           )}
         </div>
@@ -103,22 +118,22 @@ const Diff = ({ filename, lines }) => {
       {lines.map((line, i) => {
         if (line.type === 'remove') {
           return (
-            <div key={i} className="bg-red-50 dark:bg-red-950/30 px-2 py-0.5 text-red-700 dark:text-red-300">
-              <span className="text-red-400 dark:text-red-500 select-none mr-2">-</span>
+            <div key={i} className="px-2 py-0.5" style={{ backgroundColor: 'rgba(127, 29, 29, 0.3)', color: '#fca5a5' }}>
+              <span className="select-none mr-2" style={{ color: '#f87171' }}>-</span>
               {line.text}
             </div>
           )
         }
         if (line.type === 'add') {
           return (
-            <div key={i} className="bg-green-50 dark:bg-green-950/30 px-2 py-0.5 text-green-700 dark:text-green-300">
-              <span className="text-green-500 select-none mr-2">+</span>
+            <div key={i} className="px-2 py-0.5" style={{ backgroundColor: 'rgba(20, 83, 45, 0.4)', color: '#86efac' }}>
+              <span className="select-none mr-2" style={{ color: '#4ade80' }}>+</span>
               {line.text}
             </div>
           )
         }
         return (
-          <div key={i} className="px-2 py-0.5 text-zinc-600 dark:text-zinc-400">
+          <div key={i} className="px-2 py-0.5" style={{ color: '#a1a1aa' }}>
             <span className="select-none mr-2">&nbsp;</span>
             {line.text}
           </div>

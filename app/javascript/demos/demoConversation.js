@@ -838,4 +838,270 @@ deployment.apps/events-consumer scaled`,
   },
 ]
 
-export { INCIDENT_MESSAGES, AUTH_INCIDENT_MESSAGES, PARTITIONING_INCIDENT_MESSAGES }
+/**
+ * Replication Incident Demo Data
+ * Terraform drift causes replication lag and data inconsistency
+ */
+const REPLICATION_INCIDENT_MESSAGES = [
+  {
+    id: 'repl_1',
+    sequence: 1,
+    author: { name: 'daniel', avatar: '/profile-photo-2.jpg', status: { emoji: '📅', text: 'In a meeting' } },
+    created_at: new Date(Date.now() - 18 * 60 * 1000).toISOString(),
+    components: [
+      {
+        type: 'text',
+        content: 'seeing weird data on the read replicas — customers reporting stale inventory counts. writes look fine on primary',
+      },
+    ],
+    reactions: [
+      { emoji: '👀', count: 3 },
+    ]
+  },
+  {
+    id: 'repl_2',
+    sequence: 2,
+    author: { name: 'maya', avatar: '/profile-photo-3.jpg' },
+    created_at: new Date(Date.now() - 17 * 60 * 1000).toISOString(),
+    components: [
+      {
+        type: 'text',
+        content: 'taking IC. @alex can you check replication lag in CloudWatch? I\'ll look at the replica status',
+      },
+    ],
+  },
+  {
+    id: 'repl_3',
+    sequence: 3,
+    author: { name: 'alex', avatar: '/profile-photo-1.jpg', status: { emoji: '💻', text: 'Focusing' } },
+    created_at: new Date(Date.now() - 16 * 60 * 1000).toISOString(),
+    components: [
+      {
+        type: 'text',
+        content: 'lag is through the roof — replica-2 is 847 seconds behind. replica-1 is at 12 seconds which is borderline acceptable',
+      },
+    ],
+    reactions: [
+      { emoji: '😬', count: 2 },
+    ]
+  },
+  {
+    id: 'repl_4',
+    sequence: 4,
+    author: { name: 'maya', avatar: '/profile-photo-3.jpg' },
+    created_at: new Date(Date.now() - 15 * 60 * 1000).toISOString(),
+    components: [
+      {
+        type: 'text',
+        content: 'that explains the stale reads. pulling up the replica configs — something\'s off',
+      },
+    ],
+  },
+  {
+    id: 'repl_5',
+    sequence: 5,
+    author: { name: 'daniel', avatar: '/profile-photo-2.jpg' },
+    created_at: new Date(Date.now() - 14 * 60 * 1000).toISOString(),
+    components: [
+      {
+        type: 'text',
+        content: 'found it. replica-2 is running on db.r5.large while replica-1 is db.r5.2xlarge. the small instance can\'t keep up with the write throughput',
+      },
+      {
+        type: 'code',
+        language: 'bash',
+        content: `$ aws rds describe-db-instances --query 'DBInstances[*].[DBInstanceIdentifier,DBInstanceClass]'
+[
+  ["prod-primary", "db.r5.4xlarge"],
+  ["prod-replica-1", "db.r5.2xlarge"],
+  ["prod-replica-2", "db.r5.large"]    # <-- undersized
+]`,
+      },
+    ],
+  },
+  {
+    id: 'repl_6',
+    sequence: 6,
+    parent_message_id: 'repl_5',
+    author: { name: 'alex', avatar: '/profile-photo-1.jpg' },
+    created_at: new Date(Date.now() - 13 * 60 * 1000).toISOString(),
+    components: [
+      {
+        type: 'text',
+        content: 'wait how did that happen? terraform should have them all at 2xlarge',
+      },
+    ],
+  },
+  {
+    id: 'repl_7',
+    sequence: 7,
+    author: { name: 'maya', avatar: '/profile-photo-3.jpg' },
+    created_at: new Date(Date.now() - 12 * 60 * 1000).toISOString(),
+    components: [
+      {
+        type: 'text',
+        content: 'running terraform plan now... yep, drift detected. someone manually resized replica-2 in the console and never updated the tf',
+      },
+      {
+        type: 'code',
+        language: 'hcl',
+        content: `# terraform plan output
+~ resource "aws_db_instance" "replica_2" {
+    ~ instance_class = "db.r5.large" -> "db.r5.2xlarge"
+    # (12 unchanged attributes hidden)
+  }
+
+Plan: 0 to add, 1 to change, 0 to destroy.`,
+      },
+    ],
+    reactions: [
+      { emoji: '🤦', count: 4 },
+    ]
+  },
+  {
+    id: 'repl_8',
+    sequence: 8,
+    author: { name: 'daniel', avatar: '/profile-photo-2.jpg' },
+    created_at: new Date(Date.now() - 11 * 60 * 1000).toISOString(),
+    components: [
+      {
+        type: 'text',
+        content: 'git blame says the console change was made 3 weeks ago during the last incident. we were firefighting and someone downsized it "temporarily" to test something',
+      },
+    ],
+  },
+  {
+    id: 'repl_9',
+    sequence: 9,
+    parent_message_id: 'repl_8',
+    author: { name: 'alex', avatar: '/profile-photo-1.jpg' },
+    created_at: new Date(Date.now() - 10 * 60 * 1000).toISOString(),
+    components: [
+      {
+        type: 'text',
+        content: 'classic. temporary changes have a way of becoming permanent',
+      },
+    ],
+  },
+  {
+    id: 'repl_10',
+    sequence: 10,
+    author: { name: 'maya', avatar: '/profile-photo-3.jpg' },
+    created_at: new Date(Date.now() - 9 * 60 * 1000).toISOString(),
+    components: [
+      {
+        type: 'text',
+        content: 'applying terraform now to resize replica-2. this will trigger a reboot but lag should recover within 10-15 min after',
+      },
+    ],
+  },
+  {
+    id: 'repl_11',
+    sequence: 11,
+    author: { name: 'daniel', avatar: '/profile-photo-2.jpg' },
+    created_at: new Date(Date.now() - 8 * 60 * 1000).toISOString(),
+    components: [
+      {
+        type: 'text',
+        content: 'in the meantime I\'ll update the load balancer to route all reads to replica-1. at least we\'ll have consistent data while replica-2 catches up',
+      },
+      {
+        type: 'code',
+        language: 'hcl',
+        content: `# Temporarily route all traffic to healthy replica
+resource "aws_lb_target_group_attachment" "read_replica" {
+  target_group_arn = aws_lb_target_group.read_replicas.arn
+  target_id        = aws_db_instance.replica_1.id
+  port             = 5432
+}
+
+# replica_2 removed until caught up`,
+      },
+    ],
+  },
+  {
+    id: 'repl_12',
+    sequence: 12,
+    author: { name: 'alex', avatar: '/profile-photo-1.jpg' },
+    created_at: new Date(Date.now() - 6 * 60 * 1000).toISOString(),
+    components: [
+      {
+        type: 'text',
+        content: 'terraform apply completed. replica-2 is rebooting with the correct instance size',
+      },
+    ],
+    reactions: [
+      { emoji: '🙏', count: 2 },
+    ]
+  },
+  {
+    id: 'repl_13',
+    sequence: 13,
+    author: { name: 'maya', avatar: '/profile-photo-3.jpg' },
+    created_at: new Date(Date.now() - 4 * 60 * 1000).toISOString(),
+    components: [
+      {
+        type: 'text',
+        content: 'replica-2 is back online and lag is dropping fast — down to 200 seconds already. should be caught up in a few minutes',
+      },
+    ],
+  },
+  {
+    id: 'repl_14',
+    sequence: 14,
+    author: { name: 'daniel', avatar: '/profile-photo-2.jpg' },
+    created_at: new Date(Date.now() - 2 * 60 * 1000).toISOString(),
+    components: [
+      {
+        type: 'text',
+        content: 'lag at 0 on both replicas. adding replica-2 back to the load balancer. marking incident resolved',
+      },
+    ],
+    reactions: [
+      { emoji: '🎉', count: 3 },
+      { emoji: '👍', count: 2 },
+    ]
+  },
+  {
+    id: 'repl_15',
+    sequence: 15,
+    author: { name: 'alex', avatar: '/profile-photo-1.jpg' },
+    created_at: new Date(Date.now() - 1 * 60 * 1000).toISOString(),
+    components: [
+      {
+        type: 'text',
+        content: 'for the postmortem — we need to talk about drift detection. this wouldn\'t have happened if we had terraform plan running on a schedule',
+      },
+    ],
+  },
+  {
+    id: 'repl_16',
+    sequence: 16,
+    isSystem: true,
+    created_at: new Date().toISOString(),
+    components: [
+      {
+        type: 'multiple_choice',
+        options: [
+          {
+            id: 'a',
+            thought: 'Add a CI job that runs terraform plan daily and alerts on drift',
+            message: 'we should add a CI job that runs terraform plan on a schedule — alert if there\'s any drift between state and reality'
+          },
+          {
+            id: 'b',
+            thought: 'Lock down console access and require all changes go through terraform',
+            message: 'the real fix is locking down console write access. all infra changes should go through terraform PRs — no exceptions during incidents'
+          },
+          {
+            id: 'c',
+            thought: 'Add replication lag alerting so we catch this faster next time',
+            message: 'we need better alerting on replication lag. if we\'d been paged when lag exceeded 60 seconds, we would\'ve caught this before customers noticed'
+          },
+        ],
+      }
+    ],
+  },
+]
+
+export { INCIDENT_MESSAGES, AUTH_INCIDENT_MESSAGES, PARTITIONING_INCIDENT_MESSAGES, REPLICATION_INCIDENT_MESSAGES }

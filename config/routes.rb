@@ -13,6 +13,7 @@ Rails.application.routes.draw do
     mount Sidekiq::Web => "/sidekiq"
   end
 
+  # Webhooks
   post "/webhooks/postmark", to: "postmark_webhooks#create"
 
   # API routes
@@ -22,40 +23,30 @@ Rails.application.routes.draw do
     end
   end
 
+  # Server-rendered pages (non-SPA)
   get "/terms", to: "static#terms"
-  get "/privacy", to: "static#privacy"
   get "/billing", to: "static#billing"
-  get "/security", to: "static#index"
-  get '/incidents(/:sharing_code)', to: "conversations#show"
+  get "/growth", to: "static#growth"
+
+  # Member actions (require server-side handling)
   get '/members/:id/unsubscribe', to: "members#unsubscribe"
   post '/members/:id/unsubscribe', to: "members#unsubscribe_confirm"
   get '/members/:id/resubscribe', to: "members#resubscribe"
   post '/members/:id/resubscribe', to: "members#resubscribe_confirm"
-  post '/sessions/pulse', to: "sessions#pulse"
-  get '/growth', to: "static#growth"
 
-  resources :conversations, only: [:show, :update]
-  get '/conversations/:id/destroy', to: "conversations#destroy"
+  # API actions
+  post '/sessions/pulse', to: "sessions#pulse"
   resources :messages, only: [:create]
   resources :organizations, only: [:create]
 
-  # OAuth routes - must be before wildcard routes
-  post '/auth/:provider', to: lambda { |_| [404, {}, ['Not Found']] } # OmniAuth intercepts this
+  # OAuth
+  post '/auth/:provider', to: lambda { |_| [404, {}, ['Not Found']] }
   get '/auth/:provider/callback', to: "sessions#oauth_create"
   get '/auth/failure', to: "sessions#oauth_failure"
   delete '/logout', to: "sessions#destroy"
 
-  # Topic routes (simplified: Category -> Topic -> Conversation)
-  post '/:code/populate', to: "topics#populate", as: "populate_topic"
 
-  # Conversation routes under topic (these replace Experience routes)
-  post '/:topic_code/:conversation_code/populate', to: "conversations#populate", as: "populate_conversation"
-  delete '/:topic_code/:conversation_code', to: "conversations#destroy_template", as: "destroy_conversation_template"
-  get '/:topic_code/:conversation_code', to: "conversations#show_by_code", as: "topic_conversation"
-
-  # Topic show - renders React app for topic slugs (e.g., /dns, /iam, /kubernetes)
-  # Supports kebab-case slugs like: dns, load-balancing, ci-cd, tls-ssl
-  get '/:code', to: "static#index", as: "topic", constraints: { code: /[a-z0-9-]+/i }
-
+  # SPA catch-all - React Router handles everything else
+  get '*path', to: "static#index", constraints: ->(req) { !req.path.start_with?('/api', '/sidekiq', '/assets') }
   root "static#index"
 end
