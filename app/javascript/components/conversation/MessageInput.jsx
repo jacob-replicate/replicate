@@ -13,6 +13,8 @@ export const MessageInput = forwardRef(({
   disabled = false,
   showHintIcon = false,
   onRequestHint = null,
+  showNewButton = false,
+  onRequestNew = null,
 }, ref) => {
   const [value, setValue] = useState('')
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
@@ -74,24 +76,64 @@ export const MessageInput = forwardRef(({
           onKeyDown={handleKeyDown}
           placeholder={placeholder}
           disabled={disabled}
-          className={`w-full px-4 py-3 text-[15px] outline-none border-none bg-transparent ring-0 focus:ring-0 focus:outline-none disabled:opacity-50 placeholder-[#52525b] ${showHintIcon ? 'pr-20' : ''}`}
+          className={`w-full px-4 py-3 text-[15px] outline-none border-none bg-transparent ring-0 focus:ring-0 focus:outline-none disabled:opacity-50 placeholder-[#52525b] ${(onRequestHint || onRequestNew) ? 'pr-36' : ''}`}
           style={{ color: '#f4f4f5', caretColor: '#d4d4d8' }}
         />
 
-        {/* Hint button - styled as a button within the input */}
-        {showHintIcon && onRequestHint && (
-          <button
-            type="button"
-            onClick={onRequestHint}
-            className="absolute right-2 top-1/2 -translate-y-1/2 px-2.5 py-1 rounded-md transition-all duration-200 bg-sky-500/20 hover:bg-sky-500/30"
-            title="Need a nudge? Click for options"
-            style={{ color: '#38bdf8' }}
-            onMouseEnter={(e) => e.currentTarget.style.color = '#e0f2fe'}
-            onMouseLeave={(e) => e.currentTarget.style.color = '#38bdf8'}
-          >
-            <span className="text-xs font-mono font-medium">/hint</span>
-          </button>
-        )}
+        {/* Action buttons - terminal/engineer aesthetic */}
+        <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-2">
+          {onRequestNew && (
+            <button
+              type="button"
+              onClick={onRequestNew}
+              className="px-3 py-1 rounded-md"
+              title="Start a new scenario"
+              style={{
+                backgroundColor: '#252528',
+                color: '#4ade80',
+                boxShadow: '0 1px 3px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.05)',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = '#2d2d30'
+                e.currentTarget.style.color = '#86efac'
+                e.currentTarget.style.boxShadow = '0 2px 6px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.08)'
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = '#252528'
+                e.currentTarget.style.color = '#4ade80'
+                e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.05)'
+              }}
+            >
+              <span className="text-sm font-mono">/new</span>
+            </button>
+          )}
+
+          {onRequestHint && (
+            <button
+              type="button"
+              onClick={onRequestHint}
+              className="px-3 py-1 rounded-md"
+              title="Need a nudge? Click for options"
+              style={{
+                backgroundColor: '#252528',
+                color: '#4ade80',
+                boxShadow: '0 1px 3px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.05)',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = '#2d2d30'
+                e.currentTarget.style.color = '#86efac'
+                e.currentTarget.style.boxShadow = '0 2px 6px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.08)'
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = '#252528'
+                e.currentTarget.style.color = '#4ade80'
+                e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.05)'
+              }}
+            >
+              <span className="text-sm font-mono">/hint</span>
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Topic dropdown */}

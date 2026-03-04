@@ -112,6 +112,7 @@ export const Conversation = forwardRef(({
   onSend,
   onSelect,
   onRequestHint = null,
+  onRequestNew = null,
   placeholder,
   topics = null,
   currentTopic = null,
@@ -234,8 +235,8 @@ export const Conversation = forwardRef(({
           onChange={setInputValue}
           placeholder={placeholder}
           disabled={inputDisabled}
-          showHintIcon={!mcq && !!onRequestHint}
           onRequestHint={onRequestHint}
+          onRequestNew={onRequestNew}
         />
 
         {/* MCQ hints below input */}

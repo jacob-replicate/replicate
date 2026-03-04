@@ -281,6 +281,13 @@ const ConversationView = ({ apiRef }) => {
     })
   }, [addMessage, messages])
 
+  // Handle new scenario request
+  const handleRequestNew = useCallback(() => {
+    // Navigate to a new scenario - for now just clear and reload
+    clear()
+    navigate('/partitioning')
+  }, [clear, navigate])
+
   return (
     <Conversation
       messages={messages}
@@ -288,6 +295,7 @@ const ConversationView = ({ apiRef }) => {
       onSend={sendUserMessage}
       onSelect={handleSelect}
       onRequestHint={handleRequestHint}
+      onRequestNew={handleRequestNew}
       channelName={channelName}
       variant="irc"
       className=""

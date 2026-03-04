@@ -66,9 +66,9 @@ const ChannelSwitcher = ({
             <a href="/" className="text-[15px] hover:opacity-70 transition-opacity" style={{ color: '#ffffff', fontWeight: 600 }}>
               Invariant
             </a>
-            <span className="text-[15px]" style={{ color: '#52525b', fontWeight: 600 }}>/</span>
+            <span className="text-[15px]" style={{ color: '#71717a', fontWeight: 400 }}>/</span>
             {/* Tagline */}
-            <span className="text-[13px]" style={{ color: '#9d8ec4', fontWeight: 400 }}>
+            <span className="text-[13px]" style={{ color: '#8b8b8b', fontWeight: 400 }}>
               Sharpen how you think about distributed systems.
             </span>
           </div>
@@ -129,18 +129,6 @@ const ChannelSwitcher = ({
               }
             }}
           />
-
-          {/* Command legend */}
-          <div className="mt-auto px-4 py-3 space-y-1">
-            <div className="flex items-center gap-2 text-[12px]">
-              <span className="font-mono w-24" style={{ color: '#a39e6e' }}>/h /hint</span>
-              <span style={{ color: '#71717a' }}>get a nudge</span>
-            </div>
-            <div className="flex items-center gap-2 text-[12px]">
-              <span className="font-mono w-24" style={{ color: '#a39e6e' }}>/n /new</span>
-              <span style={{ color: '#71717a' }}>new scenario</span>
-            </div>
-          </div>
         </div>
 
         {/* Mobile: show either channel list OR content */}
@@ -154,7 +142,7 @@ const ChannelSwitcher = ({
             />
             {/* Footer with tagline and links */}
             <div className="flex-shrink-0 border-t px-4 py-3 flex flex-col items-center gap-2" style={{ borderColor: '#232326' }}>
-              <span className="text-[12px] tracking-[0.01em]" style={{ color: '#9d8ec4' }}>
+              <span className="text-[12px] tracking-[0.01em]" style={{ color: '#a1a1aa' }}>
                 Sharpen how you think about distributed systems.
               </span>
               <div className="flex items-center text-[13px]" style={{ color: '#71717a' }}>
