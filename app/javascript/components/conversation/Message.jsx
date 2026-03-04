@@ -543,9 +543,6 @@ export const Message = ({ message, onSelect }) => {
                 {name}
               </span>
             )}
-            {status && (
-              <span className="text-[12px] text-zinc-500 dark:text-zinc-400">{status.emoji} {status.text}</span>
-            )}
             {timeStr && (
               <span className="text-zinc-500 text-[12px]">{timeStr}</span>
             )}
@@ -557,19 +554,6 @@ export const Message = ({ message, onSelect }) => {
         <div className="mt-0.5">
           {renderContent()}
         </div>
-        {(reactions || metadata?.reactions) && (
-          <div className="mt-2 flex gap-1">
-            {(reactions || metadata?.reactions).map((r, i) => (
-              <EmojiReaction
-                key={i}
-                emoji={r.emoji}
-                count={r.count + (reactionAdjustments[r.emoji] || 0)}
-                onClick={() => handleReactionClick(r.emoji)}
-                isSelected={selectedReactions.has(r.emoji)}
-              />
-            ))}
-          </div>
-        )}
       </div>
     </div>
   )

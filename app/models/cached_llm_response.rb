@@ -1,2 +1,0 @@
-class CachedLlmResponse < ApplicationRecord
-end
