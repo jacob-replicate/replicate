@@ -39,8 +39,8 @@ Model: MessageComponent
 ```json
 {
   "type": "code",
-  "language": "bash",
-  "content": "$ aws rds describe-db-instances..."
+  "language": "go",
+  "content": "func (s *OrderService) ProcessOrder(ctx context.Context, id string) error {\n    order, err := s.repo.GetOrder(ctx, id)\n    if err != nil {\n        return fmt.Errorf(\"failed to get order: %w\", err)\n    }\n    return s.processor.Process(ctx, order)\n}"
 }
 ```
 
@@ -57,20 +57,6 @@ Supported languages: bash, sql, hcl, javascript, ruby, etc.
     { "type": "add", "text": "    // Lock row to prevent double-processing" },
     { "type": "add", "text": "    return r.db.QueryRow(ctx, `SELECT * FROM orders WHERE id = $1 FOR UPDATE`, id)" },
     { "type": "context", "text": "}" }
-  ]
-}
-```
-
-Line types: `context` (unchanged), `add` (green), `remove` (red)
-
-### multiple_choice
-```json
-{
-  "type": "multiple_choice",
-  "options": [
-    "we should add a CI job that runs terraform plan on a schedule",
-    "all infra changes should go through terraform PRs",
-    "we need better alerting on replication lag"
   ]
 }
 ```

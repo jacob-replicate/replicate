@@ -1,3 +1,6 @@
 # frozen_string_literal: true
 
-load Rails.root.join('db', 'seeds', 'topics.rb')
+# Load all seed files from db/seeds/
+Dir[Rails.root.join("db/seeds/*.rb")].sort.each do |seed_file|
+  load seed_file
+end

@@ -13,9 +13,6 @@ Rails.application.routes.draw do
     mount Sidekiq::Web => "/sidekiq"
   end
 
-  # Webhooks
-  post "/webhooks/postmark", to: "postmark_webhooks#create"
-
   # API routes
   namespace :api do
     resources :conversations, only: [:index, :show, :update] do
@@ -26,25 +23,12 @@ Rails.application.routes.draw do
   # Server-rendered pages (non-SPA)
   get "/terms", to: "static#terms"
   get "/billing", to: "static#billing"
-  get "/growth", to: "static#growth"
-
-  # Member actions (require server-side handling)
-  get '/members/:id/unsubscribe', to: "members#unsubscribe"
-  post '/members/:id/unsubscribe', to: "members#unsubscribe_confirm"
-  get '/members/:id/resubscribe', to: "members#resubscribe"
-  post '/members/:id/resubscribe', to: "members#resubscribe_confirm"
-
-  # API actions
-  post '/sessions/pulse', to: "sessions#pulse"
-  resources :messages, only: [:create]
-  resources :organizations, only: [:create]
 
   # OAuth
   post '/auth/:provider', to: lambda { |_| [404, {}, ['Not Found']] }
   get '/auth/:provider/callback', to: "sessions#oauth_create"
   get '/auth/failure', to: "sessions#oauth_failure"
   delete '/logout', to: "sessions#destroy"
-
 
   # SPA catch-all - React Router handles everything else
   get '*path', to: "static#index", constraints: ->(req) { !req.path.start_with?('/api', '/sidekiq', '/assets') }
