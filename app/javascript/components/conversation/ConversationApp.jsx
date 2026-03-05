@@ -8,20 +8,8 @@ import PrivacyPage from './PrivacyPage'
 import { ConversationProvider, useConversationContext } from './ConversationContext'
 import { NotificationProvider, useNotifications } from './NotificationContext'
 import useConversation from '../../hooks/useConversation'
-import {
-  orchestrateDemoResponse,
-  orchestrateFollowUpResponse,
-  isPrimaryOption,
-  isFollowUpOption
-} from '../../demos/demoOrchestrator'
-import { loadDemo } from '../../demos/demoRegistry'
-import { DEMO_CHANNELS, DEFAULT_CHANNEL_ID } from '../../demos/channelData'
+const DEFAULT_CHANNEL_ID = 'dns'
 
-// Timing constants for message streaming
-const TYPING_DURATION = 600
-const MIN_GAP_BETWEEN_AUTHORS = 400
-
-const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms))
 
 /**
  * Wrapper that forces ConversationView to remount when UUID changes
@@ -41,6 +29,7 @@ const ConversationView = ({ apiRef }) => {
   const [channelName, setChannelName] = useState('#ops-alerts')
   const [isLoaded, setIsLoaded] = useState(false)
   const conversationRef = useRef(null)
+  const { conversations, updateConversation } = useConversationContext()
 
   const {
     messages,
@@ -54,7 +43,7 @@ const ConversationView = ({ apiRef }) => {
     sendUserMessage,
   } = useConversation({ conversationId: null }) // No ActionCable for demo
 
-  // Use refs for functions to avoid stale closures in async streamMessages
+  // Use refs for functions to avoid stale closures
   const addMessageRef = useRef(addMessage)
   const setTypingRef = useRef(setTyping)
   const updateMessageRef = useRef(updateMessage)
@@ -65,104 +54,50 @@ const ConversationView = ({ apiRef }) => {
     updateMessageRef.current = updateMessage
   })
 
-  /**
-   * Animate reactions ticking up to their final counts
-   * Runs async/non-blocking - doesn't hold up message streaming
-   */
-  const animateReactions = useCallback((messageId, finalReactions) => {
-    if (!finalReactions || finalReactions.length === 0) return
-
-    // Start after 3+ seconds
-    const baseDelay = 3000 + Math.random() * 2000
-
-    // Track current counts for each reaction
-    const currentCounts = finalReactions.map(() => 0)
-
-    // Helper to get reactions with count >= 1 only
-    const getVisibleReactions = () => {
-      return finalReactions
-        .map((r, i) => ({ ...r, count: currentCounts[i] }))
-        .filter(r => r.count >= 1)
-    }
-
-    setTimeout(() => {
-      // For each reaction, tick up to final count with random intervals
-      finalReactions.forEach((reaction, reactionIndex) => {
-        let tickCount = 0
-        const tickUp = () => {
-          tickCount++
-          currentCounts[reactionIndex] = tickCount
-
-          // Only show reactions with count >= 1
-          updateMessageRef.current(messageId, {
-            reactions: getVisibleReactions()
-          })
-
-          if (tickCount < reaction.count) {
-            // 1-3 seconds between ticks
-            setTimeout(tickUp, 1000 + Math.random() * 2000)
-          }
-        }
-
-        // Stagger start of each reaction type (0-2 seconds)
-        setTimeout(tickUp, Math.random() * 2000)
-      })
-    }, baseDelay)
-  }, [])
-
+  const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms))
 
   /**
-   * Stream messages with typing indicators and delays
-   * Shows typing indicator before each new message, then streams components
-   *
-   * Reactions are animated asynchronously after the message appears
-   */
-  const streamMessages = useCallback(async (messagesToStream) => {
-    for (const message of messagesToStream) {
-      // Show typing indicator for this author
-      setTypingRef.current(message.author)
-      await sleep(TYPING_DURATION)
-      setTypingRef.current(false)
-
-      // Extract reactions to animate separately
-      const { reactions, ...messageWithoutReactions } = message
-
-      // Add the message without reactions first
-      addMessageRef.current(messageWithoutReactions)
-
-      // Animate reactions asynchronously (non-blocking)
-      if (reactions && reactions.length > 0) {
-        animateReactions(message.id, reactions)
-      }
-
-      // Small delay between messages
-      await sleep(MIN_GAP_BETWEEN_AUTHORS)
-    }
-  }, [animateReactions])
-
-  /**
-   * Load all messages instantly (for existing conversations)
-   * No typing indicators, no delays, no animations - just populate the conversation
-   * All messages and reactions appear immediately at final state
+   * Load all messages instantly (for initial page load)
+   * No typing indicators, no delays — just populate the conversation
    */
   const loadMessages = useCallback((messagesToLoad) => {
-    console.log('[loadMessages] called with', messagesToLoad?.length, 'messages')
-    console.log('[loadMessages] messagesToLoad:', messagesToLoad)
-    // Sort by sequence to ensure correct order
-    const sorted = [...messagesToLoad].sort((a, b) => {
-      const seqA = a.components?.[0]?.sequence ?? 0
-      const seqB = b.components?.[0]?.sequence ?? 0
-      return seqA - seqB
-    })
-
-    console.log('[loadMessages] sorted messages:', sorted.length)
-    // Add all messages instantly (including thread replies) with full reactions
+    const sorted = [...messagesToLoad].sort((a, b) => (a.sequence ?? 0) - (b.sequence ?? 0))
     for (const message of sorted) {
-      console.log('[loadMessages] adding message:', message.id)
       addMessageRef.current(message)
     }
     setIsLoaded(true)
   }, [])
+
+  /**
+   * Stream a batch of messages with typing indicators and delays.
+   * For each message:
+   *   1. Show typing indicator for the author
+   *   2. After a brief delay, add the full message (all components at once)
+   *   3. Pause before the next message
+   *
+   * Multiple-choice messages are added instantly (no typing indicator).
+   */
+  const streamMessages = useCallback(async (messagesToStream) => {
+    for (const message of messagesToStream) {
+      const isMCQ = message.components?.some(c => c.type === 'multiple_choice')
+
+      if (isMCQ) {
+        addMessageRef.current(message)
+      } else {
+        // Show typing indicator
+        setTypingRef.current(message.author || true)
+        await sleep(600)
+
+        // Add the full message and clear typing
+        setTypingRef.current(false)
+        addMessageRef.current(message)
+
+        // Pause between messages
+        await sleep(400)
+      }
+    }
+  }, [])
+
 
   // Expose API globally for external streaming
   useEffect(() => {
@@ -206,17 +141,51 @@ const ConversationView = ({ apiRef }) => {
     }
   }, [addMessage, updateMessage, removeMessage, clear, setTyping, setExpectedSequence, setChannelName, messages, isTyping, isLoaded, apiRef, streamMessages, loadMessages])
 
-  // Load demo when component mounts (uuid from route)
+  // Load conversation when component mounts and conversations are available
+  const hasLoadedRef = useRef(false)
   useEffect(() => {
-    if (uuid) {
-      setChannelName('#' + uuid)
-      loadDemo(uuid)
+    if (!uuid || hasLoadedRef.current) return
+    setChannelName('#' + uuid)
+
+    // Check if this is a real API-backed channel
+    const channel = conversations.find(c => c.id === uuid)
+
+    // Conversations haven't loaded from the API yet — wait
+    if (conversations.length === 0) return
+
+    hasLoadedRef.current = true
+
+    if (channel?.templateId) {
+      fetch(`/api/conversations/${channel.templateId}`, { credentials: 'include' })
+        .then(res => res.ok ? res.json() : Promise.reject(res))
+        .then(data => {
+          const rawMsgs = data.messages || []
+          const msgs = rawMsgs.map(m => ({
+            id: m.id,
+            sequence: m.sequence,
+            author: { name: m.author_name, avatar: m.author_avatar },
+            isSystem: m.is_system,
+            created_at: m.created_at,
+            components: m.components || [],
+          }))
+          loadMessages(msgs)
+
+          const lastMsgId = rawMsgs[rawMsgs.length - 1]?.id || null
+          updateConversation(channel.uuid, {
+            forkedId: data.id,
+            messages: rawMsgs,
+            messagesLoading: 'complete',
+            lastReadMessageId: lastMsgId,
+          })
+        })
+        .catch(err => {
+          console.error('[ConversationView] API fetch failed:', err)
+        })
     }
-  }, []) // Only on mount
+  }, [uuid, conversations])
 
   // Handle message selection (for multiple choice, etc)
   // Removes the system prompt, shows typing indicator, then sends user's message
-  // Then orchestrates demo responses based on the selected option
   const handleSelect = useCallback(async (messageId, optionId, optionText) => {
     // Remove the system prompt immediately
     removeMessage(messageId)
@@ -234,61 +203,8 @@ const ConversationView = ({ apiRef }) => {
     if (optionText) {
       sendUserMessage(optionText)
     }
-
-    // Orchestrate demo responses based on option type
-    if (window.Conversation) {
-      if (isPrimaryOption(optionId)) {
-        // First-level option (a, b, c, d) - trigger engineer pushback + follow-up
-        orchestrateDemoResponse(optionId, window.Conversation)
-      } else if (isFollowUpOption(optionId)) {
-        // Second-level option - trigger final response
-        orchestrateFollowUpResponse(optionId, window.Conversation)
-      }
-    }
   }, [removeMessage, setTyping, sendUserMessage])
 
-  // Handle hint request - surfaces options when scaffolding has faded
-  const handleRequestHint = useCallback(() => {
-    const getNextSequence = () => {
-      const currentMessages = messages
-      return currentMessages.reduce((max, m) => Math.max(max, m.sequence ?? 0), 0) + 1
-    }
-
-    // Add a hint message as a subtle teammate nudge
-    addMessage({
-      id: `msg_hint_${Date.now()}`,
-      sequence: getNextSequence(),
-      created_at: new Date().toISOString(),
-      isSystem: true,
-      components: [{
-        type: 'multiple_choice',
-        options: [
-          {
-            id: 'hint_a',
-            thought: 'Ask the team what they think the root cause is',
-            message: 'so what are we thinking is the actual root cause here?'
-          },
-          {
-            id: 'hint_b',
-            thought: 'Suggest checking the recent changes',
-            message: 'let me pull up the recent deploys — maybe something changed'
-          },
-          {
-            id: 'hint_c',
-            thought: 'Ask for more context on the symptoms',
-            message: 'can someone walk me through exactly what we\'re seeing?'
-          },
-        ],
-      }],
-    })
-  }, [addMessage, messages])
-
-  // Handle new scenario request
-  const handleRequestNew = useCallback(() => {
-    // Navigate to a new scenario - for now just clear and reload
-    clear()
-    navigate('/partitioning')
-  }, [clear, navigate])
 
   return (
     <Conversation
@@ -296,8 +212,6 @@ const ConversationView = ({ apiRef }) => {
       isTyping={isTyping}
       onSend={sendUserMessage}
       onSelect={handleSelect}
-      onRequestHint={handleRequestHint}
-      onRequestNew={handleRequestNew}
       channelName={channelName}
       variant="irc"
       className=""
@@ -314,12 +228,48 @@ const ConversationApp = () => {
   const apiRef = useRef(null)
 
   return (
-    <ConversationProvider initialConversations={DEMO_CHANNELS}>
+    <ConversationProvider initialConversations={[]}>
       <BrowserRouter>
+        <ConversationBootstrap />
         <ConversationAppInnerWithNotifications apiRef={apiRef} />
       </BrowserRouter>
     </ConversationProvider>
   )
+}
+
+const ACRONYMS = new Set(['dns', 'iam'])
+
+const topicToName = (topic) =>
+  topic.split('-').map(w => ACRONYMS.has(w) ? w.toUpperCase() : w.charAt(0).toUpperCase() + w.slice(1)).join(' ')
+
+/**
+ * ConversationBootstrap - fetches template conversations from the API on mount
+ * and populates the context. Runs once.
+ */
+const ConversationBootstrap = () => {
+  const { setConversationsDirect } = useConversationContext()
+
+  useEffect(() => {
+    fetch('/api/conversations', { credentials: 'include' })
+      .then(res => res.ok ? res.json() : Promise.reject(res))
+      .then(templates => {
+        const channels = templates.map(t => ({
+          uuid: t.id,
+          id: t.topic,
+          name: topicToName(t.topic),
+          templateId: t.id,
+          lastReadMessageId: t.last_read_message_id,
+          messages: [],
+          messagesLoading: 'idle',
+        }))
+        setConversationsDirect(channels)
+      })
+      .catch(err => {
+        console.error('[ConversationBootstrap] Failed to load conversations:', err)
+      })
+  }, [setConversationsDirect])
+
+  return null
 }
 
 /**
@@ -354,17 +304,19 @@ const ConversationAppInner = ({ apiRef }) => {
   // Initialize activeChannelId from URL path (e.g., /dns -> dns)
   const getChannelIdFromPath = useCallback((pathname) => {
     const pathChannel = pathname.replace(/^\//, '').split('/')[0]
-    // Only use path if it matches a known channel (check against DEMO_CHANNELS for initial load)
-    const knownChannels = conversations.length > 0 ? conversations : DEMO_CHANNELS
-    const isKnownChannel = knownChannels.some(c => c.id === pathChannel)
-    return isKnownChannel ? pathChannel : DEFAULT_CHANNEL_ID
+    if (!pathChannel || pathChannel === '') return DEFAULT_CHANNEL_ID
+    // If conversations are loaded, validate against them; otherwise trust the path
+    if (conversations.length > 0) {
+      const isKnownChannel = conversations.some(c => c.id === pathChannel)
+      return isKnownChannel ? pathChannel : DEFAULT_CHANNEL_ID
+    }
+    return pathChannel
   }, [conversations])
 
-  // Get initial channel from URL (use DEMO_CHANNELS directly to avoid timing issues)
+  // Get initial channel from URL
   const getInitialChannelId = () => {
     const pathChannel = location.pathname.replace(/^\//, '').split('/')[0]
-    const isKnownChannel = DEMO_CHANNELS.some(c => c.id === pathChannel)
-    return isKnownChannel ? pathChannel : DEFAULT_CHANNEL_ID
+    return pathChannel || DEFAULT_CHANNEL_ID
   }
 
   const [activeChannelId, setActiveChannelId] = useState(getInitialChannelId)
@@ -429,7 +381,7 @@ const ConversationAppInner = ({ apiRef }) => {
 
   // Update document title when channel changes
   useEffect(() => {
-    const channel = conversations.find(c => c.id === activeChannelId) || DEMO_CHANNELS.find(c => c.id === activeChannelId)
+    const channel = conversations.find(c => c.id === activeChannelId)
     const channelName = channel?.name || activeChannelId
     // Capitalize first letter
     const formattedName = channelName.charAt(0).toUpperCase() + channelName.slice(1)
@@ -452,17 +404,31 @@ const ConversationAppInner = ({ apiRef }) => {
   }, [location.pathname, getChannelIdFromPath, activeChannelId])
 
   const handleChannelSelect = useCallback((channelId) => {
-    console.log('[handleChannelSelect] called with channelId:', channelId)
     setActiveChannelId(channelId)
-    console.log('[handleChannelSelect] navigating to:', `/${channelId}`)
     navigate(`/${channelId}`)
 
-    // Mark as read when selecting
-    markAsRead(channelId)
+    const channel = conversations.find(c => c.id === channelId)
 
-    console.log('[handleChannelSelect] calling loadDemo directly')
-    loadDemo(channelId)
-  }, [navigate, markAsRead])
+    if (channel?.templateId) {
+      // Fork via show endpoint and load messages
+      fetch(`/api/conversations/${channel.templateId}`, { credentials: 'include' })
+        .then(res => res.ok ? res.json() : Promise.reject(res))
+        .then(data => {
+          const msgs = data.messages || []
+          const lastMsgId = msgs[msgs.length - 1]?.id || null
+
+          updateConversation(channel.uuid, {
+            forkedId: data.id,
+            messages: msgs,
+            messagesLoading: 'complete',
+            lastReadMessageId: lastMsgId,
+          })
+        })
+        .catch(err => {
+          console.error('[handleChannelSelect] API fetch failed:', err)
+        })
+    }
+  }, [navigate, conversations, markAsRead, updateConversation])
 
   // Expose navigate function globally for demo script
   useEffect(() => {
@@ -499,13 +465,15 @@ const ConversationAppInner = ({ apiRef }) => {
  */
 const RootRedirect = () => {
   const navigate = useNavigate()
+  const { conversations } = useConversationContext()
 
   useEffect(() => {
+    if (conversations.length === 0) return // wait for bootstrap
     const lastChannel = localStorage.getItem('lastChannelId')
-    const isValidChannel = lastChannel && DEMO_CHANNELS.some(c => c.id === lastChannel)
+    const isValidChannel = lastChannel && conversations.some(c => c.id === lastChannel)
     const channelToUse = isValidChannel ? lastChannel : DEFAULT_CHANNEL_ID
     navigate(`/${channelToUse}`, { replace: true })
-  }, [navigate])
+  }, [navigate, conversations])
 
   return (
     <div className="flex items-center justify-center h-64 text-zinc-400">

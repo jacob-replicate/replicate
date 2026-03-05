@@ -28,7 +28,9 @@ Model: MessageComponent
 
 
 Page Load:
-
+- React calls the index route to get the current template convo IDs
+- Whenever you open a new topic in the channel sidebar, call the show endpoint + keep track of the forked conversation + messages locally.
+- Also call the update endpoint for the last read message ID.
 
 ## Component Types
 

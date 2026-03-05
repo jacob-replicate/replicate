@@ -181,8 +181,10 @@ export function ConversationProvider({
     // Optimistic update
     updateConversation(uuid, { lastReadMessageId })
 
+    // Use the forked conversation ID for the API call (the server scopes by session)
+    const apiId = conversation.forkedId || uuid
     try {
-      await fetch(`/api/conversations/${uuid}`, {
+      await fetch(`/api/conversations/${apiId}`, {
         method: 'PATCH',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
@@ -190,7 +192,6 @@ export function ConversationProvider({
       })
     } catch (error) {
       console.error('[ConversationContext] markAsRead error:', error)
-      // Could revert the optimistic update here if needed
     }
   }, [findConversation, updateConversation])
 

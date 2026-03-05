@@ -249,7 +249,7 @@ partition_messages = [
     author_name: "alex",
     author_avatar: "profile-photo-1.jpg",
     components: [
-      { type: "text", content: "events service latency spiking hard — p99 is at 2847ms, completely through the roof" }
+      { type: "text", content: "events service latency is spiking hard guys — p99 is at 2847ms, completely through the roof" }
     ]
   },
   {
@@ -590,5 +590,54 @@ replication_messages.each do |msg_data|
 end
 
 puts "  ✓ Terraform Drift Replication Incident (#{replication_convo.messages.count} messages)"
+
+# =============================================================================
+# Placeholder conversations for remaining topics
+# Each gets a brief "hello world" intro so the channel appears in the sidebar
+# =============================================================================
+
+placeholders = {
+  "backpressure"       => { title: "Backpressure", teaser: "upstream is pushing faster than we can drain — queue depth is climbing and memory is following it" },
+  "caching"            => { title: "Caching", teaser: "hit rate dropped to 12% after the deploy. looks like the cache key format changed and everything is a miss now" },
+  "circuit-breakers"   => { title: "Circuit Breakers", teaser: "payments circuit just tripped open — downstream is returning 503s and we have no fallback path" },
+  "clock-skew"         => { title: "Clock Skew", teaser: "seeing token validation failures on us-west nodes. NTP drifted 8 seconds and JWTs are getting rejected as expired" },
+  "consensus"          => { title: "Consensus", teaser: "etcd cluster lost quorum after the AZ went down — 2 of 3 nodes unreachable and no leader elected" },
+  "dns"                => { title: "DNS", teaser: "half our traffic is hitting the old IP. TTL was set to 86400 and the migration assumed it was 300" },
+  "event-ordering"     => { title: "Event Ordering", teaser: "consumers are processing events out of order — user got charged before their account was even created" },
+  "fanout"             => { title: "Fanout", teaser: "celebrity posted and the fanout worker is 2M deep. timeline reads are serving stale data while it catches up" },
+  "hot-keys"           => { title: "Hot Keys", teaser: "one Redis key is getting 50k reads/sec and the shard is pegged at 100% CPU. it's the global rate limiter counter" },
+  "iam"                => { title: "IAM", teaser: "deploy just failed — someone rotated the service account key and forgot to update the CI secret" },
+  "idempotency"        => { title: "Idempotency", teaser: "retries are creating duplicate charges. the payment endpoint isn't idempotent and the client retries on timeout" },
+  "load-balancing"     => { title: "Load Balancing", teaser: "one pod is getting 80% of traffic. health check is passing but the readiness probe isn't accounting for connection count" },
+  "network-partitions" => { title: "Network Partitions", teaser: "us-east can't reach us-west but both think they're the primary. split brain in progress" },
+  "partial-failure"    => { title: "Partial Failure", teaser: "checkout succeeds but email confirmation fails silently. users think their order didn't go through and retry" },
+  "queues"             => { title: "Queues", teaser: "DLQ has 400k messages and nobody noticed. the consumer has been silently failing for 3 days" },
+  "rate-limiting"      => { title: "Rate Limiting", teaser: "rate limiter is rejecting legitimate traffic. the sliding window counter rolled over and everyone's bucket is full" },
+  "resource-exhaustion" => { title: "Resource Exhaustion", teaser: "OOM kills on the worker pods again. heap dumps show a connection leak in the HTTP client — never closing response bodies" },
+  "retries"            => { title: "Retries", teaser: "retry storm just took down the auth service. every client is retrying immediately with no backoff and it's amplifying the failure" },
+  "service-discovery"  => { title: "Service Discovery", teaser: "consul is returning stale endpoints. deregistered nodes are still in the catalog and 30% of requests are hitting dead hosts" },
+  "thundering-herd"    => { title: "Thundering Herd", teaser: "cache expired and 10k requests just hit the database simultaneously. origin is at 100% CPU trying to regenerate the same result" },
+  "timeouts"           => { title: "Timeouts", teaser: "client timeout is 30s but the downstream has a 60s timeout. requests hang for 30s, client gives up, but the server keeps working" },
+  "transactions"       => { title: "Transactions", teaser: "long-running transaction held a lock for 45 seconds and everything behind it queued up. cascade failure across 3 services" },
+}
+
+existing_topics = Conversation.templates.pluck(:topic)
+
+placeholders.each do |topic, info|
+  next if existing_topics.include?(topic)
+
+  convo = Conversation.create!(topic: topic, template: true)
+
+  msg = convo.messages.create!(
+    sequence: 1,
+    author_name: "maya",
+    author_avatar: "profile-photo-3.jpg",
+    is_system: false
+  )
+
+  msg.components.create!(position: 0, data: { "type" => "text", "content" => info[:teaser] })
+
+  puts "  ✓ #{info[:title]} (placeholder)"
+end
 
 puts "\nSeeded #{Conversation.templates.count} conversation templates with #{Message.count} total messages."
