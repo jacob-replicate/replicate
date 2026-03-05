@@ -26,6 +26,18 @@ CREATE TABLE public.ar_internal_metadata (
 
 
 --
+-- Name: banned_ips; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.banned_ips (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    address character varying,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
 -- Name: conversations; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -86,6 +98,14 @@ CREATE TABLE public.schema_migrations (
 
 ALTER TABLE ONLY public.ar_internal_metadata
     ADD CONSTRAINT ar_internal_metadata_pkey PRIMARY KEY (key);
+
+
+--
+-- Name: banned_ips banned_ips_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.banned_ips
+    ADD CONSTRAINT banned_ips_pkey PRIMARY KEY (id);
 
 
 --
@@ -207,6 +227,7 @@ ALTER TABLE ONLY public.messages
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260305021725'),
 ('20260304040156'),
 ('20260304035949'),
 ('20260304035908');
