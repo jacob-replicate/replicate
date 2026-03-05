@@ -2,8 +2,8 @@ import React from 'react'
 
 // Table row wrapper with hover and border
 export const TableRow = ({ children, href, onClick, target, isFirst = false, className = '', ...rest }) => {
-  const borderClass = !isFirst ? 'border-t border-zinc-100 dark:border-zinc-700' : ''
-  const hoverClass = 'hover:bg-zinc-50 dark:hover:bg-zinc-700/50'
+  const borderClass = !isFirst ? 'border-t border-zinc-700' : ''
+  const hoverClass = 'hover:bg-zinc-700/50'
 
   if (href) {
     return (
@@ -45,7 +45,7 @@ export const TableRowContent = ({ title, description, titleClassName = '' }) => 
   <div className="flex-1 min-w-0">
     <div className={`text-[14px] ${titleClassName}`}>{title}</div>
     {description && (
-      <div className="text-[13px] text-zinc-500 dark:text-zinc-400 mt-0.5">{description}</div>
+      <div className="text-[13px] text-zinc-400 mt-0.5">{description}</div>
     )}
   </div>
 )
@@ -58,8 +58,8 @@ export const TableRowActions = ({ children }) => (
 )
 
 export const linkStyles = {
-  unvisited: 'text-blue-600 dark:text-blue-400',
-  visited: 'text-purple-600 dark:text-purple-400',
-  muted: 'text-zinc-500 dark:text-zinc-400',
-  default: 'text-zinc-600 dark:text-zinc-300',
+  unvisited: 'text-blue-400',
+  visited: 'text-purple-400',
+  muted: 'text-zinc-400',
+  default: 'text-zinc-300',
 }

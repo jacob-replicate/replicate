@@ -5,37 +5,47 @@
  * Shape matches ConversationContext:
  * - uuid: unique identifier used in URLs and API calls
  * - name: display name (can repeat across users)
- * - unreadCount, isMuted, isPrivate: UI state
- * - messages, messagesLoading: set by context provider
+ * - lastReadMessageId: tracks read state (null = unread, matches last message = read)
+ * - messages: stub message array for unread indicator to work
+ * - messagesLoading: set by context provider
  */
 
+// Helper to create a channel with a stub message for unread tracking
+const channel = (id, name) => ({
+  uuid: id,
+  id,
+  name,
+  messages: [{ id: `${id}_stub` }],
+  lastReadMessageId: `${id}_stub`, // starts as read
+})
+
 export const DEMO_CHANNELS = [
-  { uuid: 'backpressure', id: 'backpressure', name: 'Backpressure' },
-  { uuid: 'caching', id: 'caching', name: 'Caching' },
-  { uuid: 'circuit-breakers', id: 'circuit-breakers', name: 'Circuit Breakers' },
-  { uuid: 'clock-skew', id: 'clock-skew', name: 'Clock Skew' },
-  { uuid: 'connection-pooling', id: 'connection-pooling', name: 'Connection Pooling' },
-  { uuid: 'consensus', id: 'consensus', name: 'Consensus' },
-  { uuid: 'disaster-recovery', id: 'disaster-recovery', name: 'Disaster Recovery' },
-  { uuid: 'dns', id: 'dns', name: 'DNS' },
-  { uuid: 'event-ordering', id: 'event-ordering', name: 'Event Ordering' },
-  { uuid: 'fanout', id: 'fanout', name: 'Fanout' },
-  { uuid: 'hot-keys', id: 'hot-keys', name: 'Hot Keys' },
-  { uuid: 'iam', id: 'iam', name: 'IAM' },
-  { uuid: 'idempotency', id: 'idempotency', name: 'Idempotency' },
-  { uuid: 'load-balancing', id: 'load-balancing', name: 'Load Balancing' },
-  { uuid: 'network-partitions', id: 'network-partitions', name: 'Network Partitions' },
-  { uuid: 'partial-failure', id: 'partial-failure', name: 'Partial Failure' },
-  { uuid: 'partitioning', id: 'partitioning', name: 'Partitioning' },
-  { uuid: 'queues', id: 'queues', name: 'Queues' },
-  { uuid: 'rate-limiting', id: 'rate-limiting', name: 'Rate Limiting' },
-  { uuid: 'replication', id: 'replication', name: 'Replication' },
-  { uuid: 'resource-exhaustion', id: 'resource-exhaustion', name: 'Resource Exhaustion' },
-  { uuid: 'retries', id: 'retries', name: 'Retries' },
-  { uuid: 'service-discovery', id: 'service-discovery', name: 'Service Discovery' },
-  { uuid: 'thundering-herd', id: 'thundering-herd', name: 'Thundering Herd' },
-  { uuid: 'timeouts', id: 'timeouts', name: 'Timeouts' },
-  { uuid: 'transactions', id: 'transactions', name: 'Transactions' },
+  channel('backpressure', 'Backpressure'),
+  channel('caching', 'Caching'),
+  channel('circuit-breakers', 'Circuit Breakers'),
+  channel('clock-skew', 'Clock Skew'),
+  channel('connection-pooling', 'Connection Pooling'),
+  channel('consensus', 'Consensus'),
+  channel('disaster-recovery', 'Disaster Recovery'),
+  channel('dns', 'DNS'),
+  channel('event-ordering', 'Event Ordering'),
+  channel('fanout', 'Fanout'),
+  channel('hot-keys', 'Hot Keys'),
+  channel('iam', 'IAM'),
+  channel('idempotency', 'Idempotency'),
+  channel('load-balancing', 'Load Balancing'),
+  channel('network-partitions', 'Network Partitions'),
+  channel('partial-failure', 'Partial Failure'),
+  channel('partitioning', 'Partitioning'),
+  channel('queues', 'Queues'),
+  channel('rate-limiting', 'Rate Limiting'),
+  channel('replication', 'Replication'),
+  channel('resource-exhaustion', 'Resource Exhaustion'),
+  channel('retries', 'Retries'),
+  channel('service-discovery', 'Service Discovery'),
+  channel('thundering-herd', 'Thundering Herd'),
+  channel('timeouts', 'Timeouts'),
+  channel('transactions', 'Transactions'),
 ]
 
 export const DEFAULT_CHANNEL_ID = 'dns'

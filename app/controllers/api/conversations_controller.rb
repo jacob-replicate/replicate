@@ -1,61 +1,44 @@
 # frozen_string_literal: true
 
 module Api
-  class ConversationsController < BaseController
-    before_action :find_conversation, only: %i[show update]
+  class ConversationsController < ApplicationController
+    skip_before_action :verify_authenticity_token
 
-    # GET /api/conversations
-    # Returns all conversations for the current owner (without messages)
     def index
-      conversations = conversations_scope
-        .order(updated_at: :desc)
-        .select(:id, :uuid, :name, :section, :unread_count, :is_muted, :is_private, :updated_at)
-
+      conversations = current_session_conversations.order(updated_at: :desc)
       render json: conversations.map { |c| conversation_json(c) }
     end
 
-    # GET /api/conversations/:uuid
-    # Returns a single conversation with its messages
     def show
-      render json: conversation_json(@conversation, include_messages: true)
+      conversation = current_session_conversations.find(params[:id])
+      render json: conversation_json(conversation, include_messages: true)
     end
 
-    # PATCH /api/conversations/:uuid
-    # Update conversation (mark as read, mute, etc.)
     def update
-      if params[:last_read_message_id].present?
-        @conversation.mark_as_read_up_to(params[:last_read_message_id])
-      end
-
-      if params.key?(:muted)
-        @conversation.update!(is_muted: params[:muted])
-      end
-
-      render json: conversation_json(@conversation)
+      conversation = current_session_conversations.find(params[:id])
+      conversation.update!(conversation_params)
+      render json: conversation_json(conversation)
     end
 
     private
 
-    def find_conversation
-      @conversation = conversations_scope.find_by(uuid: params[:id])
-      render_not_found unless @conversation
+    def conversation_params
+      params.permit(:last_read_message_id)
     end
 
     def conversation_json(conversation, include_messages: false)
       json = {
-        uuid: conversation.uuid,
-        id: conversation.uuid, # For backward compatibility
-        name: conversation.name,
-        section: conversation.section,
-        unreadCount: conversation.unread_count,
-        isMuted: conversation.is_muted,
-        isPrivate: conversation.is_private,
-        updatedAt: conversation.updated_at.iso8601,
+        id: conversation.id,
+        topic: conversation.topic,
+        template: conversation.template,
+        template_id: conversation.template_id,
+        last_read_message_id: conversation.last_read_message_id,
+        created_at: conversation.created_at.iso8601,
+        updated_at: conversation.updated_at.iso8601,
       }
 
       if include_messages
-        json[:messages] = conversation.messages.order(:sequence).map { |m| message_json(m) }
-        json[:messagesLoading] = 'complete'
+        json[:messages] = conversation.messages.includes(:components).last(20).map { |m| message_json(m) }
       end
 
       json
@@ -64,15 +47,12 @@ module Api
     def message_json(message)
       {
         id: message.id,
-        content: message.content,
-        author: {
-          name: message.author_name,
-          avatar: message.author_avatar,
-        },
-        timestamp: message.created_at.iso8601,
         sequence: message.sequence,
-        components: message.components,
-        reactions: message.reactions,
+        author_name: message.author_name,
+        author_avatar: message.author_avatar,
+        is_system: message.is_system,
+        created_at: message.created_at.iso8601,
+        components: message.components.map { |c| c.data },
       }
     end
   end

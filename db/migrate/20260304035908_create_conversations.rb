@@ -5,6 +5,7 @@ class CreateConversations < ActiveRecord::Migration[7.1]
       t.text :topic
       t.uuid :template_id
       t.boolean :template, default: false
+      t.uuid :last_read_message_id
 
       t.timestamps
     end

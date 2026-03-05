@@ -6,6 +6,7 @@ import ChannelSwitcher from './ChannelSwitcher'
 import SecurityPage from './SecurityPage'
 import PrivacyPage from './PrivacyPage'
 import { ConversationProvider, useConversationContext } from './ConversationContext'
+import { NotificationProvider, useNotifications } from './NotificationContext'
 import useConversation from '../../hooks/useConversation'
 import {
   orchestrateDemoResponse,
@@ -186,7 +187,7 @@ const ConversationView = ({ apiRef }) => {
     }
 
     // Expose globally
-    window.ReplicateConversation = {
+    window.Conversation = {
       ...api,
       onReady: (callback) => {
         // Already ready, call immediately
@@ -195,9 +196,9 @@ const ConversationView = ({ apiRef }) => {
     }
 
     // Fire any queued onReady callbacks
-    if (window._replicateConversationReadyCallbacks) {
-      window._replicateConversationReadyCallbacks.forEach(cb => cb(api))
-      window._replicateConversationReadyCallbacks = []
+    if (window._ConversationReadyCallbacks) {
+      window._ConversationReadyCallbacks.forEach(cb => cb(api))
+      window._ConversationReadyCallbacks = []
     }
 
     return () => {
@@ -235,13 +236,13 @@ const ConversationView = ({ apiRef }) => {
     }
 
     // Orchestrate demo responses based on option type
-    if (window.ReplicateConversation) {
+    if (window.Conversation) {
       if (isPrimaryOption(optionId)) {
         // First-level option (a, b, c, d) - trigger engineer pushback + follow-up
-        orchestrateDemoResponse(optionId, window.ReplicateConversation)
+        orchestrateDemoResponse(optionId, window.Conversation)
       } else if (isFollowUpOption(optionId)) {
         // Second-level option - trigger final response
-        orchestrateFollowUpResponse(optionId, window.ReplicateConversation)
+        orchestrateFollowUpResponse(optionId, window.Conversation)
       }
     }
   }, [removeMessage, setTyping, sendUserMessage])
@@ -309,28 +310,46 @@ const ConversationView = ({ apiRef }) => {
 /**
  * ConversationApp - Root component with routing
  */
-const ConversationApp = ({ currentUser }) => {
+const ConversationApp = () => {
   const apiRef = useRef(null)
 
   return (
     <ConversationProvider initialConversations={DEMO_CHANNELS}>
       <BrowserRouter>
-        <ConversationAppInner apiRef={apiRef} currentUser={currentUser} />
+        <ConversationAppInnerWithNotifications apiRef={apiRef} />
       </BrowserRouter>
     </ConversationProvider>
   )
 }
 
 /**
+ * Wrapper that provides NotificationProvider with navigate access
+ */
+const ConversationAppInnerWithNotifications = ({ apiRef }) => {
+  const navigate = useNavigate()
+
+  const handleNotificationClick = useCallback((channelId) => {
+    navigate(`/${channelId}`)
+  }, [navigate])
+
+  return (
+    <NotificationProvider onNotificationClick={handleNotificationClick}>
+      <ConversationAppInner apiRef={apiRef} />
+    </NotificationProvider>
+  )
+}
+
+/**
  * Inner component that has access to router hooks
  */
-const ConversationAppInner = ({ apiRef, currentUser }) => {
+const ConversationAppInner = ({ apiRef }) => {
   const navigate = useNavigate()
   const location = useLocation()
   const { uuid } = useParams() || {}
 
   // Get conversations from context instead of local state
   const { conversations, findConversation, markAsRead, updateConversation } = useConversationContext()
+  const { showNotification } = useNotifications()
 
   // Initialize activeChannelId from URL path (e.g., /dns -> dns)
   const getChannelIdFromPath = useCallback((pathname) => {
@@ -352,12 +371,24 @@ const ConversationAppInner = ({ apiRef, currentUser }) => {
 
   // Trickle in fake unread notifications after page load
   useEffect(() => {
-    // Channels that can receive fake unreads (not the active one)
+    // Channels that can receive fake unreads (not the active one, has messages, and is currently "read")
     const getEligibleChannels = () => {
       return conversations
-        .filter(c => c.id !== activeChannelId && !c.unreadCount)
-        .map(c => c.uuid)
+        .filter(c => {
+          if (c.id === activeChannelId) return false
+          const lastMessageId = c.messages?.[c.messages.length - 1]?.id
+          if (!lastMessageId) return false
+          // Only eligible if currently read (lastReadMessageId matches last message)
+          return c.lastReadMessageId === lastMessageId
+        })
     }
+
+    // Fake message previews for notifications
+    const fakeMessages = [
+      { avatar: '/profile-photo-1.jpg', author: 'alex', message: 'seeing connection pool exhaustion on the primary — pg_stat_activity shows 200+ idle in transaction' },
+      { avatar: '/profile-photo-2.jpg', author: 'daniel', message: 'replica lag spiked to 45s after that schema migration, might need to throttle the backfill' },
+      { avatar: '/profile-photo-3.jpg', author: 'maya', message: 'getting OOM kills on the worker pods, heap dumps show a leak in the redis connection factory' },
+    ]
 
     // Schedule unread notifications with varying delays
     const delays = [
@@ -374,8 +405,19 @@ const ConversationAppInner = ({ apiRef, currentUser }) => {
         if (eligible.length === 0) return
 
         // Pick a random channel from eligible ones
-        const randomUuid = eligible[Math.floor(Math.random() * eligible.length)]
-        updateConversation(randomUuid, { unreadCount: 1 })
+        const randomChannel = eligible[Math.floor(Math.random() * eligible.length)]
+        // Set lastReadMessageId to null to mark as unread
+        updateConversation(randomChannel.uuid, { lastReadMessageId: null })
+
+        // Show notification popup
+        const fake = fakeMessages[index % fakeMessages.length]
+        showNotification({
+          avatar: fake.avatar,
+          title: fake.author,
+          channelName: randomChannel.name,
+          message: fake.message,
+          channelId: randomChannel.id,
+        })
       }, delay)
       timeoutIds.push(timeoutId)
     })
@@ -424,8 +466,8 @@ const ConversationAppInner = ({ apiRef, currentUser }) => {
 
   // Expose navigate function globally for demo script
   useEffect(() => {
-    window.ReplicateConversation = {
-      ...window.ReplicateConversation,
+    window.Conversation = {
+      ...window.Conversation,
       navigate: (path) => navigate(path),
     }
   }, [navigate])
@@ -436,7 +478,6 @@ const ConversationAppInner = ({ apiRef, currentUser }) => {
         channels={conversations}
         activeChannelId={activeChannelId}
         onChannelSelect={handleChannelSelect}
-        currentUser={currentUser}
       >
         {/* Routed conversation view */}
         <Routes>
@@ -474,11 +515,11 @@ const RootRedirect = () => {
 }
 
 // Setup global API placeholder for before mount
-if (!window.ReplicateConversation) {
-  window._replicateConversationReadyCallbacks = []
-  window.ReplicateConversation = {
+if (!window.Conversation) {
+  window._ConversationReadyCallbacks = []
+  window.Conversation = {
     onReady: (callback) => {
-      window._replicateConversationReadyCallbacks.push(callback)
+      window._ConversationReadyCallbacks.push(callback)
     },
   }
 }
@@ -488,12 +529,8 @@ const mount = () => {
   const container = document.querySelector('[data-conversation-app]')
   if (!container) return
 
-  // Read current user from data attribute
-  const currentUserJson = container.dataset.currentUser
-  const currentUser = currentUserJson && currentUserJson !== 'null' ? JSON.parse(currentUserJson) : null
-
   const root = ReactDOM.createRoot(container)
-  root.render(<ConversationApp currentUser={currentUser} />)
+  root.render(<ConversationApp />)
 }
 
 if (document.readyState === 'loading') {

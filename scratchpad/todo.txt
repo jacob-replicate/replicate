@@ -15,3 +15,20 @@
 - Hint at collapsed sidebar on mobile somehow.
 - Fix the weird double bottom border during sends
 - zinc-200 to separate messages, not zinc-100
+
+
+Engagement Ideas
+- Inline code editor + "Run" button.
+- Fake typing
+- Toast notifications from other threads
+- Incident.io status updates from bot (not someone typing it)
+- reactions to your most recent message
+- SEV3 -> SEV2 -> SEV1 (and arguing over which it should be)
+- New (wrong) ideas injected after 20s of inactivity
+- Separate ownership streams (e.g., digging through logs vs. packaging up PR)
+- System alerts
+- Editing messages for typos
+- Fade away after incident resolves (think: chess puzzle), with opportunity to start over, or keep playing
+- Frantic support/account reps asking for updates + threads with stressed engineers
+- RCA doc + asking for feedback
+- Dispatch game idea where clock is ticking down + picking an answer if they don't engage.

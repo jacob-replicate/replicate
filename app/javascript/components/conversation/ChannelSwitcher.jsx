@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import UserMenu from './UserMenu'
 import ChannelList from './ChannelList'
 
 /**
@@ -10,7 +9,6 @@ const ChannelSwitcher = ({
   channels,
   activeChannelId,
   onChannelSelect,
-  currentUser,
   children,
 }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false)
@@ -80,11 +78,6 @@ const ChannelSwitcher = ({
             <a href="/privacy" style={{ color: '#71717a' }} onMouseEnter={(e) => e.target.style.color = '#a1a1aa'} onMouseLeave={(e) => e.target.style.color = '#71717a'}>Privacy</a>
             <a href="/terms" style={{ color: '#71717a' }} onMouseEnter={(e) => e.target.style.color = '#a1a1aa'} onMouseLeave={(e) => e.target.style.color = '#71717a'}>Terms</a>
           </nav>
-
-          {/* User menu - show profile when logged in */}
-          {currentUser && (
-            <UserMenu user={currentUser} />
-          )}
 
           {/* Mobile: share button - far right */}
           <button

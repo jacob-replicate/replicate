@@ -44,16 +44,16 @@ export const loadDemo = (channelId, options = {}) => {
   }
 
   const tryLoad = (attempts = 0) => {
-    if (window.ReplicateConversation?.loadMessages) {
-      window.ReplicateConversation.clear()
-      window.ReplicateConversation.setChannelName('#' + channelId)
+    if (window.Conversation?.loadMessages) {
+      window.Conversation.clear()
+      window.Conversation.setChannelName('#' + channelId)
 
       if (stream) {
         // Animated: typing indicators, staggered messages
-        window.ReplicateConversation.streamMessages(conversation.messages)
+        window.Conversation.streamMessages(conversation.messages)
       } else {
         // Instant: populate immediately
-        window.ReplicateConversation.loadMessages(conversation.messages)
+        window.Conversation.loadMessages(conversation.messages)
       }
     } else if (attempts < 30) {
       // Retry up to 30 times (3 seconds total)
@@ -74,8 +74,8 @@ export const initConversation = () => {
   // Just attach loadDemo to window API when ready
   // ConversationView handles initial load on mount
   const attachLoadDemo = () => {
-    if (window.ReplicateConversation) {
-      window.ReplicateConversation.loadDemo = loadDemo
+    if (window.Conversation) {
+      window.Conversation.loadDemo = loadDemo
     } else {
       setTimeout(attachLoadDemo, 100)
     }

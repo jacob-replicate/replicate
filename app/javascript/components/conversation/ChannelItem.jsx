@@ -4,7 +4,8 @@ import React from 'react'
  * ChannelItem - Single channel row in the sidebar
  */
 const ChannelItem = React.forwardRef(({ item, isActive, onSelect, onClose }, ref) => {
-  const hasUnread = item.unreadCount > 0 && !isActive
+  const lastMessageId = item.messages?.[item.messages.length - 1]?.id
+  const hasUnread = lastMessageId && item.lastReadMessageId !== lastMessageId && !isActive
 
   return (
     <button

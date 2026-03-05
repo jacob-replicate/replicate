@@ -1,16 +1,6 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <script>
-      // Prevent flash: apply theme before render
-      (function() {
-        const stored = localStorage.getItem('theme');
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        if (stored === 'dark' || (!stored && prefersDark)) {
-          document.documentElement.classList.add('dark');
-        }
-      })();
-    </script>
     <title><%= @title || "Invariant" %></title>
 
     <%= csrf_meta_tags %>
@@ -18,27 +8,27 @@
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="keywords" content="engineering team coaching, developer coaching insights, technical leadership, engineering blind spots, team performance">
+    <meta name="description" content="Sharpen how you think about distributed systems. Realistic incident simulations that train production judgment through consequence-based learning.">
+    <meta name="keywords" content="distributed systems training, incident simulation, production judgment, reliability engineering, on-call training, SRE skills, infrastructure debugging">
     <meta name="theme-color" content="#4d5562">
     <meta name="msapplication-TileColor" content="#4d5562">
     <meta property="og:url" content="<%= request.original_url %>">
     <meta property="og:type" content="website">
-    <meta property="og:title" content="<%= @title || 'invariant.training - Prevent your next SEV-1' %>">
-    <meta property="og:description" content="">
-    <meta property="og:image" content="https://invariant.training/social.png">
+    <meta property="og:title" content="<%= @title || 'Invariant — Sharpen how you think about distributed systems' %>">
+    <meta property="og:description" content="Sharpen how you think about distributed systems. Realistic incident simulations that train production judgment.">
+    <%# <meta property="og:image" content="https://invariant.training/social.png"> %>
     <meta property="og:site_name" content="invariant.training">
     <meta property="og:locale" content="en_US">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:url" content="<%= request.original_url %>">
-    <meta name="twitter:title" content="<%= @title || 'invariant.training - Prevent your next SEV-1' %>">
-    <meta name="twitter:description" content="">
-    <meta name="twitter:image" content="https://invariant.training/social.png">
+    <meta name="twitter:title" content="<%= @title || 'Invariant — Sharpen how you think about distributed systems' %>">
+    <meta name="twitter:description" content="Sharpen how you think about distributed systems. Realistic incident simulations that train production judgment.">
+    <%# <meta name="twitter:image" content="https://invariant.training/social.png"> %>
 
     <link rel="canonical" href="<%= request.original_url %>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@500;600&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -47,9 +37,6 @@
     <link rel="preload" href="/fonts/SuisseIntl-Regular.woff2" as="font" type="font/woff2" crossorigin="anonymous">
     <link rel="preload" href="/fonts/SuisseIntl-Semibold.woff2" as="font" type="font/woff2" crossorigin="anonymous">
     <link rel="preload" href="/fonts/SuisseIntl-Bold.woff2" as="font" type="font/woff2" crossorigin="anonymous">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital@0;1&display=swap" rel="stylesheet">
     <%= stylesheet_link_tag "application", as: "style" %>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/vs2015.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
@@ -64,27 +51,13 @@
       });
     </script>
     <%= stylesheet_link_tag "tailwind", as: "style" %>
-    <script>window.isAdmin = <%= admin? %>;</script>
     <%= javascript_include_tag "application", defer: true %>
-    <script src="https://cdn.jsdelivr.net/npm/echarts@latest/dist/echarts.min.js"></script>
     <%= Sentry.get_trace_propagation_meta.html_safe %>
   </head>
 
-  <body class="bg-[#fbfbfb] dark:bg-zinc-900">
-    <% if params[:controller] == "static" && params[:action] == "index" %>
-      <!-- Full-screen IRC app mode -->
-      <div class="h-screen w-screen overflow-hidden">
-        <%= yield %>
-      </div>
-    <% else %>
-      <div class="h-screen flex flex-col container mx-auto">
-        <div class="px-4 xl:px-32 2xl:px-56 py-4 md:py-6">
-
-          <div class="max-w-5xl mx-auto">
-            <%= yield %>
-          </div>
-        </div>
-      </div>
-    <% end %>
+  <body class="bg-zinc-900">
+    <div class="h-screen w-screen overflow-hidden">
+      <%= yield %>
+    </div>
   </body>
 </html>

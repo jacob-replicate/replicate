@@ -203,25 +203,25 @@ export const MonitorAlert = () => {
 
 // Inline code span component
 const Code = ({ children }) => (
-  <span className="font-mono bg-zinc-100 dark:bg-zinc-800 px-1 rounded">{children}</span>
+  <span className="font-mono bg-zinc-800 px-1 rounded">{children}</span>
 )
 
 // Mention component
 const Mention = ({ children }) => (
-  <span className="text-[#1264a3] dark:text-blue-400 bg-[#e8f5fa] dark:bg-blue-900/30 rounded px-0.5 font-medium">{children}</span>
+  <span className="text-blue-400 bg-blue-900/30 rounded px-0.5 font-medium">{children}</span>
 )
 
 // Emoji reaction pill component
 const EmojiReaction = ({ emoji, count }) => (
-  <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-xs">
+  <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-zinc-800 border border-zinc-700 text-xs">
     <span>{emoji}</span>
-    <span className="text-zinc-600 dark:text-zinc-400">{count}</span>
+    <span className="text-zinc-400">{count}</span>
   </span>
 )
 
 // Message text wrapper - handles styling consistently
 const MessageText = ({ children, className = '' }) => (
-  <div className={`text-[#1d1c1d] dark:text-zinc-200 text-[15px] ${className}`}>{children}</div>
+  <div className={`text-zinc-200 text-[15px] ${className}`}>{children}</div>
 )
 
 // IRC mode indicator component
@@ -253,14 +253,14 @@ export const Diff = ({ filename, lines }) => {
   const deletions = lines.filter(line => line.type === 'remove').length
 
   return (
-    <div className="rounded border border-zinc-200 dark:border-zinc-700 overflow-hidden text-[13px]" style={{ fontFamily: 'Source Code Pro, monospace' }}>
+    <div className="rounded border border-zinc-700 overflow-hidden text-[13px]" style={{ fontFamily: 'Source Code Pro, monospace' }}>
       {filename && (
-        <div className="bg-zinc-100 dark:bg-zinc-800 px-2 py-1 text-zinc-500 dark:text-zinc-400 border-b border-zinc-200 dark:border-zinc-700 flex items-center justify-between">
+        <div className="bg-zinc-800 px-2 py-1 text-zinc-400 border-b border-zinc-700 flex items-center justify-between">
           <span>{filename}</span>
           {(additions > 0 || deletions > 0) && (
             <div className="flex items-center gap-2">
-              {additions > 0 && <span className="text-green-600 dark:text-green-400">+{additions}</span>}
-              {deletions > 0 && <span className="text-red-500 dark:text-red-400">-{deletions}</span>}
+              {additions > 0 && <span className="text-green-400">+{additions}</span>}
+              {deletions > 0 && <span className="text-red-400">-{deletions}</span>}
             </div>
           )}
         </div>
@@ -268,15 +268,15 @@ export const Diff = ({ filename, lines }) => {
       {lines.map((line, i) => {
         if (line.type === 'remove') {
           return (
-            <div key={i} className="bg-red-50 dark:bg-red-950/30 px-2 py-0.5 text-red-700 dark:text-red-300">
-              <span className="text-red-400 dark:text-red-500 select-none mr-2">-</span>
+            <div key={i} className="bg-red-950/30 px-2 py-0.5 text-red-300">
+              <span className="text-red-500 select-none mr-2">-</span>
               {line.text}
             </div>
           )
         }
         if (line.type === 'add') {
           return (
-            <div key={i} className="bg-green-50 dark:bg-green-950/30 px-2 py-0.5 text-green-700 dark:text-green-300">
+            <div key={i} className="bg-green-950/30 px-2 py-0.5 text-green-300">
               <span className="text-green-500 select-none mr-2">+</span>
               {line.text}
             </div>
@@ -284,7 +284,7 @@ export const Diff = ({ filename, lines }) => {
         }
         // context
         return (
-          <div key={i} className="px-2 py-0.5 text-zinc-600 dark:text-zinc-400">
+          <div key={i} className="px-2 py-0.5 text-zinc-400">
             <span className="select-none mr-2">&nbsp;</span>
             {line.text}
           </div>
@@ -316,37 +316,37 @@ const Thread = ({ replies }) => {
     <div className="mt-2">
       <button
         onClick={() => setExpanded(!expanded)}
-        className="flex items-center gap-2 text-[13px] text-[#1264a3] dark:text-blue-400 hover:underline"
+        className="flex items-center gap-2 text-[13px] text-blue-400 hover:underline"
       >
         <svg className={`w-4 h-4 transition-transform ${expanded ? 'rotate-90' : ''}`} viewBox="0 0 16 16" fill="currentColor">
           <path d="M6 12l4-4-4-4" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
         </svg>
         <span className="font-medium">{replies.length} {replies.length === 1 ? 'reply' : 'replies'}</span>
         {!expanded && lastReply && (
-          <span className="text-zinc-500 dark:text-zinc-400"><ModeIndicator mode={USER_MODES[lastReply.name]} />{lastReply.name}: {lastReply.text.slice(0, 30)}{lastReply.text.length > 30 ? '...' : ''}</span>
+          <span className="text-zinc-400"><ModeIndicator mode={USER_MODES[lastReply.name]} />{lastReply.name}: {lastReply.text.slice(0, 30)}{lastReply.text.length > 30 ? '...' : ''}</span>
         )}
       </button>
 
       {expanded && (
-        <div className="mt-2 ml-1 pl-3 border-l-2 border-zinc-200 dark:border-zinc-700 space-y-2">
+        <div className="mt-2 ml-1 pl-3 border-l-2 border-zinc-700 space-y-2">
           {replies.slice(0, visibleReplies).map((reply, i) => (
             <div key={i} className="flex items-start gap-2">
               <img src={reply.avatar} alt="" className="w-6 h-6 rounded-full flex-shrink-0" />
               <div>
-                <span className="font-semibold text-[13px] text-[#1d1c1d] dark:text-zinc-100">
+                <span className="font-semibold text-[13px] text-zinc-100">
                   <ModeIndicator mode={USER_MODES[reply.name]} />{reply.name}
                 </span>
-                <span className="text-zinc-500 dark:text-zinc-400 text-[11px] ml-1.5">{reply.time}</span>
-                <div className="text-[13px] text-[#1d1c1d] dark:text-zinc-300">{reply.text}</div>
+                <span className="text-zinc-400 text-[11px] ml-1.5">{reply.time}</span>
+                <div className="text-[13px] text-zinc-300">{reply.text}</div>
               </div>
             </div>
           ))}
           {visibleReplies < replies.length && (
             <div className="flex items-center gap-2 text-zinc-400 text-[12px]">
               <div className="flex gap-0.5">
-                <div className="w-1.5 h-1.5 bg-zinc-400 dark:bg-zinc-500 rounded-full animate-bounce" style={{ animationDelay: '0ms', animationDuration: '600ms' }}></div>
-                <div className="w-1.5 h-1.5 bg-zinc-400 dark:bg-zinc-500 rounded-full animate-bounce" style={{ animationDelay: '150ms', animationDuration: '600ms' }}></div>
-                <div className="w-1.5 h-1.5 bg-zinc-400 dark:bg-zinc-500 rounded-full animate-bounce" style={{ animationDelay: '300ms', animationDuration: '600ms' }}></div>
+                <div className="w-1.5 h-1.5 bg-zinc-500 rounded-full animate-bounce" style={{ animationDelay: '0ms', animationDuration: '600ms' }}></div>
+                <div className="w-1.5 h-1.5 bg-zinc-500 rounded-full animate-bounce" style={{ animationDelay: '150ms', animationDuration: '600ms' }}></div>
+                <div className="w-1.5 h-1.5 bg-zinc-500 rounded-full animate-bounce" style={{ animationDelay: '300ms', animationDuration: '600ms' }}></div>
               </div>
             </div>
           )}
@@ -363,11 +363,11 @@ const ChatMessage = ({ avatar, name, time, children, text, edited }) => (
     <img src={avatar} alt="" className="w-10 h-10 rounded-full flex-shrink-0" />
     <div className="flex-1">
       <div className="flex items-baseline gap-2">
-        <span className="font-semibold text-[#1d1c1d] dark:text-zinc-100 text-[15px] tracking-[-0.01em]">
+        <span className="font-semibold text-zinc-100 text-[15px] tracking-[-0.01em]">
           <ModeIndicator mode={USER_MODES[name]} />{name}
         </span>
-        {time && <span className="text-[#616061] dark:text-zinc-500 text-[12px]">{time}</span>}
-        {edited && <span className="text-[#616061] dark:text-zinc-500 text-[11px]">(edited)</span>}
+        {time && <span className="text-zinc-500 text-[12px]">{time}</span>}
+        {edited && <span className="text-zinc-500 text-[11px]">(edited)</span>}
       </div>
       {text ? (
         <MessageText className="mt-0.5">{text}</MessageText>
@@ -384,13 +384,13 @@ const TypingIndicator = ({ avatar, name }) => (
     <img src={avatar} alt="" className="w-10 h-10 rounded-full flex-shrink-0" />
     <div className="flex-1">
       <div className="flex items-baseline gap-2">
-        <span className="font-semibold text-[#1d1c1d] dark:text-zinc-100 text-[15px] tracking-[-0.01em]">{name}</span>
+        <span className="font-semibold text-zinc-100 text-[15px] tracking-[-0.01em]">{name}</span>
       </div>
       <div className="flex items-center gap-1 mt-1">
         <div className="flex gap-0.5">
-          <div className="w-2 h-2 bg-zinc-400 dark:bg-zinc-500 rounded-full animate-bounce" style={{ animationDelay: '0ms', animationDuration: '600ms' }}></div>
-          <div className="w-2 h-2 bg-zinc-400 dark:bg-zinc-500 rounded-full animate-bounce" style={{ animationDelay: '150ms', animationDuration: '600ms' }}></div>
-          <div className="w-2 h-2 bg-zinc-400 dark:bg-zinc-500 rounded-full animate-bounce" style={{ animationDelay: '300ms', animationDuration: '600ms' }}></div>
+          <div className="w-2 h-2 bg-zinc-500 rounded-full animate-bounce" style={{ animationDelay: '0ms', animationDuration: '600ms' }}></div>
+          <div className="w-2 h-2 bg-zinc-500 rounded-full animate-bounce" style={{ animationDelay: '150ms', animationDuration: '600ms' }}></div>
+          <div className="w-2 h-2 bg-zinc-500 rounded-full animate-bounce" style={{ animationDelay: '300ms', animationDuration: '600ms' }}></div>
         </div>
       </div>
     </div>
@@ -509,10 +509,10 @@ const CHANNEL_USERS = [
 
 // User list panel component
 const UserListPanel = ({ users, onClose }) => (
-  <div className="w-40 border-l border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800/50 flex flex-col">
-    <div className="px-3 py-2 border-b border-zinc-200 dark:border-zinc-700 flex items-center justify-between">
-      <span className="text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wide">Users — {users.length}</span>
-      <button onClick={onClose} className="text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300">
+  <div className="w-40 border-l border-zinc-700 bg-zinc-800/50 flex flex-col">
+    <div className="px-3 py-2 border-b border-zinc-700 flex items-center justify-between">
+      <span className="text-xs font-semibold text-zinc-400 uppercase tracking-wide">Users — {users.length}</span>
+      <button onClick={onClose} className="text-zinc-400 hover:text-zinc-300">
         <svg className="w-4 h-4" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
           <path d="M4 4l8 8M12 4l-8 8" />
         </svg>
@@ -522,14 +522,14 @@ const UserListPanel = ({ users, onClose }) => (
       {/* Ops first */}
       {users.filter(u => u.mode === '@').length > 0 && (
         <div className="px-3 mb-2">
-          <div className="text-[10px] font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wide mb-1">Ops (@)</div>
+          <div className="text-[10px] font-semibold text-zinc-500 uppercase tracking-wide mb-1">Ops (@)</div>
           {users.filter(u => u.mode === '@').map(user => (
             <div key={user.name} className="flex items-center gap-2 py-1">
               <div className="relative">
                 <img src={user.avatar} alt="" className="w-6 h-6 rounded-full" />
-                <div className={`absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full border-2 border-zinc-50 dark:border-zinc-800 ${user.status === 'online' ? 'bg-green-500' : 'bg-zinc-400'}`} />
+                <div className={`absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full border-2 border-zinc-800 ${user.status === 'online' ? 'bg-green-500' : 'bg-zinc-400'}`} />
               </div>
-              <span className="text-[13px] text-zinc-700 dark:text-zinc-300 font-mono">
+              <span className="text-[13px] text-zinc-300 font-mono">
                 <span className="text-amber-500">@</span>{user.name}
               </span>
             </div>
@@ -539,14 +539,14 @@ const UserListPanel = ({ users, onClose }) => (
       {/* Voiced next */}
       {users.filter(u => u.mode === '+').length > 0 && (
         <div className="px-3 mb-2">
-          <div className="text-[10px] font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wide mb-1">Voice (+)</div>
+          <div className="text-[10px] font-semibold text-zinc-500 uppercase tracking-wide mb-1">Voice (+)</div>
           {users.filter(u => u.mode === '+').map(user => (
             <div key={user.name} className="flex items-center gap-2 py-1">
               <div className="relative">
                 <img src={user.avatar} alt="" className="w-6 h-6 rounded-full" />
-                <div className={`absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full border-2 border-zinc-50 dark:border-zinc-800 ${user.status === 'online' ? 'bg-green-500' : 'bg-zinc-400'}`} />
+                <div className={`absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full border-2 border-zinc-800 ${user.status === 'online' ? 'bg-green-500' : 'bg-zinc-400'}`} />
               </div>
-              <span className="text-[13px] text-zinc-700 dark:text-zinc-300 font-mono">
+              <span className="text-[13px] text-zinc-300 font-mono">
                 <span className="text-green-500">+</span>{user.name}
               </span>
             </div>
@@ -556,14 +556,14 @@ const UserListPanel = ({ users, onClose }) => (
       {/* Regular users */}
       {users.filter(u => !u.mode).length > 0 && (
         <div className="px-3">
-          <div className="text-[10px] font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wide mb-1">Users</div>
+          <div className="text-[10px] font-semibold text-zinc-500 uppercase tracking-wide mb-1">Users</div>
           {users.filter(u => !u.mode).map(user => (
             <div key={user.name} className="flex items-center gap-2 py-1">
               <div className="relative">
                 <img src={user.avatar} alt="" className="w-6 h-6 rounded-full" />
-                <div className={`absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full border-2 border-zinc-50 dark:border-zinc-800 ${user.status === 'online' ? 'bg-green-500' : 'bg-zinc-400'}`} />
+                <div className={`absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full border-2 border-zinc-800 ${user.status === 'online' ? 'bg-green-500' : 'bg-zinc-400'}`} />
               </div>
-              <span className={`text-[13px] font-mono ${user.status === 'online' ? 'text-zinc-700 dark:text-zinc-300' : 'text-zinc-400 dark:text-zinc-500'}`}>
+              <span className={`text-[13px] font-mono ${user.status === 'online' ? 'text-zinc-300' : 'text-zinc-500'}`}>
                 {user.name}
               </span>
             </div>
@@ -623,13 +623,13 @@ export const SlackThread = ({ category = 'networking', topic = 'dns' }) => {
   }, [visibleMessages])
 
   return (
-    <div className="rounded-xl overflow-hidden shadow-sm border border-zinc-200/60 dark:border-zinc-700">
-      <div className="bg-white dark:bg-zinc-900 flex">
+    <div className="rounded-xl overflow-hidden shadow-sm border border-zinc-700">
+      <div className="bg-zinc-900 flex">
         {/* Main chat area */}
         <div className="flex-1 flex flex-col min-w-0">
 
         {/* Messages */}
-        <div className="divide-y divide-zinc-200 dark:divide-zinc-700 [&>*]:py-4 [&>*]:px-4">
+        <div className="divide-y divide-zinc-700 [&>*]:py-4 [&>*]:px-4">
 
           {/* Message 1: PagerDuty Alert */}
           {visibleMessages >= 1 && (
@@ -736,7 +736,7 @@ WHERE NOT bl.granted;
           {visibleMessages >= 6 && (
             <ChatMessage avatar="/profile-photo-2.jpg" name="daniel" time="2:57 AM">
               <MessageText className="mt-0.5 mb-2">options: (1) kill the stuck queries and rollback, (2) add <Code>NOWAIT</Code> or <Code>SKIP LOCKED</Code> to the query, (3) revert the commit entirely</MessageText>
-              <MessageText className="text-zinc-500 dark:text-zinc-400 text-[13px]">I'd vote revert — the <Code>FOR UPDATE</Code> approach needs a proper queue, not row locking</MessageText>
+              <MessageText className="text-zinc-500 text-[13px]">I'd vote revert — the <Code>FOR UPDATE</Code> approach needs a proper queue, not row locking</MessageText>
               <div className="mt-2 flex gap-1">
                 <EmojiReaction emoji="👍" count={2} />
                 <EmojiReaction emoji="💯" count={1} />
@@ -766,26 +766,26 @@ WHERE NOT bl.granted;
               <img src="/logo.png" alt="" className="w-10 h-10 rounded-full flex-shrink-0" />
               <div className="flex-1">
                 <div className="flex items-baseline justify-between gap-2">
-                  <span className="font-semibold text-[#1d1c1d] dark:text-zinc-100 text-[15px] tracking-[-0.01em]">invariant.training</span>
-                  <span className="text-[#616061] dark:text-zinc-500 text-[12px]">3:05 AM</span>
+                  <span className="font-semibold text-zinc-100 text-[15px] tracking-[-0.01em]">invariant.training</span>
+                  <span className="text-zinc-500 text-[12px]">3:05 AM</span>
                 </div>
                 <MessageText className="mt-0.5 mb-3">The team reverted the change, but the underlying problem remains: orders can still be double-processed. What's the right architectural fix?</MessageText>
-                <div className="flex flex-col bg-gray-50 dark:bg-zinc-800/60 border border-gray-200 dark:border-zinc-600 shadow-sm rounded-lg overflow-hidden">
-                  <label className="text-[15px] flex items-center p-[12px] cursor-pointer hover:bg-indigo-50 dark:hover:bg-indigo-900/40 border-b border-gray-200 dark:border-zinc-600">
-                    <input type="radio" name="mc_pool" className="h-4 w-4 text-indigo-600 border-gray-400 dark:border-zinc-500 focus:ring-indigo-500 dark:bg-zinc-700" />
-                    <span className="ml-3 text-zinc-800 dark:text-zinc-200">Use SELECT FOR UPDATE SKIP LOCKED to avoid blocking</span>
+                <div className="flex flex-col bg-zinc-800/60 border border-zinc-600 shadow-sm rounded-lg overflow-hidden">
+                  <label className="text-[15px] flex items-center p-[12px] cursor-pointer hover:bg-indigo-900/40 border-b border-zinc-600">
+                    <input type="radio" name="mc_pool" className="h-4 w-4 text-indigo-600 border-zinc-500 focus:ring-indigo-500 bg-zinc-700" />
+                    <span className="ml-3 text-zinc-200">Use SELECT FOR UPDATE SKIP LOCKED to avoid blocking</span>
                   </label>
-                  <label className="text-[15px] flex items-center p-[12px] cursor-pointer hover:bg-indigo-50 dark:hover:bg-indigo-900/40 border-b border-gray-200 dark:border-zinc-600">
-                    <input type="radio" name="mc_pool" className="h-4 w-4 text-indigo-600 border-gray-400 dark:border-zinc-500 focus:ring-indigo-500 dark:bg-zinc-700" />
-                    <span className="ml-3 text-zinc-800 dark:text-zinc-200">Add a distributed lock service like Redis or Zookeeper</span>
+                  <label className="text-[15px] flex items-center p-[12px] cursor-pointer hover:bg-indigo-900/40 border-b border-zinc-600">
+                    <input type="radio" name="mc_pool" className="h-4 w-4 text-indigo-600 border-zinc-500 focus:ring-indigo-500 bg-zinc-700" />
+                    <span className="ml-3 text-zinc-200">Add a distributed lock service like Redis or Zookeeper</span>
                   </label>
-                  <label className="text-[15px] flex items-center p-[12px] cursor-pointer hover:bg-indigo-50 dark:hover:bg-indigo-900/40 border-b border-gray-200 dark:border-zinc-600">
-                    <input type="radio" name="mc_pool" className="h-4 w-4 text-indigo-600 border-gray-400 dark:border-zinc-500 focus:ring-indigo-500 dark:bg-zinc-700" />
-                    <span className="ml-3 text-zinc-800 dark:text-zinc-200">Use a proper job queue with exactly-once delivery guarantees</span>
+                  <label className="text-[15px] flex items-center p-[12px] cursor-pointer hover:bg-indigo-900/40 border-b border-zinc-600">
+                    <input type="radio" name="mc_pool" className="h-4 w-4 text-indigo-600 border-zinc-500 focus:ring-indigo-500 bg-zinc-700" />
+                    <span className="ml-3 text-zinc-200">Use a proper job queue with exactly-once delivery guarantees</span>
                   </label>
-                  <label className="text-[15px] flex items-center p-[12px] cursor-pointer hover:bg-indigo-50 dark:hover:bg-indigo-900/40">
-                    <input type="radio" name="mc_pool" className="h-4 w-4 text-indigo-600 border-gray-400 dark:border-zinc-500 focus:ring-indigo-500 dark:bg-zinc-700" />
-                    <span className="ml-3 text-zinc-800 dark:text-zinc-200">Increase the connection pool size to handle lock contention</span>
+                  <label className="text-[15px] flex items-center p-[12px] cursor-pointer hover:bg-indigo-900/40">
+                    <input type="radio" name="mc_pool" className="h-4 w-4 text-indigo-600 border-zinc-500 focus:ring-indigo-500 bg-zinc-700" />
+                    <span className="ml-3 text-zinc-200">Increase the connection pool size to handle lock contention</span>
                   </label>
                 </div>
               </div>
@@ -797,16 +797,16 @@ WHERE NOT bl.granted;
         </div>
 
         {/* Chat input */}
-        <div className="border-t border-zinc-200 dark:border-zinc-700 flex items-center">
+        <div className="border-t border-zinc-700 flex items-center">
           <input
             type="text"
             placeholder="Say something..."
-            className="flex-1 px-4 py-3 text-[15px] text-[#1d1c1d] dark:text-zinc-200 placeholder-[#868686] dark:placeholder-zinc-500 outline-none border-none bg-transparent ring-0 focus:ring-0 focus:outline-none"
+            className="flex-1 px-4 py-3 text-[15px] text-zinc-200 placeholder-zinc-500 outline-none border-none bg-transparent ring-0 focus:ring-0 focus:outline-none"
           />
           {/* User list toggle */}
           <button
             onClick={() => setShowUserList(!showUserList)}
-            className={`mr-3 p-1.5 rounded transition-colors ${showUserList ? 'bg-zinc-200 dark:bg-zinc-700 text-zinc-700 dark:text-zinc-200' : 'text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700'}`}
+            className={`mr-3 p-1.5 rounded transition-colors ${showUserList ? 'bg-zinc-700 text-zinc-200' : 'text-zinc-400 hover:text-zinc-300 hover:bg-zinc-700'}`}
             title="Toggle user list"
           >
             <svg className="w-4 h-4" viewBox="0 0 16 16" fill="currentColor">
@@ -826,18 +826,18 @@ WHERE NOT bl.granted;
 export const GitDiff = () => {
   return (
     <div className="py-4">
-      <div className="rounded-lg overflow-hidden border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 shadow-sm">
+      <div className="rounded-lg overflow-hidden border border-zinc-700 bg-zinc-900 shadow-sm">
         {/* Header */}
-        <div className="bg-zinc-100 dark:bg-zinc-800 border-b border-zinc-200 dark:border-zinc-700 px-4 py-2 flex items-center justify-between">
+        <div className="bg-zinc-800 border-b border-zinc-700 px-4 py-2 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <svg className="w-4 h-4 text-zinc-500" viewBox="0 0 16 16" fill="currentColor">
               <path fillRule="evenodd" d="M8.75 1.75a.75.75 0 00-1.5 0V5H4a.75.75 0 000 1.5h3.25v3.25a.75.75 0 001.5 0V6.5H12A.75.75 0 0012 5H8.75V1.75zM4 13a.75.75 0 000 1.5h8a.75.75 0 000-1.5H4z" />
             </svg>
-            <span className="font-mono text-sm text-zinc-700 dark:text-zinc-300">internal/handler/orders.go</span>
+            <span className="font-mono text-sm text-zinc-300">internal/handler/orders.go</span>
           </div>
           <div className="flex items-center gap-3 text-xs">
-            <span className="text-green-600 dark:text-green-400">+12</span>
-            <span className="text-red-500 dark:text-red-400">-8</span>
+            <span className="text-green-400">+12</span>
+            <span className="text-red-400">-8</span>
           </div>
         </div>
 
@@ -845,84 +845,84 @@ export const GitDiff = () => {
         <div className="font-mono text-[13px] leading-[1.6] overflow-x-auto">
           {/* Context lines */}
           <div className="flex">
-            <div className="w-10 text-right pr-2 text-zinc-400 dark:text-zinc-600 bg-zinc-50 dark:bg-zinc-800/50 select-none border-r border-zinc-200 dark:border-zinc-700">47</div>
-            <div className="w-10 text-right pr-2 text-zinc-400 dark:text-zinc-600 bg-zinc-50 dark:bg-zinc-800/50 select-none border-r border-zinc-200 dark:border-zinc-700">47</div>
-            <pre className="flex-1 px-3 text-zinc-600 dark:text-zinc-400"><code>{`func (h *OrderHandler) GetOrder(w http.ResponseWriter, r *http.Request) {`}</code></pre>
+            <div className="w-10 text-right pr-2 text-zinc-600 bg-zinc-800/50 select-none border-r border-zinc-700">47</div>
+            <div className="w-10 text-right pr-2 text-zinc-600 bg-zinc-800/50 select-none border-r border-zinc-700">47</div>
+            <pre className="flex-1 px-3 text-zinc-400"><code>{`func (h *OrderHandler) GetOrder(w http.ResponseWriter, r *http.Request) {`}</code></pre>
           </div>
           <div className="flex">
-            <div className="w-10 text-right pr-2 text-zinc-400 dark:text-zinc-600 bg-zinc-50 dark:bg-zinc-800/50 select-none border-r border-zinc-200 dark:border-zinc-700">48</div>
-            <div className="w-10 text-right pr-2 text-zinc-400 dark:text-zinc-600 bg-zinc-50 dark:bg-zinc-800/50 select-none border-r border-zinc-200 dark:border-zinc-700">48</div>
-            <pre className="flex-1 px-3 text-zinc-600 dark:text-zinc-400"><code>{`    orderID := chi.URLParam(r, "id")`}</code></pre>
+            <div className="w-10 text-right pr-2 text-zinc-600 bg-zinc-800/50 select-none border-r border-zinc-700">48</div>
+            <div className="w-10 text-right pr-2 text-zinc-600 bg-zinc-800/50 select-none border-r border-zinc-700">48</div>
+            <pre className="flex-1 px-3 text-zinc-400"><code>{`    orderID := chi.URLParam(r, "id")`}</code></pre>
           </div>
           <div className="flex">
-            <div className="w-10 text-right pr-2 text-zinc-400 dark:text-zinc-600 bg-zinc-50 dark:bg-zinc-800/50 select-none border-r border-zinc-200 dark:border-zinc-700">49</div>
-            <div className="w-10 text-right pr-2 text-zinc-400 dark:text-zinc-600 bg-zinc-50 dark:bg-zinc-800/50 select-none border-r border-zinc-200 dark:border-zinc-700">49</div>
-            <pre className="flex-1 px-3 text-zinc-600 dark:text-zinc-400"><code></code></pre>
+            <div className="w-10 text-right pr-2 text-zinc-600 bg-zinc-800/50 select-none border-r border-zinc-700">49</div>
+            <div className="w-10 text-right pr-2 text-zinc-600 bg-zinc-800/50 select-none border-r border-zinc-700">49</div>
+            <pre className="flex-1 px-3 text-zinc-400"><code></code></pre>
           </div>
 
           {/* Removed lines */}
-          <div className="flex bg-red-50 dark:bg-red-950/30">
-            <div className="w-10 text-right pr-2 text-red-400 dark:text-red-500 bg-red-100 dark:bg-red-900/40 select-none border-r border-red-200 dark:border-red-800">50</div>
-            <div className="w-10 text-right pr-2 text-red-400 dark:text-red-500 bg-red-100 dark:bg-red-900/40 select-none border-r border-red-200 dark:border-red-800"></div>
-            <pre className="flex-1 px-3 text-red-700 dark:text-red-300"><code>{`-   order, err := h.store.GetByID(r.Context(), orderID)`}</code></pre>
+          <div className="flex bg-red-950/30">
+            <div className="w-10 text-right pr-2 text-red-500 bg-red-900/40 select-none border-r border-red-800">50</div>
+            <div className="w-10 text-right pr-2 text-red-500 bg-red-900/40 select-none border-r border-red-800"></div>
+            <pre className="flex-1 px-3 text-red-300"><code>{`-   order, err := h.store.GetByID(r.Context(), orderID)`}</code></pre>
           </div>
-          <div className="flex bg-red-50 dark:bg-red-950/30">
-            <div className="w-10 text-right pr-2 text-red-400 dark:text-red-500 bg-red-100 dark:bg-red-900/40 select-none border-r border-red-200 dark:border-red-800">51</div>
-            <div className="w-10 text-right pr-2 text-red-400 dark:text-red-500 bg-red-100 dark:bg-red-900/40 select-none border-r border-red-200 dark:border-red-800"></div>
-            <pre className="flex-1 px-3 text-red-700 dark:text-red-300"><code>{`-   if err != nil {`}</code></pre>
+          <div className="flex bg-red-950/30">
+            <div className="w-10 text-right pr-2 text-red-500 bg-red-900/40 select-none border-r border-red-800">51</div>
+            <div className="w-10 text-right pr-2 text-red-500 bg-red-900/40 select-none border-r border-red-800"></div>
+            <pre className="flex-1 px-3 text-red-300"><code>{`-   if err != nil {`}</code></pre>
           </div>
-          <div className="flex bg-red-50 dark:bg-red-950/30">
-            <div className="w-10 text-right pr-2 text-red-400 dark:text-red-500 bg-red-100 dark:bg-red-900/40 select-none border-r border-red-200 dark:border-red-800">52</div>
-            <div className="w-10 text-right pr-2 text-red-400 dark:text-red-500 bg-red-100 dark:bg-red-900/40 select-none border-r border-red-200 dark:border-red-800"></div>
-            <pre className="flex-1 px-3 text-red-700 dark:text-red-300"><code>{`-       http.Error(w, "order not found", http.StatusNotFound)`}</code></pre>
+          <div className="flex bg-red-950/30">
+            <div className="w-10 text-right pr-2 text-red-500 bg-red-900/40 select-none border-r border-red-800">52</div>
+            <div className="w-10 text-right pr-2 text-red-500 bg-red-900/40 select-none border-r border-red-800"></div>
+            <pre className="flex-1 px-3 text-red-300"><code>{`-       http.Error(w, "order not found", http.StatusNotFound)`}</code></pre>
           </div>
-          <div className="flex bg-red-50 dark:bg-red-950/30">
-            <div className="w-10 text-right pr-2 text-red-400 dark:text-red-500 bg-red-100 dark:bg-red-900/40 select-none border-r border-red-200 dark:border-red-800">53</div>
-            <div className="w-10 text-right pr-2 text-red-400 dark:text-red-500 bg-red-100 dark:bg-red-900/40 select-none border-r border-red-200 dark:border-red-800"></div>
-            <pre className="flex-1 px-3 text-red-700 dark:text-red-300"><code>{`-       return`}</code></pre>
+          <div className="flex bg-red-950/30">
+            <div className="w-10 text-right pr-2 text-red-500 bg-red-900/40 select-none border-r border-red-800">53</div>
+            <div className="w-10 text-right pr-2 text-red-500 bg-red-900/40 select-none border-r border-red-800"></div>
+            <pre className="flex-1 px-3 text-red-300"><code>{`-       return`}</code></pre>
           </div>
-          <div className="flex bg-red-50 dark:bg-red-950/30">
-            <div className="w-10 text-right pr-2 text-red-400 dark:text-red-500 bg-red-100 dark:bg-red-900/40 select-none border-r border-red-200 dark:border-red-800">54</div>
-            <div className="w-10 text-right pr-2 text-red-400 dark:text-red-500 bg-red-100 dark:bg-red-900/40 select-none border-r border-red-200 dark:border-red-800"></div>
-            <pre className="flex-1 px-3 text-red-700 dark:text-red-300"><code>{`-   }`}</code></pre>
+          <div className="flex bg-red-950/30">
+            <div className="w-10 text-right pr-2 text-red-500 bg-red-900/40 select-none border-r border-red-800">54</div>
+            <div className="w-10 text-right pr-2 text-red-500 bg-red-900/40 select-none border-r border-red-800"></div>
+            <pre className="flex-1 px-3 text-red-300"><code>{`-   }`}</code></pre>
           </div>
 
           {/* Added lines - the buggy change */}
-          <div className="flex bg-green-50 dark:bg-green-950/30">
-            <div className="w-10 text-right pr-2 text-green-500 dark:text-green-500 bg-green-100 dark:bg-green-900/40 select-none border-r border-green-200 dark:border-green-800"></div>
-            <div className="w-10 text-right pr-2 text-green-500 dark:text-green-500 bg-green-100 dark:bg-green-900/40 select-none border-r border-green-200 dark:border-green-800">50</div>
-            <pre className="flex-1 px-3 text-green-700 dark:text-green-300"><code>{`+   order, _ := h.store.GetByID(r.Context(), orderID)`}</code></pre>
+          <div className="flex bg-green-950/30">
+            <div className="w-10 text-right pr-2 text-green-500 bg-green-900/40 select-none border-r border-green-800"></div>
+            <div className="w-10 text-right pr-2 text-green-500 bg-green-900/40 select-none border-r border-green-800">50</div>
+            <pre className="flex-1 px-3 text-green-300"><code>{`+   order, _ := h.store.GetByID(r.Context(), orderID)`}</code></pre>
           </div>
 
           {/* Context lines after */}
           <div className="flex">
-            <div className="w-10 text-right pr-2 text-zinc-400 dark:text-zinc-600 bg-zinc-50 dark:bg-zinc-800/50 select-none border-r border-zinc-200 dark:border-zinc-700">55</div>
-            <div className="w-10 text-right pr-2 text-zinc-400 dark:text-zinc-600 bg-zinc-50 dark:bg-zinc-800/50 select-none border-r border-zinc-200 dark:border-zinc-700">51</div>
-            <pre className="flex-1 px-3 text-zinc-600 dark:text-zinc-400"><code></code></pre>
+            <div className="w-10 text-right pr-2 text-zinc-600 bg-zinc-800/50 select-none border-r border-zinc-700">55</div>
+            <div className="w-10 text-right pr-2 text-zinc-600 bg-zinc-800/50 select-none border-r border-zinc-700">51</div>
+            <pre className="flex-1 px-3 text-zinc-400"><code></code></pre>
           </div>
           <div className="flex">
-            <div className="w-10 text-right pr-2 text-zinc-400 dark:text-zinc-600 bg-zinc-50 dark:bg-zinc-800/50 select-none border-r border-zinc-200 dark:border-zinc-700">56</div>
-            <div className="w-10 text-right pr-2 text-zinc-400 dark:text-zinc-600 bg-zinc-50 dark:bg-zinc-800/50 select-none border-r border-zinc-200 dark:border-zinc-800">52</div>
-            <pre className="flex-1 px-3 text-zinc-600 dark:text-zinc-400"><code>{`    json.NewEncoder(w).Encode(order)  // panic: nil pointer`}</code></pre>
+            <div className="w-10 text-right pr-2 text-zinc-600 bg-zinc-800/50 select-none border-r border-zinc-700">56</div>
+            <div className="w-10 text-right pr-2 text-zinc-600 bg-zinc-800/50 select-none border-r border-zinc-800">52</div>
+            <pre className="flex-1 px-3 text-zinc-400"><code>{`    json.NewEncoder(w).Encode(order)  // panic: nil pointer`}</code></pre>
           </div>
           <div className="flex">
-            <div className="w-10 text-right pr-2 text-zinc-400 dark:text-zinc-600 bg-zinc-50 dark:bg-zinc-800/50 select-none border-r border-zinc-200 dark:border-zinc-700">57</div>
-            <div className="w-10 text-right pr-2 text-zinc-400 dark:text-zinc-600 bg-zinc-50 dark:bg-zinc-800/50 select-none border-r border-zinc-200 dark:border-zinc-700">53</div>
-            <pre className="flex-1 px-3 text-zinc-600 dark:text-zinc-400"><code>{`}`}</code></pre>
+            <div className="w-10 text-right pr-2 text-zinc-600 bg-zinc-800/50 select-none border-r border-zinc-700">57</div>
+            <div className="w-10 text-right pr-2 text-zinc-600 bg-zinc-800/50 select-none border-r border-zinc-700">53</div>
+            <pre className="flex-1 px-3 text-zinc-400"><code>{`}`}</code></pre>
           </div>
         </div>
 
         {/* Footer with commit info */}
-        <div className="bg-zinc-50 dark:bg-zinc-800/50 border-t border-zinc-200 dark:border-zinc-700 px-4 py-2 flex items-center justify-between text-xs">
-          <div className="flex items-center gap-2 text-zinc-500 dark:text-zinc-400">
+        <div className="bg-zinc-800/50 border-t border-zinc-700 px-4 py-2 flex items-center justify-between text-xs">
+          <div className="flex items-center gap-2 text-zinc-400">
             <img src="/profile-photo-2.jpg" alt="" className="w-5 h-5 rounded-full" />
             <span>daniel</span>
-            <span className="text-zinc-400 dark:text-zinc-600">•</span>
+            <span className="text-zinc-600">•</span>
             <span className="font-mono">a]1b7f2e</span>
-            <span className="text-zinc-400 dark:text-zinc-600">•</span>
+            <span className="text-zinc-600">•</span>
             <span>fix: skip db validation for perf</span>
           </div>
-          <span className="text-zinc-400 dark:text-zinc-500">2 hours ago</span>
+          <span className="text-zinc-500">2 hours ago</span>
         </div>
       </div>
     </div>

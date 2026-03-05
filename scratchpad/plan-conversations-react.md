@@ -61,15 +61,15 @@ Expose a clean interface for non-React code to push messages:
 
 ```javascript
 // On page load, this becomes available
-window.ReplicateConversation = {
+window.Conversation = {
   addMessage(msg) { /* dispatches to React state */ },
   setTyping(bool) { /* shows/hides indicator */ },
   onReady(callback) { /* fires when component mounted */ },
 };
 
 // Demo usage in onload script:
-window.ReplicateConversation.onReady(() => {
-  const api = window.ReplicateConversation;
+window.Conversation.onReady(() => {
+  const api = window.Conversation;
   
   api.setTyping(true);
   setTimeout(() => {
@@ -122,7 +122,7 @@ app/javascript/
 3. Wire up React Router for internal navigation
 
 ### Phase 3: Global API
-1. Expose `window.ReplicateConversation` interface
+1. Expose `window.Conversation` interface
 2. Create demo streaming script for page load
 3. Test with hardcoded DNS incident content
 

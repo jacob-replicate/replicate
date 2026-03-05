@@ -185,7 +185,7 @@ const RESPONSE_PATHS = {
  * Orchestrate the demo conversation after user selects an option
  *
  * @param {string} optionId - The selected option (a, b, c, or d)
- * @param {object} api - The ReplicateConversation API
+ * @param {object} api - The Conversation API
  */
 export async function orchestrateDemoResponse(optionId, api) {
   const path = RESPONSE_PATHS[optionId]

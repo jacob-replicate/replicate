@@ -17,7 +17,7 @@ deadlock_messages = [
   {
     sequence: 1,
     author_name: "maya",
-    author_avatar: "/profile-photo-3.jpg",
+    author_avatar: "profile-photo-3.jpg",
     components: [
       { type: "text", content: "just got paged — connection pool is spiking hard. sitting at 98% used on orders-db-primary" }
     ]
@@ -25,7 +25,7 @@ deadlock_messages = [
   {
     sequence: 2,
     author_name: "maya",
-    author_avatar: "/profile-photo-3.jpg",
+    author_avatar: "profile-photo-3.jpg",
     components: [
       { type: "text", content: "taking IC. @daniel can you pull up the connection metrics? seeing `max_connections=50` but we should have headroom" }
     ]
@@ -33,7 +33,7 @@ deadlock_messages = [
   {
     sequence: 3,
     author_name: "daniel",
-    author_avatar: "/profile-photo-2.jpg",
+    author_avatar: "profile-photo-2.jpg",
     components: [
       { type: "text", content: "on it — pulling grafana now" }
     ]
@@ -41,7 +41,7 @@ deadlock_messages = [
   {
     sequence: 4,
     author_name: "alex",
-    author_avatar: "/profile-photo-1.jpg",
+    author_avatar: "profile-photo-1.jpg",
     components: [
       { type: "text", content: "anything I can help with?" }
     ]
@@ -49,7 +49,7 @@ deadlock_messages = [
   {
     sequence: 5,
     author_name: "maya",
-    author_avatar: "/profile-photo-3.jpg",
+    author_avatar: "profile-photo-3.jpg",
     components: [
       { type: "text", content: "alex check if this is isolated to orders or if payments is affected too" }
     ]
@@ -57,7 +57,7 @@ deadlock_messages = [
   {
     sequence: 6,
     author_name: "daniel",
-    author_avatar: "/profile-photo-2.jpg",
+    author_avatar: "profile-photo-2.jpg",
     components: [
       { type: "text", content: "found it — connection acquire time spiking. looks like queries are hanging and never returning connections to the pool" },
       {
@@ -70,7 +70,7 @@ deadlock_messages = [
   {
     sequence: 7,
     author_name: "alex",
-    author_avatar: "/profile-photo-1.jpg",
+    author_avatar: "profile-photo-1.jpg",
     components: [
       { type: "text", content: "payments is fine, but I found something weird — someone added a new SELECT FOR UPDATE yesterday that's taking row locks" },
       {
@@ -89,7 +89,7 @@ deadlock_messages = [
   {
     sequence: 8,
     author_name: "daniel",
-    author_avatar: "/profile-photo-2.jpg",
+    author_avatar: "profile-photo-2.jpg",
     components: [
       { type: "text", content: "oh no... FOR UPDATE with no timeout will wait forever for the lock" }
     ]
@@ -97,7 +97,7 @@ deadlock_messages = [
   {
     sequence: 9,
     author_name: "alex",
-    author_avatar: "/profile-photo-1.jpg",
+    author_avatar: "profile-photo-1.jpg",
     components: [
       { type: "text", content: "and if multiple workers try to process the same order..." }
     ]
@@ -105,7 +105,7 @@ deadlock_messages = [
   {
     sequence: 10,
     author_name: "daniel",
-    author_avatar: "/profile-photo-2.jpg",
+    author_avatar: "profile-photo-2.jpg",
     components: [
       { type: "text", content: "deadlock city 💀" }
     ]
@@ -113,7 +113,7 @@ deadlock_messages = [
   {
     sequence: 11,
     author_name: "maya",
-    author_avatar: "/profile-photo-3.jpg",
+    author_avatar: "profile-photo-3.jpg",
     components: [
       { type: "text", content: "confirmed — we have 23 transactions waiting on each other. classic deadlock pattern" },
       {
@@ -126,7 +126,7 @@ deadlock_messages = [
   {
     sequence: 12,
     author_name: "daniel",
-    author_avatar: "/profile-photo-2.jpg",
+    author_avatar: "profile-photo-2.jpg",
     components: [
       { type: "text", content: "options: (1) kill the stuck queries and rollback, (2) add NOWAIT or SKIP LOCKED to the query, (3) revert the commit entirely" },
       { type: "text", content: "I'd vote revert — the FOR UPDATE approach needs a proper queue, not row locking" }
@@ -135,7 +135,7 @@ deadlock_messages = [
   {
     sequence: 13,
     author_name: "alex",
-    author_avatar: "/profile-photo-1.jpg",
+    author_avatar: "profile-photo-1.jpg",
     components: [
       { type: "text", content: "agreed — I can have the revert ready in 2 min" }
     ]
@@ -143,7 +143,7 @@ deadlock_messages = [
   {
     sequence: 14,
     author_name: "maya",
-    author_avatar: "/profile-photo-3.jpg",
+    author_avatar: "profile-photo-3.jpg",
     components: [
       { type: "text", content: "do it. daniel can you kill the stuck connections so we recover faster?" }
     ]
@@ -151,7 +151,7 @@ deadlock_messages = [
   {
     sequence: 15,
     author_name: "daniel",
-    author_avatar: "/profile-photo-2.jpg",
+    author_avatar: "profile-photo-2.jpg",
     components: [
       { type: "text", content: "already on it" }
     ]
@@ -159,7 +159,7 @@ deadlock_messages = [
   {
     sequence: 16,
     author_name: "daniel",
-    author_avatar: "/profile-photo-2.jpg",
+    author_avatar: "profile-photo-2.jpg",
     components: [
       { type: "text", content: "killed 23 stuck connections. pool is recovering" },
       {
@@ -172,7 +172,7 @@ deadlock_messages = [
   {
     sequence: 17,
     author_name: "maya",
-    author_avatar: "/profile-photo-3.jpg",
+    author_avatar: "profile-photo-3.jpg",
     components: [
       { type: "text", content: "revert is deployed, pool is back to normal — down to 12 active connections now. @oncall marking resolved but we need a proper fix for the double-processing issue" }
     ]
@@ -180,7 +180,7 @@ deadlock_messages = [
   {
     sequence: 18,
     author_name: "maya",
-    author_avatar: "/profile-photo-3.jpg",
+    author_avatar: "profile-photo-3.jpg",
     components: [
       { type: "text", content: "created JIRA-4521 for the proper fix. @alex can you add a Datadog monitor for duplicate order IDs in the meantime?" }
     ]
@@ -188,7 +188,7 @@ deadlock_messages = [
   {
     sequence: 19,
     author_name: "alex",
-    author_avatar: "/profile-photo-1.jpg",
+    author_avatar: "profile-photo-1.jpg",
     components: [
       { type: "text", content: "on it. will alert if we see any order_id processed more than once in a 5 min window" }
     ]
@@ -196,7 +196,7 @@ deadlock_messages = [
   {
     sequence: 20,
     author_name: "daniel",
-    author_avatar: "/profile-photo-2.jpg",
+    author_avatar: "profile-photo-2.jpg",
     components: [
       { type: "text", content: "for the postmortem — the real issue is we're using database locks for job coordination. should've been a proper queue from day one" }
     ]
@@ -247,7 +247,7 @@ partition_messages = [
   {
     sequence: 1,
     author_name: "alex",
-    author_avatar: "/profile-photo-1.jpg",
+    author_avatar: "profile-photo-1.jpg",
     components: [
       { type: "text", content: "events service latency spiking hard — p99 is at 2847ms, completely through the roof" }
     ]
@@ -255,7 +255,7 @@ partition_messages = [
   {
     sequence: 2,
     author_name: "maya",
-    author_avatar: "/profile-photo-3.jpg",
+    author_avatar: "profile-photo-3.jpg",
     components: [
       { type: "text", content: "taking IC. @daniel what does the partition distribution look like? I'm seeing uneven load on the Kafka dashboard" }
     ]
@@ -263,7 +263,7 @@ partition_messages = [
   {
     sequence: 3,
     author_name: "daniel",
-    author_avatar: "/profile-photo-2.jpg",
+    author_avatar: "profile-photo-2.jpg",
     components: [
       { type: "text", content: "yep, we have a hot partition. partition 7 is getting hammered while the others are basically idle" },
       {
@@ -276,7 +276,7 @@ partition_messages = [
   {
     sequence: 4,
     author_name: "alex",
-    author_avatar: "/profile-photo-1.jpg",
+    author_avatar: "profile-photo-1.jpg",
     components: [
       { type: "text", content: "whoa, partition 7 has 100x the traffic. what's the partition key?" }
     ]
@@ -284,7 +284,7 @@ partition_messages = [
   {
     sequence: 5,
     author_name: "daniel",
-    author_avatar: "/profile-photo-2.jpg",
+    author_avatar: "profile-photo-2.jpg",
     components: [
       { type: "text", content: "user_id — we partition by user to keep all events for a user on the same consumer for ordering" }
     ]
@@ -292,7 +292,7 @@ partition_messages = [
   {
     sequence: 6,
     author_name: "alex",
-    author_avatar: "/profile-photo-1.jpg",
+    author_avatar: "profile-photo-1.jpg",
     components: [
       { type: "text", content: "found it — Acme Corp's integration went live yesterday. they're pushing 12k events/sec through user_id `acme_service_account`" },
       {
@@ -305,7 +305,7 @@ partition_messages = [
   {
     sequence: 7,
     author_name: "maya",
-    author_avatar: "/profile-photo-3.jpg",
+    author_avatar: "profile-photo-3.jpg",
     components: [
       { type: "text", content: "one user is 99.9% of traffic on that partition. classic hot key problem" }
     ]
@@ -313,7 +313,7 @@ partition_messages = [
   {
     sequence: 8,
     author_name: "daniel",
-    author_avatar: "/profile-photo-2.jpg",
+    author_avatar: "profile-photo-2.jpg",
     components: [
       { type: "text", content: "we only have 10 partitions — let me bump it to 100. that should spread the load better, and I'll add more consumers to match" }
     ]
@@ -321,7 +321,7 @@ partition_messages = [
   {
     sequence: 9,
     author_name: "alex",
-    author_avatar: "/profile-photo-1.jpg",
+    author_avatar: "profile-photo-1.jpg",
     components: [
       { type: "text", content: "will that actually help? same user_id will still hash to one partition" }
     ]
@@ -329,7 +329,7 @@ partition_messages = [
   {
     sequence: 10,
     author_name: "daniel",
-    author_avatar: "/profile-photo-2.jpg",
+    author_avatar: "profile-photo-2.jpg",
     components: [
       { type: "text", content: "true but with more partitions we get better overall distribution — reduces the probability any single partition becomes a bottleneck" }
     ]
@@ -337,7 +337,7 @@ partition_messages = [
   {
     sequence: 11,
     author_name: "maya",
-    author_avatar: "/profile-photo-3.jpg",
+    author_avatar: "profile-photo-3.jpg",
     components: [
       { type: "text", content: "let's do it. @daniel go ahead with the partition expansion. I'll coordinate with Acme to see if they can rate limit on their end while we scale up" }
     ]
@@ -345,7 +345,7 @@ partition_messages = [
   {
     sequence: 12,
     author_name: "daniel",
-    author_avatar: "/profile-photo-2.jpg",
+    author_avatar: "profile-photo-2.jpg",
     components: [
       { type: "text", content: "partition expansion complete — 100 partitions now, spun up 50 more consumers. lag is clearing" },
       {
@@ -358,7 +358,7 @@ partition_messages = [
   {
     sequence: 13,
     author_name: "alex",
-    author_avatar: "/profile-photo-1.jpg",
+    author_avatar: "profile-photo-1.jpg",
     components: [
       { type: "text", content: "latency recovering — p99 down to 180ms and dropping. Acme also said they can batch their events instead of sending individually which should help" }
     ]
@@ -366,7 +366,7 @@ partition_messages = [
   {
     sequence: 14,
     author_name: "maya",
-    author_avatar: "/profile-photo-3.jpg",
+    author_avatar: "profile-photo-3.jpg",
     components: [
       { type: "text", content: "perfect, marking this resolved. good work everyone 🎉" }
     ]
@@ -374,7 +374,7 @@ partition_messages = [
   {
     sequence: 15,
     author_name: "daniel",
-    author_avatar: "/profile-photo-2.jpg",
+    author_avatar: "profile-photo-2.jpg",
     components: [
       { type: "text", content: "filed the postmortem. root cause was insufficient partitions for the scale of our enterprise customers. we're in a better spot now with 100 partitions and autoscaling consumers" }
     ]
@@ -425,7 +425,7 @@ replication_messages = [
   {
     sequence: 1,
     author_name: "daniel",
-    author_avatar: "/profile-photo-2.jpg",
+    author_avatar: "profile-photo-2.jpg",
     components: [
       { type: "text", content: "seeing weird data on the read replicas — customers reporting stale inventory counts. writes look fine on primary" }
     ]
@@ -433,7 +433,7 @@ replication_messages = [
   {
     sequence: 2,
     author_name: "maya",
-    author_avatar: "/profile-photo-3.jpg",
+    author_avatar: "profile-photo-3.jpg",
     components: [
       { type: "text", content: "taking IC. @alex can you check replication lag in CloudWatch? I'll look at the replica status" }
     ]
@@ -441,7 +441,7 @@ replication_messages = [
   {
     sequence: 3,
     author_name: "alex",
-    author_avatar: "/profile-photo-1.jpg",
+    author_avatar: "profile-photo-1.jpg",
     components: [
       { type: "text", content: "lag is through the roof — replica-2 is 847 seconds behind. replica-1 is at 12 seconds which is borderline acceptable" }
     ]
@@ -449,7 +449,7 @@ replication_messages = [
   {
     sequence: 4,
     author_name: "maya",
-    author_avatar: "/profile-photo-3.jpg",
+    author_avatar: "profile-photo-3.jpg",
     components: [
       { type: "text", content: "that explains the stale reads. pulling up the replica configs — something's off" }
     ]
@@ -457,7 +457,7 @@ replication_messages = [
   {
     sequence: 5,
     author_name: "daniel",
-    author_avatar: "/profile-photo-2.jpg",
+    author_avatar: "profile-photo-2.jpg",
     components: [
       { type: "text", content: "found it. replica-2 is running on db.r5.large while replica-1 is db.r5.2xlarge. the small instance can't keep up with the write throughput" },
       {
@@ -470,7 +470,7 @@ replication_messages = [
   {
     sequence: 6,
     author_name: "alex",
-    author_avatar: "/profile-photo-1.jpg",
+    author_avatar: "profile-photo-1.jpg",
     components: [
       { type: "text", content: "wait how did that happen? terraform should have them all at 2xlarge" }
     ]
@@ -478,7 +478,7 @@ replication_messages = [
   {
     sequence: 7,
     author_name: "maya",
-    author_avatar: "/profile-photo-3.jpg",
+    author_avatar: "profile-photo-3.jpg",
     components: [
       { type: "text", content: "running terraform plan now... yep, drift detected. someone manually resized replica-2 in the console and never updated the tf" },
       {
@@ -491,7 +491,7 @@ replication_messages = [
   {
     sequence: 8,
     author_name: "daniel",
-    author_avatar: "/profile-photo-2.jpg",
+    author_avatar: "profile-photo-2.jpg",
     components: [
       { type: "text", content: "git blame says the console change was made 3 weeks ago during the last incident. we were firefighting and someone downsized it \"temporarily\" to test something" }
     ]
@@ -499,7 +499,7 @@ replication_messages = [
   {
     sequence: 9,
     author_name: "alex",
-    author_avatar: "/profile-photo-1.jpg",
+    author_avatar: "profile-photo-1.jpg",
     components: [
       { type: "text", content: "classic. temporary changes have a way of becoming permanent" }
     ]
@@ -507,7 +507,7 @@ replication_messages = [
   {
     sequence: 10,
     author_name: "maya",
-    author_avatar: "/profile-photo-3.jpg",
+    author_avatar: "profile-photo-3.jpg",
     components: [
       { type: "text", content: "applying terraform now to resize replica-2. this will trigger a reboot but lag should recover within 10-15 min after" }
     ]
@@ -515,7 +515,7 @@ replication_messages = [
   {
     sequence: 11,
     author_name: "daniel",
-    author_avatar: "/profile-photo-2.jpg",
+    author_avatar: "profile-photo-2.jpg",
     components: [
       { type: "text", content: "in the meantime I'll update the load balancer to route all reads to replica-1. at least we'll have consistent data while replica-2 catches up" },
       {
@@ -528,7 +528,7 @@ replication_messages = [
   {
     sequence: 12,
     author_name: "alex",
-    author_avatar: "/profile-photo-1.jpg",
+    author_avatar: "profile-photo-1.jpg",
     components: [
       { type: "text", content: "terraform apply completed. replica-2 is rebooting with the correct instance size" }
     ]
@@ -536,7 +536,7 @@ replication_messages = [
   {
     sequence: 13,
     author_name: "maya",
-    author_avatar: "/profile-photo-3.jpg",
+    author_avatar: "profile-photo-3.jpg",
     components: [
       { type: "text", content: "replica-2 is back online and lag is dropping fast — down to 200 seconds already. should be caught up in a few minutes" }
     ]
@@ -544,7 +544,7 @@ replication_messages = [
   {
     sequence: 14,
     author_name: "daniel",
-    author_avatar: "/profile-photo-2.jpg",
+    author_avatar: "profile-photo-2.jpg",
     components: [
       { type: "text", content: "lag at 0 on both replicas. adding replica-2 back to the load balancer. marking incident resolved" }
     ]
@@ -552,7 +552,7 @@ replication_messages = [
   {
     sequence: 15,
     author_name: "alex",
-    author_avatar: "/profile-photo-1.jpg",
+    author_avatar: "profile-photo-1.jpg",
     components: [
       { type: "text", content: "for the postmortem — we need to talk about drift detection. this wouldn't have happened if we had terraform plan running on a schedule" }
     ]

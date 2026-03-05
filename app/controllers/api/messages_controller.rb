@@ -1,47 +1,47 @@
 # frozen_string_literal: true
 
 module Api
-  class MessagesController < BaseController
+  class MessagesController < ApplicationController
+    skip_before_action :verify_authenticity_token
     before_action :find_conversation
 
-    # POST /api/conversations/:conversation_uuid/messages
     def create
-      message = @conversation.messages.build(
-        content: params[:content],
-        author_name: current_user&.name || 'You',
-        author_avatar: current_user&.avatar_url,
-        user_generated: true
-      )
+      message = nil
 
-      if message.save
-        # Trigger bot response worker if needed
-        # ConversationDriverWorker.perform_async(@conversation.id, message.sequence)
+      @conversation.with_lock do
+        next_sequence = (@conversation.messages.maximum(:sequence) || 0) + 1
 
-        render json: message_json(message), status: :created
-      else
-        render_error(message.errors.full_messages.join(', '))
+        message = @conversation.messages.build(
+          sequence: next_sequence,
+          author_name: 'You',
+          author_avatar: "user-profile.jpg",
+          is_system: false
+        )
+
+        message.save!
+        message.components.create!(position: 0, data: { type: 'text', content: params[:content] })
       end
+
+      render json: message_json(message), status: :created
+    rescue ActiveRecord::RecordInvalid => e
+      render json: { error: e.message }, status: :unprocessable_entity
     end
 
     private
 
     def find_conversation
-      @conversation = conversations_scope.find_by(uuid: params[:conversation_uuid])
-      render_not_found unless @conversation
+      @conversation = current_session_conversations.find(params[:conversation_id])
     end
 
     def message_json(message)
       {
         id: message.id,
-        content: message.content,
-        author: {
-          name: message.author_name,
-          avatar: message.author_avatar,
-        },
-        timestamp: message.created_at.iso8601,
         sequence: message.sequence,
-        components: message.components,
-        reactions: message.reactions,
+        author_name: message.author_name,
+        author_avatar: message.author_avatar,
+        is_system: message.is_system,
+        created_at: message.created_at.iso8601,
+        components: message.components.map { |c| c.data },
       }
     end
   end

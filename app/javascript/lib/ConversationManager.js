@@ -182,8 +182,8 @@ class ConversationManager {
   async send(conversationId, content) {
     // For demo: simulate server response via global API
     // Server assigns ID, sequence, timestamp and broadcasts back
-    if (window.ReplicateConversation) {
-      const api = window.ReplicateConversation
+    if (window.Conversation) {
+      const api = window.Conversation
       const messages = api.getMessages?.() || []
 
       // Get next sequence from existing messages

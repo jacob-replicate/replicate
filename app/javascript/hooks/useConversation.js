@@ -85,8 +85,8 @@ export function useConversation({ conversationId, autoSubscribe = true, initialS
   // Server assigns ID and sequence, message comes back via normal message flow
   const sendUserMessage = useCallback(async (content) => {
     // Demo mode: use global API directly (when no conversationId)
-    if (!conversationId && window.ReplicateConversation) {
-      const api = window.ReplicateConversation
+    if (!conversationId && window.Conversation) {
+      const api = window.Conversation
       const currentMessages = api.getMessages?.() || []
 
       // Get next sequence from existing messages

@@ -221,7 +221,7 @@ const Countdown = ({ duration = 30, label = 'Think through your approach', onCom
 
   if (isComplete) {
     return (
-      <div className="rounded-lg bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 p-4 mt-2">
+      <div className="rounded-lg bg-emerald-900/20 border border-emerald-800 p-4 mt-2">
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center">
             <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -229,8 +229,8 @@ const Countdown = ({ duration = 30, label = 'Think through your approach', onCom
             </svg>
           </div>
           <div>
-            <div className="font-medium text-emerald-900 dark:text-emerald-100">Time's up!</div>
-            <div className="text-sm text-emerald-700 dark:text-emerald-300">Now let's see how another engineer approached this...</div>
+            <div className="font-medium text-emerald-100">Time's up!</div>
+            <div className="text-sm text-emerald-300">Now let's see how another engineer approached this...</div>
           </div>
         </div>
       </div>
@@ -238,7 +238,7 @@ const Countdown = ({ duration = 30, label = 'Think through your approach', onCom
   }
 
   return (
-    <div className="rounded-lg bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 p-4 mt-2">
+    <div className="rounded-lg bg-amber-900/20 border border-amber-800 p-4 mt-2">
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 rounded-full bg-amber-500 flex items-center justify-center">
@@ -247,15 +247,15 @@ const Countdown = ({ duration = 30, label = 'Think through your approach', onCom
             </svg>
           </div>
           <div>
-            <div className="font-medium text-amber-900 dark:text-amber-100">{label}</div>
-            <div className="text-sm text-amber-700 dark:text-amber-300">Visualize your solution before seeing the draft</div>
+            <div className="font-medium text-amber-100">{label}</div>
+            <div className="text-sm text-amber-300">Visualize your solution before seeing the draft</div>
           </div>
         </div>
-        <div className="text-2xl font-mono font-bold text-amber-600 dark:text-amber-400 tabular-nums">
+        <div className="text-2xl font-mono font-bold text-amber-400 tabular-nums">
           {timeDisplay}
         </div>
       </div>
-      <div className="h-2 bg-amber-200 dark:bg-amber-800 rounded-full overflow-hidden">
+      <div className="h-2 bg-amber-800 rounded-full overflow-hidden">
         <div
           className="h-full bg-amber-500 transition-all duration-1000 ease-linear"
           style={{ width: `${progress}%` }}
@@ -320,23 +320,23 @@ const MultipleChoice = ({ question, options, onSelect, selectedId, disabled = fa
 // Alert block (PagerDuty-style)
 const AlertBlock = ({ severity, title, description, metadata }) => {
   const severityColors = {
-    'SEV-1': 'border-red-500 text-red-600 dark:text-red-400',
-    'SEV-2': 'border-orange-500 text-orange-600 dark:text-orange-400',
-    'SEV-3': 'border-yellow-500 text-yellow-600 dark:text-yellow-400',
-    default: 'border-zinc-400 text-zinc-600 dark:text-zinc-400',
+    'SEV-1': 'border-red-500 text-red-400',
+    'SEV-2': 'border-orange-500 text-orange-400',
+    'SEV-3': 'border-yellow-500 text-yellow-400',
+    default: 'border-zinc-400 text-zinc-400',
   }
   const colorClass = severityColors[severity] || severityColors.default
 
   return (
-    <div className={`border-l-4 ${colorClass.split(' ')[0]} bg-[#f8f8f8] dark:bg-zinc-800 rounded-r px-3 py-2`}>
+    <div className={`border-l-4 ${colorClass.split(' ')[0]} bg-zinc-800 rounded-r px-3 py-2`}>
       <div className={`font-mono text-[13px] ${colorClass.split(' ').slice(1).join(' ')} mb-1`}>
         {severity && `[${severity}] `}{title}
       </div>
       {description && (
-        <div className="text-[#1d1c1d] dark:text-zinc-100 text-sm font-medium">{description}</div>
+        <div className="text-zinc-100 text-sm font-medium">{description}</div>
       )}
       {metadata && (
-        <div className="text-[#616061] dark:text-zinc-400 text-xs mt-1">{metadata}</div>
+        <div className="text-zinc-400 text-xs mt-1">{metadata}</div>
       )}
     </div>
   )
@@ -531,7 +531,7 @@ export const Message = ({ message, onSelect }) => {
       {avatar ? (
         <img src={avatar} alt="" className="w-10 h-10 rounded-full flex-shrink-0 ring-1 ring-zinc-700/60" style={{ filter: 'brightness(0.9) saturate(0.9)' }} />
       ) : (
-        <div className="w-10 h-10 rounded-full flex-shrink-0 bg-zinc-200 dark:bg-zinc-700 flex items-center justify-center text-zinc-500 dark:text-zinc-400 text-sm font-medium">
+        <div className="w-10 h-10 rounded-full flex-shrink-0 bg-zinc-700 flex items-center justify-center text-zinc-400 text-sm font-medium">
           {name?.[0]?.toUpperCase() || '?'}
         </div>
       )}

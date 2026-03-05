@@ -165,18 +165,21 @@ export function ConversationProvider({
 
   /**
    * Mark a conversation as read
-   * Optimistic update - sets unreadCount to 0 immediately
+   * Optimistic update - sets lastReadMessageId immediately
    */
   const markAsRead = useCallback(async (uuid) => {
     const conversation = findConversation(uuid)
-    if (!conversation || conversation.unreadCount === 0) return
+    if (!conversation) return
 
     // Get the last message ID for the API call
     const lastMessage = conversation.messages?.[conversation.messages.length - 1]
     const lastReadMessageId = lastMessage?.id
 
+    // Already read
+    if (!lastReadMessageId || conversation.lastReadMessageId === lastReadMessageId) return
+
     // Optimistic update
-    updateConversation(uuid, { unreadCount: 0, lastReadMessageId })
+    updateConversation(uuid, { lastReadMessageId })
 
     try {
       await fetch(`/api/conversations/${uuid}`, {

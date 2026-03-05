@@ -7,7 +7,7 @@ import { SlackThread } from './IncidentWidgets'
 // Category navigation bar - sits at top level, outside any specific view
 const CategoryNav = ({ categories, current }) => {
   return (
-    <div className="bg-zinc-100/80 dark:bg-zinc-800 rounded-xl shadow-sm border border-zinc-200/60 dark:border-zinc-700 overflow-hidden mb-4">
+    <div className="bg-zinc-800 rounded-xl shadow-sm border border-zinc-700 overflow-hidden mb-4">
       <div className="flex flex-wrap md:flex-nowrap">
         {categories.map(cat => {
           const isActive = current === cat.name.toLowerCase()
@@ -54,25 +54,25 @@ const CategoryView = ({ categories }) => {
   }
 
   return (
-    <div className="overflow-hidden rounded-xl border border-zinc-200/60 dark:border-zinc-700 shadow-sm bg-white dark:bg-zinc-900">
-      <div className="px-4 pt-4 pb-3 border-b border-zinc-100 dark:border-zinc-700/50">
-        <h2 className="text-[15px] font-medium dark:text-white tracking-wide">{categoryData.name}</h2>
+    <div className="overflow-hidden rounded-xl border border-zinc-700 shadow-sm bg-zinc-900">
+      <div className="px-4 pt-4 pb-3 border-b border-zinc-700/50">
+        <h2 className="text-[15px] font-medium text-white tracking-wide">{categoryData.name}</h2>
       </div>
       {categoryData.topics.map((topic, i) => (
         <div
           key={topic.code}
           onClick={() => navigate(`/${category}/${topic.code}`)}
-          className={`px-4 py-3 cursor-pointer hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors ${
-            i > 0 ? 'border-t border-zinc-100 dark:border-zinc-800' : ''
+          className={`px-4 py-3 cursor-pointer hover:bg-zinc-800 transition-colors ${
+            i > 0 ? 'border-t border-zinc-800' : ''
           }`}
         >
           <div className="flex items-center justify-between">
             <div>
-              <div className="text-[15px] text-blue-600 dark:text-blue-400 font-medium">{topic.name}</div>
-              <div className="text-[13px] text-zinc-500 dark:text-zinc-400 mt-0.5">{topic.description}</div>
+              <div className="text-[15px] text-blue-400 font-medium">{topic.name}</div>
+              <div className="text-[13px] text-zinc-400 mt-0.5">{topic.description}</div>
             </div>
             {topic.conversation_count > 0 && (
-              <span className="text-[11px] tabular-nums text-zinc-400 dark:text-zinc-500">
+              <span className="text-[11px] tabular-nums text-zinc-500">
                 {topic.completed_count || 0}/{topic.conversation_count}
               </span>
             )}

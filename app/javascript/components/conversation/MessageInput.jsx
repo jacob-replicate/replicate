@@ -134,7 +134,7 @@ export const MessageInput = forwardRef(({
           </button>
 
           {isDropdownOpen && (
-            <div className="absolute bottom-full mb-1 right-0 w-48 bg-white dark:bg-zinc-800 rounded-lg shadow-lg border border-zinc-200 dark:border-zinc-700 py-1 z-50">
+            <div className="absolute bottom-full mb-1 right-0 w-48 bg-zinc-800 rounded-lg shadow-lg border border-zinc-700 py-1 z-50">
               {topics.map((topic) => (
                 <button
                   key={topic.code || topic.name}
@@ -145,8 +145,8 @@ export const MessageInput = forwardRef(({
                   }}
                   className={`w-full text-left px-3 py-2 text-[13px] transition-colors ${
                     currentTopic?.code === topic.code
-                      ? 'bg-zinc-100 dark:bg-zinc-700 font-medium text-zinc-900 dark:text-white'
-                      : 'text-zinc-600 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-700/50'
+                      ? 'bg-zinc-700 font-medium text-white'
+                      : 'text-zinc-300 hover:bg-zinc-700/50'
                   }`}
                 >
                   {topic.name}

@@ -25,15 +25,15 @@ export const TypingIndicator = ({ author }) => {
         <div className="flex items-center gap-1">
           <div className="flex gap-1">
             <div
-              className="w-2 h-2 rounded-full animate-typing-pulse bg-zinc-400 dark:bg-zinc-500"
+              className="w-2 h-2 rounded-full animate-typing-pulse bg-zinc-500"
               style={{ animationDelay: '0ms' }}
             />
             <div
-              className="w-2 h-2 rounded-full animate-typing-pulse bg-zinc-400 dark:bg-zinc-500"
+              className="w-2 h-2 rounded-full animate-typing-pulse bg-zinc-500"
               style={{ animationDelay: '200ms' }}
             />
             <div
-              className="w-2 h-2 rounded-full animate-typing-pulse bg-zinc-400 dark:bg-zinc-500"
+              className="w-2 h-2 rounded-full animate-typing-pulse bg-zinc-500"
               style={{ animationDelay: '400ms' }}
             />
           </div>

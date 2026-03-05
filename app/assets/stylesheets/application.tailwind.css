@@ -3,6 +3,14 @@
 @import "tailwindcss/utilities";
 
 /* ===== BASE STYLES ===== */
+html {
+  background-color: #fbfbfb;
+}
+
+html.dark {
+  background-color: #18181b;
+}
+
 body {
   background-color: #fbfbfb;
   text-rendering: optimizeLegibility;
