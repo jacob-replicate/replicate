@@ -46,109 +46,50 @@ RSpec.describe Conversation, type: :model do
   end
 
   describe "#fork" do
-    let!(:template) do
-      create(:conversation, :template, topic: "dns")
-    end
+    it "deep-copies a template conversation for a given session, idempotently and transactionally" do
+      template = create(:conversation, :template, topic: "dns")
+      msg1 = create(:message, conversation: template, sequence: 1, author_name: "alice", author_avatar: "alice.png", is_system: false)
+      msg2 = create(:message, conversation: template, sequence: 2, author_name: "ops-bot", author_avatar: "bot.png", is_system: true)
+      create(:message_component, message: msg1, position: 1, data: { "type" => "text", "content" => "check DNS" })
+      create(:message_component, message: msg1, position: 2, data: { "type" => "code", "content" => "dig example.com" })
+      create(:message_component, message: msg2, position: 1, data: { "type" => "text", "content" => "resolving..." })
 
-    let!(:msg1) do
-      create(:message, conversation: template, sequence: 1, author_name: "alice", author_avatar: "alice.png", is_system: false)
-    end
-
-    let!(:msg2) do
-      create(:message, conversation: template, sequence: 2, author_name: "ops-bot", author_avatar: "bot.png", is_system: true)
-    end
-
-    let!(:comp1) { create(:message_component, message: msg1, position: 1, data: { "type" => "text", "content" => "check DNS" }) }
-    let!(:comp2) { create(:message_component, message: msg1, position: 2, data: { "type" => "code", "content" => "dig example.com" }) }
-    let!(:comp3) { create(:message_component, message: msg2, position: 1, data: { "type" => "text", "content" => "resolving..." }) }
-
-    it "creates a new conversation linked to the template" do
       forked = template.fork("session_abc")
 
+      # linked to the template with correct attributes
       expect(forked).to be_persisted
       expect(forked.template_id).to eq(template.id)
       expect(forked.template).to be false
-    end
-
-    it "copies topic to the forked conversation" do
-      forked = template.fork("session_abc")
-
       expect(forked.topic).to eq("dns")
-    end
-
-    it "sets the session_id on the forked conversation" do
-      forked = template.fork("session_abc")
-
       expect(forked.session_id).to eq("session_abc")
-    end
 
-    it "duplicates all messages with correct attributes" do
-      forked = template.fork("session_abc")
+      # duplicates messages with new IDs
       msgs = forked.messages.reorder(:sequence)
-
       expect(msgs.size).to eq(2)
+      expect(msgs.pluck(:id) & template.messages.pluck(:id)).to be_empty
 
-      expect(msgs[0].sequence).to eq(1)
-      expect(msgs[0].author_name).to eq("alice")
-      expect(msgs[0].author_avatar).to eq("alice.png")
-      expect(msgs[0].is_system).to be false
+      expect(msgs[0]).to have_attributes(sequence: 1, author_name: "alice", author_avatar: "alice.png", is_system: false)
+      expect(msgs[1]).to have_attributes(sequence: 2, author_name: "ops-bot", author_avatar: "bot.png", is_system: true)
 
-      expect(msgs[1].sequence).to eq(2)
-      expect(msgs[1].author_name).to eq("ops-bot")
-      expect(msgs[1].author_avatar).to eq("bot.png")
-      expect(msgs[1].is_system).to be true
-    end
-
-    it "duplicates all message components with correct attributes" do
-      forked = template.fork("session_abc")
-      first_msg = forked.messages.reorder(:sequence).first
-      comps = first_msg.components.reorder(:position)
-
+      # duplicates message components
+      comps = msgs[0].components.reorder(:position)
       expect(comps.size).to eq(2)
+      expect(comps[0]).to have_attributes(position: 1, data: { "type" => "text", "content" => "check DNS" })
+      expect(comps[1]).to have_attributes(position: 2, data: { "type" => "code", "content" => "dig example.com" })
 
-      expect(comps[0].position).to eq(1)
-      expect(comps[0].data).to eq({ "type" => "text", "content" => "check DNS" })
-
-      expect(comps[1].position).to eq(2)
-      expect(comps[1].data).to eq({ "type" => "code", "content" => "dig example.com" })
-    end
-
-    it "creates new record IDs (not reusing template message IDs)" do
-      forked = template.fork("session_abc")
-      forked_msg_ids = forked.messages.pluck(:id)
-      template_msg_ids = template.messages.pluck(:id)
-
-      expect(forked_msg_ids & template_msg_ids).to be_empty
-    end
-
-    it "returns the existing fork for the same session_id (idempotent)" do
-      first_fork = template.fork("session_abc")
+      # idempotent for the same session_id
       second_fork = template.fork("session_abc")
-
-      expect(second_fork.id).to eq(first_fork.id)
-    end
-
-    it "does not create duplicate messages on repeated calls" do
-      template.fork("session_abc")
-      template.fork("session_abc")
-
-      forked = template.forked_conversations.find_by(session_id: "session_abc")
+      expect(second_fork.id).to eq(forked.id)
       expect(forked.messages.count).to eq(2)
-    end
 
-    it "creates separate forks for different session_ids" do
-      fork1 = template.fork("session_1")
-      fork2 = template.fork("session_2")
+      # separate fork for a different session_id
+      other_fork = template.fork("session_other")
+      expect(other_fork.id).not_to eq(forked.id)
 
-      expect(fork1.id).not_to eq(fork2.id)
-      expect(fork1.messages.pluck(:id) & fork2.messages.pluck(:id)).to be_empty
-    end
-
-    it "wraps creation in a transaction (all or nothing)" do
+      # transactional: rolls back entirely on failure
       allow_any_instance_of(MessageComponent).to receive(:save!).and_raise(ActiveRecord::RecordInvalid)
-
       expect {
-        template.fork("session_abc") rescue nil
+        template.fork("session_fail") rescue nil
       }.not_to change(Conversation, :count)
     end
   end
