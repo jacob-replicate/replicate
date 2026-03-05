@@ -5,6 +5,7 @@ import Conversation from './Conversation'
 import ChannelSwitcher from './ChannelSwitcher'
 import SecurityPage from './SecurityPage'
 import PrivacyPage from './PrivacyPage'
+import TermsPage from './TermsPage'
 import { ConversationProvider, useConversationContext } from './ConversationContext'
 import { NotificationProvider, useNotifications } from './NotificationContext'
 import useConversation from '../../hooks/useConversation'
@@ -450,6 +451,7 @@ const ConversationAppInner = ({ apiRef }) => {
           <Route path="/" element={<RootRedirect />} />
           <Route path="/security" element={<SecurityPage />} />
           <Route path="/privacy" element={<PrivacyPage />} />
+          <Route path="/terms" element={<TermsPage />} />
           <Route
             path="/:uuid"
             element={<ConversationViewWrapper apiRef={apiRef} />}

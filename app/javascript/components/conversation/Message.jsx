@@ -529,7 +529,7 @@ export const Message = ({ message, onSelect }) => {
   const messageContent = (
     <div className="flex items-start gap-3">
       {avatar ? (
-        <img src={avatar} alt="" className="w-10 h-10 rounded-full flex-shrink-0 ring-1 ring-zinc-700/60" style={{ filter: 'brightness(0.9) saturate(0.9)' }} />
+        <img src={avatar} alt="" className="w-10 h-10 rounded-full flex-shrink-0 ring-1 ring-zinc-700/60" style={{ filter: 'brightness(0.8) saturate(0.6)' }} />
       ) : (
         <div className="w-10 h-10 rounded-full flex-shrink-0 bg-zinc-700 flex items-center justify-center text-zinc-400 text-sm font-medium">
           {name?.[0]?.toUpperCase() || '?'}

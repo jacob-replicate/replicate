@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 import ChannelList from './ChannelList'
 
 /**
@@ -61,10 +62,10 @@ const ChannelSwitcher = ({
             </svg>
           </button>
           {/* Desktop: wordmark + tagline */}
-          <div className="hidden lg:flex lg:items-baseline gap-4">
-            <a href="/" className="text-[15px] hover:opacity-70 transition-opacity" style={{ color: '#ffffff', fontWeight: 600 }}>
+          <div className="hidden lg:flex lg:items-baseline gap-3">
+            <span style={{ fontFamily: "'Rubik', sans-serif", color: '#ffffff', fontWeight: 500, fontSize: '13px', letterSpacing: '0.14em', textTransform: 'uppercase' }}>
               Invariant
-            </a>
+            </span>
             {/* Tagline */}
             <span className="text-[13px]" style={{ color: '#9a9a9a', fontWeight: 400 }}>
               Sharpen how you think about distributed systems.
@@ -74,9 +75,9 @@ const ChannelSwitcher = ({
         <div className="flex items-center gap-6">
           {/* Navigation links */}
           <nav className="hidden lg:flex items-center gap-4 text-[12px]" style={{ fontWeight: 400 }}>
-            <a href="/security" style={{ color: '#71717a' }} onMouseEnter={(e) => e.target.style.color = '#a1a1aa'} onMouseLeave={(e) => e.target.style.color = '#71717a'}>Security</a>
-            <a href="/privacy" style={{ color: '#71717a' }} onMouseEnter={(e) => e.target.style.color = '#a1a1aa'} onMouseLeave={(e) => e.target.style.color = '#71717a'}>Privacy</a>
-            <a href="/terms" style={{ color: '#71717a' }} onMouseEnter={(e) => e.target.style.color = '#a1a1aa'} onMouseLeave={(e) => e.target.style.color = '#71717a'}>Terms</a>
+            <Link to="/security" style={{ color: '#71717a' }} onMouseEnter={(e) => e.target.style.color = '#a1a1aa'} onMouseLeave={(e) => e.target.style.color = '#71717a'}>Security</Link>
+            <Link to="/privacy" style={{ color: '#71717a' }} onMouseEnter={(e) => e.target.style.color = '#a1a1aa'} onMouseLeave={(e) => e.target.style.color = '#71717a'}>Privacy</Link>
+            <Link to="/terms" style={{ color: '#71717a' }} onMouseEnter={(e) => e.target.style.color = '#a1a1aa'} onMouseLeave={(e) => e.target.style.color = '#71717a'}>Terms</Link>
           </nav>
 
           {/* Mobile: share button - far right */}

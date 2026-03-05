@@ -21,7 +21,6 @@ Rails.application.routes.draw do
   end
 
   # Server-rendered pages (non-SPA)
-  get "/terms", to: "static#terms"
   get "/billing", to: "static#billing"
 
   # OAuth

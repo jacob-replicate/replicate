@@ -331,7 +331,7 @@ const Thread = ({ replies }) => {
         <div className="mt-2 ml-1 pl-3 border-l-2 border-zinc-700 space-y-2">
           {replies.slice(0, visibleReplies).map((reply, i) => (
             <div key={i} className="flex items-start gap-2">
-              <img src={reply.avatar} alt="" className="w-6 h-6 rounded-full flex-shrink-0" />
+              <img src={reply.avatar} alt="" className="w-6 h-6 rounded-full flex-shrink-0 opacity-60" />
               <div>
                 <span className="font-semibold text-[13px] text-zinc-100">
                   <ModeIndicator mode={USER_MODES[reply.name]} />{reply.name}
@@ -360,7 +360,7 @@ const Thread = ({ replies }) => {
 // Reusable chat message component
 const ChatMessage = ({ avatar, name, time, children, text, edited }) => (
   <div className="flex items-start gap-3">
-    <img src={avatar} alt="" className="w-10 h-10 rounded-full flex-shrink-0" />
+    <img src={avatar} alt="" className="w-10 h-10 rounded-full flex-shrink-0 opacity-60" />
     <div className="flex-1">
       <div className="flex items-baseline gap-2">
         <span className="font-semibold text-zinc-100 text-[15px] tracking-[-0.01em]">
@@ -381,7 +381,7 @@ const ChatMessage = ({ avatar, name, time, children, text, edited }) => (
 // Typing indicator component
 const TypingIndicator = ({ avatar, name }) => (
   <div className="flex items-start gap-3">
-    <img src={avatar} alt="" className="w-10 h-10 rounded-full flex-shrink-0" />
+    <img src={avatar} alt="" className="w-10 h-10 rounded-full flex-shrink-0 opacity-60" />
     <div className="flex-1">
       <div className="flex items-baseline gap-2">
         <span className="font-semibold text-zinc-100 text-[15px] tracking-[-0.01em]">{name}</span>
@@ -543,7 +543,7 @@ const UserListPanel = ({ users, onClose }) => (
           {users.filter(u => u.mode === '+').map(user => (
             <div key={user.name} className="flex items-center gap-2 py-1">
               <div className="relative">
-                <img src={user.avatar} alt="" className="w-6 h-6 rounded-full" />
+                <img src={user.avatar} alt="" className="w-6 h-6 rounded-full opacity-60" />
                 <div className={`absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full border-2 border-zinc-800 ${user.status === 'online' ? 'bg-green-500' : 'bg-zinc-400'}`} />
               </div>
               <span className="text-[13px] text-zinc-300 font-mono">
@@ -560,7 +560,7 @@ const UserListPanel = ({ users, onClose }) => (
           {users.filter(u => !u.mode).map(user => (
             <div key={user.name} className="flex items-center gap-2 py-1">
               <div className="relative">
-                <img src={user.avatar} alt="" className="w-6 h-6 rounded-full" />
+                <img src={user.avatar} alt="" className="w-6 h-6 rounded-full opacity-60" />
                 <div className={`absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full border-2 border-zinc-800 ${user.status === 'online' ? 'bg-green-500' : 'bg-zinc-400'}`} />
               </div>
               <span className={`text-[13px] font-mono ${user.status === 'online' ? 'text-zinc-300' : 'text-zinc-500'}`}>
@@ -915,7 +915,7 @@ export const GitDiff = () => {
         {/* Footer with commit info */}
         <div className="bg-zinc-800/50 border-t border-zinc-700 px-4 py-2 flex items-center justify-between text-xs">
           <div className="flex items-center gap-2 text-zinc-400">
-            <img src="/profile-photo-2.jpg" alt="" className="w-5 h-5 rounded-full" />
+            <img src="/profile-photo-2.jpg" alt="" className="w-5 h-5 rounded-full opacity-60" />
             <span>daniel</span>
             <span className="text-zinc-600">•</span>
             <span className="font-mono">a]1b7f2e</span>
