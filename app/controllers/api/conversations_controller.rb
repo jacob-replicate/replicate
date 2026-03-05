@@ -5,12 +5,16 @@ module Api
     skip_before_action :verify_authenticity_token
 
     def index
-      conversations = current_session_conversations.order(updated_at: :desc)
+      conversations = Conversation.templates
+        .select("DISTINCT ON (topic) *")
+        .order(:topic, created_at: :desc)
+
       render json: conversations.map { |c| conversation_json(c) }
     end
 
     def show
-      conversation = current_session_conversations.find(params[:id])
+      template = Conversation.templates.find(params[:id])
+      conversation = template.fork(session_identifier)
       render json: conversation_json(conversation, include_messages: true)
     end
 

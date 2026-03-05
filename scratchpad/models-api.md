@@ -25,6 +25,11 @@ Model: MessageComponent
 - position: integer (ordering within message)
 - data: jsonb
 
+
+
+Page Load:
+
+
 ## Component Types
 
 ### text

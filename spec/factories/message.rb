@@ -1,7 +1,9 @@
 FactoryBot.define do
   factory :message do
     association :conversation
-    content { "Example content" }
-    user_generated { true }
+    sequence(:sequence) { |n| n }
+    author_name { "ops-bot" }
+    author_avatar { "bot.png" }
+    is_system { true }
   end
 end
