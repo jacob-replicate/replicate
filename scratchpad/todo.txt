@@ -1,30 +1,22 @@
 - IBM disclosure. Make sure to update the dates on your terms/privacy/security pages to be recent.
-- See if scratchpad/conversation-schema.md is worth implementing.
-- Make editing messages part of the process.
-- Rerender the multiple choice questions on page reload + back button
-- Merge progress with existing account after logging in
 - Meta tags + sharing images/text
 - Better error handling + retries. Don't just let the loop die.
 - Cancel try-replicate + Apollo billing. Cold email isn't the GTM path.
 - Let people edit/delete messages
 - Cloudflare
-- Convert conversations/show to React
-- Move Security/Privacy/Terms into JSX + cut the old ERB files
-- Lock down (and/or just delete) AWS account
-- Make monitor component responsive
-- Hint at collapsed sidebar on mobile somehow.
-- Fix the weird double bottom border during sends
-- zinc-200 to separate messages, not zinc-100
 
 
 Engagement Ideas
+- Quiz conversation types, not just incidents.
 - Inline code editor + "Run" button.
 - Fake typing
+- Editable messages
 - Toast notifications from other threads
 - Incident.io status updates from bot (not someone typing it)
 - reactions to your most recent message
 - SEV3 -> SEV2 -> SEV1 (and arguing over which it should be)
 - New (wrong) ideas injected after 20s of inactivity
+- Let them tag other engineers. They'll probably do it if you make it possible.
 - Separate ownership streams (e.g., digging through logs vs. packaging up PR)
 - System alerts
 - Editing messages for typos
@@ -32,3 +24,15 @@ Engagement Ideas
 - Frantic support/account reps asking for updates + threads with stressed engineers
 - RCA doc + asking for feedback
 - Dispatch game idea where clock is ticking down + picking an answer if they don't engage.
+- Jira tickets
+
+
+Team Mode Metrics:
+engineer_id
+scenario_type
+signal_seen
+signal_ignored
+time_to_hypothesis
+time_to_correct_diagnosis
+misdiagnosis_type
+hint_usage

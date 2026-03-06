@@ -6,6 +6,7 @@ import ChannelSwitcher from './ChannelSwitcher'
 import SecurityPage from './SecurityPage'
 import PrivacyPage from './PrivacyPage'
 import TermsPage from './TermsPage'
+import AboutPage from './AboutPage'
 import { ConversationProvider, useConversationContext } from './ConversationContext'
 import { NotificationProvider, useNotifications } from './NotificationContext'
 import useConversation from '../../hooks/useConversation'
@@ -389,15 +390,21 @@ const ConversationAppInner = ({ apiRef }) => {
     document.title = `Invariant: ${formattedName}`
   }, [activeChannelId, conversations])
 
-  // Persist last visited channel to localStorage
+  // Persist last visited channel to localStorage (only for real channels)
   useEffect(() => {
-    if (activeChannelId) {
-      localStorage.setItem('lastChannelId', activeChannelId)
+    if (activeChannelId && conversations.length > 0) {
+      const isRealChannel = conversations.some(c => c.id === activeChannelId)
+      if (isRealChannel) {
+        localStorage.setItem('lastChannelId', activeChannelId)
+      }
     }
-  }, [activeChannelId])
+  }, [activeChannelId, conversations])
 
   // Sync activeChannelId when URL changes (e.g., direct navigation to /dns)
+  const STATIC_PAGES = ['/about', '/security', '/privacy', '/terms']
   useEffect(() => {
+    // Don't overwrite activeChannelId when viewing static pages
+    if (STATIC_PAGES.includes(location.pathname)) return
     const channelFromPath = getChannelIdFromPath(location.pathname)
     if (channelFromPath !== activeChannelId) {
       setActiveChannelId(channelFromPath)
@@ -452,6 +459,7 @@ const ConversationAppInner = ({ apiRef }) => {
           <Route path="/security" element={<SecurityPage />} />
           <Route path="/privacy" element={<PrivacyPage />} />
           <Route path="/terms" element={<TermsPage />} />
+          <Route path="/about" element={<AboutPage />} />
           <Route
             path="/:uuid"
             element={<ConversationViewWrapper apiRef={apiRef} />}

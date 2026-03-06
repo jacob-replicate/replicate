@@ -35,7 +35,7 @@ const ChannelSwitcher = ({
 
       {/* Full-width header - system rail */}
       <div
-        className="flex-shrink-0 flex items-center justify-between px-5 py-2.5"
+        className="flex-shrink-0 flex items-center justify-between pl-5 pr-2 py-2"
         style={{
           background: 'linear-gradient(180deg, #141416 0%, #0c0c0e 100%)',
           borderBottom: '1px solid #27272a',
@@ -47,7 +47,7 @@ const ChannelSwitcher = ({
             onClick={() => setSidebarOpen(!sidebarOpen)}
             className="flex items-center gap-1.5 lg:hidden"
           >
-            <span className="text-[14px]" style={{ color: '#ffffff', fontWeight: 600 }}>Invariant</span>
+            <span style={{ fontFamily: "'Rubik', sans-serif", color: '#ffffff', fontWeight: 500, fontSize: '13px', letterSpacing: '0.14em', textTransform: 'uppercase' }}>Invariant</span>
             <span className="text-[14px]" style={{ color: '#52525b', fontWeight: 600 }}>/</span>
             <span className="text-[14px]" style={{ color: '#9d8ec4' }}>{activeChannelName}</span>
             <svg
@@ -63,21 +63,37 @@ const ChannelSwitcher = ({
           </button>
           {/* Desktop: wordmark + tagline */}
           <div className="hidden lg:flex lg:items-baseline gap-3">
-            <span style={{ fontFamily: "'Rubik', sans-serif", color: '#ffffff', fontWeight: 500, fontSize: '13px', letterSpacing: '0.14em', textTransform: 'uppercase' }}>
+            <Link to={`/${activeChannelId || ''}`} style={{ fontFamily: "'Rubik', sans-serif", color: '#ffffff', fontWeight: 500, fontSize: '13px', letterSpacing: '0.14em', textTransform: 'uppercase', textDecoration: 'none' }}>
               Invariant
-            </span>
+            </Link>
             {/* Tagline */}
             <span className="text-[13px]" style={{ color: '#9a9a9a', fontWeight: 400 }}>
               Sharpen how you think about distributed systems.
             </span>
           </div>
         </div>
-        <div className="flex items-center gap-6">
+        <div className="flex items-center">
           {/* Navigation links */}
           <nav className="hidden lg:flex items-center gap-4 text-[12px]" style={{ fontWeight: 400 }}>
+            <Link to="/about" style={{ color: '#71717a' }} onMouseEnter={(e) => e.target.style.color = '#a1a1aa'} onMouseLeave={(e) => e.target.style.color = '#71717a'}>About</Link>
             <Link to="/security" style={{ color: '#71717a' }} onMouseEnter={(e) => e.target.style.color = '#a1a1aa'} onMouseLeave={(e) => e.target.style.color = '#71717a'}>Security</Link>
             <Link to="/privacy" style={{ color: '#71717a' }} onMouseEnter={(e) => e.target.style.color = '#a1a1aa'} onMouseLeave={(e) => e.target.style.color = '#71717a'}>Privacy</Link>
             <Link to="/terms" style={{ color: '#71717a' }} onMouseEnter={(e) => e.target.style.color = '#a1a1aa'} onMouseLeave={(e) => e.target.style.color = '#71717a'}>Terms</Link>
+            <span
+              className="px-[10px] py-[2px] rounded cursor-pointer select-none text-[11px]"
+              style={{
+                color: '#e9e5f0',
+                backgroundColor: '#6d5a99',
+                fontWeight: 500,
+                letterSpacing: '0.02em',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = '#7c6aab'
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = '#6d5a99'
+              }}
+            >Explore Pro</span>
           </nav>
 
           {/* Mobile: share button - far right */}
